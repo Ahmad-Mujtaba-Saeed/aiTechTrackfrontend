@@ -1,0 +1,56 @@
+.education-section {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .icon-span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+  
+  .edu-degree {
+    font-weight: 600;
+    color: #212529;
+  }
+  
+  .edu-institute {
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  
+  .edu-time {
+    display: block;
+    margin-top: 0.5rem;
+  }
+  
+  .content-confirm-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .content-confirm-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  /* Toast customization */
+  .Toastify__toast {
+    border-radius: 8px;
+  }
+  
+  .Toastify__toast--error {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .Toastify__toast--success {
+    background-color: #d4edda;
+    color: #155724;
+  }

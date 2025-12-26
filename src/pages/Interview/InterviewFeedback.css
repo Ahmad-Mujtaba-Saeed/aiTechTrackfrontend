@@ -1,0 +1,209 @@
+/* Progress Bar Styles */
+.progress-container {
+    margin: 8px 0;
+    width: 100%;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+    font-size: 0.85rem;
+    color: #495057;
+}
+
+.progress {
+    height: 8px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Existing styles */
+.feedback-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    line-height: 1.6;
+}
+
+.score-percentage {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    padding-bottom: 25px;
+}
+
+.proficiency-level {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 5px;
+    padding: 3px 0;
+    border-radius: 3px;
+    background-color: #f8f9fa;
+    color: #495057;
+}
+
+.feedback-header h1 {
+    color: #2c7be5;
+    font-size: 28px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.feedback-content {
+    display: flex;
+    gap: 40px;
+}
+
+.left-column {
+    flex: 1;
+    max-width: 600px;
+}
+
+.right-column {
+    flex: 1;
+    max-width: 600px;
+}
+
+.score-section h2, 
+.core-feedback h2, 
+.feedback-transcript h2 {
+    color: #2c7be5;
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.question-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.question-title h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.question-title span {
+    margin-left: 10px;
+    color: #666;
+    font-size: 14px;
+}
+
+.page-indicator {
+    color: #999;
+    font-size: 14px;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.score-table {
+    margin: 20px 0;
+}
+
+.score-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.score-table td {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+}
+
+.score-percentage {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c7be5;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.percentage {
+    text-align: right;
+    color: #666;
+}
+
+.divider {
+    height: 1px;
+    background-color: #eee;
+    margin: 30px 0;
+}
+
+.core-feedback ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.core-feedback li {
+    margin-bottom: 20px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.core-feedback li:before {
+    content: "•";
+    color: #2c7be5;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.core-feedback strong {
+    color: #333;
+}
+
+.feedback-transcript {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #2c7be5;
+}
+
+.transcript-item {
+    margin-bottom: 25px;
+}
+
+.question, .response, .ideal {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.quote {
+    background-color: white;
+    padding: 12px 15px;
+    border-radius: 4px;
+    margin: 5px 0;
+    font-style: italic;
+    color: #555;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 900px) {
+    .feedback-content {
+        flex-direction: column;
+    }
+    
+    .left-column, .right-column {
+        max-width: 100%;
+    }
+}
