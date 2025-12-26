@@ -17,7 +17,7 @@ const UpgradeSubscribePlan = () => {
     const fetchPlans = async () => {
         try {
             setLoading(true);
-            const response = await axios.get('/api/plans');
+            const response = await axios.get('/api/billing/plans');
             setPlans(response.data);
         } catch (err) {
             setError('Failed to load subscription plans. Please try again later.');
@@ -50,7 +50,7 @@ const UpgradeSubscribePlan = () => {
         try {
             setSubscribing(true);
             setError('');
-            await axios.post(`/api/subscription/change-plan/${planId}`);
+            await axios.post(`/api/billing/subscription/change-plan/${planId}`);
 
             // Show success message with SweetAlert2
             await Swal.fire({

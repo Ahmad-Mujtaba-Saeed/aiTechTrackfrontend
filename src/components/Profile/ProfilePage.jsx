@@ -35,7 +35,7 @@ const ProfilePage = () => {
   }, []);
 
   useEffect(() => {
-      axios.get('api/customer/credit').then(res => {
+      axios.get('api/billing/customer/credit').then(res => {
           setCredit(res.data.credit);
       });
   }, []);
@@ -71,7 +71,7 @@ const ProfilePage = () => {
   const saveSettings = async (newSettings, e) => {
     if (e) e.preventDefault();
     try {
-      await axios.post('/api/profile-settings', newSettings);
+      await axios.post('/api/user/profile-settings', newSettings);
       toast.success('Settings saved successfully');
     } catch (error) {
       console.error('Error saving settings:', error);
@@ -122,7 +122,7 @@ const ProfilePage = () => {
   const fetchSubscriptionDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('/api/subscription/details');
+      const response = await axios.get('/api/billing/subscription/details');
       const { subscription } = response.data;
 
       if (subscription) {
@@ -150,7 +150,7 @@ const ProfilePage = () => {
 
   const fetchPaymentMethods = async () => {
     try {
-      const response = await axios.get('/api/subscription/payment-method');
+      const response = await axios.get('/api/billing/subscription/payment-method');
       const paymentMethods = response.data.data.map(method => ({
         id: method.id,
         type: method.type,
@@ -181,7 +181,7 @@ const ProfilePage = () => {
 
     try {
       setLoading(true);
-      await axios.delete(`/api/subscription/payment-method/${paymentMethodToRemove}`);
+      await axios.delete(`/api/billing/subscription/payment-method/${paymentMethodToRemove}`);
       await fetchPaymentMethods();
       toast.success('Payment method removed successfully');
       setPaymentMethodToRemove(null);
@@ -201,7 +201,7 @@ const ProfilePage = () => {
         throw new Error('Customer ID not found');
       }
 
-      const response = await axios.get(`/api/subscription/payment-method-intent/${customerId}`);
+      const response = await axios.get(`/api/billing/subscription/payment-method-intent/${customerId}`);
       setClientSecret(response.data.clientSecret);
       setShowAddPaymentModal(true);
     } catch (error) {
@@ -239,7 +239,7 @@ const ProfilePage = () => {
 
       toast.success('Payment method added successfully');
       setShowAddPaymentModal(false);
-      await axios.post(`/api/subscription/payment-method-default/${subscription?.cus_id}`, {
+      await axios.post(`/api/billing/subscription/payment-method-default/${subscription?.cus_id}`, {
         payment_method_id: setupIntent.payment_method
       });
       await fetchPaymentMethods();
@@ -254,7 +254,7 @@ const ProfilePage = () => {
   const handleCancelSubscription = async () => {
     try {
       setLoading(true);
-      await axios.post('/api/subscription/cancel');
+      await axios.post('/api/billing/subscription/cancel');
       setShowCancelModal(false);
       await fetchSubscriptionDetails();
       toast.success('Subscription has been cancelled successfully');
@@ -269,7 +269,7 @@ const ProfilePage = () => {
   const handleMakeDefault = async (paymentMethodId) => {
     try {
       setLoading(true);
-      await axios.post(`/api/subscription/payment-method-default/${subscription?.cus_id}`, {
+      await axios.post(`/api/billing/subscription/payment-method-default/${subscription?.cus_id}`, {
         payment_method_id: paymentMethodId
       });
       toast.success('Payment method updated successfully');

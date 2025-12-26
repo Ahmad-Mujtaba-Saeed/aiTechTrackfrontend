@@ -794,7 +794,7 @@ export default function CVBuilder() {
 
 
         try {
-            window.open(`${baseUrl}/api/resumes/${id}/download-doc`, '_blank');
+            window.open(`${baseUrl}/api/resume/${id}/download-doc`, '_blank');
         } catch (error) {
             console.error('Error loading PDF:', error);
             toast.error('Failed to generate PDF');

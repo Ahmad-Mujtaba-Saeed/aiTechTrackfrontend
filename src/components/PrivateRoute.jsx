@@ -41,7 +41,7 @@ const PrivateRoute = ({ children }) => {
           // Use a default plan slug or id if you want a fallback. Here we assume backend can handle missing param.
           // IMPORTANT: don't use data.plan_id here because it's null.
           const planIdentifier = "default"; // or choose a real fallback plan id
-          const response = await axios.get(`/api/stripe/create-subscription-session/2?isFreeTrial=true`);
+          const response = await axios.get(`/api/billing/stripe/create-subscription-session/2?isFreeTrial=true`);
           const checkoutUrl = response?.data?.checkoutUrl || response?.data?.url || null;
           if (checkoutUrl) {
             // Navigate to Stripe hosted checkout (hard navigation is fine here)

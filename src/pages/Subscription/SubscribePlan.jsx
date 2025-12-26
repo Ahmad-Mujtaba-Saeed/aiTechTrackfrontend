@@ -20,7 +20,7 @@ const SubscribePlan = () => {
             try {
                 setLoading(true);
                 console.log('Fetching plans from /api/plans...');
-                const response = await axios.get('/api/plans');
+                const response = await axios.get('/api/billing/plans');
                 console.log('Plans API response:', response);
                 if (response.data && Array.isArray(response.data)) {
                     setPlans(response.data);
@@ -52,7 +52,7 @@ const SubscribePlan = () => {
 
 
     const handleSubscribe = (planId) => {
-        axios.get(`/api/stripe/create-subscription-session/${planId}?isFreeTrial=true`)
+        axios.get(`/api/billing/stripe/create-subscription-session/${planId}?isFreeTrial=true`)
             .then(response => {
                 window.location.href = response.data.checkoutUrl;
             })

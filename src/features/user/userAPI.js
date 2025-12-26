@@ -2,7 +2,7 @@ import axios from "../../api/axios";
 
 export const registerUser = async (userData) => {
   try {
-    const response = await axios.post("/register", userData);
+    const response = await axios.post("/auth/register", userData);
     return response.data;
   } catch (error) {
     // This will be caught by createAsyncThunk's rejected action
@@ -12,7 +12,7 @@ export const registerUser = async (userData) => {
 
 export const loginUser = async (userData) => {
   try {
-    const response = await axios.post("/login", userData);
+    const response = await axios.post("/auth/login", userData);
     return response.data;
   } catch (error) {
     // This will be caught by createAsyncThunk's rejected action
@@ -21,7 +21,7 @@ export const loginUser = async (userData) => {
 };
 
 export const fetchUser = async () => {
-  const response = await axios.get("/user"); // e.g. /me endpoint
+  const response = await axios.get("/auth/me"); // e.g. /me endpoint
   return response.data;
 };
 
