@@ -402,8 +402,8 @@ export default function BuildingComponents() {
             <Card.Body className="px-6 py-9 position-relative text-center" style={{ height: "300px" }}>
               <div
                 className="icon-item icon-item-md rounded-1 shadow-none mx-auto"
-                style={{ backgroundColor: '#ece5fc' }}>
-                <FiFile size={20} style={{ color: '#ba67ef' }} />
+                style={{ backgroundColor: '#00000033' }}>
+                <FiFile size={20} style={{ color: '#000000' }} />
               </div>
               <h4 className="my-3">Upload an existing CV</h4>
               <p className="fs-8">
@@ -441,8 +441,8 @@ export default function BuildingComponents() {
             <Card.Body className="px-6 py-9 position-relative text-center">
               <div
                 className="icon-item icon-item-md rounded-1 shadow-none mx-auto"
-                style={{ backgroundColor: '#ece5fc' }}>
-                <svg width={20} className="svg-inline--fa fa-file-pen fs-7" style={{ color: '#ba67ef' }} aria-hidden="true" focusable="false" data-prefix="fas" data-icon="file-pen" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg=""><path fill="currentColor" d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 125.7-86.8 86.8c-10.3 10.3-17.5 23.1-21 37.2l-18.7 74.9c-2.3 9.2-1.8 18.8 1.3 27.5L64 512c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zM549.8 235.7l14.4 14.4c15.6 15.6 15.6 40.9 0 56.6l-29.4 29.4-71-71 29.4-29.4c15.6-15.6 40.9-15.6 56.6 0zM311.9 417L441.1 287.8l71 71L382.9 487.9c-4.1 4.1-9.2 7-14.9 8.4l-60.1 15c-5.5 1.4-11.2-.2-15.2-4.2s-5.6-9.7-4.2-15.2l15-60.1c1.4-5.6 4.3-10.8 8.4-14.9z"></path></svg>
+                style={{ backgroundColor: '#00000033' }}>
+                <svg width={20} className="svg-inline--fa fa-file-pen fs-7" style={{ color: '#000000' }} aria-hidden="true" focusable="false" data-prefix="fas" data-icon="file-pen" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg=""><path fill="currentColor" d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 125.7-86.8 86.8c-10.3 10.3-17.5 23.1-21 37.2l-18.7 74.9c-2.3 9.2-1.8 18.8 1.3 27.5L64 512c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zM549.8 235.7l14.4 14.4c15.6 15.6 15.6 40.9 0 56.6l-29.4 29.4-71-71 29.4-29.4c15.6-15.6 40.9-15.6 56.6 0zM311.9 417L441.1 287.8l71 71L382.9 487.9c-4.1 4.1-9.2 7-14.9 8.4l-60.1 15c-5.5 1.4-11.2-.2-15.2-4.2s-5.6-9.7-4.2-15.2l15-60.1c1.4-5.6 4.3-10.8 8.4-14.9z"></path></svg>
               </div>
               <h4 className="my-3">Build from scratch</h4>
               <p className="fs-8">

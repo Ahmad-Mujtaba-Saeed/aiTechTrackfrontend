@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './ProfilePage.css';
 import { useDispatch, useSelector } from 'react-redux';
-import bgImage from '../../assets/images/breadcrumBg.avif';
+import bgImage from '../../assets/images/breadcrumBg.jpg';
 import {updateProfileSettings} from "../../features/user/userSlice";
 import favicon from '../../assets/images/MPF-180x180.png';
 

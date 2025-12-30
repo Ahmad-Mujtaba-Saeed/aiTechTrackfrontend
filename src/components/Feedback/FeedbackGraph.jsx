@@ -213,7 +213,7 @@ const ChartComponent = ({parsedFeedback}) => {
               symbol: 'rect',
               symbolSize: 10,
               lineStyle: { type: 'dashed' },
-              itemStyle: { color: '#BA67EF' },
+              itemStyle: { color: '#000000' },
               areaStyle: { color: 'rgba(186,103,239,0.3)' },
               label: {
                 show: true,
@@ -299,7 +299,7 @@ const ChartComponent = ({parsedFeedback}) => {
               symbol: 'rect',
               symbolSize: 10,
               lineStyle: { type: 'dashed' },
-              itemStyle: { color: '#BA67EF' },
+              itemStyle: { color: '#000000' },
               areaStyle: { color: 'rgba(186,103,239,0.3)' },
               label: {
                 show: true,
@@ -385,7 +385,7 @@ const ChartComponent = ({parsedFeedback}) => {
               symbol: 'rect',
               symbolSize: 10,
               lineStyle: { type: 'dashed' },
-              itemStyle: { color: '#BA67EF' },
+              itemStyle: { color: '#000000' },
               areaStyle: { color: 'rgba(186,103,239,0.3)' },
               label: {
                 show: true,
@@ -419,7 +419,7 @@ const ChartComponent = ({parsedFeedback}) => {
     const dataset = phoenixUtils.getData(el, 'echarts');
     const chart = echarts.init(el);
 
-    const primary = '#BA67EF';
+    const primary = '#000000';
     const track = '#e9ecef';
 
     echartSetOption(chart, dataset, () => ({

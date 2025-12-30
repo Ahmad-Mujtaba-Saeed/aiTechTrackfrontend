@@ -1,6 +1,11 @@
+@font-face {
+    font-family: 'Google Sans Flex';
+    src: url(./GoogleSansFlex.ttf);
+}
+
 body {
     background-color: #f5f7fa !important;
-    font-family: "Inter", sans-serif !important;
+    font-family: 'Google Sans Flex', "Inter", sans-serif !important;
     color: #161c52 !important;
 }
 
@@ -15,7 +20,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: figtree;
+    font-family: 'Google Sans Flex', "Inter", sans-serif !important;
     color: #161c52;
 }
 
@@ -48,14 +53,15 @@ h4 {
 }
 
 a:hover {
-    color: #BA67EF;
+    color: #000000;
 }
 
 [data-bs-theme=dark] .dark__bg-dark,
 [data-bs-theme=dark] .navbar-vertical .navbar-vertical-footer,
 [data-bs-theme=dark] .dropdown-profile .card,
 [data-bs-theme=dark] .navbar .dropdown-menu.navbar-dropdown-caret:after {
-    background: linear-gradient(135deg, #1D0948, #3E1A80, #6B2ECB);
+    background: #000 !important;
+    /* background: linear-gradient(135deg, #1D0948, #000, #6B2ECB); */
     background-size: 300% 300%;
     animation: gradientShift 8s ease infinite;
 
@@ -81,15 +87,19 @@ a:hover {
 
 
 [data-bs-theme=dark] .navbar-vertical .navbar-vertical-footer {
-    border-top: 1px solid #3E1A80 !important;
+    border-top: 1px solid #000 !important;
 }
 
 [data-bs-theme=dark] .text-primary {
-    color: #BA67EF !important;
+    color: #000 !important;
+}
+
+[data-bs-theme=dark] nav .text-primary {
+    color: #fff !important;
 }
 
 [data-bs-theme=dark] .navbar-top {
-    border-bottom: 1px solid #3E1A80 !important;
+    border-bottom: 1px solid #000 !important;
 }
 
 .navbar-vertical .navbar-vertical-content .navbar-nav .nav-link:hover {
@@ -101,14 +111,14 @@ a:hover {
 }
 
 .btn-phoenix-secondary {
-    background-color: #BA67EF !Important;
+    background-color: #000000 !Important;
     color: #fff !important;
     border: none !important;
 }
 
 .theme-control-toggle .theme-control-toggle-label:hover {
-    background-color: #ece5fc !important;
-    color: #BA67EF !important;
+    background-color: #00000033 !important;
+    color: #000000 !important;
 
 }
 
@@ -126,7 +136,7 @@ a:hover {
 }
 
 .navbar-vertical .navbar-vertical-content .navbar-vertical-label {
-    color: #6e7891 !important;
+    color: #757575 !important;
 
 }
 
@@ -139,7 +149,7 @@ a:hover {
 .feature-cards .card:hover {
     transform: translateY(0px);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-    border-color: #BA67EF !important;
+    border-color: #000 !important;
 }
 
 /* Remove default button chrome so it behaves like an icon */
@@ -211,7 +221,7 @@ a:hover {
 
 /* Highlight selected tile (Phoenix-friendly) */
 .cv-tile.selected {
-    outline: 3px solid #BA67EF;
+    outline: 3px solid #000000;
     outline-offset: 2px;
     box-shadow: 0 0 0 4px rgba(186, 103, 239, 0.15);
 }
@@ -312,7 +322,7 @@ a:hover {
 }
 
 .mask-dots {
-    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font-family: 'Google Sans Flex', "Inter", sans-serif !important;
     font-variant-numeric: tabular-nums;
     /* WebKit/Blink: renders each character as a disc */
     -webkit-text-security: disc;
@@ -354,7 +364,7 @@ a:hover {
 }
 
 .breadcrum-bg-image {
-    background-image: url(../images/breadcrumBg.avif);
+    background-image: url(../images/breadcrumBg.jpg);
     /* background-image: url(https://framerusercontent.com/images/kOtXlxJNGlqvUUg8dp0bBCeDKs.jpg?scale-down-to=2048); */
     background-position: left;
     background-size: cover;
@@ -552,7 +562,7 @@ a:hover {
 }
 
 .welcome-page {
-    background-image: url(../images/breadcrumBg.avif);
+    background-image: url(../images/breadcrumBg.jpg);
     /* background-image: url(https://framerusercontent.com/images/kOtXlxJNGlqvUUg8dp0bBCeDKs.jpg?scale-down-to=2048); */
     background-position: left;
     background-size: cover;
