@@ -38,20 +38,7 @@ export default function Welcome() {
                             </div>
                         </div>
                     </div>
-                    <div className="col-12 col-xl-3">
-                        <div className="card border h-100 w-100 overflow-hidden position-relative">
-                            <div className="card-body px-4 position-relative text-center">
-                                <div
-                                    className="icon-item icon-item-md rounded-1 shadow-none mx-auto"
-                                    style={{backgroundColor: '#00000033'}}>
-                                    <svg width={20} className="svg-inline--fa fa-video fs-7" style={{color: '#000000'}} aria-hidden="true" focusable="false" data-prefix="fas" data-icon="video" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg=""><path fill="currentColor" d="M0 128C0 92.7 28.7 64 64 64l256 0c35.3 0 64 28.7 64 64l0 256c0 35.3-28.7 64-64 64L64 448c-35.3 0-64-28.7-64-64L0 128zM559.1 99.8c10.4 5.6 16.9 16.4 16.9 28.2l0 256c0 11.8-6.5 22.6-16.9 28.2s-23 5-32.9-1.6l-96-64L416 337.1l0-17.1 0-128 0-17.1 14.2-9.5 96-64c9.8-6.5 22.4-7.2 32.9-1.6z"></path></svg>
-                                </div>
-                                <h4 className="my-3">Interview Simulator</h4>
-                                <p className="fs-8">Practise with industry specific questions and real time feedback.</p>
-                                <Link className="stretched-link btn btn-primary w-100" to="/interview">Get Started</Link>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div className="col-12 col-xl-3">
                         <div className="card border h-100 w-100 overflow-hidden position-relative">
                             <div className="card-body px-4 position-relative text-center">

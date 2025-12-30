@@ -29,7 +29,6 @@ import ForgetPassword from "./pages/Auth/ForgetPassword";
 import UpdatePassword from "./pages/Auth/UpdatePassword";
 import Welcome from "./pages/Welcome";
 import UploadProfile from "./pages/Auth/UploadProfile";
-import Feedback from "./pages/Feedback/Feedback";
 
 import TermsCondition from "./pages/TermsPolicy/Terms";
 import PrivacyPolicy from "./pages/TermsPolicy/Privacy";
@@ -43,7 +42,6 @@ import { login, getUser, logout } from "./features/user/userSlice";
 import SubscribePlan from "./pages/Subscription/SubscribePlan";
 import UpgradeSubscribePlan from "./pages/Subscription/UpgradeSubscribePlan";
 
-import InterviewFeedback from "./pages/Interview/InterviewFeedback";
 import Career from "./pages/CareerAdvice";
 import SignOut from "./pages/Auth/SignOut";
 
@@ -86,8 +84,6 @@ const protectedRoutes = [
   { path: '/upgrade-subscription', element:<UpgradeSubscribePlan/> },
   { path: '/subscription', element:<SubscribePlan/> },
   { path: '/upload-profile', element: <UploadProfile /> },
-  { path: '/feedback', element: <InterviewFeedback/>},
-  { path: '/question-feedback', element: <Feedback/>},
   { path: '/application-tracker', element: <ApplicationTracker /> },
   { path: '/cv-builder', element: <CvBuilder /> },
   { path: '/cv-generate/:id', element: <CvGenerate /> },

@@ -102,39 +102,15 @@ const MasterLayout = ({ children }) => {
                   </div>
                 </Link>
                 </div>
-                <div className="nav-item-wrapper"><Link className={`nav-link label-1 ${isActive('/job-search')}`} to="/job-search" role="button" data-bs-toggle="" aria-expanded="false">
-                  <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:search' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Job Search</span></span>
-                  </div>
-                </Link>
-                </div>
 
 
-                <div className="nav-item-wrapper"><Link className={`nav-link label-1 ${isActive('/interview')}`} to="/interview" role="button" data-bs-toggle="" aria-expanded="false">
-                  <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:brand-line' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Interview Practise</span></span>
-                  </div>
-                </Link>
-                </div>
+                
 
-                <div className="nav-item-wrapper"><Link className={`nav-link label-1 ${isActive('/application-tracker')}`} to="/application-tracker" role="button" data-bs-toggle="" aria-expanded="false">
-                  <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:calendar' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Application Tracker</span></span>
-                  </div>
-                </Link>
-                </div>
+                
 
-                <div className="nav-item-wrapper"><Link className={`nav-link label-1 disabled ${isActive('/events')}`} to="/events" role="button" data-bs-toggle="" aria-expanded="false" onClick={(e) => e.preventDefault()}>
-                  <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:bookmark' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Events</span></span>
-                    <span className="badge ms-auto badge bg-warning-subtle nav-link-badge ">Coming Soon</span>
-                  </div>
-                </Link>
-                </div>
+                
 
-                <div className="nav-item-wrapper">
-                  <Link className={`nav-link label-1 disabled ${isActive('/community')}`} to="/community" role="button" data-bs-toggle="" aria-expanded="false" onClick={(e) => e.preventDefault()}>
-                    <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:brand-stackshare' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Community</span></span>
-                      <span className="badge ms-auto badge bg-warning-subtle nav-link-badge ">Coming Soon</span>
-                    </div>
-                  </Link>
-                </div>
+                
               </li>
               <li className="nav-item">
 
@@ -189,8 +165,8 @@ const MasterLayout = ({ children }) => {
           <button className="btn navbar-toggler navbar-toggler-humburger-icon hover-bg-transparent" type="button" onClick={mobileToggle}><span className="navbar-toggle-icon"><span className="toggle-line"></span></span></button>
           <Link className="navbar-brand me-1 me-sm-3" to="/">
             <div className="d-flex align-items-center">
-              <img src={logo} alt="phoenix-light" id="logo-light" width="120" />
-              <img src={logoLight} alt="phoenix-dark" id="logo-dark" width="120" />
+              
+              <h1 id="logo-dark" className="text-white">Cv Builder</h1>
             </div>
           </Link>
         </div>
@@ -205,21 +181,9 @@ const MasterLayout = ({ children }) => {
               CV Builder</Link>
 
             </li>
-            <li className="nav-item dropdown">
-              <Link className="nav-link lh-1" to="/job-search" aria-haspopup="true">
-                <Icon icon='tabler:search' width={'16px'} height={'16px'} className="me-1" />
-                Job Search
-              </Link>
-            </li>
-            <li className="nav-item dropdown"><Link className="nav-link lh-1" to="/interview" aria-haspopup="true">
-              <Icon icon='tabler:brand-line' width={'16px'} height={'16px'} className="me-1" />
-              Interview Practise</Link>
-            </li>
-            <li className="nav-item dropdown"><Link className="nav-link lh-1" to="/application-tracker" aria-haspopup="true">
-              <Icon icon='tabler:calendar' width={'16px'} height={'16px'} className="me-1" />
-              Application Tracker</Link>
-
-            </li>
+            
+            
+            
           </ul>
         </div>
         <ul className="navbar-nav navbar-nav-icons flex-row">
@@ -368,7 +332,7 @@ const MasterLayout = ({ children }) => {
         <footer className="footer position-absolute" style={{ translate: 'none', rotate: 'none', scale: 'none', transform: 'translate(0px, 0px)', opacity: 1 }}>
           <div className="row g-0 justify-content-between align-items-center h-100">
             <div className="col-12 col-sm-auto text-center">
-              <p className="mb-0 mt-2 mt-sm-0 fs-9">2025 © MyPathfinder<span className="d-none d-sm-inline-block"></span></p>
+              <p className="mb-0 mt-2 mt-sm-0 fs-9">2025 © Cv Builder<span className="d-none d-sm-inline-block"></span></p>
             </div>
             <div className="col-12 col-sm-auto text-center">
               <p className="mb-0 text-body-tertiary text-opacity-85 fs-9">v1.23.0</p>

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import MasterLayout from "../../masterLayout/MasterLayout";
 import BreadCrum from "../../components/BreadCrum";
-import InterviewPractice from "../../components/Interview/InterviewPractice";
-import PracticeHistory from "../../components/Interview/PracticeHistory";
 import { useDispatch, useSelector } from "react-redux";
 import { setFilters } from "../../features/interview/interviewSlice";
 import { fetchInterviewHistory, fetchInterviewQuestions, getRandomQuestions, setParsedFeedback } from "../../features/interview/interviewSlice";
@@ -356,9 +354,7 @@ const Interview = () => {
                 {!showModal && (
                     <>
                         <BreadCrum title='Interview Simulator' subTitle='Practise with industry specific questions and real-time feedback.' />
-                        <InterviewPractice interviewQuestions={interviewQuestions} setShowModal={setShowModal} filters={filters} dispatch={dispatch} getRandomQuestionsInterview={getRandomQuestionsInterview} />
-                        <PracticeHistory history={history} handleViewDetails={handleViewDetails} />
-                    </>
+                         </>
                 )}
             </MasterLayout>
         </>

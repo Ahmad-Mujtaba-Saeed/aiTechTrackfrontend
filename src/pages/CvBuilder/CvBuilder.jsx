@@ -7,7 +7,7 @@ const CvBuilder = () => {
   return (
     <>
       <MasterLayout>
-        <BreadCrum title='Upload existing CV or build a new one with MyPathfinder' subTitle='Every role deserves a tailored application. We make it effortless.' />
+        <BreadCrum title='Upload existing CV or build a new one with Cv Builder' subTitle='Every role deserves a tailored application. We make it effortless.' />
         <BuildingComponents />
       </MasterLayout>
     </>
