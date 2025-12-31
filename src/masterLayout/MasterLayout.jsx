@@ -10,13 +10,13 @@ import logo from '../assets/images/MPF-logo.svg';
 import logoLight from '../assets/images/MPF-Logo-Light.svg';
 import avatar from '../assets/images/team/40x40/57.webp'
 import favicon from '../assets/images/MPF-180x180.png';
-import { useDispatch , useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/user/userSlice";
 
 const MasterLayout = ({ children }) => {
 
   const dispatch = useDispatch();
-  const {data} = useSelector((state) => state.user);
+  const { data } = useSelector((state) => state.user);
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
 
@@ -84,69 +84,59 @@ const MasterLayout = ({ children }) => {
           <div className="navbar-vertical-content">
             <ul className="navbar-nav flex-column" id="navbarVerticalNav">
               <li className="nav-item">
-
                 <p className="navbar-vertical-label">
                   Navigation
                 </p>
                 <hr className="navbar-vertical-line" />
-
                 <div className="nav-item-wrapper">
                   <Link className={`nav-link label-1 ${isActive('/')}`} to="/" role="button" data-bs-toggle="" aria-expanded="false">
                     <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:chart-pie-2' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text ">Dashboard</span></span>
                     </div>
                   </Link>
                 </div>
-
                 <div className="nav-item-wrapper"><Link className={`nav-link label-1 ${isActive('/cv-builder')}`} to="/cv-builder" role="button" data-bs-toggle="" aria-expanded="false">
                   <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:notes' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">CV Builder</span></span>
                   </div>
                 </Link>
                 </div>
-
-
-                
-
-                
-
-                
-
-                
               </li>
               <li className="nav-item">
-
+                <p className="navbar-vertical-label">
+                  Admin
+                </p>
+                <hr className="navbar-vertical-line" />
+                <div className="nav-item-wrapper">
+                  <Link className={`nav-link label-1 ${isActive('/access-control')}`} to="/access-control" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:fingerprint-scan' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text ">Access Control</span></span>
+                    </div>
+                  </Link>
+                </div>
+                <div className="nav-item-wrapper">
+                  <Link className={`nav-link label-1 ${isActive('/billing')}`} to="/billing" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:notes' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Billing</span></span>
+                    </div>
+                  </Link>
+                </div>
+                <div className="nav-item-wrapper">
+                  <Link className={`nav-link label-1 ${isActive('/core-settings')}`} to="/core-settings" role="button" data-bs-toggle="" aria-expanded="false">
+                    <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:settings' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Core Settings</span></span>
+                    </div>
+                  </Link>
+                </div>
+              </li>
+              <li className="nav-item">
                 <p className="navbar-vertical-label">Support</p>
                 <hr className="navbar-vertical-line" />
-
-                {/* <div className="nav-item-wrapper"><Link className={`nav-link label-1 ${isActive('/get-started')}`} to="/get-started" role="button" data-bs-toggle="" aria-expanded="false">
-                  <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:brand-safari' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Getting Started</span></span>
-                  </div>
-                </Link>
-                </div> */}
-
                 <div className="nav-item-wrapper"><Link className={`nav-link label-1 ${isActive('/career-advice')}`} to="/career-advice" role="button" data-bs-toggle="" aria-expanded="false">
                   <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:help' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Careers Advice</span></span>
                   </div>
                 </Link>
                 </div>
-{/* 
-                <div className="nav-item-wrapper"><Link className={`nav-link label-1 ${isActive('/support')}`} to="/support" role="button" data-bs-toggle="" aria-expanded="false">
-                  <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:world' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Support</span></span>
-                  </div>
-                </Link>
-                </div> */}
-
                 <div className="nav-item-wrapper"><Link className={`nav-link label-1 ${isActive('/upgrade-subscription')}`} to="/upgrade-subscription" role="button" data-bs-toggle="" aria-expanded="false">
                   <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:tag' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Payment Plans</span></span>
                   </div>
                 </Link>
                 </div>
-
-                {/* <div className="nav-item-wrapper"><Link className={`nav-link label-1 ${isActive('/notification')}`} to="/notification" role="button" data-bs-toggle="" aria-expanded="false">
-                  <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:bell' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Notifications</span></span>
-                  </div>
-                </Link>
-                </div> */}
-
                 <div className="nav-item-wrapper"><Link className={`nav-link label-1`} to="" role="button" data-bs-toggle="" aria-expanded="false" onClick={() => dispatch(logout())}>
                   <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:logout' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Sign Out</span></span>
                   </div>
@@ -165,7 +155,7 @@ const MasterLayout = ({ children }) => {
           <button className="btn navbar-toggler navbar-toggler-humburger-icon hover-bg-transparent" type="button" onClick={mobileToggle}><span className="navbar-toggle-icon"><span className="toggle-line"></span></span></button>
           <Link className="navbar-brand me-1 me-sm-3" to="/">
             <div className="d-flex align-items-center">
-              
+
               <h1 id="logo-dark" className="text-white">Cv Builder</h1>
             </div>
           </Link>
@@ -179,11 +169,7 @@ const MasterLayout = ({ children }) => {
             <li className="nav-item dropdown"><Link className="nav-link lh-1" to="/cv-builder" aria-haspopup="true">
               <Icon icon='tabler:notes' width={'16px'} height={'16px'} className="me-1" />
               CV Builder</Link>
-
             </li>
-            
-            
-            
           </ul>
         </div>
         <ul className="navbar-nav navbar-nav-icons flex-row">
@@ -196,104 +182,7 @@ const MasterLayout = ({ children }) => {
               )}
             </div>
           </li>
-          {/* <li className="nav-item">
-            <Link className="nav-link" to="#" data-bs-toggle="modal" data-bs-target="#searchBoxModal">
-              <span className="d-block" style={{ height: '20px', width: '20px' }}>
-                <Icon icon='tabler:search' width={'19px'} height={'19px'} />
-              </span>
-            </Link>
-          </li>
-          <li className="nav-item dropdown">
-            <Link className="nav-link" to="#" style={{ minWidth: '2.25rem' }} role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-bs-auto-close="outside"><span className="d-block" style={{ height: '20px', width: '20px' }}><Icon icon='tabler:bell' width={'20px'} height={'20px'} /></span></Link>
 
-            <div className="dropdown-menu dropdown-menu-end notification-dropdown-menu py-0 shadow border navbar-dropdown-caret" id="navbarDropdownNotfication" aria-labelledby="navbarDropdownNotfication">
-              <div className="card position-relative border-0">
-                <div className="card-header p-2">
-                  <div className="d-flex justify-content-between">
-                    <h5 className="text-body-emphasis mb-0">Notifications</h5>
-                    <button className="btn btn-link p-0 fs-9 fw-normal" type="button">Mark all as read</button>
-                  </div>
-                </div>
-                <div className="card-body p-0">
-                  <div className="scrollbar-overlay" style={{ height: '27rem' }}>
-                    <div className="px-2 px-sm-3 py-3 notification-card position-relative read border-bottom">
-                      <div className="d-flex align-items-center justify-content-between position-relative">
-                        <div className="d-flex">
-                          <div className="avatar avatar-m status-online me-3"><img className="rounded-circle" src="img/team/40x40/30.webp" alt="" />
-                          </div>
-                          <div className="flex-1 me-sm-3">
-                            <h4 className="fs-9 text-body-emphasis">MyPathfinder</h4>
-                            <p className="fs-9 text-body-highlight mb-2 mb-sm-3 fw-normal"><span className='me-1 fs-10'>💬</span>Sent you a message!<span className="ms-2 text-body-quaternary text-opacity-75 fw-bold fs-10">10m</span></p>
-                            <p className="text-body-secondary fs-9 mb-0"><span className="me-1 fas fa-clock"></span><span className="fw-bold">10:41 AM </span>July 7,2025</p>
-                          </div>
-                        </div>
-                        <div className="dropdown notification-dropdown">
-                          <button className="btn fs-10 btn-sm dropdown-toggle dropdown-caret-none transition-none" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span className="fas fa-ellipsis-h fs-10 text-body"></span></button>
-                          <div className="dropdown-menu py-2"><Link className="dropdown-item" to="#!">Mark as unread</Link></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="px-2 px-sm-3 py-3 notification-card position-relative unread border-bottom">
-                      <div className="d-flex align-items-center justify-content-between position-relative">
-                        <div className="d-flex">
-                          <div className="avatar avatar-m status-online me-3">
-                            <img className="rounded-circle" src="img/team/40x40/30.webp" alt="" />
-                          </div>
-                          <div className="flex-1 me-sm-3">
-                            <h4 className="fs-9 text-body-emphasis">MyPathfinder</h4>
-                            <p className="fs-9 text-body-highlight mb-2 mb-sm-3 fw-normal"><span className='me-1 fs-10'>📅</span>Created an event.<span className="ms-2 text-body-quaternary text-opacity-75 fw-bold fs-10">20m</span></p>
-                            <p className="text-body-secondary fs-9 mb-0"><span className="me-1 fas fa-clock"></span><span className="fw-bold">10:20 AM </span>August 2,2025</p>
-                          </div>
-                        </div>
-                        <div className="dropdown notification-dropdown">
-                          <button className="btn fs-10 btn-sm dropdown-toggle dropdown-caret-none transition-none" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span className="fas fa-ellipsis-h fs-10 text-body"></span></button>
-                          <div className="dropdown-menu py-2"><Link className="dropdown-item" to="#!">Mark as unread</Link></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="px-2 px-sm-3 py-3 notification-card position-relative read border-bottom">
-                      <div className="d-flex align-items-center justify-content-between position-relative">
-                        <div className="d-flex">
-                          <div className="avatar avatar-m status-online me-3"><img className="rounded-circle" src="img/team/40x40/30.webp" alt="" />
-                          </div>
-                          <div className="flex-1 me-sm-3">
-                            <h4 className="fs-9 text-body-emphasis">MyPathfinder</h4>
-                            <p className="fs-9 text-body-highlight mb-2 mb-sm-3 fw-normal"><span className='me-1 fs-10'>💬</span>Sent you a message!<span className="ms-2 text-body-quaternary text-opacity-75 fw-bold fs-10">10m</span></p>
-                            <p className="text-body-secondary fs-9 mb-0"><span className="me-1 fas fa-clock"></span><span className="fw-bold">10:41 AM </span>July 7,2025</p>
-                          </div>
-                        </div>
-                        <div className="dropdown notification-dropdown">
-                          <button className="btn fs-10 btn-sm dropdown-toggle dropdown-caret-none transition-none" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span className="fas fa-ellipsis-h fs-10 text-body"></span></button>
-                          <div className="dropdown-menu py-2"><Link className="dropdown-item" to="#!">Mark as unread</Link></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="px-2 px-sm-3 py-3 notification-card position-relative unread border-bottom">
-                      <div className="d-flex align-items-center justify-content-between position-relative">
-                        <div className="d-flex">
-                          <div className="avatar avatar-m status-online me-3">
-                            <img className="rounded-circle" src="img/team/40x40/30.webp" alt="" />
-                          </div>
-                          <div className="flex-1 me-sm-3">
-                            <h4 className="fs-9 text-body-emphasis">MyPathfinder</h4>
-                            <p className="fs-9 text-body-highlight mb-2 mb-sm-3 fw-normal"><span className='me-1 fs-10'>📅</span>Created an event.<span className="ms-2 text-body-quaternary text-opacity-75 fw-bold fs-10">20m</span></p>
-                            <p className="text-body-secondary fs-9 mb-0"><span className="me-1 fas fa-clock"></span><span className="fw-bold">10:20 AM </span>August 2,2025</p>
-                          </div>
-                        </div>
-                        <div className="dropdown notification-dropdown">
-                          <button className="btn fs-10 btn-sm dropdown-toggle dropdown-caret-none transition-none" type="button" data-bs-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false" data-bs-reference="parent"><span className="fas fa-ellipsis-h fs-10 text-body"></span></button>
-                          <div className="dropdown-menu py-2"><Link className="dropdown-item" to="#!">Mark as unread</Link></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="card-footer p-0 border-top border-translucent border-0">
-                  <div className="my-2 text-center fw-bold fs-10 text-body-tertiary text-opacity-85"><Link className="fw-bolder" to="#">Notification history</Link></div>
-                </div>
-              </div>
-            </div>
-          </li> */}
           <li className="nav-item dropdown"><Link className="nav-link lh-1 pe-0" id="navbarDropdownUser" to="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
             <div className="avatar avatar-l ">
               <img className="rounded-circle " src={data?.profile_img_url || favicon} alt="" />
@@ -314,7 +203,6 @@ const MasterLayout = ({ children }) => {
                     <li className="nav-item"><Link className="nav-link px-3 d-block" to="/profile"> <span className="me-2 align-bottom" data-feather="user"></span><span>Profile</span></Link></li>
                     <li className="nav-item"><Link className="nav-link px-3 d-block" to="/"><span className="me-2 align-bottom" data-feather="pie-chart"></span>Dashboard</Link></li>
                     <li className="nav-item"><Link className="nav-link px-3 d-block" to="/profile?settings=true"> <span className="me-2 align-bottom" data-feather="settings"></span>Settings &amp; Privacy </Link></li>
-                    {/* <li className="nav-item"><Link className="nav-link px-3 d-block" to="#"> <span className="me-2 align-bottom" data-feather="help-circle"></span>Help Center</Link></li> */}
                   </ul>
                 </div>
                 <div className=" p-0">

@@ -18,6 +18,7 @@
     "alertifyjs": "^1.14.0",
     "axios": "^1.11.0",
     "bootstrap": "^5.3.8",
+    "datatables": "^1.10.18",
     "echarts": "^5.6.0",
     "feather-icons": "^4.29.2",
     "firebase": "^12.4.0",

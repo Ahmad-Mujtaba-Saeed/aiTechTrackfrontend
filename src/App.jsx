@@ -42,6 +42,8 @@ import { login, getUser, logout } from "./features/user/userSlice";
 import SubscribePlan from "./pages/Subscription/SubscribePlan";
 import UpgradeSubscribePlan from "./pages/Subscription/UpgradeSubscribePlan";
 
+import AccessControl from "./pages/AccessControl/AccessControl";
+
 import Career from "./pages/CareerAdvice";
 import SignOut from "./pages/Auth/SignOut";
 
@@ -94,6 +96,8 @@ const protectedRoutes = [
   { path: '/support', element: <Support /> },
   { path: '/profile-settings', element: <ProfileSetting /> },
   { path: '/profile', element: <ProfilePage /> },
+
+  { path: '/access-control', element: <AccessControl /> },
 ];
 
 
