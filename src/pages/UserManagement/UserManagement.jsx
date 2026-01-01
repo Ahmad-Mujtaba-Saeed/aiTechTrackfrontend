@@ -2,15 +2,13 @@ import React from "react";
 import MasterLayout from "../../masterLayout/MasterLayout";
 import BreadCrum from "../../components/BreadCrum";
 
-import Permissionss from "../../components/AccessControlComponents/Permissions";
-import Roles from "../../components/AccessControlComponents/Roles";
+import Users from "../../components/UserManagementComponent/Users";
 
 const AccessControl = () => {
     return (
         <MasterLayout>
-            <BreadCrum title='Access Control' subTitle='' />
-            <Permissionss />
-            <Roles />
+            <BreadCrum title='User Management' subTitle='' />
+            <Users />
         </MasterLayout>
     );
 };

@@ -43,6 +43,7 @@ import SubscribePlan from "./pages/Subscription/SubscribePlan";
 import UpgradeSubscribePlan from "./pages/Subscription/UpgradeSubscribePlan";
 
 import AccessControl from "./pages/AccessControl/AccessControl";
+import UserManagement from "./pages/UserManagement/UserManagement";
 
 import Career from "./pages/CareerAdvice";
 import SignOut from "./pages/Auth/SignOut";
@@ -98,6 +99,7 @@ const protectedRoutes = [
   { path: '/profile', element: <ProfilePage /> },
 
   { path: '/access-control', element: <AccessControl /> },
+  { path: '/manage-users', element: <UserManagement /> },
 ];
 
 

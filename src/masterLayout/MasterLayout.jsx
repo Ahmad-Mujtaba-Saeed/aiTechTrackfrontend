@@ -18,6 +18,10 @@ const MasterLayout = ({ children }) => {
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.user);
 
+  const { slug } = data.roles[0].slug ? data.roles[0] : { slug: 'user' };
+
+  console.log("Role Slug:", slug);
+
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
 
   const [collapsed, setCollapsed] = useState(() => {
@@ -100,30 +104,38 @@ const MasterLayout = ({ children }) => {
                 </Link>
                 </div>
               </li>
-              <li className="nav-item">
-                <p className="navbar-vertical-label">
-                  Admin
-                </p>
-                <hr className="navbar-vertical-line" />
-                <div className="nav-item-wrapper">
-                  <Link className={`nav-link label-1 ${isActive('/access-control')}`} to="/access-control" role="button" data-bs-toggle="" aria-expanded="false">
-                    <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:fingerprint-scan' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text ">Access Control</span></span>
-                    </div>
-                  </Link>
-                </div>
-                <div className="nav-item-wrapper">
-                  <Link className={`nav-link label-1 ${isActive('/billing')}`} to="/billing" role="button" data-bs-toggle="" aria-expanded="false">
-                    <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:notes' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Billing</span></span>
-                    </div>
-                  </Link>
-                </div>
-                <div className="nav-item-wrapper">
-                  <Link className={`nav-link label-1 ${isActive('/core-settings')}`} to="/core-settings" role="button" data-bs-toggle="" aria-expanded="false">
-                    <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:settings' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Core Settings</span></span>
-                    </div>
-                  </Link>
-                </div>
-              </li>
+              {slug === 'admin' && (
+                <li className="nav-item">
+                  <p className="navbar-vertical-label">
+                    Admin
+                  </p>
+                  <hr className="navbar-vertical-line" />
+                  <div className="nav-item-wrapper">
+                    <Link className={`nav-link label-1 ${isActive('/access-control')}`} to="/access-control" role="button" data-bs-toggle="" aria-expanded="false">
+                      <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:fingerprint-scan' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text ">Access Control</span></span>
+                      </div>
+                    </Link>
+                  </div>
+                  <div className="nav-item-wrapper">
+                    <Link className={`nav-link label-1 ${isActive('/manage-users')}`} to="/manage-users" role="button" data-bs-toggle="" aria-expanded="false">
+                      <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:users' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Manage Users</span></span>
+                      </div>
+                    </Link>
+                  </div>
+                  <div className="nav-item-wrapper">
+                    <Link className={`nav-link label-1 ${isActive('/billing')}`} to="/billing" role="button" data-bs-toggle="" aria-expanded="false">
+                      <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:notes' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Billing</span></span>
+                      </div>
+                    </Link>
+                  </div>
+                  <div className="nav-item-wrapper">
+                    <Link className={`nav-link label-1 ${isActive('/core-settings')}`} to="/core-settings" role="button" data-bs-toggle="" aria-expanded="false">
+                      <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:settings' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Core Settings</span></span>
+                      </div>
+                    </Link>
+                  </div>
+                </li>
+              )}
               <li className="nav-item">
                 <p className="navbar-vertical-label">Support</p>
                 <hr className="navbar-vertical-line" />

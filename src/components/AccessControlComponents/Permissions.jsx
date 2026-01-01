@@ -36,8 +36,6 @@ const Permissions = () => {
 
             const response = await instance.get('/access-control/permissions');
 
-            console.log('Result-1:', response.data);
-
             // Check if response.data is valid
             if (!response.data) {
                 throw new Error('No data received from server');
@@ -55,7 +53,7 @@ const Permissions = () => {
                 permissionsData = Object.values(response.data);
             }
 
-            console.log('Processed permissions data:', permissionsData);
+            // console.log('Processed permissions data:', permissionsData);
 
             if (!Array.isArray(permissionsData)) {
                 throw new Error('Invalid data format received from server');
