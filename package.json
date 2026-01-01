@@ -16,7 +16,7 @@
     "@stripe/react-stripe-js": "^5.2.0",
     "@stripe/stripe-js": "^8.0.0",
     "alertifyjs": "^1.14.0",
-    "axios": "^1.11.0",
+    "axios": "^1.13.2",
     "bootstrap": "^5.3.8",
     "datatables": "^1.10.18",
     "echarts": "^5.6.0",
@@ -43,7 +43,7 @@
     "react-spinners": "^0.17.0",
     "react-toastify": "^11.0.5",
     "redux-persist": "^6.0.0",
-    "sweetalert2": "^11.23.0",
+    "sweetalert2": "^11.26.17",
     "yup": "^1.7.0"
   },
   "devDependencies": {

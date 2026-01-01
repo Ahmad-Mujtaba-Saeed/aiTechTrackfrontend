@@ -609,3 +609,27 @@ a:hover {
 .ck.ck-balloon-panel.ck-powered-by-balloon .ck.ck-powered-by {
     display: none !important;
 }
+
+.bi-arrow-clockwise.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Modal backdrop styles */
+.modal {
+    backdrop-filter: blur(2px);
+}
+
+.btn-danger{
+    background-color: red;
+    color: white;
+}
