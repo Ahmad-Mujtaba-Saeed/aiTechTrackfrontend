@@ -6,10 +6,10 @@ import { Button } from 'react-bootstrap';
 // import { useAuth } from "../context/AuthContext";
 
 
-import logo from '../assets/images/MPF-logo.svg';
-import logoLight from '../assets/images/MPF-Logo-Light.svg';
+import logo from '../assets/images/CV-Builder.svg';
+import logoLight from '../assets/images/CV-Builder.svg';
 import avatar from '../assets/images/team/40x40/57.webp'
-import favicon from '../assets/images/MPF-180x180.png';
+import favicon from '../assets/demo_profile.avif';
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/user/userSlice";
 
@@ -81,7 +81,7 @@ const MasterLayout = ({ children }) => {
   };
 
   return (
-    <main className={`main ${collapsed ? "navbar-vertical-collapsed" : ""}`} id="top" data-bs-theme={theme}>
+    <main className={`main ${collapsed ? "navbar-vertical-collapsed" : ""} `} id="top" data-bs-theme={theme}>
       <nav className={`navbar navbar-vertical ${isMobile ? "navbar-expand" : "navbar-expand active"} navbar-expand-lg mobile-expand bg-white navbar-light dark__bg-dark dark__navbar-dark`}>
         <div className="collapse navbar-collapse" id="navbarVerticalCollapse">
 
@@ -167,13 +167,133 @@ const MasterLayout = ({ children }) => {
           <button className="btn navbar-toggler navbar-toggler-humburger-icon hover-bg-transparent" type="button" onClick={mobileToggle}><span className="navbar-toggle-icon"><span className="toggle-line"></span></span></button>
           <Link className="navbar-brand me-1 me-sm-3" to="/">
             <div className="d-flex align-items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 140" width={250}>
 
-              <h1 id="logo-dark" className="text-white">Cv Builder</h1>
+                <defs>
+
+                  <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style={{stopColor:'#6366f1', stopOpacity:1}} />
+                    <stop offset="50%" style={{stopColor:'#8b5cf6', stopOpacity:1}} />
+                    <stop offset="100%" style={{stopColor:'#d946ef', stopOpacity:1}} />
+                  </linearGradient>
+
+
+                  <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style={{stopColor:'#fbbf24', stopOpacity:1}} />
+                    <stop offset="100%" style={{stopColor:'#f59e0b', stopOpacity:1}} />
+                  </linearGradient>
+
+
+                  <filter id="glow">
+                    <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                    <feMerge>
+                      <feMergeNode in="coloredBlur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+
+                  <filter id="softGlow">
+                    <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+                    <feMerge>
+                      <feMergeNode in="coloredBlur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+
+                  <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.15" />
+                  </filter>
+                </defs>
+
+
+                <circle cx="65" cy="70" r="55" fill="#5a5a5a" opacity="0.3" />
+
+
+                <g transform="translate(25, 25)" filter="url(#shadow)">
+
+                  <rect x="15" y="10" width="70" height="90" rx="8" fill="#5a5a5a" />
+
+                  <rect x="20" y="15" width="60" height="80" rx="6" fill="white" opacity="0.95" />
+
+                  <circle cx="50" cy="30" r="8" fill="#5a5a5a" opacity="0.5" />
+                  <circle cx="50" cy="28" r="3" fill="#fff" />
+                  <path d="M 44 33 Q 44 30, 50 30 T 56 33" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" />
+
+                  <rect x="28" y="45" width="44" height="3" rx="1.5" fill="#5a5a5a" opacity="0.3" />
+                  <rect x="28" y="51" width="38" height="2" rx="1" fill="#5a5a5a" opacity="0.15" />
+                  <rect x="28" y="56" width="42" height="2" rx="1" fill="#5a5a5a" opacity="0.15" />
+
+                  <rect x="28" y="64" width="36" height="3" rx="1.5" fill="#5a5a5a" opacity="0.3" />
+                  <rect x="28" y="70" width="40" height="2" rx="1" fill="#5a5a5a" opacity="0.15" />
+                  <rect x="28" y="75" width="34" height="2" rx="1" fill="#5a5a5a" opacity="0.15" />
+
+                  <rect x="28" y="83" width="32" height="3" rx="1.5" fill="#5a5a5a" opacity="0.3" />
+
+                  <g transform="translate(75, 80)">
+                    <circle cx="0" cy="0" r="12" fill="url(#accentGradient)" filter="url(#softGlow)" />
+                    <path d="M -5 -1 L -2 3 L 5 -4" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                  </g>
+                </g>
+
+                <g transform="translate(120, 0)">
+                  <text x="10" y="94" font-family="'Google Sans Flex', cursive, 'Segoe UI', Arial, sans-serif" font-size="60" font-weight="500" letter-spacing="0">
+                    <tspan fill="#5a5a5a">CV</tspan>
+                    <tspan fill="#fff" dx="0">Builder</tspan>
+                  </text>
+                </g>
+
+                <g transform="translate(420, 30)" opacity="0.9">
+                  <path d="M 0,-8 L 2,-2 L 8,0 L 2,2 L 0,8 L -2,2 L -8,0 L -2,-2 Z" fill="url(#accentGradient)" filter="url(#glow)">
+                    <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="8s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite" />
+                  </path>
+                </g>
+
+                <g transform="translate(450, 70)" opacity="0.85">
+                  <path d="M 0,-6 L 1.5,-1.5 L 6,0 L 1.5,1.5 L 0,6 L -1.5,1.5 L -6,0 L -1.5,-1.5 Z" fill="#8b5cf6" filter="url(#glow)">
+                    <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="6s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.5;1;0.5" dur="3s" repeatCount="indefinite" />
+                  </path>
+                </g>
+
+                <g transform="translate(440, 105)" opacity="0.8">
+                  <path d="M 0,-4 L 1,-1 L 4,0 L 1,1 L 0,4 L -1,1 L -4,0 L -1,-1 Z" fill="#d946ef" filter="url(#softGlow)">
+                    <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="5s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.4;0.9;0.4" dur="2.5s" repeatCount="indefinite" />
+                  </path>
+                </g>
+
+
+                <g transform="translate(115, 25)" opacity="0.7">
+                  <path d="M 0,-3 L 0.7,-0.7 L 3,0 L 0.7,0.7 L 0,3 L -0.7,0.7 L -3,0 L -0.7,-0.7 Z" fill="#fbbf24" filter="url(#softGlow)">
+                    <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="10s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.3;0.8;0.3" dur="4s" repeatCount="indefinite" />
+                  </path>
+                </g>
+
+                <g transform="translate(290, 65)" opacity="0.6">
+                  <circle cx="0" cy="0" r="2" fill="#fbbf24" filter="url(#softGlow)">
+                    <animate attributeName="r" values="1.5;3;1.5" dur="3s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite" />
+                  </circle>
+                </g>
+
+                <g opacity="0.4">
+                  <circle cx="380" cy="50" r="1.5" fill="#8b5cf6">
+                    <animate attributeName="cy" values="50;45;50" dur="4s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.2;0.6;0.2" dur="4s" repeatCount="indefinite" />
+                  </circle>
+                  <circle cx="410" cy="90" r="1.5" fill="#d946ef">
+                    <animate attributeName="cy" values="90;85;90" dur="5s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" values="0.2;0.6;0.2" dur="5s" repeatCount="indefinite" />
+                  </circle>
+                </g>
+              </svg>
             </div>
           </Link>
         </div>
         <div className="collapse navbar-collapse navbar-top-collapse order-1 order-lg-0 justify-content-center" id="navbarTopCollapse">
-          <ul className="navbar-nav navbar-nav-top" data-dropdown-on-hover="data-dropdown-on-hover">
+          {/* <ul className="navbar-nav navbar-nav-top" data-dropdown-on-hover="data-dropdown-on-hover">
             <li className="nav-item dropdown"><Link className="nav-link lh-1" to="/" aria-haspopup="true">
               <Icon icon='tabler:chart-pie-2' width={'16px'} height={'16px'} className="me-1" />
               Dashboard</Link>
@@ -182,10 +302,10 @@ const MasterLayout = ({ children }) => {
               <Icon icon='tabler:notes' width={'16px'} height={'16px'} className="me-1" />
               CV Builder</Link>
             </li>
-          </ul>
+          </ul> */}
         </div>
         <ul className="navbar-nav navbar-nav-icons flex-row">
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <div className="theme-control-toggle fa-icon-wait px-2">
               {theme == 'dark' ? (
                 <label className="mb-0 theme-control-toggle-label theme-control-toggle-light" onClick={toggleTheme} htmlFor="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Switch theme" style={{ height: '32px', width: '32px' }}><Icon icon='tabler:moon' width={'18px'} height={'18px'} /></label>
@@ -193,7 +313,7 @@ const MasterLayout = ({ children }) => {
                 <label className="mb-0 theme-control-toggle-label theme-control-toggle-dark" onClick={toggleTheme} htmlFor="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Switch theme" style={{ height: '32px', width: '32px' }}><Icon icon='tabler:sun-high' width={'18px'} height={'18px'} /></label>
               )}
             </div>
-          </li>
+          </li> */}
 
           <li className="nav-item dropdown"><Link className="nav-link lh-1 pe-0" id="navbarDropdownUser" to="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
             <div className="avatar avatar-l ">

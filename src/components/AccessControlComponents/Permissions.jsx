@@ -474,7 +474,7 @@ const Permissions = () => {
                         onClick={() => {
                             console.log('Current permissions state:', permissions);
                             console.log('Filtered permissions state:', filteredPermissions);
-                            console.log('Access token:', localStorage.getItem('access_token'));
+                            // console.log('Access token:', localStorage.getItem('access_token'));
                         }}
                     >
                         <Icon icon="tabler:bug" width={18} height={18} />

@@ -3,6 +3,19 @@
     src: url(./GoogleSansFlex.ttf);
 }
 
+
+/* 
+
+
+black : #313131
+border: #4d4d4d
+
+
+*/
+
+
+
+
 body {
     background-color: #f5f7fa !important;
     font-family: 'Google Sans Flex', "Inter", sans-serif !important;
@@ -60,7 +73,7 @@ a:hover {
 [data-bs-theme=dark] .navbar-vertical .navbar-vertical-footer,
 [data-bs-theme=dark] .dropdown-profile .card,
 [data-bs-theme=dark] .navbar .dropdown-menu.navbar-dropdown-caret:after {
-    background: #000 !important;
+    background: #2c2c2c !important;
     /* background: linear-gradient(135deg, #1D0948, #000, #6B2ECB); */
     background-size: 300% 300%;
     animation: gradientShift 8s ease infinite;
@@ -99,7 +112,7 @@ a:hover {
 }
 
 [data-bs-theme=dark] .navbar-top {
-    border-bottom: 1px solid #000 !important;
+    border-bottom: 1px solid #4d4d4d !important;
 }
 
 .navbar-vertical .navbar-vertical-content .navbar-nav .nav-link:hover {
@@ -629,7 +642,31 @@ a:hover {
     backdrop-filter: blur(2px);
 }
 
-.btn-danger{
+.btn-danger {
     background-color: red;
     color: white;
+}
+
+.Toastify__progress-bar--info {
+    background: #0052ff !important;
+}
+
+.Toastify__toast-theme--light.Toastify__toast--info .Toastify__toast-icon svg {
+    fill: #006cff !important;
+}
+
+.Toastify__progress-bar--error {
+    background: #d91600 !important;
+}
+
+.Toastify__toast-theme--light.Toastify__toast--error .Toastify__toast-icon svg {
+    fill: #dd1600 !important;
+}
+
+.Toastify__progress-bar--warning {
+    background: #ffa700 !important;
+}
+
+.Toastify__toast-theme--light.Toastify__toast--warning .Toastify__toast-icon svg {
+    fill: #ffb528 !important;
 }
