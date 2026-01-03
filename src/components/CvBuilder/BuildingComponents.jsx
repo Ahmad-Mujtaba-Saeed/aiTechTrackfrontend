@@ -340,7 +340,7 @@ export default function BuildingComponents() {
     const newName = prompt('Enter new name for CV:', title);
     if (newName && newName.trim() && newName !== title) {
       try {
-        const updateResult = await dispatch(updateResumeName({id: resumeId, name: newName})).unwrap();
+        const updateResult = await dispatch(updateResumeName({ id: resumeId, name: newName })).unwrap();
         console.log(updateResult);
         if (updateResult?.data) {
           dispatch(getrecentCvsCreated({}));
@@ -397,15 +397,14 @@ export default function BuildingComponents() {
     <>
       <div className="row mb-3 g-3 feature-cards">
         {/* Upload Existing CV Card */}
-        <div className="col-12 col-xl-3">
-          <Card className="border h-100 w-100 overflow-hidden position-relative">
-            <Card.Body className="px-6 py-9 position-relative text-center" style={{ height: "300px" }}>
+        <div className="col-12 col-md-6 col-xl-3">
+          <Card className="card h-100 w-100 overflow-hidden position-relative">
+            <Card.Body className="card-body px-4 position-relative">
               <div
-                className="icon-item icon-item-md rounded-1 shadow-none mx-auto"
-                style={{ backgroundColor: '#00000033' }}>
-                <FiFile size={20} style={{ color: '#000000' }} />
+                className="icon-item icon-item-md rounded-1 shadow-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-cloud-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 18.004h-5.343c-2.572 -.004 -4.657 -2.011 -4.657 -4.487c0 -2.475 2.085 -4.482 4.657 -4.482c.393 -1.762 1.794 -3.2 3.675 -3.773c1.88 -.572 3.956 -.193 5.444 1c1.488 1.19 2.162 3.007 1.77 4.769h.99c1.38 0 2.57 .811 3.128 1.986" /><path d="M19 22v-6" /><path d="M22 19l-3 -3l-3 3" /></svg>
               </div>
-              <h4 className="my-3">Upload an existing CV</h4>
+              <h3 className="mt-3">Upload an existing CV</h3>
               <p className="fs-8">
                 Upload your existing CV and proceed with keyword optimisation for ATS compatibility.
               </p>
@@ -418,45 +417,47 @@ export default function BuildingComponents() {
                 onChange={handleFileSelect}
                 accept=".pdf,.doc,.docx,.rtf,.odt"
               />
-              <label
-                htmlFor="cvUpload"
-                className={`btn btn-primary w-100 stretched-link ${emptyResumeLoader || loading || AiCvLoader ? 'disabled' : ''
-                  }`}
-                style={{
-                  pointerEvents: emptyResumeLoader || loading || AiCvLoader ? 'none' : 'auto',
-                  opacity: emptyResumeLoader || loading || AiCvLoader ? 0.65 : 1
-                }}
-              >
-                {loading ? (
-                  <><FiLoader size={14} className="me-2 animate-spin" />Launching...</>
-                ) : "Upload Now"}
-              </label>
+              <div className="d-flex justify-content-end">
+                <label
+                  htmlFor="cvUpload"
+                  className={`btn btn-primary ${emptyResumeLoader || loading || AiCvLoader ? 'disabled' : ''
+                    }`}
+                  style={{
+                    pointerEvents: emptyResumeLoader || loading || AiCvLoader ? 'none' : 'auto',
+                    opacity: emptyResumeLoader || loading || AiCvLoader ? 0.65 : 1
+                  }}
+                >
+                  {loading ? (
+                    <><FiLoader size={14} className="me-2 animate-spin" />Launching...</>
+                  ) : "Upload Now"}
+                </label>
+              </div>
             </Card.Body>
           </Card>
         </div>
 
         {/* Build from Scratch Card */}
-        <div className="col-12 col-xl-3">
-          <Card className="border h-100 w-100 overflow-hidden position-relative">
-            <Card.Body className="px-6 py-9 position-relative text-center">
-              <div
-                className="icon-item icon-item-md rounded-1 shadow-none mx-auto"
-                style={{ backgroundColor: '#00000033' }}>
-                <svg width={20} className="svg-inline--fa fa-file-pen fs-7" style={{ color: '#000000' }} aria-hidden="true" focusable="false" data-prefix="fas" data-icon="file-pen" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg=""><path fill="currentColor" d="M0 64C0 28.7 28.7 0 64 0L224 0l0 128c0 17.7 14.3 32 32 32l128 0 0 125.7-86.8 86.8c-10.3 10.3-17.5 23.1-21 37.2l-18.7 74.9c-2.3 9.2-1.8 18.8 1.3 27.5L64 512c-35.3 0-64-28.7-64-64L0 64zm384 64l-128 0L256 0 384 128zM549.8 235.7l14.4 14.4c15.6 15.6 15.6 40.9 0 56.6l-29.4 29.4-71-71 29.4-29.4c15.6-15.6 40.9-15.6 56.6 0zM311.9 417L441.1 287.8l71 71L382.9 487.9c-4.1 4.1-9.2 7-14.9 8.4l-60.1 15c-5.5 1.4-11.2-.2-15.2-4.2s-5.6-9.7-4.2-15.2l15-60.1c1.4-5.6 4.3-10.8 8.4-14.9z"></path></svg>
+        <div className="col-12 col-md-6 col-xl-3">
+          <Card className="card h-100 w-100 overflow-hidden position-relative">
+            <Card.Body className="card-body px-4 position-relative">
+              <div className="icon-item icon-item-md rounded-1 shadow-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-edit"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415" /><path d="M16 5l3 3" /></svg>
               </div>
-              <h4 className="my-3">Build from scratch</h4>
+              <h3 className="mt-3">Build from scratch</h3>
               <p className="fs-8">
                 Build your CV from scratch, using clean, modern templates designed for recruiters.
               </p>
-              <Button
-                className="stretched-link btn btn-primary w-100"
-                onClick={handleManualCV}
-                disabled={emptyResumeLoader || loading || AiCvLoader}
-              >
-                {emptyResumeLoader ? (
-                  <><FiLoader size={14} className="me-2 animate-spin" />Launching...</>
-                ) : 'Launch CV Builder'}
-              </Button>
+              <div className="d-flex justify-content-end">
+                <Button
+                  className="btn btn-primary"
+                  onClick={handleManualCV}
+                  disabled={emptyResumeLoader || loading || AiCvLoader}
+                >
+                  {emptyResumeLoader ? (
+                    <><FiLoader size={14} className="me-2 animate-spin" />Launching...</>
+                  ) : 'Launch CV Builder'}
+                </Button>
+              </div>
             </Card.Body>
           </Card>
         </div>
@@ -475,16 +476,16 @@ export default function BuildingComponents() {
 
                     </div>
 
-                      <RecentCVsTable
-                        data={recentCVs.data}
-                        currentPage={currentPage}
-                        setCurrentPage={setCurrentPage}
-                        lastPage={recentCVs.last_page}
-                        delResumeLoader={delResumeLoader}
-                        handleRenameCv={handleRenameCv}
-                        handleDeleteCv={handleDeleteCv}
-                        compact={true} 
-                      />
+                    <RecentCVsTable
+                      data={recentCVs.data}
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+                      lastPage={recentCVs.last_page}
+                      delResumeLoader={delResumeLoader}
+                      handleRenameCv={handleRenameCv}
+                      handleDeleteCv={handleDeleteCv}
+                      compact={true}
+                    />
                   </Card.Body>
                 </Card>
               </div>
@@ -645,7 +646,7 @@ export default function BuildingComponents() {
         </Form>
       </Modal>
 
-      <div className={`position-fixed top-50 start-50 translate-middle text-center ${ !showFinalize ? 'd-none' : '' }`} style={{ zIndex: 1050, backgroundColor: 'rgba(255, 255, 255, 0.9)', padding: '2rem', borderRadius: '10px', boxShadow: '0 0 20px rgba(0,0,0,0.2)', width: '100%', maxWidth: '550px' }}>
+      <div className={`position-fixed top-50 start-50 translate-middle text-center ${!showFinalize ? 'd-none' : ''}`} style={{ zIndex: 1050, backgroundColor: 'rgba(255, 255, 255, 0.9)', padding: '2rem', borderRadius: '10px', boxShadow: '0 0 20px rgba(0,0,0,0.2)', width: '100%', maxWidth: '550px' }}>
         <div className="mb-3">
           <Spinner animation="border" variant="primary" style={{ width: '3rem', height: '3rem' }} />
         </div>

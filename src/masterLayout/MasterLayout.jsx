@@ -58,7 +58,18 @@ const MasterLayout = ({ children }) => {
   };
 
   const isActive = (path) => {
-    return location.pathname === path ? "text-primary" : "";
+    return location.pathname === path ? "active" : "";
+  };
+
+  const isNavToggled = (path) => {
+    // Extract the ID from the path if it matches the pattern
+    const pathSegments = location.pathname.split('/');
+    const routeWithoutId = pathSegments.slice(0, -1).join('/');
+
+    console.log(routeWithoutId)
+
+    // If no ID in current path, do exact match
+    return routeWithoutId === path ? "navbar-vertical-collapsed" : "";
   };
 
   useEffect(() => {
@@ -81,7 +92,7 @@ const MasterLayout = ({ children }) => {
   };
 
   return (
-    <main className={`main ${collapsed ? "navbar-vertical-collapsed" : ""} `} id="top" data-bs-theme={theme}>
+    <main className={`main ${collapsed ? "navbar-vertical-collapsed" : ""} ${isNavToggled('/cv-generate')} `} id="top" data-bs-theme={theme}>
       <nav className={`navbar navbar-vertical ${isMobile ? "navbar-expand" : "navbar-expand active"} navbar-expand-lg mobile-expand bg-white navbar-light dark__bg-dark dark__navbar-dark`}>
         <div className="collapse navbar-collapse" id="navbarVerticalCollapse">
 
@@ -94,7 +105,7 @@ const MasterLayout = ({ children }) => {
                 <hr className="navbar-vertical-line" />
                 <div className="nav-item-wrapper">
                   <Link className={`nav-link label-1 ${isActive('/')}`} to="/" role="button" data-bs-toggle="" aria-expanded="false">
-                    <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:chart-pie-2' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text ">Dashboard</span></span>
+                    <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:layout-dashboard' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text ">Dashboard</span></span>
                     </div>
                   </Link>
                 </div>
@@ -123,7 +134,7 @@ const MasterLayout = ({ children }) => {
                     </Link>
                   </div>
                   <div className="nav-item-wrapper">
-                    <Link className={`nav-link label-1 ${isActive('/billing')}`} to="/billing" role="button" data-bs-toggle="" aria-expanded="false">
+                    <Link className={`nav-link label-1 ${isActive('/billing')}`} to="/billing" role="button" data-bs-toggle="" aria-expanded="true">
                       <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:notes' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Billing</span></span>
                       </div>
                     </Link>
@@ -158,9 +169,9 @@ const MasterLayout = ({ children }) => {
             </ul>
           </div>
         </div>
-        <div className="navbar-vertical-footer">
+        {/* <div className="navbar-vertical-footer">
           <button className="btn navbar-vertical-toggle border-0 fw-semibold w-100 white-space-nowrap d-flex align-items-center" onClick={toggleNavbar}><span className="uil uil-left-arrow-to-left fs-8"></span><span className="uil uil-arrow-from-right fs-8"></span><span className="navbar-vertical-footer-text ms-2">Collapsed View</span></button>
-        </div>
+        </div> */}
       </nav>
       <nav className="navbar navbar-top fixed-top navbar-expand-lg bg-white navbar-light dark__bg-dark dark__navbar-dark" id="navbarDefault">
         <div className="navbar-logo">
@@ -172,15 +183,15 @@ const MasterLayout = ({ children }) => {
                 <defs>
 
                   <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style={{stopColor:'#6366f1', stopOpacity:1}} />
-                    <stop offset="50%" style={{stopColor:'#8b5cf6', stopOpacity:1}} />
-                    <stop offset="100%" style={{stopColor:'#d946ef', stopOpacity:1}} />
+                    <stop offset="0%" style={{ stopColor: '#6366f1', stopOpacity: 1 }} />
+                    <stop offset="50%" style={{ stopColor: '#8b5cf6', stopOpacity: 1 }} />
+                    <stop offset="100%" style={{ stopColor: '#d946ef', stopOpacity: 1 }} />
                   </linearGradient>
 
 
                   <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style={{stopColor:'#fbbf24', stopOpacity:1}} />
-                    <stop offset="100%" style={{stopColor:'#f59e0b', stopOpacity:1}} />
+                    <stop offset="0%" style={{ stopColor: '#fbbf24', stopOpacity: 1 }} />
+                    <stop offset="100%" style={{ stopColor: '#f59e0b', stopOpacity: 1 }} />
                   </linearGradient>
 
 
@@ -237,7 +248,7 @@ const MasterLayout = ({ children }) => {
 
                 <g transform="translate(120, 0)">
                   <text x="10" y="94" font-family="'Google Sans Flex', cursive, 'Segoe UI', Arial, sans-serif" font-size="60" font-weight="500" letter-spacing="0">
-                    <tspan fill="#5a5a5a">CV</tspan>
+                    <tspan fill="#ffffff4d">CV</tspan>
                     <tspan fill="#fff" dx="0">Builder</tspan>
                   </text>
                 </g>
@@ -323,24 +334,27 @@ const MasterLayout = ({ children }) => {
             <div className="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border" aria-labelledby="navbarDropdownUser">
               <div className="card position-relative border-0">
                 <div className="card-body p-0">
-                  <div className="text-center pt-4 pb-3">
+                  <div className="pt-4 pb-3 d-flex px-3 align-items-center gap-2">
                     <div className="avatar avatar-xl ">
                       <img className="rounded-circle " src={data?.profile_img_url || favicon} alt="" />
                     </div>
-                    <h6 className="mt-2 text-body-emphasis">{data?.name ?? "MPF Admin"}</h6>
+                    <div>
+                      <h6 className="mt-2 text-body-emphasis mb-0">{data?.name ?? "MPF Admin"}</h6>
+                      <span className="text-body-emphasis-span">{data?.email ?? "MPF Admin"}</span>
+                    </div>
                   </div>
                 </div>
                 <div className="overflow-auto scrollbar">
                   <ul className="nav d-flex flex-column mb-2 pb-1">
-                    <li className="nav-item"><Link className="nav-link px-3 d-block" to="/profile"> <span className="me-2 align-bottom" data-feather="user"></span><span>Profile</span></Link></li>
-                    <li className="nav-item"><Link className="nav-link px-3 d-block" to="/"><span className="me-2 align-bottom" data-feather="pie-chart"></span>Dashboard</Link></li>
-                    <li className="nav-item"><Link className="nav-link px-3 d-block" to="/profile?settings=true"> <span className="me-2 align-bottom" data-feather="settings"></span>Settings &amp; Privacy </Link></li>
+                    <li className="nav-item"><Link className="nav-link px-3 d-block" to="/profile"><Icon icon={'tabler:user-circle'} width={'18px'} height={'18px'} className="me-1" /><span>Profile</span></Link></li>
+                    <li className="nav-item"><Link className="nav-link px-3 d-block" to="/"><Icon icon='tabler:layout-dashboard' width={'18px'} height={'18px'} className="me-1" />Dashboard</Link></li>
+                    <li className="nav-item"><Link className="nav-link px-3 d-block" to="/profile?settings=true"> <Icon icon={'tabler:settings'} width={'18px'} height={'18px'} className="me-1" />Settings &amp; Privacy </Link></li>
+                    <li className="nav-item"><Link className="nav-link px-3 d-block logout-link" to="#" onClick={() => dispatch(logout())}> <Icon icon={'tabler:logout'} width={'18px'} height={'18px'} className="me-1" />Sign Out </Link></li>
                   </ul>
                 </div>
                 <div className=" p-0">
-                  <hr />
-                  <div className="px-3"> <Link onClick={() => dispatch(logout())} className="btn btn-phoenix-secondary d-flex flex-center w-100" to="#"> <span className="me-2" data-feather="log-out"> </span>Sign out</Link></div>
-                  <div className="my-2 text-center fw-bold fs-10 text-body-quaternary"><Link className="text-body-quaternary me-1" to="/privacy-policy" target="_blank`">Privacy policy</Link>&bull;<Link className="text-body-quaternary mx-1" to="/terms" target="_blank">Terms</Link>&bull;<Link className="text-body-quaternary ms-1" to="#">Cookies</Link></div>
+                  <hr className="mt-0" />
+                  <div className="mt-2 mb-3 text-center fw-bold fs-10 text-body-quaternary"><Link className="text-body-quaternary me-1" to="/privacy-policy" target="_blank`">Privacy policy</Link>&bull;<Link className="text-body-quaternary mx-1" to="/terms" target="_blank">Terms</Link>&bull;<Link className="text-body-quaternary ms-1" to="#">Cookies</Link></div>
                 </div>
               </div>
             </div>

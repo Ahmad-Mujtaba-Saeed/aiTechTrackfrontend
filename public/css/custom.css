@@ -3,28 +3,15 @@
     src: url(./GoogleSansFlex.ttf);
 }
 
-
-/* 
-
-
-black : #313131
-border: #4d4d4d
-
-
-*/
-
-
-
-
 body {
-    background-color: #f5f7fa !important;
+    background-color: #fff !important;
     font-family: 'Google Sans Flex', "Inter", sans-serif !important;
     color: #161c52 !important;
 }
 
 p,
 .text-body {
-    color: #161c52;
+    color: var(--text-color);
 }
 
 h1,
@@ -34,7 +21,7 @@ h4,
 h5,
 h6 {
     font-family: 'Google Sans Flex', "Inter", sans-serif !important;
-    color: #161c52;
+    color: #000;
 }
 
 .video-wrapper {
@@ -65,18 +52,15 @@ h4 {
     line-height: 1.5rem !important;
 }
 
-a:hover {
-    color: #000000;
-}
 
 [data-bs-theme=dark] .dark__bg-dark,
 [data-bs-theme=dark] .navbar-vertical .navbar-vertical-footer,
 [data-bs-theme=dark] .dropdown-profile .card,
 [data-bs-theme=dark] .navbar .dropdown-menu.navbar-dropdown-caret:after {
     background: #2c2c2c !important;
-    /* background: linear-gradient(135deg, #1D0948, #000, #6B2ECB); */
     background-size: 300% 300%;
     animation: gradientShift 8s ease infinite;
+    content: unset;
 
     @keyframes gradientShift {
         0% {
@@ -92,10 +76,6 @@ a:hover {
         }
 
     }
-
-
-
-
 }
 
 
@@ -120,7 +100,7 @@ a:hover {
 }
 
 .btn-primary:hover {
-    background-color: #001433 !important;
+    /* background-color: #001433 !important; */
 }
 
 .btn-phoenix-secondary {
@@ -155,14 +135,14 @@ a:hover {
 
 .feature-cards .card {
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
     /* default border */
 }
 
 .feature-cards .card:hover {
     transform: translateY(0px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-    border-color: #000 !important;
+    box-shadow: 0 0 30px 6px rgb(0 0 0 / 10%) !important;
+    border-color: #0000 !important;
 }
 
 /* Remove default button chrome so it behaves like an icon */
@@ -377,11 +357,27 @@ a:hover {
 }
 
 .breadcrum-bg-image {
-    background-image: url(../images/breadcrumBg.jpg);
+    /* background-image: url(../images/breadcrumBg.jpg); */
     /* background-image: url(https://framerusercontent.com/images/kOtXlxJNGlqvUUg8dp0bBCeDKs.jpg?scale-down-to=2048); */
-    background-position: left;
-    background-size: cover;
-    background-repeat: no-repeat;
+    /* background-position: left; */
+    /* background-size: cover; */
+    /* background-repeat: no-repeat; */
+
+    &::before {
+        content: '';
+        width: 8px;
+        background: #2c2c2cd9;
+        height: calc(100% - 80px);
+        position: absolute;
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+    }
+
+    & .right-image{
+        position: absolute;
+        right: 0;
+        bottom: 0;
+    }
 }
 
 
@@ -669,4 +665,37 @@ a:hover {
 
 .Toastify__toast-theme--light.Toastify__toast--warning .Toastify__toast-icon svg {
     fill: #ffb528 !important;
+}
+
+[data-bs-theme=dark] .dropdown-profile {
+    border-radius: 16px;
+    border: none !important;
+    box-shadow: 0 0 30px 6px rgb(0 0 0 / 10%) !important;
+
+    & .card {
+        background-color: #fff !important;
+    }
+}
+
+.logout-link {
+    color: red !important;
+}
+
+.dropdown-profile .nav .nav-link.logout-link:hover {
+    background: rgba(255, 0, 0, 0.1) !important;
+}
+
+.text-body-emphasis-span {
+    font-size: 12px;
+    color: var(--text-color);
+    font-weight: 400;
+}
+
+.icon-item.icon-item-md {
+    height: 60px;
+    width: 60px;
+}
+
+.fw-600 {
+    font-weight: 600 !important;
 }
