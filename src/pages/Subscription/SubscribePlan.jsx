@@ -1,5 +1,5 @@
 import React , {useEffect,useState} from "react";
-import axios from "../../utils/axios";
+import axios from "../../api/axios";
 import { useDispatch,useSelector } from "react-redux";
 import { Container, Row, Col, Button, Card, Spinner, Alert, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -19,8 +19,8 @@ const SubscribePlan = () => {
         const fetchPlans = async () => {
             try {
                 setLoading(true);
-                console.log('Fetching plans from /api/plans...');
-                const response = await axios.get('/api/billing/plans');
+                console.log('Fetching plans from /plans...');
+                const response = await axios.get('/billing/plans');
                 console.log('Plans API response:', response);
                 if (response.data && Array.isArray(response.data)) {
                     setPlans(response.data);
@@ -52,7 +52,7 @@ const SubscribePlan = () => {
 
 
     const handleSubscribe = (planId) => {
-        axios.get(`/api/billing/stripe/create-subscription-session/${planId}?isFreeTrial=true`)
+        axios.get(`/billing/stripe/create-subscription-session/${planId}?isFreeTrial=true`)
             .then(response => {
                 window.location.href = response.data.checkoutUrl;
             })

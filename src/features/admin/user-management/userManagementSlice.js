@@ -51,9 +51,16 @@ const userManagementSlice = createSlice({
         })
         .addCase(toggleUserActiveStatus.fulfilled, (state, action) => {
         state.togglingUser = false;
-        state.users = state.users.map(u =>
-            u.id === action.payload.user.id ? action.payload.user : u
-        );
+        // Handle both cases: if state.users is an array or if it's nested
+        if (Array.isArray(state.users)) {
+            state.users = state.users.map(u =>
+                u.id === action.payload.user.id ? action.payload.user : u
+            );
+        } else if (state.users?.users?.data && Array.isArray(state.users.users.data)) {
+            state.users.users.data = state.users.users.data.map(u =>
+                u.id === action.payload.user.id ? action.payload.user : u
+            );
+        }
         })
         .addCase(toggleUserActiveStatus.rejected, (state, action) => {
         state.togglingUser = false;

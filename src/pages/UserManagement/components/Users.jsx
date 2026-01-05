@@ -138,9 +138,19 @@ const Users = () => {
     const handleToggleUser = async (userId, currentStatus) => {
         setTogglingUserId(userId);
         try {
-            dispatch(toggleUserActiveStatus(userId));
-            fetchUsers(currentPage, searchTerm);
-            toast.success('User status updated successfully');
+            console.log('Toggling user:', userId, 'current status:', currentStatus);
+            const result = await dispatch(toggleUserActiveStatus(userId));
+            console.log('Toggle result:', result);
+            
+            // Check if the API call succeeded regardless of Redux state
+            if (result.payload && result.payload.status === true) {
+                console.log('API succeeded, showing success message');
+                toast.success(result.payload.message || 'User status updated successfully');
+                fetchUsers(currentPage, searchTerm);
+            } else {
+                console.log('API failed or unexpected response');
+                toast.error('Failed to update user status');
+            }
         } catch (err) {
             console.error('Toggle user error:', err);
             toast.error('Failed to update user status');
@@ -449,7 +459,7 @@ const Users = () => {
                                            <button
                                             className={`btn btn-sm ${user.is_active ? 'btn-success' : 'btn-danger'}`}
                                             onClick={() => handleToggleUser(user.id, user.is_active)}
-                                            disabled={togglingUserId === user.id || loading }
+                                            disabled={togglingUserId === user.id || loading}
                                             title={user.is_active ? 'Disable User' : 'Enable User'}
                                             >
                                             {togglingUserId === user.id ? (
@@ -608,7 +618,7 @@ const Users = () => {
                                                         <div className="flex-grow-1 ms-3">
                                                             <h5 className="mb-1">{currentSubscriptionPlan.name || 'N/A'}</h5>
                                                             <span className="badge bg-primary-subtle text-primary">
-                                                                {`${currentSubscriptionPlan.payment.payment_amount} (${currentSubscriptionPlan.payment.payment_currency})`}
+                                                                {`${currentSubscriptionPlan.plan.price} (${currentSubscriptionPlan.plan.currency})`}
                                                             </span>
                                                             <p className="text-muted mb-1">
                                                                 <Icon icon="tabler:calendar" width={14} height={14} className="me-1" />
@@ -702,7 +712,7 @@ const Users = () => {
                                                                 </td>
                                                                 <td>
                                                                     <small className="text-muted">
-                                                                        {`${subscription.payment.payment_amount} (${subscription.payment.payment_currency})`}
+                                                                        {`${subscription.plan.price} (${subscription.plan.currency})`}
                                                                     </small>
                                                                 </td>
                                                                 <td>
