@@ -2,30 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
-import { getAllTransactions } from '../../../features/admin/transaction-management/transactionManagementSlice';
+import { getAllSubscriptions } from '../../../features/admin/subscription-management/subscriptionManagementSlice';
 import { useDispatch } from 'react-redux';
 
-const Transactions = () => {
+const Subscriptions = () => {
     const dispatch = useDispatch();
     const [searchTerm, setSearchTerm] = useState('');
-    const [paymentStatusFilter, setPaymentStatusFilter] = useState('');
+    const [statusFilter, setStatusFilter] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const { loading, error, transactions, payment_status } = useSelector((state) => state.transactionManagement);
+    const { loading, error, subscriptions, uniqueStatuses } = useSelector((state) => state.subscriptionManagement);
 
-    const fetchTransactions = (page = 1, search = '', paymentStatus = '') => {
-        dispatch(getAllTransactions({ page, search, payment_status: paymentStatus }));
+    const fetchSubscriptions = (page = 1, search = '', status = '') => {
+        dispatch(getAllSubscriptions({ page, search, status }));
     };
 
     useEffect(() => {
-        fetchTransactions();
+        fetchSubscriptions();
     }, []);
 
     useEffect(() => {
         const timer = setTimeout(() => {
-            fetchTransactions(1, searchTerm, paymentStatusFilter);
+            fetchSubscriptions(1, searchTerm, statusFilter);
         }, 500);
         return () => clearTimeout(timer);
-    }, [searchTerm, paymentStatusFilter]);
+    }, [searchTerm, statusFilter]);
 
     const formatDate = (dateString) => {
         if (!dateString) return 'N/A';
@@ -45,10 +45,12 @@ const Transactions = () => {
 
     const getStatusBadge = (status) => {
         const variants = {
-            paid: 'success',
-            pending: 'warning',
-            failed: 'danger',
-            refunded: 'info'
+            active: 'success',
+            canceled: 'danger',
+            trialing: 'info',
+            incomplete: 'warning',
+            past_due: 'warning',
+            unpaid: 'danger'
         };
         const variant = variants[status] || 'secondary';
         return (
@@ -59,13 +61,13 @@ const Transactions = () => {
     };
 
     const handlePageChange = (page) => {
-        if (page >= 1 && page <= transactions?.last_page && page !== transactions?.current_page) {
+        if (page >= 1 && page <= subscriptions?.last_page && page !== subscriptions?.current_page) {
             setCurrentPage(page);
-            fetchTransactions(page, searchTerm, paymentStatusFilter);
+            fetchSubscriptions(page, searchTerm, statusFilter);
         }
     };
 
-    if (loading && !transactions?.data) {
+    if (loading && !subscriptions?.data) {
         return (
             <div className="row">
                 <div className="col-12">
@@ -73,7 +75,7 @@ const Transactions = () => {
                         <div className="spinner-border text-primary" role="status">
                             <span className="visually-hidden">Loading...</span>
                         </div>
-                        <span className="ms-3">Loading Transactions...</span>
+                        <span className="ms-3">Loading Subscriptions...</span>
                     </div>
                 </div>
             </div>
@@ -82,11 +84,10 @@ const Transactions = () => {
 
     return (
         <div className="container-fluid px-4">
-            {/* Existing header - NO CHANGES */}
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <div>
-                    <h2 className="h4 mb-1">Transactions</h2>
-                    <p className="text-muted mb-0">Manage payment transactions</p>
+                    <h2 className="h4 mb-1">Subscriptions</h2>
+                    <p className="text-muted mb-0">Manage user subscriptions</p>
                 </div>
             </div>
 
@@ -101,7 +102,7 @@ const Transactions = () => {
                                 <input
                                     type="text"
                                     className="form-control border-start-0"
-                                    placeholder="Search by Transaction ID or Subscription ID..."
+                                    placeholder="Search by subscription ID, customer ID, user name or email..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
@@ -118,11 +119,11 @@ const Transactions = () => {
                             <select
                                 className="form-select"
                                 style={{ maxWidth: '200px' }}
-                                value={paymentStatusFilter}
-                                onChange={(e) => setPaymentStatusFilter(e.target.value)}
+                                value={statusFilter}
+                                onChange={(e) => setStatusFilter(e.target.value)}
                             >
                                 <option value="">All Status</option>
-                                {payment_status?.map((status) => (
+                                {uniqueStatuses?.map((status) => (
                                     <option key={status} value={status}>
                                         {status?.charAt(0).toUpperCase() + status?.slice(1)}
                                     </option>
@@ -130,7 +131,7 @@ const Transactions = () => {
                             </select>
                             <button
                                 className="btn btn-primary"
-                                onClick={() => fetchTransactions(1, searchTerm, paymentStatusFilter)}
+                                onClick={() => fetchSubscriptions(1, searchTerm, statusFilter)}
                                 disabled={loading}
                                 style={{ minWidth: 'fit-content' }}
                             >
@@ -149,55 +150,73 @@ const Transactions = () => {
                             <thead className="table-light">
                                 <tr>
                                     <th className="ps-4">ID</th>
-                                    <th>Transaction ID</th>
+                                    <th>User</th>
                                     <th>Subscription ID</th>
-                                    <th>User ID</th>
-                                    <th>Type</th>
-                                    <th>Amount</th>
+                                    <th>Customer ID</th>
+                                    <th>Plan</th>
                                     <th>Status</th>
-                                    <th>Gateway</th>
+                                    <th>Amount</th>
+                                    <th>Period</th>
                                     <th>Created</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {transactions?.data?.map((transaction) => (
-                                    <tr key={transaction.id}>
+                                {subscriptions?.data?.map((subscription) => (
+                                    <tr key={subscription.id}>
                                         <td className="ps-4">
-                                            <span className="badge bg-light text-dark">#{transaction.id}</span>
+                                            <span className="badge bg-light text-dark">#{subscription.id}</span>
                                         </td>
                                         <td>
-                                            <code className="text-muted">{transaction.payment_transaction_id || 'N/A'}</code>
+                                            {subscription.user ? (
+                                                <div>
+                                                    <div className="fw-semibold">{subscription.user.name}</div>
+                                                    <small className="text-muted">{subscription.user.email}</small>
+                                                </div>
+                                            ) : (
+                                                <span className="text-muted">User ID: #{subscription.user_id}</span>
+                                            )}
                                         </td>
                                         <td>
-                                            <span className="badge bg-secondary">#{transaction.subscription_id}</span>
+                                            <code className="text-muted">{subscription.sub_id || 'N/A'}</code>
                                         </td>
                                         <td>
-                                            <span className="badge bg-secondary">#{transaction.user_id}</span>
+                                            <code className="text-muted">{subscription.cus_id || 'N/A'}</code>
                                         </td>
                                         <td>
-                                            <small className="text-muted">{transaction.related_type || 'N/A'}</small>
+                                            {subscription.plan ? (
+                                                <div>
+                                                    <div className="fw-semibold">{subscription.plan.name}</div>
+                                                    <small className="text-muted">${subscription.plan.price}/{subscription.plan.interval}</small>
+                                                </div>
+                                            ) : (
+                                                <span className="text-muted">{subscription.name || 'N/A'}</span>
+                                            )}
+                                        </td>
+                                        <td>
+                                            {getStatusBadge(subscription.status)}
                                         </td>
                                         <td>
                                             <span className="fw-semibold">
-                                                {transaction.payment_amount ? `${transaction.payment_amount} ${transaction.payment_currency || 'USD'}` : 'N/A'}
+                                                {subscription.plan ? `$${subscription.plan.price}` : 'N/A'}
                                             </span>
                                         </td>
                                         <td>
-                                            {getStatusBadge(transaction.payment_status)}
+                                            <small className="text-muted">
+                                                {subscription.ends_at ? `Ends: ${formatDate(subscription.ends_at)}` : 
+                                                 subscription.trial_ends_at ? `Trial: ${formatDate(subscription.trial_ends_at)}` : 
+                                                 'Ongoing'}
+                                            </small>
                                         </td>
                                         <td>
-                                            <small className="text-muted">{transaction.payment_gateway || 'N/A'}</small>
-                                        </td>
-                                        <td>
-                                            <small className="text-muted">{formatDate(transaction.created_at)}</small>
+                                            <small className="text-muted">{formatDate(subscription.created_at)}</small>
                                         </td>
                                     </tr>
                                 ))}
-                                {(!transactions?.data || transactions.data.length === 0) && !loading && (
+                                {(!subscriptions?.data || subscriptions.data.length === 0) && !loading && (
                                     <tr>
-                                        <td colSpan="8" className="text-center py-4">
-                                            <Icon icon="tabler:receipt-off" width={48} height={48} className="text-muted mb-2" />
-                                            <p className="text-muted mb-0">No transactions found</p>
+                                        <td colSpan="9" className="text-center py-4">
+                                            <Icon icon="tabler:subscription-off" width={48} height={48} className="text-muted mb-2" />
+                                            <p className="text-muted mb-0">No subscriptions found</p>
                                         </td>
                                     </tr>
                                 )}
@@ -207,27 +226,27 @@ const Transactions = () => {
                 </div>
 
                 {/* Pagination */}
-                {transactions?.last_page > 1 && (
+                {subscriptions?.last_page > 1 && (
                     <div className="card-footer border-top">
                         <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
                             <div className="mb-2 mb-md-0">
                                 <small className="text-muted">
-                                    Showing {transactions.from || 0} to {transactions.to || 0} of {transactions.total || 0} entries
+                                    Showing {subscriptions.from || 0} to {subscriptions.to || 0} of {subscriptions.total || 0} entries
                                 </small>
                             </div>
                             <nav aria-label="Page navigation">
                                 <ul className="pagination pagination-sm mb-0">
-                                    <li className={`page-item ${transactions.current_page === 1 ? 'disabled' : ''}`}>
+                                    <li className={`page-item ${subscriptions.current_page === 1 ? 'disabled' : ''}`}>
                                         <button
                                             className="page-link"
-                                            onClick={() => handlePageChange(transactions.current_page - 1)}
-                                            disabled={transactions.current_page === 1}
+                                            onClick={() => handlePageChange(subscriptions.current_page - 1)}
+                                            disabled={subscriptions.current_page === 1}
                                         >
                                             Previous
                                         </button>
                                     </li>
 
-                                    {transactions.current_page > 2 && (
+                                    {subscriptions.current_page > 2 && (
                                         <li className="page-item">
                                             <button
                                                 className="page-link"
@@ -238,60 +257,60 @@ const Transactions = () => {
                                         </li>
                                     )}
 
-                                    {transactions.current_page > 3 && (
+                                    {subscriptions.current_page > 3 && (
                                         <li className="page-item disabled">
                                             <span className="page-link">...</span>
                                         </li>
                                     )}
 
-                                    {transactions.current_page > 1 && (
+                                    {subscriptions.current_page > 1 && (
                                         <li className="page-item">
                                             <button
                                                 className="page-link"
-                                                onClick={() => handlePageChange(transactions.current_page - 1)}
+                                                onClick={() => handlePageChange(subscriptions.current_page - 1)}
                                             >
-                                                {transactions.current_page - 1}
+                                                {subscriptions.current_page - 1}
                                             </button>
                                         </li>
                                     )}
 
                                     <li className="page-item active">
-                                        <span className="page-link">{transactions.current_page}</span>
+                                        <span className="page-link">{subscriptions.current_page}</span>
                                     </li>
 
-                                    {transactions.current_page < transactions.last_page && (
+                                    {subscriptions.current_page < subscriptions.last_page && (
                                         <li className="page-item">
                                             <button
                                                 className="page-link"
-                                                onClick={() => handlePageChange(transactions.current_page + 1)}
+                                                onClick={() => handlePageChange(subscriptions.current_page + 1)}
                                             >
-                                                {transactions.current_page + 1}
+                                                {subscriptions.current_page + 1}
                                             </button>
                                         </li>
                                     )}
 
-                                    {transactions.current_page < transactions.last_page - 2 && (
+                                    {subscriptions.current_page < subscriptions.last_page - 2 && (
                                         <li className="page-item disabled">
                                             <span className="page-link">...</span>
                                         </li>
                                     )}
 
-                                    {transactions.current_page < transactions.last_page - 1 && (
+                                    {subscriptions.current_page < subscriptions.last_page - 1 && (
                                         <li className="page-item">
                                             <button
                                                 className="page-link"
-                                                onClick={() => handlePageChange(transactions.last_page)}
+                                                onClick={() => handlePageChange(subscriptions.last_page)}
                                             >
-                                                {transactions.last_page}
+                                                {subscriptions.last_page}
                                             </button>
                                         </li>
                                     )}
 
-                                    <li className={`page-item ${transactions.current_page === transactions.last_page ? 'disabled' : ''}`}>
+                                    <li className={`page-item ${subscriptions.current_page === subscriptions.last_page ? 'disabled' : ''}`}>
                                         <button
                                             className="page-link"
-                                            onClick={() => handlePageChange(transactions.current_page + 1)}
-                                            disabled={transactions.current_page === transactions.last_page}
+                                            onClick={() => handlePageChange(subscriptions.current_page + 1)}
+                                            disabled={subscriptions.current_page === subscriptions.last_page}
                                         >
                                             Next
                                         </button>
@@ -307,4 +326,4 @@ const Transactions = () => {
     )
 }
 
-export default Transactions;
+export default Subscriptions;

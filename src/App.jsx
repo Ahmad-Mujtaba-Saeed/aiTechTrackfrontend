@@ -37,6 +37,7 @@ import UpgradeSubscribePlan from "./pages/Subscription/UpgradeSubscribePlan";
 
 import UserManagement from "./pages/UserManagement/UserManagement";
 import TransactionsManagement from "./pages/Billing/TransactionsManagement";
+import SubscriptionManagement from "./pages/Subscriptions/SubscriptionManagement";
 import CoreSettingsManagement from "./pages/CoreSettings/CoreSettingsManagement";
 
 import Career from "./pages/CareerAdvice";
@@ -91,6 +92,7 @@ const protectedRoutes = [
 
   { path: '/manage-users', element: <UserManagement /> },
   { path: '/billing/transactions', element: <TransactionsManagement /> },
+  { path: '/billing/subscriptions', element: <SubscriptionManagement /> },
   { path: '/core-settings', element: <CoreSettingsManagement /> },
 ];
 

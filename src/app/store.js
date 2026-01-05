@@ -6,6 +6,7 @@ import resumeReducer from "../features/resume/resumeSlice";
 import userManagementReducer from "../features/admin/user-management/userManagementSlice"
 import transactionManagementReducer from "../features/admin/transaction-management/transactionManagementSlice"
 import coreSettingsManagementReducer from "../features/admin/core-settings-mangement/coreSettingsManagementSlice"
+import subscriptionManagementReducer from "../features/admin/subscription-management/subscriptionManagementSlice"
 
 const persistConfig = {
   key: 'root',
@@ -17,6 +18,7 @@ const persistedResumeReducer = persistReducer(persistConfig, resumeReducer);
 const persistedUserManagementReducer = persistReducer(persistConfig, userManagementReducer);
 const persistedTransactionManagementReducer = persistReducer(persistConfig, transactionManagementReducer);
 const persistedCoreSettingsManagementReducer = persistReducer(persistConfig, coreSettingsManagementReducer);
+const persistedSubscriptionManagementReducer = persistReducer(persistConfig, subscriptionManagementReducer);
 
 export const store = configureStore({
   reducer: {
@@ -25,6 +27,7 @@ export const store = configureStore({
     userManagement: persistedUserManagementReducer,
     transactionManagement: persistedTransactionManagementReducer,
     coreSettingsManagement: persistedCoreSettingsManagementReducer,
+    subscriptionManagement: persistedSubscriptionManagementReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
