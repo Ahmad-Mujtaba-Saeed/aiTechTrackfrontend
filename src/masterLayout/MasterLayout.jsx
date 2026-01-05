@@ -121,12 +121,7 @@ const MasterLayout = ({ children }) => {
                     Admin
                   </p>
                   <hr className="navbar-vertical-line" />
-                  <div className="nav-item-wrapper">
-                    <Link className={`nav-link label-1 ${isActive('/access-control')}`} to="/access-control" role="button" data-bs-toggle="" aria-expanded="false">
-                      <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:fingerprint-scan' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text ">Access Control</span></span>
-                      </div>
-                    </Link>
-                  </div>
+
                   <div className="nav-item-wrapper">
                     <Link className={`nav-link label-1 ${isActive('/manage-users')}`} to="/manage-users" role="button" data-bs-toggle="" aria-expanded="false">
                       <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:users' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Manage Users</span></span>
@@ -134,7 +129,7 @@ const MasterLayout = ({ children }) => {
                     </Link>
                   </div>
                   <div className="nav-item-wrapper">
-                    <Link className={`nav-link label-1 ${isActive('/billing')}`} to="/billing" role="button" data-bs-toggle="" aria-expanded="true">
+                    <Link className={`nav-link label-1 ${isActive('/billing/transactions')}`} to="/billing/transactions" role="button" data-bs-toggle="" aria-expanded="true">
                       <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:notes' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Billing</span></span>
                       </div>
                     </Link>

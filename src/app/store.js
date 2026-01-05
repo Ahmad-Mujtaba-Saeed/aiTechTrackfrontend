@@ -3,8 +3,9 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userReducer from "../features/user/userSlice";
 import resumeReducer from "../features/resume/resumeSlice";
-import interviewReducer from "../features/interview/interviewSlice";
-import jobReducer from "../features/job/jobSlice"
+import userManagementReducer from "../features/admin/user-management/userManagementSlice"
+import transactionManagementReducer from "../features/admin/transaction-management/transactionManagementSlice"
+import coreSettingsManagementReducer from "../features/admin/core-settings-mangement/coreSettingsManagementSlice"
 
 const persistConfig = {
   key: 'root',
@@ -13,15 +14,17 @@ const persistConfig = {
 };
 
 const persistedResumeReducer = persistReducer(persistConfig, resumeReducer);
-const persistedJobReducer = persistReducer(persistConfig, jobReducer);
-const presistInterviewReducer = persistReducer(persistConfig, interviewReducer);
+const persistedUserManagementReducer = persistReducer(persistConfig, userManagementReducer);
+const persistedTransactionManagementReducer = persistReducer(persistConfig, transactionManagementReducer);
+const persistedCoreSettingsManagementReducer = persistReducer(persistConfig, coreSettingsManagementReducer);
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     resume: persistedResumeReducer,
-    interview: presistInterviewReducer,
-    job: persistedJobReducer,
+    userManagement: persistedUserManagementReducer,
+    transactionManagement: persistedTransactionManagementReducer,
+    coreSettingsManagement: persistedCoreSettingsManagementReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

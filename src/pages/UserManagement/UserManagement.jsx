@@ -2,9 +2,9 @@ import React from "react";
 import MasterLayout from "../../masterLayout/MasterLayout";
 import BreadCrum from "../../components/BreadCrum";
 
-import Users from "../../components/UserManagementComponent/Users";
+import Users from "./components/Users";
 
-const AccessControl = () => {
+const UserManagement = () => {
     return (
         <MasterLayout>
             <BreadCrum title='User Management' subTitle='' />
@@ -13,4 +13,4 @@ const AccessControl = () => {
     );
 };
 
-export default AccessControl;
+export default UserManagement;

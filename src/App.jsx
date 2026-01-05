@@ -8,16 +8,10 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 // Pages
 import ErrorPage from "./pages/ErrorPage";
 import Dashboard from "./pages/Dashboard/Dashboard";
-import ApplicationTracker from "./pages/ApplicationTracker/ApplicationTracker";
 
 import CvBuilder from "./pages/CvBuilder/CvBuilder";
 import CvGenerate from "./pages/CvBuilder/CvGenerate";
 
-import Interview from "./pages/Interview/Interview";
-import Prepration from "./pages/Interview/Prepration";
-
-import JobSearch from "./pages/JobSearch/JobSearch";
-import GetStarted from "./pages/GetStarted/GetStarted";
 import PaymentPlans from "./pages/PaymentPlans/PaymentPlans";
 import Support from "./pages/Support/Support";
 
@@ -28,7 +22,6 @@ import F2Verification from "./pages/Auth/F2Verification";
 import ForgetPassword from "./pages/Auth/ForgetPassword";
 import UpdatePassword from "./pages/Auth/UpdatePassword";
 import Welcome from "./pages/Welcome";
-import UploadProfile from "./pages/Auth/UploadProfile";
 
 import TermsCondition from "./pages/TermsPolicy/Terms";
 import PrivacyPolicy from "./pages/TermsPolicy/Privacy";
@@ -42,11 +35,14 @@ import { login, getUser, logout } from "./features/user/userSlice";
 import SubscribePlan from "./pages/Subscription/SubscribePlan";
 import UpgradeSubscribePlan from "./pages/Subscription/UpgradeSubscribePlan";
 
-import AccessControl from "./pages/AccessControl/AccessControl";
 import UserManagement from "./pages/UserManagement/UserManagement";
+import TransactionsManagement from "./pages/Billing/TransactionsManagement";
+import CoreSettingsManagement from "./pages/CoreSettings/CoreSettingsManagement";
 
 import Career from "./pages/CareerAdvice";
 import SignOut from "./pages/Auth/SignOut";
+
+import ChatBot from "./components/chat-bot-agent/ChatBot";
 
 // const Loader = () => (
 //   <div id="preloader">
@@ -86,20 +82,16 @@ const protectedRoutes = [
   { path: '/career-advice', element: <CareerAdvice /> },
   { path: '/upgrade-subscription', element:<UpgradeSubscribePlan/> },
   { path: '/subscription', element:<SubscribePlan/> },
-  { path: '/upload-profile', element: <UploadProfile /> },
-  { path: '/application-tracker', element: <ApplicationTracker /> },
   { path: '/cv-builder', element: <CvBuilder /> },
   { path: '/cv-generate/:id', element: <CvGenerate /> },
-  { path: '/interview', element: <Interview /> },
-  { path: '/prepration/:id', element: <Prepration /> },
-  { path: '/job-search', element: <JobSearch /> },
   { path: '/payment-plans', element: <PaymentPlans /> },
   { path: '/support', element: <Support /> },
   { path: '/profile-settings', element: <ProfileSetting /> },
   { path: '/profile', element: <ProfilePage /> },
 
-  { path: '/access-control', element: <AccessControl /> },
   { path: '/manage-users', element: <UserManagement /> },
+  { path: '/billing/transactions', element: <TransactionsManagement /> },
+  { path: '/core-settings', element: <CoreSettingsManagement /> },
 ];
 
 
@@ -127,6 +119,7 @@ function App() {
             />
           ))}
         </Routes>
+        <ChatBot />
       </PageWrapper>
     </BrowserRouter>
   );

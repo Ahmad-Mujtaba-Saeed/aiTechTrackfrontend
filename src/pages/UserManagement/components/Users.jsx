@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import instance from '../../api/axios';
+import instance from '../../../api/axios';
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import { getAllUsers , getUserSubscriptionDetails , toggleUserActiveStatus} from '../../../features/admin/user-management/userManagementSlice';
+import { useDispatch } from 'react-redux';
 
 const Users = () => {
-    const [users, setUsers] = useState([]);
+    const dispatch = useDispatch();
+    const { users , subscriptionDetails , loading ,togglingUser, error} = useSelector((state) => state.userManagement);
     const [filteredUsers, setFilteredUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     // Search and filter states
     const [searchTerm, setSearchTerm] = useState('');
@@ -29,6 +31,9 @@ const Users = () => {
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [selectedUserName, setSelectedUserName] = useState('');
 
+    // Per-user toggle loading state
+    const [togglingUserId, setTogglingUserId] = useState(null);
+
     // Existing modal states (keep as is)
     const [showModal, setShowModal] = useState(false);
     const [modalMode, setModalMode] = useState('create');
@@ -40,52 +45,47 @@ const Users = () => {
         plan_id: ''
     });
     const [submitting, setSubmitting] = useState(false);
-    const [errors, setErrors] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        plan_id: ''
-    });
 
-    // Fetch users from API using your configured instance - NO CHANGES
+    // Fetch users via Redux thunk (getAllUsers) and update local pagination + filters
     const fetchUsers = async (page = 1, search = '') => {
         try {
-            setLoading(true);
-            
-            let url = `/users/management?page=${page}`;
-            if (search) {
-                url += `&search=${encodeURIComponent(search.trim())}`;
+
+            const resultAction = await dispatch(getAllUsers({ page, search: search.trim() }));
+
+            if (getAllUsers.fulfilled.match(resultAction)) {
+                const payload = resultAction.payload;
+                const usersResponse = payload?.users;
+
+                if (!usersResponse) {
+                    throw new Error('Invalid users response from server');
+                }
+
+                const usersData = usersResponse.data || [];
+                const pagination = usersResponse;
+
+                setFilteredUsers(usersData);
+
+                setCurrentPage(pagination.current_page || 1);
+                setTotalPages(pagination.last_page || 1);
+                setTotalItems(pagination.total || 0);
+                setPerPage(pagination.per_page || usersData.length || 10);
+                setFrom(pagination.from || 0);
+                setTo(pagination.to || 0);
+
+            } else {
+                // Thunk was rejected
+                const err = resultAction.error || {};
+                let errorMessage = 'Failed to load users. ' + (err.message || 'Unknown error occurred.');
+
+                setFilteredUsers([]);
+                setCurrentPage(1);
+                setTotalPages(1);
+                setTotalItems(0);
+                setFrom(0);
+                setTo(0);
             }
-
-            const response = await instance.get(url);
-
-            if (!response.data) {
-                throw new Error('No data received from server');
-            }
-
-            // console.log('Raw User data from API:', response.data.users);
-
-            let usersData = response.data.users.data;
-            const pagination = response.data.users;
-
-            setUsers(usersData);
-            setFilteredUsers(usersData);
-            
-            setCurrentPage(pagination.current_page);
-            setTotalPages(pagination.last_page);
-            setTotalItems(pagination.total);
-            setPerPage(pagination.per_page);
-            setFrom(pagination.from || 0);
-            setTo(pagination.to || 0);
-            
-            setError(null);
         } catch (err) {
             console.error('Error fetching users:', err);
-            console.error('Error details:', {
-                message: err.message,
-                response: err.response,
-                config: err.config
-            });
 
             let errorMessage = 'Failed to load users. ';
 
@@ -105,17 +105,15 @@ const Users = () => {
                 errorMessage += err.message || 'Unknown error occurred.';
             }
 
-            setError(errorMessage);
-            setUsers([]);
+
             setFilteredUsers([]);
-            
+
             setCurrentPage(1);
             setTotalPages(1);
             setTotalItems(0);
             setFrom(0);
             setTo(0);
         } finally {
-            setLoading(false);
         }
     };
 
@@ -136,23 +134,49 @@ const Users = () => {
         return () => clearTimeout(timer);
     }, [searchTerm]);
 
-    // NEW FUNCTION: Fetch subscription history
+
+    const handleToggleUser = async (userId, currentStatus) => {
+        setTogglingUserId(userId);
+        try {
+            dispatch(toggleUserActiveStatus(userId));
+            fetchUsers(currentPage, searchTerm);
+            toast.success('User status updated successfully');
+        } catch (err) {
+            console.error('Toggle user error:', err);
+            toast.error('Failed to update user status');
+        } finally {
+            setTogglingUserId(null);
+        }
+    };
+
+    // NEW FUNCTION: Fetch subscription history via Redux thunk
     const fetchSubscriptionHistory = async (userId, userName) => {
         try {
             setSubscriptionLoading(true);
             setSelectedUserId(userId);
             setSelectedUserName(userName);
-            
-            const response = await instance.get(`/users/management/subscription-status/${userId}`);
 
-            // console.log('Subscription history response:', response.data.subscriptions[0]);
+            const resultAction = await dispatch(getUserSubscriptionDetails(userId));
 
-            if (response) {
-                setSubscriptionHistory(response.data.subscriptions[0].history || []);
-                setCurrentSubscriptionPlan(response.data.subscriptions[0] || null);
+            if (getUserSubscriptionDetails.fulfilled.match(resultAction)) {
+                const payload = resultAction.payload;
+                // payload is response.data from API helper
+                const subscriptions = payload?.subscriptions || [];
+                const firstSub = subscriptions[0] || null;
+
+                if (firstSub) {
+                    setSubscriptionHistory(firstSub.history || []);
+                    setCurrentSubscriptionPlan(firstSub);
+                } else {
+                    setSubscriptionHistory([]);
+                    setCurrentSubscriptionPlan(null);
+                }
+
+                setShowSubscriptionModal(true);
+            } else {
+                console.error('Error fetching subscription history:', resultAction.error);
+                toast.error('Failed to load subscription history');
             }
-            
-            setShowSubscriptionModal(true);
         } catch (err) {
             console.error('Error fetching subscription history:', err);
             toast.error('Failed to load subscription history');
@@ -370,6 +394,7 @@ const Users = () => {
                                     <th>Active Plan</th>
                                     <th>Created At</th>
                                     <th className="pe-4">Role</th>
+                                    <th className="pe-4">Subscription</th>
                                     <th className="pe-4">Actions</th>
                                 </tr>
                             </thead>
@@ -408,6 +433,7 @@ const Users = () => {
                                         <td className="pe-4">
                                             {/* ADDED SUBSCRIPTION HISTORY BUTTON */}
                                             <button
+                                                disabled={user.plan_id === null || loading}
                                                 className="btn btn-sm btn-primary"
                                                 onClick={() => fetchSubscriptionHistory(
                                                     user.id,
@@ -417,6 +443,22 @@ const Users = () => {
                                             >
                                                 <Icon icon="tabler:history" width={16} height={16} />
                                                 <span className="ms-1 d-none d-md-inline">Subscriptions</span>
+                                            </button>
+                                        </td>
+                                        <td className="pe-4">
+                                           <button
+                                            className={`btn btn-sm ${user.is_active ? 'btn-success' : 'btn-danger'}`}
+                                            onClick={() => handleToggleUser(user.id, user.is_active)}
+                                            disabled={togglingUserId === user.id || loading }
+                                            title={user.is_active ? 'Disable User' : 'Enable User'}
+                                            >
+                                            {togglingUserId === user.id ? (
+                                                <span className="spinner-border spinner-border-sm" role="status">
+                                                <span className="visually-hidden">Loading...</span>
+                                                </span>
+                                            ) : (
+                                                <Icon icon={user.is_active ? 'tabler:toggle-right' : 'tabler:toggle-left'} width={16} height={16} />
+                                            )}
                                             </button>
                                         </td>
                                     </tr>

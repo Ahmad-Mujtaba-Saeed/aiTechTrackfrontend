@@ -30,35 +30,6 @@ export const updateUserProfile = async (userData) => {
   return response.data;
 };
 
-export const getAllIndustries = async () => {
-  const response = await axios.get("/get-industries");
-  return response.data;
-};
-
-export const getAllRoles = async () => {
-  const response = await axios.get("/get-roles");
-  return response.data;
-};
-
-export const getAllEducationLevels = async () => {
-  const response = await axios.get("/get-education-levels");
-  return response.data;
-};
-
-export const getAllUserCompletedSteps = async () => {
-  const response = await axios.get("/completed-steps");
-  return response.data;
-};
-
-export const updateUserCompletedSteps = async (formData) => {
-  const response = await axios.post('/update-steps', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-  });
-  return response.data;
-}
-
 export const updateUserProfileSettings = async (formData) => {
   const response = await axios.post('/profile-settings', formData, {
     headers: {
