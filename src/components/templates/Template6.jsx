@@ -4,7 +4,7 @@ import demo_profile from '../../assets/demo_profile.avif';
 const Template6 = ({ resumeData }) => {
   const styles = {
     container: {
-      maxWidth: "850px",
+      // maxWidth: "850px",
       margin: "0 auto",
       padding: "40px",
       fontFamily: "'Segoe UI', Tahoma, sans-serif",

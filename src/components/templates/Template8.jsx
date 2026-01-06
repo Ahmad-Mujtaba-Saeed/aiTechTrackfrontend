@@ -5,7 +5,7 @@ const Template8 = ({ resumeData }) => {
   const styles = {
     container: {
       display: 'flex',
-      maxWidth: '850px',
+      // maxWidth: '850px',
       margin: '0 auto',
       backgroundColor: 'white',
       boxShadow: '0 0 20px rgba(0,0,0,0.1)',

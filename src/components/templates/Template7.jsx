@@ -5,7 +5,7 @@ import { color } from 'framer-motion';
 const Template7 = ({ resumeData }) => {
   const styles = {
     container: {
-      maxWidth: '850px',
+      // maxWidth: '850px',
       margin: '0 auto',
       background: '#fff',
       display: 'flex',
