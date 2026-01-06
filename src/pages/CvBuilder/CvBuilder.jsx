@@ -1,7 +1,7 @@
 import React from "react";
 import MasterLayout from "../../masterLayout/MasterLayout";
 import BreadCrum from "../../components/BreadCrum";
-import BuildingComponents from "../../components/CvBuilder/BuildingComponents";
+import BuildingComponents from "./components/BuildingComponents";
 
 const CvBuilder = () => {
 
@@ -10,7 +10,7 @@ const CvBuilder = () => {
     <>
       <MasterLayout>
         <BreadCrum title='Upload existing CV or build a new one with Cv Builder' subTitle='Every role deserves a tailored application. We make it effortless.' icon={icon} />
-        <BuildingComponents />
+      <BuildingComponents />
       </MasterLayout>
     </>
   );

@@ -281,7 +281,7 @@ const ChatBot = () => {
         </div>
 
         {/* Quick Replies */}
-        <div className="quick-replies">
+        {/* <div className="quick-replies">
           <p>Quick questions:</p>
           <div className="quick-reply-buttons">
             {["How do I reset my password?", "What are your hours?", "Contact support"].map((text, index) => (
@@ -294,7 +294,7 @@ const ChatBot = () => {
               </button>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Input Area */}
         <form className="chatbot-input-container" onSubmit={handleSendMessage}>
