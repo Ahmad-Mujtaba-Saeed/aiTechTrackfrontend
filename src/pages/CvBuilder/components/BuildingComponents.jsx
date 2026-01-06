@@ -10,7 +10,7 @@ import {
   getrecentCvsCreated,
   delCreatedCv,
   updateResumeName
-} from '../../features/resume/resumeSlice';
+} from '../../../features/resume/resumeSlice';
 import { toast } from 'react-toastify';
 import { FiLoader, FiFile, FiX } from "react-icons/fi";
 import { Pagination } from 'react-bootstrap';
