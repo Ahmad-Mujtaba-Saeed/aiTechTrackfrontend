@@ -27456,7 +27456,7 @@ fieldset:disabled .table-list .page,
 
 .content {
   min-height: 100vh;
-  padding: calc(var(--phoenix-navbar-top-height) + 28px) 1.5rem 6.375rem 1.5rem;
+  padding: calc(var(--phoenix-navbar-top-height) + 24px) 1.5rem 6.375rem 1.5rem;
   position: relative;
   padding-bottom: 6rem;
   overflow-x: hidden !important;
@@ -34621,7 +34621,7 @@ html:not(.navbar-vertical-collapsed) .navbar-vertical.navbar-expand-xs .navbar-v
 
 @media (min-width: 992px) {
   .navbar-vertical-collapsed .navbar-vertical.navbar-expand-lg {
-    position: absolute;
+    position: fixed;
     top: 0;
     height: auto;
     min-height: 100%;

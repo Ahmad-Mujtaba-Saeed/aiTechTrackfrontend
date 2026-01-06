@@ -1,5 +1,5 @@
 import React from 'react';
-import demo_profile from '../../assets/images/default_avatar.jpeg';
+import demo_profile from '../../assets/demo_profile.avif';
 import { color } from 'framer-motion';
 
 const Template7 = ({ resumeData }) => {

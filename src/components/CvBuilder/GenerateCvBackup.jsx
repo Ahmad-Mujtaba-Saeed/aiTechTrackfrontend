@@ -35,7 +35,6 @@ import { ClassicCoverLetterTemplate } from "../cover-letter-templates";
 import CoverLetter from "./components/coverLetter";
 import html2pdf from "html2pdf.js";
 import axios, { baseUrl } from "../../api/axios";
-import { round } from 'lodash';
 
 
 
@@ -1459,30 +1458,6 @@ export default function CVBuilder() {
                     </div>
                 </div>
                 <div className="editor-preview">
-                    <Button variant="outline-primary" size="sm" onClick={zoomOut} title={`ZoomOut ${round(zoom * 100, 0)}%`}>
-                        <FiMinus />
-                    </Button>
-                    <Button variant="outline-primary" size="sm" onClick={zoomIn} title={`ZoomIn ${round(zoom * 100, 0)}%`}>
-                        <FiPlus />
-                    </Button>
-
-                    <Dropdown drop="bottom" align="start">
-                        <Dropdown.Toggle variant="outline-primary" size="sm" className="btn btn-outline-primary">
-                            {downloadPDFLoader ? "Generating..." : "Download"}
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu className="dropdown-menu-end">
-                            <Dropdown.Item onClick={handleDownloadPDF}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-file-type-pdf me-2"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" /><path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6" /><path d="M17 18h2" /><path d="M20 15h-3v6" /><path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z" /></svg>
-                                Download as PDF
-                            </Dropdown.Item>
-
-                            <Dropdown.Item onClick={handleDownloadDocx}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-file-type-docx me-2"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" /><path d="M2 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z" /><path d="M17 16.5a1.5 1.5 0 0 0 -3 0v3a1.5 1.5 0 0 0 3 0" /><path d="M9.5 15a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1 -3 0v-3a1.5 1.5 0 0 1 1.5 -1.5z" /><path d="M19.5 15l3 6" /><path d="M19.5 21l3 -6" /></svg>
-                                Download as DOCX
-                            </Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
                     <div
                         ref={previewContainerRef}
                         className="cv-template-div"
@@ -3929,6 +3904,112 @@ export default function CVBuilder() {
                         </div>
                     </div>
                 </div>
+
+                <Col lg={5} xxl={6} className='right-section'>
+                    <Card className="border-0 shadow-custom" style={{ height: 'calc(100vh - 95px)', overflow: 'hidden' }}>
+                        <Card.Header className="bg-white border-bottom p-3">
+                            <div className="d-flex justify-content-between align-items-center">
+                                <h5 className="mb-0 fw-semibold" style={{ fontSize: '1.1rem' }}>CV Preview</h5>
+                                <div className="d-flex align-items-center gap-3">
+                                    <div className="d-flex align-items-center gap-1">
+                                        <Button variant="outline-primary" size="sm" onClick={zoomOut}>
+                                            <FiMinus />
+                                        </Button>
+                                        <Button variant="outline-primary" size="sm" onClick={zoomIn}>
+                                            <FiPlus />
+                                        </Button>
+
+                                        <Dropdown drop="bottom" align="start">
+                                            <Dropdown.Toggle variant="outline-primary" size="sm" className="btn btn-outline-primary">
+                                                {downloadPDFLoader ? "Generating..." : "Download"}
+                                            </Dropdown.Toggle>
+
+                                            <Dropdown.Menu className="dropdown-menu-end">
+                                                <Dropdown.Item onClick={handleDownloadPDF}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-file-type-pdf me-2"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" /><path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6" /><path d="M17 18h2" /><path d="M20 15h-3v6" /><path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z" /></svg>
+                                                    Download as PDF
+                                                </Dropdown.Item>
+
+                                                <Dropdown.Item onClick={handleDownloadDocx}>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-file-type-docx me-2"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" /><path d="M2 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z" /><path d="M17 16.5a1.5 1.5 0 0 0 -3 0v3a1.5 1.5 0 0 0 3 0" /><path d="M9.5 15a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1 -3 0v-3a1.5 1.5 0 0 1 1.5 -1.5z" /><path d="M19.5 15l3 6" /><path d="M19.5 21l3 -6" /></svg>
+                                                    Download as DOCX
+                                                </Dropdown.Item>
+                                            </Dropdown.Menu>
+                                        </Dropdown>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </Card.Header>
+                        <div
+                            ref={previewContainerRef}
+                            className="cv-template-div"
+                            style={{ height: 'calc(100% - 65px)', overflow: 'auto', background: '#f2f2f2' }}
+                        >
+                            <div
+                                ref={cvRef}
+                                style={{
+                                    background: 'white',
+                                    padding: '16px',
+                                    minHeight: `${Math.max(1, totalPages) * 1080}px`,
+                                    transform: `scale(${zoom})`,
+                                    transformOrigin: 'top center',
+                                    transition: 'transform 0.2s ease-in-out',
+                                }}
+                            >
+                                {(() => {
+                                    const selectedTemplateData = cardTemplate.find(t => t.name === selectedTemplate);
+                                    if (!selectedTemplateData) {
+                                        return <div className="alert alert-warning">Please select a template</div>;
+                                    }
+
+                                    const TemplateComponent = selectedTemplateData.template;
+                                    return (
+                                        <div ref={resumeRef}>
+                                            <TemplateComponent
+                                                resumeData={{
+                                                    ...(parsedResume || {
+                                                        candidateName: [{ firstName: '', familyName: '' }],
+                                                        headline: '',
+                                                        summary: [{ paragraph: '' }],
+                                                        phoneNumber: [{ formattedNumber: '' }],
+                                                        email: [''],
+                                                        location: { formatted: '' },
+                                                        workExperience: [],
+                                                        education: [],
+                                                        skill: [],
+                                                        profilePic: null,
+                                                        website: [''],
+                                                        certifications: [],
+                                                        languages: [],
+                                                        hobbies: [],
+                                                        customSections: [],
+                                                    }),
+                                                }}
+                                            />
+                                        </div>
+                                    );
+                                })()}
+                            </div>
+
+                            {/* Only show page dividers if we have multiple pages with content */}
+                            {totalPages > 1 && Array.from({ length: totalPages - 1 }).map((_, index) => (
+                                <div
+                                    key={index}
+                                    style={{
+                                        position: 'absolute',
+                                        left: 0,
+                                        right: 0,
+                                        top: `${(index + 1) * 1123}px`,
+                                        borderTop: '2px dashed #ccc',
+                                        pointerEvents: 'none'
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    </Card>
+
+                </Col>
             </div>
             {isGeneratingPDF && (
                 <div style={{

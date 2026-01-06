@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './ProfilePage2.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfileSettings } from '../../features/user/userSlice';
-import favicon from '../../assets/images/MPF-180x180.png';
+import favicon from '../../assets/demo_profile.avif';
 import axios, { stripe_public_key } from '../../utils/axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

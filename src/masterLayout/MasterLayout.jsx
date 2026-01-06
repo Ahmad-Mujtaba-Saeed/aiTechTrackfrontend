@@ -8,7 +8,7 @@ import { Button } from 'react-bootstrap';
 
 import logo from '../assets/images/CV-Builder.svg';
 import logoLight from '../assets/images/CV-Builder.svg';
-import avatar from '../assets/images/team/40x40/57.webp'
+import avatar from '../assets/demo_profile.avif'
 import favicon from '../assets/demo_profile.avif';
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/user/userSlice";
@@ -61,7 +61,7 @@ const MasterLayout = ({ children }) => {
     return location.pathname === path ? "active" : "";
   };
 
-  const isNavToggled = (path) => {
+  const isNavToggled = (path, classes) => {
     // Extract the ID from the path if it matches the pattern
     const pathSegments = location.pathname.split('/');
     const routeWithoutId = pathSegments.slice(0, -1).join('/');
@@ -69,7 +69,7 @@ const MasterLayout = ({ children }) => {
     console.log(routeWithoutId)
 
     // If no ID in current path, do exact match
-    return routeWithoutId === path ? "navbar-vertical-collapsed" : "";
+    return routeWithoutId === path ? classes : "";
   };
 
   useEffect(() => {
@@ -92,7 +92,7 @@ const MasterLayout = ({ children }) => {
   };
 
   return (
-    <main className={`main ${collapsed ? "navbar-vertical-collapsed" : ""} ${isNavToggled('/cv-generate')} `} id="top" data-bs-theme={theme}>
+    <main className={`main ${collapsed ? "navbar-vertical-collapsed" : ""} ${isNavToggled('/cv-generate', 'navbar-vertical-collapsed')} `} id="top" data-bs-theme={theme}>
       <nav className={`navbar navbar-vertical ${isMobile ? "navbar-expand" : "navbar-expand active"} navbar-expand-lg mobile-expand bg-white navbar-light dark__bg-dark dark__navbar-dark`}>
         <div className="collapse navbar-collapse" id="navbarVerticalCollapse">
 
@@ -362,9 +362,9 @@ const MasterLayout = ({ children }) => {
           </li>
         </ul>
       </nav>
-      <div className="content" data-bs-theme="light">
+      <div className={`content ${isNavToggled('/cv-generate', 'pb-0')}`} data-bs-theme="light">
         {children}
-        <footer className="footer position-absolute" style={{ translate: 'none', rotate: 'none', scale: 'none', transform: 'translate(0px, 0px)', opacity: 1 }}>
+        <footer className={`footer position-absolute ${isNavToggled('/cv-generate', 'd-none')}`} style={{ translate: 'none', rotate: 'none', scale: 'none', transform: 'translate(0px, 0px)', opacity: 1 }}>
           <div className="row g-0 justify-content-between align-items-center h-100">
             <div className="col-12 col-sm-auto text-center">
               <p className="mb-0 mt-2 mt-sm-0 fs-9">2025 © Cv Builder<span className="d-none d-sm-inline-block"></span></p>
