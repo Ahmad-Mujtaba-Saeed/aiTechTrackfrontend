@@ -43,7 +43,7 @@ import CoreSettingsManagement from "./pages/CoreSettings/CoreSettingsManagement"
 import Career from "./pages/CareerAdvice";
 import SignOut from "./pages/Auth/SignOut";
 
-import ChatBot from "./components/chat-bot-agent/ChatBot";
+
 
 // const Loader = () => (
 //   <div id="preloader">
@@ -121,7 +121,6 @@ function App() {
             />
           ))}
         </Routes>
-        <ChatBot />
       </PageWrapper>
     </BrowserRouter>
   );

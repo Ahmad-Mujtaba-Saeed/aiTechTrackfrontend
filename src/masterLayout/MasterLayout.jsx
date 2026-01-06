@@ -12,6 +12,7 @@ import avatar from '../assets/images/team/40x40/57.webp'
 import favicon from '../assets/demo_profile.avif';
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/user/userSlice";
+import ChatBot from "../components/chat-bot-agent/ChatBot";
 
 const MasterLayout = ({ children }) => {
 
@@ -456,6 +457,7 @@ const MasterLayout = ({ children }) => {
           </div>
         </div>
       </div>
+      <ChatBot />
     </main>
   );
 };
