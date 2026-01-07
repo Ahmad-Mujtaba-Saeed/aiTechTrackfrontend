@@ -363,7 +363,7 @@ const MasterLayout = ({ children }) => {
           </li>
         </ul>
       </nav>
-      <div className={`content ${isNavToggled('/cv-generate', 'pb-0')}`} data-bs-theme="light">
+      <div className={`content ${isNavToggled('/cv-generate', 'pb-0 overflow-hidden')}`} data-bs-theme="light">
         {children}
         <footer className={`footer position-absolute ${isNavToggled('/cv-generate', 'd-none')}`} style={{ translate: 'none', rotate: 'none', scale: 'none', transform: 'translate(0px, 0px)', opacity: 1 }}>
           <div className="row g-0 justify-content-between align-items-center h-100">

@@ -103,6 +103,13 @@ h4 {
     /* background-color: #001433 !important; */
 }
 
+.btn-primary {
+    font-size: 16px !important;
+    display: flex !important;
+    gap: 6px !important;
+    align-items: center !important;
+}
+
 .btn-phoenix-secondary {
     background-color: #000000 !Important;
     color: #fff !important;
@@ -949,7 +956,7 @@ h4 {
             aspect-ratio: 1/1;
             width: 100%;
             height: 100%;
-            border-radius: 10px;
+            border-radius: 8px;
         }
     }
 }
@@ -957,7 +964,7 @@ h4 {
 .custom-remove-btn {
     display: flex;
     border: none;
-    background: #000;
+    background: rgb(200, 0, 0);
     color: #fff;
     border-radius: 50%;
     width: 26px;
@@ -968,6 +975,66 @@ h4 {
     padding: 4px;
     justify-content: center;
     align-items: center;
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.custom-save-btn {
+    display: flex;
+    border: none;
+    background: rgb(0, 0, 0);
+    color: #fff;
+    border-radius: 6px;
+    width: 36px;
+    height: 36px;
+    padding: 4px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.custom-delete-btn-2 {
+    display: flex;
+    border: none;
+    background-color: rgb(200, 0, 0);
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    padding: 4px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 6px;
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+.custom-delete-btn {
+    display: flex;
+    border: none;
+    color: rgb(200, 0, 0);
+    width: 26px;
+    background-color: #fff0;
+    height: 26px;
+    padding: 4px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+
+    &:hover {
+        background-color: #fff0 !important;
+    }
 
     svg {
         width: 20px;
@@ -991,13 +1058,21 @@ h4 {
         font-weight: 400;
     }
 
-    .form-control {
+    .form-control,
+    .form-select {
         border-radius: 8px;
         border-color: #b7b7b7;
-        outline: none;
         color: #000;
         font-size: 12px;
         font-weight: 400;
+        outline: none;
+        box-shadow: none;
+
+        &:focus,
+        &:focus-visible {
+            outline: none;
+            box-shadow: none;
+        }
     }
 }
 
@@ -1007,6 +1082,33 @@ h4 {
     gap: 8px;
     align-items: center;
     margin-bottom: 24px;
-    font-size: 24px;
+    font-size: 16px !important;
     font-weight: 400;
+}
+
+.skill-badge {
+    background: #000;
+    font-size: 13px;
+    font-weight: 300;
+    padding: 5px 12px;
+}
+
+.personal-detail-wrapper .accordion-item {
+    border: none;
+    background-color: #fff;
+    box-shadow: 0 0 12px 4px #00000033;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.editor-modal-card {
+    border: none;
+    background-color: #fff;
+    box-shadow: 0 0 12px 4px #00000033;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+div:where(.swal2-container) {
+    z-index: 99999999999999 !important;
 }

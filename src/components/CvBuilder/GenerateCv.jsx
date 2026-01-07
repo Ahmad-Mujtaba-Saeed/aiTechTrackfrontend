@@ -1418,13 +1418,127 @@ export default function CVBuilder() {
         setModalFor(modalFor);
     }
 
+    const educationContainer = (
+        <div className="editor-modal-card v-wrap">
+            <div className="d-flex justify-content-between align-items-center gap-2">
+                <small className="">New {parsedResume?.educationTitle || "Education"} Form</small>
+                <div className="d-flex justify-content-end align-item-center gap-2">
+                    {eduCurrentForm && (
+                        <button
+                            type="button"
+                            className="custom-delete-btn-2"
+                            onClick={eduHandleCancelEdit}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                        </button>
+                    )}
+                    <button
+                        type="button"
+                        className="custom-save-btn"
+                        onClick={eduHandleSaveEducation}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M5 12l5 5l10 -10"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div className="h-wrap">
+                <div className="form-group">
+                    <label className="form-label">Degree/Qualification</label>
+                    <input
+                        className="form-control"
+                        name="eduDegree"
+                        value={eduFormData.eduDegree}
+                        onChange={eduHandleInputChange}
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="form-label">Institution</label>
+                    <input
+                        className="form-control"
+                        name="eduInstitution"
+                        value={eduFormData.eduInstitution}
+                        onChange={eduHandleInputChange}
+                    />
+                </div>
+            </div>
+            <div className="h-wrap">
+                <div className="form-group">
+                    <label className="form-label">Start Date</label>
+                    <input
+                        placeholder="2017"
+                        className="form-control"
+                        type="text"
+                        name="eduStartDate"
+                        value={eduFormData.eduStartDate}
+                        onChange={eduHandleInputChange}
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="form-label">End Date</label>
+                    <input
+                        placeholder="2018"
+                        className="form-control"
+                        type="text"
+                        name="eduEndDate"
+                        value={eduFormData.eduEndDate}
+                        onChange={eduHandleInputChange}
+                    />
+                </div>
+            </div>
+            <div className="form-group">
+                <label className="form-label">Grade Achieved</label>
+                <input
+                    className="form-control"
+                    name="achievedGrade"
+                    value={eduFormData.achievedGrade}
+                    onChange={eduHandleInputChange}
+                />
+            </div>
+            <div className="form-group v-wrap">
+                <label className="form-label">Major(s)</label>
+                {eduFormData.educationMajor.map((major, index) => (
+                    <div key={index} className="h-wrap align-items-center gap-2">
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={major}
+                            onChange={(e) => handleMajorChange(index, e.target.value)}
+                            placeholder={`Major ${index + 1}`}
+                        />
+                        {eduFormData.educationMajor.length > 1 && (
+                            <span
+                                type="button"
+                                className="custom-delete-btn-2"
+                                onClick={() => handleRemoveMajor(index)}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                            </span>
+                        )}
+                        {index == (eduFormData.educationMajor.length - 1) && (
+                            <button
+                                type="button"
+                                className="custom-save-btn"
+                                onClick={handleAddMajor}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-square-rounded-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3c7.2 0 9 1.8 9 9c0 7.2 -1.8 9 -9 9c-7.2 0 -9 -1.8 -9 -9c0 -7.2 1.8 -9 9 -9" /><path d="M15 12h-6" /><path d="M12 9v6" /></svg>
+                            </button>
+                        )}
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
+
     const getEditorModalContent = () => {
         if (modalFor == 'personal') {
             return (
                 <div className='personal-detail-wrapper'>
                     <h3 className="editor-section-title">
                         {parsedResume?.editingPersonalTitle ? (
-                            <div className="d-flex align-items-center gap-2">
+                            <div className="d-flex align-items-center gap-2 flex-grow-1">
                                 <div className="form-group">
                                     <input
                                         type="text"
@@ -1757,6 +1871,1214 @@ export default function CVBuilder() {
             )
         }
 
+        if (modalFor == 'experence') {
+            return (
+                <div className='personal-detail-wrapper'>
+                    <h3 className="editor-section-title mb-0">
+                        <button
+                            className={`icon-toggle border-0 bg-transparent ${!parsedResume?.employmentDisabled ? 'is-active' : ''}`}
+                            type="button"
+                            onClick={() =>
+                                dispatch(
+                                    updateField({
+                                        path: "employmentDisabled",
+                                        value: !parsedResume?.employmentDisabled
+                                    })
+                                )
+                            }
+                        >
+                            {!parsedResume?.employmentDisabled ?
+                                (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
+                                : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
+                            }
+                        </button>
+                        {parsedResume?.editingEmploymentTitle ? (
+                            <div className="d-flex align-items-center gap-2 flex-grow-1">
+                                <div className="form-group">
+                                    <input
+                                        type="text"
+                                        className="form-control form-control-sm me-2"
+                                        value={parsedResume?.employmentTitle || "Experience"}
+                                        onChange={(e) =>
+                                            dispatch(
+                                                updateField({
+                                                    path: "employmentTitle",
+                                                    value: e.target.value
+                                                })
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            dispatch(
+                                                updateField({
+                                                    path: "editingEmploymentTitle",
+                                                    value: false
+                                                })
+                                            )
+                                        }
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                dispatch(
+                                                    updateField({
+                                                        path: "editingEmploymentTitle",
+                                                        value: false
+                                                    })
+                                                );
+                                            }
+                                        }}
+                                    />
+                                </div>
+                                <span
+                                    className='cursor-pointer'
+                                    onClick={() =>
+                                        dispatch(
+                                            updateField({
+                                                path: "editingEmploymentTitle",
+                                                value: false
+                                            })
+                                        )
+                                    }
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M5 12l5 5l10 -10" />
+                                    </svg>
+                                </span>
+                            </div>
+                        ) : (
+                            <>
+                                {parsedResume?.employmentTitle || "Experience"}
+                                <span
+                                    className='cursor-pointer'
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        dispatch(
+                                            updateField({
+                                                path: "editingEmploymentTitle",
+                                                value: true
+                                            })
+                                        );
+                                    }}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                        <path d="M16 5l3 3" />
+                                    </svg>
+                                </span>
+                            </>
+                        )}
+                    </h3>
+                    {!parsedResume?.employmentDisabled ? (
+                        <div className="v-wrap">
+                            {parsedResume.workExperience?.map((expItem, expIndex) => (
+                                <div key={expIndex} className="editor-modal-card v-wrap">
+                                    <div className="d-flex justify-content-between align-items-center mb-0">
+                                        <small className="">{parsedResume?.employmentTitle || "Experience"} #{expIndex + 1}</small>
+                                        <div className="d-flex justify-content-end align-items-center gap-2">
+                                            <button
+                                                type="button"
+                                                className="custom-delete-btn-2"
+                                                onClick={() => expHandleDeleteExperience(expIndex)}
+                                                title="Delete experience entry"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="custom-save-btn"
+                                                onClick={() => expHandleEditExperience(expIndex)}
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                    <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                    <path d="M16 5l3 3" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className="h-wrap align-items-end">
+                                        <div className="h-wrap">
+                                            <div className="icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-report-analytics"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" /><path d="M9 17v-5" /><path d="M12 17v-1" /><path d="M15 17v-3" /></svg>
+                                            </div>
+                                            <div className="v-wrap gap-0">
+                                                <span className="edu-degree fw-600">{expItem.workExperienceJobTitle}</span>
+                                                <small className="edu-time text-muted">{expItem.workExperienceOrganization}</small>
+                                            </div>
+                                        </div>
+                                        <small className="edu-time text-muted flex-shrink-0">
+                                            {expItem.workExperienceDates?.start?.date} / {expItem.workExperienceDates?.end?.date}
+                                        </small>
+                                    </div>
+                                </div>
+                            ))}
+
+                            {/* Current form for adding/editing */}
+                            {editingExperience.index !== null ? (
+                                <div className="editor-modal-card v-wrap">
+                                    <div className="d-flex justify-content-between align-items-center gap-2">
+                                        <small className="">Edit Experience Form</small>
+                                        <div className="d-flex justify-content-end align-items-center gap-2">
+                                            <button
+                                                type="button"
+                                                className="custom-delete-btn-2"
+                                                onClick={expHandleCancelEdit}
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="custom-save-btn"
+                                                onClick={expHandleSaveExperience}
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M5 12l5 5l10 -10" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className="h-wrap">
+                                        <div className="form-group">
+                                            <label className="form-label">Job Title</label>
+                                            <input
+                                                className="form-control"
+                                                value={editingExperience.data.workExperienceJobTitle || ''}
+                                                onChange={(e) => setEditingExperience(prev => ({
+                                                    ...prev,
+                                                    data: {
+                                                        ...prev.data,
+                                                        workExperienceJobTitle: e.target.value
+                                                    }
+                                                }))}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">Company</label>
+                                            <input
+                                                className="form-control"
+                                                value={editingExperience.data.workExperienceOrganization || ''}
+                                                onChange={(e) => setEditingExperience(prev => ({
+                                                    ...prev,
+                                                    data: {
+                                                        ...prev.data,
+                                                        workExperienceOrganization: e.target.value
+                                                    }
+                                                }))}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="h-wrap">
+                                        <div className="form-group">
+                                            <label className="form-label">Start Date</label>
+                                            <input
+                                                placeholder="2020"
+                                                className="form-control"
+                                                type="text"
+                                                value={editingExperience.data.workExperienceDates?.start?.date || ''}
+                                                onChange={(e) => setEditingExperience(prev => ({
+                                                    ...prev,
+                                                    data: {
+                                                        ...prev.data,
+                                                        workExperienceDates: {
+                                                            ...prev.data.workExperienceDates,
+                                                            start: {
+                                                                ...prev.data.workExperienceDates?.start,
+                                                                date: e.target.value
+                                                            }
+                                                        }
+                                                    }
+                                                }))}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label className="form-label">End Date</label>
+                                            <input
+                                                placeholder="2021 or Present"
+                                                className="form-control"
+                                                type="text"
+                                                value={editingExperience.data.workExperienceDates?.end?.date || ''}
+                                                onChange={(e) => setEditingExperience(prev => ({
+                                                    ...prev,
+                                                    data: {
+                                                        ...prev.data,
+                                                        workExperienceDates: {
+                                                            ...prev.data.workExperienceDates,
+                                                            end: {
+                                                                ...prev.data.workExperienceDates?.end,
+                                                                date: e.target.value
+                                                            }
+                                                        }
+                                                    }
+                                                }))}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="form-label">Description (Optional)</label>
+                                        <textarea
+                                            rows="3"
+                                            className="form-control"
+                                            value={editingExperience.data.workExperienceDescription || ''}
+                                            onChange={(e) => setEditingExperience(prev => ({
+                                                ...prev,
+                                                data: {
+                                                    ...prev.data,
+                                                    workExperienceDescription: e.target.value
+                                                }
+                                            }))}
+                                            placeholder="Describe your role and responsibilities"
+                                        ></textarea>
+                                    </div>
+                                    <div className="form-group v-wrap">
+                                        <label className="form-label">Key Achievements</label>
+                                        {editingExperience.data.highlights?.items?.map((bullet, bulletIndex) => (
+                                            <div key={bullet.id || bulletIndex} className="h-wrap align-items-center gap-2">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    value={bullet.bullet}
+                                                    onChange={(e) => {
+                                                        setEditingExperience(prev => ({
+                                                            ...prev,
+                                                            data: {
+                                                                ...prev.data,
+                                                                highlights: {
+                                                                    ...prev.data.highlights,
+                                                                    items: prev.data.highlights.items.map((b, i) =>
+                                                                        i === bulletIndex ? { ...b, bullet: e.target.value } : b
+                                                                    )
+                                                                }
+                                                            }
+                                                        }));
+                                                    }}
+                                                    placeholder="Enter achievement or responsibility"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    className="custom-delete-btn-2"
+                                                    onClick={() => {
+                                                        setEditingExperience(prev => ({
+                                                            ...prev,
+                                                            data: {
+                                                                ...prev.data,
+                                                                highlights: {
+                                                                    ...prev.data.highlights,
+                                                                    items: prev.data.highlights.items.filter((_, i) => i !== bulletIndex)
+                                                                }
+                                                            }
+                                                        }));
+                                                    }}
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                                                </button>
+                                            </div>
+                                        ))}
+                                        <button
+                                            type="button"
+                                            className="btn btn-outline-primary btn-sm mt-2"
+                                            onClick={() => {
+                                                setEditingExperience(prev => ({
+                                                    ...prev,
+                                                    data: {
+                                                        ...prev.data,
+                                                        highlights: {
+                                                            ...prev.data.highlights,
+                                                            items: [
+                                                                ...(prev.data.highlights?.items || []),
+                                                                { id: Date.now(), bullet: '' }
+                                                            ]
+                                                        }
+                                                    }
+                                                }));
+                                            }}
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-square-rounded-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3c7.2 0 9 1.8 9 9c0 7.2 -1.8 9 -9 9c-7.2 0 -9 -1.8 -9 -9c0 -7.2 1.8 -9 9 -9" /><path d="M15 12h-6" /><path d="M12 9v6" /></svg>
+                                            Add Bullet Point
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-secondary btn-sm mt-2"
+                                    style={{ maxWidth: 'fit-content' }}
+                                    onClick={expHandleAddExperience}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus me-1">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                    Add {parsedResume?.employmentTitle || "Experience"}
+                                </button>
+                            )}
+                        </div>
+                    ) : (
+                        <div className="text-dark text-center py-3 d-flex flex-column gap-2">
+                            <span
+                                className={`icon-toggle border-0 bg-transparent text-dark`}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-report-analytics"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" /><path d="M9 17v-5" /><path d="M12 17v-1" /><path d="M15 17v-3" /></svg>
+                            </span>
+                            This section is disabled
+                        </div>
+                    )}
+                </div>
+            )
+        }
+
+        if (modalFor == 'education') {
+            return (
+                <div className='personal-detail-wrapper'>
+                    <h3 className="editor-section-title mb-0">
+                        <button
+                            className={`icon-toggle border-0 bg-transparent ${!parsedResume?.educationDisabled ? 'is-active' : ''}`}
+                            type="button"
+                            onClick={() =>
+                                dispatch(
+                                    updateField({
+                                        path: "educationDisabled",
+                                        value: !parsedResume?.educationDisabled
+                                    })
+                                )
+                            }
+                        >
+
+                            {!parsedResume?.educationDisabled ?
+                                (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
+                                : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
+                            }
+                        </button>
+                        {parsedResume?.educationDisabled ? (
+                            <div className="d-flex align-items-center gap-2 flex-grow-1">
+                                <div className="form-group">
+                                    <input
+                                        type="text"
+                                        className="form-control form-control-sm me-2"
+
+                                        value={parsedResume?.educationTitle || "Education"}
+                                        onChange={(e) =>
+                                            dispatch(
+                                                updateField({
+                                                    path: "educationTitle",
+                                                    value: e.target.value
+                                                })
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            dispatch(
+                                                updateField({
+                                                    path: "editingEducationTitle",
+                                                    value: false
+                                                })
+                                            )
+                                        }
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                dispatch(
+                                                    updateField({
+                                                        path: "editingEducationTitle",
+                                                        value: false
+                                                    })
+                                                );
+                                            }
+                                        }}
+                                    />
+                                </div>
+                                <span
+                                    className='cursor-pointer'
+                                    onClick={() =>
+                                        dispatch(
+                                            updateField({
+                                                path: "editingEducationTitle",
+                                                value: false
+                                            })
+                                        )
+                                    }
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M5 12l5 5l10 -10" />
+                                    </svg>
+                                </span>
+                            </div>
+                        ) : (
+                            <>
+                                {parsedResume?.educationTitle || "Education"}
+                                < span
+                                    className='cursor-pointer'
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        dispatch(
+                                            updateField({
+                                                path: "editingEducationTitle",
+                                                value: true
+                                            })
+                                        );
+                                    }}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                        <path d="M16 5l3 3" />
+                                    </svg>
+                                </span>
+                            </>
+                        )}
+                    </h3>
+                    {!parsedResume?.educationDisabled ? (
+                        <div className="v-wrap">
+                            {parsedResume.education?.map((eduItem, eduIndex) => (
+                                <div key={eduIndex} className="editor-modal-card v-wrap">
+                                    <div className="d-flex justify-content-between align-items-center mb-0">
+                                        <small className="">{parsedResume?.educationTitle || "Education"} #{eduIndex + 1}</small>
+                                        <div className="d-flex justify-content-end align-items-center gap-2">
+                                            <button
+                                                type="button"
+                                                className="custom-delete-btn-2"
+                                                onClick={() => eduHandleDeleteEducation(eduIndex)}
+                                                title="Delete education entry"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="custom-save-btn"
+                                                onClick={() => eduHandleEditEducation(eduIndex)}
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                    <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                    <path d="M16 5l3 3" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className="h-wrap align-items-end">
+                                        <div className="h-wrap">
+                                            <div className="icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6"></path>
+                                                    <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4"></path>
+                                                </svg>
+                                            </div>
+                                            <div className="v-wrap gap-0">
+                                                <span className="edu-degree fw-600">{eduItem.educationLevel.label}</span>
+                                                <small className="edu-time text-muted">{eduItem.educationOrganization}</small>
+                                            </div>
+                                        </div>
+                                        <small className="edu-time text-muted flex-shrink-0">
+                                            {eduItem.educationDates.start.date} / {eduItem.educationDates.end.date}
+                                        </small>
+                                    </div>
+
+                                </div>
+                            ))}
+
+                            {/* Current form for adding/editing */}
+                            {eduCurrentForm ? educationContainer : educationContainer}
+                        </div>
+                    ) : (
+                        <div className="text-dark text-center py-3 d-flex flex-column gap-2">
+                            <span
+                                className={`icon-toggle border-0 bg-transparent text-dark`}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-school"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" /><path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" /></svg>
+                            </span>
+                            This section is disabled
+                        </div>
+                    )}
+                </div>
+            )
+        }
+
+        if (modalFor == 'skills') {
+            return (
+                <div className='personal-detail-wrapper'>
+                    <h3 className="editor-section-title">
+                        <button
+                            className={`icon-toggle border-0 bg-transparent ${!parsedResume?.skillsDisabled ? 'is-active' : ''}`}
+                            type="button"
+                            onClick={() =>
+                                dispatch(
+                                    updateField({
+                                        path: "skillsDisabled",
+                                        value: !parsedResume?.skillsDisabled
+                                    })
+                                )
+                            }
+                        >
+
+                            {!parsedResume?.skillsDisabled ?
+                                (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
+                                : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
+                            }
+                        </button>
+                        {parsedResume?.editingSkillsTitle ? (
+                            <div className="d-flex align-items-center gap-2 flex-grow-1">
+                                <div className="form-group">
+                                    <input
+                                        type="text"
+                                        className="form-control form-control-sm me-2"
+
+                                        value={parsedResume?.skillsTitle || "Skills"}
+                                        onChange={(e) =>
+                                            dispatch(
+                                                updateField({
+                                                    path: "skillsTitle",
+                                                    value: e.target.value
+                                                })
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            dispatch(
+                                                updateField({
+                                                    path: "editingSkillsTitle",
+                                                    value: false
+                                                })
+                                            )
+                                        }
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                dispatch(
+                                                    updateField({
+                                                        path: "editingSkillsTitle",
+                                                        value: false
+                                                    })
+                                                );
+                                            }
+                                        }}
+                                    />
+                                </div>
+                                <span
+                                    className='cursor-pointer'
+                                    onClick={() =>
+                                        dispatch(
+                                            updateField({
+                                                path: "editingSkillsTitle",
+                                                value: false
+                                            })
+                                        )
+                                    }
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M5 12l5 5l10 -10" />
+                                    </svg>
+                                </span>
+                            </div>
+                        ) : (
+                            <>
+                                {parsedResume?.skillsTitle || "Skills"}
+                                < span
+                                    className='cursor-pointer'
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        dispatch(
+                                            updateField({
+                                                path: "editingSkillsTitle",
+                                                value: true
+                                            })
+                                        );
+                                    }}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                        <path d="M16 5l3 3" />
+                                    </svg>
+                                </span>
+                            </>
+                        )}
+                    </h3>
+                    {!parsedResume?.skillsDisabled ? (
+                        <div className="v-wrap">
+                            <div className="h-wrap align-items-end">
+                                <div className="form-group">
+                                    <label className="form-label">Add {parsedResume?.skillsTitle || "Skills"} (one per line)</label>
+                                    <input type="text" className="form-control" placeholder={(parsedResume?.skillsTitle ? parsedResume.skillsTitle + ' name' : "Type a skill and press Enter to add it")}
+                                        value={currentSkill}
+                                        onChange={(e) => setCurrentSkill(e.target.value)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter' && !e.shiftKey) {
+                                                e.preventDefault();
+                                                handleAddSkill();
+                                            }
+                                        }}
+                                    />
+                                </div>
+                                <span
+                                    className='cursor-pointer custom-save-btn'
+                                    onClick={() => {
+                                        if (currentSkill.trim()) {
+                                            const currentSkills = parsedResume?.skill || [];
+                                            handleAddSkill();
+                                            setCurrentSkill('');
+                                        }
+                                    }}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M5 12l5 5l10 -10" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <div className="d-flex flex-wrap gap-2">
+                                {parsedResume?.skill
+                                    ?.filter(skill => skill.selected)
+                                    .map((skill, index) => (
+                                        <span key={index} className="badge d-inline-flex align-items-center skill-badge">
+                                            {skill.name}
+                                            <button
+                                                type="button"
+                                                className="ms-1 bg-transparent border-0"
+                                                aria-label="Remove"
+                                                onClick={() => {
+                                                    const updatedSkills = [...parsedResume.skill];
+                                                    updatedSkills.splice(updatedSkills.findIndex(s => s.name === skill.name), 1);
+                                                    dispatch(updateField({ path: "skill", value: updatedSkills }));
+                                                }}
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-x">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <path d="M18 6l-12 12" />
+                                                    <path d="M6 6l12 12" />
+                                                </svg>
+                                            </button>
+                                        </span>
+                                    ))}
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="text-dark text-center py-3 d-flex flex-column gap-2">
+                            <span
+                                className={`icon-toggle border-0 bg-transparent text-dark`}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-bulb"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" /><path d="M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0 -1 3a2 2 0 0 1 -4 0a3.5 3.5 0 0 0 -1 -3" /><path d="M9.7 17l4.6 0" /></svg>
+                            </span>
+                            This section is disabled
+                        </div>
+                    )}
+                </div>
+            )
+        }
+
+        if (modalFor == 'language') {
+            return (
+                <div className='personal-detail-wrapper'>
+                    <h3 className="editor-section-title">
+                        <button
+                            className={`icon-toggle border-0 bg-transparent ${!parsedResume?.languagesDisabled ? 'is-active' : ''}`}
+                            type="button"
+                            onClick={() =>
+                                dispatch(
+                                    updateField({
+                                        path: "languagesDisabled",
+                                        value: !parsedResume?.languagesDisabled
+                                    })
+                                )
+                            }
+                        >
+
+                            {!parsedResume?.languagesDisabled ?
+                                (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
+                                : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
+                            }
+                        </button>
+                        {parsedResume?.editingLanguagesTitle ? (
+                            <div className="d-flex align-items-center gap-2 flex-grow-1">
+                                <div className="form-group">
+                                    <input
+                                        type="text"
+                                        className="form-control form-control-sm me-2"
+
+                                        value={parsedResume?.languagesTitle || "Languages"}
+                                        onChange={(e) =>
+                                            dispatch(
+                                                updateField({
+                                                    path: "languagesTitle",
+                                                    value: e.target.value
+                                                })
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            dispatch(
+                                                updateField({
+                                                    path: "editingLanguagesTitle",
+                                                    value: false
+                                                })
+                                            )
+                                        }
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                dispatch(
+                                                    updateField({
+                                                        path: "editingLanguagesTitle",
+                                                        value: false
+                                                    })
+                                                );
+                                            }
+                                        }}
+                                    />
+                                </div>
+                                <span
+                                    className='cursor-pointer'
+                                    onClick={() =>
+                                        dispatch(
+                                            updateField({
+                                                path: "editingLanguagesTitle",
+                                                value: false
+                                            })
+                                        )
+                                    }
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M5 12l5 5l10 -10" />
+                                    </svg>
+                                </span>
+                            </div>
+                        ) : (
+                            <>
+                                {parsedResume?.languagesTitle || "Languages"}
+                                < span
+                                    className='cursor-pointer'
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        dispatch(
+                                            updateField({
+                                                path: "editingLanguagesTitle",
+                                                value: true
+                                            })
+                                        );
+                                    }}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                        <path d="M16 5l3 3" />
+                                    </svg>
+                                </span>
+                            </>
+                        )}
+                    </h3>
+                    {!parsedResume?.languagesDisabled ? (
+                        <div className="v-wrap">
+                            <div className="h-wrap align-items-end">
+                                <div className="form-group">
+                                    <label className="form-label">Add {parsedResume?.languagesTitle || "Language"}</label>
+                                    <input type="text" className="form-control" placeholder={(parsedResume?.languagesTitle ? parsedResume.languagesTitle + ' name' : "Language name")}
+                                        value={currentLanguage}
+                                        onChange={(e) => setCurrentLanguage(e.target.value)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter' && !e.shiftKey) {
+                                                e.preventDefault();
+                                                handleAddLanguage();
+                                            }
+                                        }}
+                                    />
+                                </div>
+                                <div className="form-group w-50">
+                                    <select className="form-select"
+                                        value={languageLevel}
+                                        onChange={(e) => setLanguageLevel(e.target.value)}
+                                    >
+                                        <option value="Beginner">Beginner</option>
+                                        <option value="Intermediate">Intermediate</option>
+                                        <option value="Advanced">Advanced</option>
+                                        <option value="Native">Native</option>
+                                    </select>
+                                </div>
+                                <span
+                                    className='cursor-pointer custom-save-btn'
+                                    onClick={handleAddLanguage}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M5 12l5 5l10 -10" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <div className="d-flex flex-wrap gap-2">
+                                {(parsedResume?.languages ?? [])
+                                    .filter((l) => {
+                                        if (!l) return false;
+                                        if (typeof l === 'object' && Object.keys(l).length === 0) return false;
+                                        return Boolean(l.name || l.level || l.language);
+                                    })
+                                    .map((lang, index) => (
+                                        <span key={index} className="badge d-inline-flex align-items-center skill-badge">
+                                            {lang.name || lang.language}
+                                            {lang.level ? ` (${lang.level})` : ''}
+                                            <button
+                                                type="button"
+                                                className="bg-transparent border-0"
+                                                aria-label="Remove"
+                                                onClick={() => {
+                                                    const updatedLangs = [...parsedResume.languages];
+                                                    updatedLangs.splice(index, 1);
+                                                    dispatch(updateField({ path: "languages", value: updatedLangs }));
+                                                }}
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                            </button>
+                                        </span>
+                                    ))}
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="text-dark text-center py-3 d-flex flex-column gap-2">
+                            <span
+                                className={`icon-toggle border-0 bg-transparent text-dark`}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-language"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 6.371c0 4.418 -2.239 6.629 -5 6.629" /><path d="M4 6.371h7" /><path d="M5 9c0 2.144 2.252 3.908 6 4" /><path d="M12 20l4 -9l4 9" /><path d="M19.1 18h-6.2" /><path d="M6.694 3l.793 .582" /></svg>
+                            </span>
+                            This section is disabled
+                        </div>
+                    )}
+                </div>
+            )
+        }
+
+        if (modalFor == 'hobbie') {
+            return (
+                <div className='personal-detail-wrapper'>
+                    <h3 className="editor-section-title">
+                        <button
+                            className={`icon-toggle border-0 bg-transparent ${!parsedResume?.hobbiesDisabled ? 'is-active' : ''}`}
+                            type="button"
+                            onClick={() =>
+                                dispatch(
+                                    updateField({
+                                        path: "hobbiesDisabled",
+                                        value: !parsedResume?.hobbiesDisabled
+                                    })
+                                )
+                            }
+                        >
+
+                            {!parsedResume?.hobbiesDisabled ?
+                                (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
+                                : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
+                            }
+                        </button>
+                        {parsedResume?.editingHobbiesTitle ? (
+                            <div className="d-flex align-items-center gap-2 flex-grow-1">
+                                <div className="form-group">
+                                    <input
+                                        type="text"
+                                        className="form-control form-control-sm me-2"
+
+                                        value={parsedResume?.hobbiesTitle || "Hobbies"}
+                                        onChange={(e) =>
+                                            dispatch(
+                                                updateField({
+                                                    path: "hobbiesTitle",
+                                                    value: e.target.value
+                                                })
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            dispatch(
+                                                updateField({
+                                                    path: "editingHobbiesTitle",
+                                                    value: false
+                                                })
+                                            )
+                                        }
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                dispatch(
+                                                    updateField({
+                                                        path: "editingHobbiesTitle",
+                                                        value: false
+                                                    })
+                                                );
+                                            }
+                                        }}
+                                    />
+                                </div>
+                                <span
+                                    className='cursor-pointer'
+                                    onClick={() =>
+                                        dispatch(
+                                            updateField({
+                                                path: "editingHobbiesTitle",
+                                                value: false
+                                            })
+                                        )
+                                    }
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M5 12l5 5l10 -10" />
+                                    </svg>
+                                </span>
+                            </div>
+                        ) : (
+                            <>
+                                {parsedResume?.hobbiesTitle || "Hobbies"}
+                                < span
+                                    className='cursor-pointer'
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        dispatch(
+                                            updateField({
+                                                path: "editingHobbiesTitle",
+                                                value: true
+                                            })
+                                        );
+                                    }}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                        <path d="M16 5l3 3" />
+                                    </svg>
+                                </span>
+                            </>
+                        )}
+                    </h3>
+                    {!parsedResume?.hobbiesDisabled ? (
+                        <div className="v-wrap">
+                            <div className="h-wrap align-items-end">
+                                <div className="form-group">
+                                    <label className="form-label">Add {parsedResume?.hobbiesTitle || "Hobby"}</label>
+                                    <input type="text" className="form-control" placeholder={(parsedResume?.hobbiesTitle ? parsedResume.hobbiesTitle + ' name' : "Hobby name")}
+                                        value={currentHobby}
+                                        onChange={(e) => setCurrentHobby(e.target.value)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter' && !e.shiftKey) {
+                                                e.preventDefault();
+                                                handleAddHobby();
+                                            }
+                                        }}
+                                    />
+                                </div>
+                                <span
+                                    className='cursor-pointer custom-save-btn'
+                                    onClick={handleAddHobby}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M5 12l5 5l10 -10" />
+                                    </svg>
+                                </span>
+                            </div>
+                            <div className="d-flex flex-wrap gap-2">
+                                {parsedResume?.hobbies?.map((hobby, index) => (
+                                    <span key={index} className="badge d-inline-flex align-items-center skill-badge">
+                                        {hobby}
+                                        <button
+                                            type="button"
+                                            className="bg-transparent border-0"
+                                            aria-label="Remove"
+                                            onClick={() => {
+                                                const updatedHobbies = [...parsedResume.hobbies];
+                                                updatedHobbies.splice(index, 1);
+                                                dispatch(updateField({ path: "hobbies", value: updatedHobbies }));
+                                            }}
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                        </button>
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="text-dark text-center py-3 d-flex flex-column gap-2">
+                            <span
+                                className={`icon-toggle border-0 bg-transparent text-dark`}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-object-scan"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8 10a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-4a2 2 0 0 1 -2 -2l0 -4" /></svg>
+                            </span>
+                            This section is disabled
+                        </div>
+                    )}
+                </div>
+            )
+        }
+
+        if (modalFor == 'custom') {
+            return (
+                <div className='personal-detail-wrapper'>
+                    {parsedResume?.customSections?.map((section, index) => (
+                        <div key={section.id} className="accordion-item">
+                            <h3 className="accordion-header" id={`headingCustom-${section.id}`}>
+                                <div className="d-flex justify-content-between align-items-center w-100">
+                                    <div className="d-flex align-items-center w-100 gap-2">
+                                        <button
+                                            className={`icon-toggle border-0 bg-transparent ${!section?.disabled ? 'is-active' : ''}`}
+                                            type="button"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleUpdateCustomSection(section.id, {
+                                                    disabled: !section?.disabled
+                                                });
+                                            }}
+                                        >
+                                            {!section?.disabled ?
+                                                (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
+                                                : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
+                                            }
+                                        </button>
+
+                                        {section?.editingTitle ? (
+                                            <div className="d-flex align-items-center gap-2 flex-grow-1 flex-grow-1 justify-content-start">
+                                                <div className="form-group">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control form-control-sm me-2"
+                                                        value={section?.title || "Custom Section"}
+                                                        onChange={(e) => {
+                                                            handleUpdateCustomSection(section.id, {
+                                                                title: e.target.value
+                                                            });
+                                                        }}
+                                                        onBlur={() => {
+                                                            handleUpdateCustomSection(section.id, {
+                                                                editingTitle: false
+                                                            });
+                                                        }}
+                                                        onKeyDown={(e) => {
+                                                            if (e.key === 'Enter') {
+                                                                handleUpdateCustomSection(section.id, {
+                                                                    editingTitle: false
+                                                                });
+                                                            }
+                                                        }}
+                                                        autoFocus
+                                                    />
+                                                </div>
+                                                <span
+                                                    type="button"
+                                                    onClick={() => {
+                                                        handleUpdateCustomSection(section.id, {
+                                                            editingTitle: false
+                                                        });
+                                                    }}
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M5 12l5 5l10 -10" />
+                                                    </svg>
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <button
+                                                className={`accordion-button flex-grow-1 w-100 d-flex gap-2 ${openSections[`custom-${section.id}`] ? '' : 'collapsed'} ${section?.disabled ? 'text-muted' : ''} editor-section-title m-0`}
+                                                type="button"
+                                                onClick={() => toggleSection(`custom-${section.id}`)}
+                                                style={{ background: 'none', border: 'none', textAlign: 'left' }}
+                                            >
+                                                {section?.title || "Custom Section"}
+                                                <span
+                                                    type="button"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleUpdateCustomSection(section.id, {
+                                                            editingTitle: true
+                                                        });
+                                                    }}
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                                        <path d="M16 5l3 3" />
+                                                    </svg>
+                                                </span>
+                                            </button>
+                                        )}
+
+                                        <button
+                                            className="btn custom-delete-btn"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleRemoveCustomSection(section.id);
+                                            }}
+                                            title="Delete this section"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </h3>
+                            <div
+                                id={`collapseCustom-${section.id}`}
+                                className={`accordion-collapse collapse ${openSections[`custom-${section.id}`] ? 'show' : ''}`}
+                                aria-labelledby={`headingCustom-${section.id}`}
+                            >
+                                <div className="accordion-body">
+                                    {!section?.disabled ? (
+                                        <div className="card border-0 shadow-none">
+                                            <CKEditor
+                                                editor={ClassicEditor}
+                                                data={section?.content}
+                                                onChange={(event, editor) => {
+                                                    const data = editor.getData();
+                                                    handleUpdateCustomSection(section.id, { content: data });
+                                                }}
+                                                config={{
+                                                    toolbar: [
+                                                        'heading', '|',
+                                                        'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|',
+                                                        'outdent', 'indent', '|',
+                                                        'undo', 'redo'
+                                                    ]
+                                                }}
+                                            />
+                                            <small className="mt-2 text-muted small">
+                                                Use the editor above to add content to your custom section.
+                                            </small>
+                                        </div>
+                                    ) : (
+                                        <div className="text-dark text-center py-3 d-flex flex-column gap-2">
+                                            <span
+                                                className={`icon-toggle border-0 bg-transparent text-dark`}
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-object-scan"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8 10a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-4a2 2 0 0 1 -2 -2l0 -4" /></svg>
+                                            </span>
+                                            This section is disabled
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+
+                    {!parsedResume?.customSections && (
+                        <div className="text-dark text-center py-3 d-flex flex-column gap-2">
+                            <span
+                                className={`icon-toggle border-0 bg-transparent text-dark`}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-object-scan"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8 10a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-4a2 2 0 0 1 -2 -2l0 -4" /></svg>
+                            </span>
+                            No Custom Section Founds
+                        </div>
+                    )}
+                    <div className='d-flex justify-content-center align-items-center'>
+                        <button
+                            onClick={() => {
+                                handleAddCustomSection()
+                            }}
+                            className='btn btn-primary'
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-layout-grid-add"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /><path d="M14 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /><path d="M4 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /><path d="M14 17h6m-3 -3v6" /></svg>
+                            New Custom
+                        </button>
+                    </div>
+                </div>
+            )
+        }
 
         if (modalFor == 'design') {
             return (
@@ -1802,8 +3124,74 @@ export default function CVBuilder() {
                     <span className="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user-scan"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 9a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8 16a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2" /></svg>
                     </span>
-                    Personal Modal
+                    Personal
                 </Modal.Title >
+            )
+        }
+
+        if (modalFor == 'experence') {
+            return (
+                <Modal.Title>
+                    <span className="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-report-analytics"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" /><path d="M9 17v-5" /><path d="M12 17v-1" /><path d="M15 17v-3" /></svg>
+                    </span>
+                    Experence
+                </Modal.Title>
+            )
+        }
+
+        if (modalFor == 'education') {
+            return (
+                <Modal.Title>
+                    <span className="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-school"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" /><path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" /></svg>
+                    </span>
+                    Education
+                </Modal.Title>
+            )
+        }
+
+        if (modalFor == 'skills') {
+            return (
+                <Modal.Title>
+                    <span className="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-bulb"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" /><path d="M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0 -1 3a2 2 0 0 1 -4 0a3.5 3.5 0 0 0 -1 -3" /><path d="M9.7 17l4.6 0" /></svg>
+                    </span>
+                    Skills
+                </Modal.Title>
+            )
+        }
+
+        if (modalFor == 'language') {
+            return (
+                <Modal.Title>
+                    <span className="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-language"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 6.371c0 4.418 -2.239 6.629 -5 6.629" /><path d="M4 6.371h7" /><path d="M5 9c0 2.144 2.252 3.908 6 4" /><path d="M12 20l4 -9l4 9" /><path d="M19.1 18h-6.2" /><path d="M6.694 3l.793 .582" /></svg>
+                    </span>
+                    Languages
+                </Modal.Title>
+            )
+        }
+
+        if (modalFor == 'hobbie') {
+            return (
+                <Modal.Title>
+                    <span className="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-object-scan"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8 10a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-4a2 2 0 0 1 -2 -2l0 -4" /></svg>
+                    </span>
+                    Hobies
+                </Modal.Title>
+            )
+        }
+
+        if (modalFor == 'custom') {
+            return (
+                <Modal.Title>
+                    <span className="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-layout-grid-add"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /><path d="M14 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /><path d="M4 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /><path d="M14 17h6m-3 -3v6" /></svg>
+                    </span>
+                    Add Custom Sections
+                </Modal.Title>
             )
         }
 
@@ -1813,7 +3201,7 @@ export default function CVBuilder() {
                     <span className="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-palette"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 21a9 9 0 0 1 0 -18c4.97 0 9 3.582 9 8c0 1.06 -.474 2.078 -1.318 2.828c-.844 .75 -1.989 1.172 -3.182 1.172h-2.5a2 2 0 0 0 -1 3.75a1.3 1.3 0 0 1 -1 2.25" /><path d="M7.5 10.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M11.5 7.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M15.5 10.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
                     </span>
-                    Design Modal
+                    Design
                 </Modal.Title>
             )
         }
@@ -1847,8 +3235,8 @@ export default function CVBuilder() {
         },
         {
             icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-object-scan"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8 10a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-4a2 2 0 0 1 -2 -2l0 -4" /></svg>),
-            title: 'Habies',
-            slug: 'habie'
+            title: 'Hobbies',
+            slug: 'hobbie'
         },
         {
             icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-layout-grid-add"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /><path d="M14 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /><path d="M4 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /><path d="M14 17h6m-3 -3v6" /></svg>),
@@ -1915,7 +3303,7 @@ export default function CVBuilder() {
                         <div
                             ref={previewContainerRef}
                             className="cv-template-div"
-                            style={{ background: '#fff', zoom: zoom, overflow: 'auto', height: 'calc(100vh - 190px)' }}
+                            style={{ background: '#fff', zoom: zoom, overflow: 'auto', height: 'calc(100vh - 190px)', position: 'relative' }}
                         >
                             <div
                                 ref={cvRef}
@@ -1994,2384 +3382,6 @@ export default function CVBuilder() {
                     </Modal.Body>
                 </Modal>
 
-            </div>
-            <div className="row g-3">
-                {/* LEFT: Tabs + Form */}
-                <div className="col-12">
-                    <div className="card border" style={{ height: 'calc(100vh - 95px)', overflow: 'hidden' }}>
-                        <div className="card-header border-bottom-0 pb-0 d-flex justify-content-between shadow">
-                            {/* Tabs */}
-                            <ul className="nav nav-underline cv-uploader-tabs" id="cvTabs" role="tablist">
-                                <li className="nav-item" role="presentation">
-                                    <button
-                                        className={`nav-link d-flex align-items-center gap-2 ${activeTab === 'tabPreview' ? 'active' : ''}`}
-                                        onClick={() => setActiveTab('tabPreview')}
-                                        disabled={AiResumeLoader}
-                                    >
-                                        <svg width={16} className="svg-inline--fa fa-eye" aria-hidden="true" focusable="false" data-prefix="far" data-icon="eye" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                            <path fill="currentColor" d="M288 80c-65.2 0-118.8 29.6-159.9 67.7C89.6 183.5 63 226 49.4 256c13.6 30 40.2 72.5 78.6 108.3C169.2 402.4 222.8 432 288 432s118.8-29.6 159.9-67.7C486.4 328.5 513 286 526.6 256c-13.6-30-40.2-72.5-78.6-108.3C406.8 109.6 353.2 80 288 80zM95.4 112.6C142.5 68.8 207.2 32 288 32s145.5 36.8 192.6 80.6c46.8 43.5 78.1 95.4 93 131.1c3.3 7.9 3.3 16.7 0 24.6c-14.9 35.7-46.2 87.7-93 131.1C433.5 443.2 368.8 480 288 480s-145.5-36.8-192.6-80.6C48.6 356 17.3 304 2.5 268.3c-3.3-7.9-3.3-16.7 0-24.6C17.3 208 48.6 156 95.4 112.6zM288 336c44.2 0 80-35.8 80-80s-35.8-80-80-80c-.7 0-1.3 0-2 0c1.3 5.1 2 10.5 2 16c0 35.3-28.7 64-64 64c-5.5 0-10.9-.7-16-2c0 .7 0 1.3 0 2c0 44.2 35.8 80 80 80zm0-208a128 128 0 1 1 0 256 128 128 0 1 1 0-256z"></path>
-                                        </svg>
-                                        Preview
-                                    </button>
-                                </li>
-                                <li className="nav-item" role="presentation">
-                                    <button
-                                        className={`nav-link d-flex align-items-center gap-2 ${activeTab === 'tabDesign' ? 'active' : ''}`}
-                                        disabled={AiResumeLoader}
-                                        onClick={() => setActiveTab('tabDesign')}
-                                    >
-                                        <svg width={12} className="svg-inline--fa fa-pen-ruler" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="pen-ruler" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                            <path fill="currentColor" d="M469.3 19.3l23.4 23.4c25 25 25 65.5 0 90.5l-56.4 56.4L322.3 75.7l56.4-56.4c25-25 65.5-25 90.5 0zM44.9 353.2L299.7 98.3 413.7 212.3 158.8 467.1c-6.7 6.7-15.1 11.6-24.2 14.2l-104 29.7c-8.4 2.4-17.4 .1-23.6-6.1s-8.5-15.2-6.1-23.6l29.7-104c2.6-9.2 7.5-17.5 14.2-24.2zM249.4 103.4L103.4 249.4 16 161.9c-18.7-18.7-18.7-49.1 0-67.9L94.1 16c18.7-18.7 49.1-18.7 67.9 0l19.8 19.8c-.3 .3-.7 .6-1 .9l-64 64c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0l64-64c.3-.3 .6-.7 .9-1l45.1 45.1zM408.6 262.6l45.1 45.1c-.3 .3-.7 .6-1 .9l-64 64c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0l64-64c.3-.3 .6-.7 .9-1L496 350.1c18.7 18.7 18.7 49.1 0 67.9L417.9 496c-18.7 18.7-49.1 18.7-67.9 0l-87.4-87.4L408.6 262.6z"></path>
-                                        </svg>
-                                        Design
-                                    </button>
-                                </li>
-
-                            </ul>
-                            <button className="btn btn-primary btn-sm" onClick={handleSaveChanges} disabled={parsedResume == prevParsedResume || saveChangesLoader}>{saveChangesLoader ? (<><FiLoader size={14} className="me-2 animate-spin" />Saving...</>) : "Save Changes"}</button>
-                        </div>
-
-                        <div className="card-body pt-3" style={{ height: '100%', overflowY: 'auto' }}>
-
-
-                            {/* Tab panes */}
-                            <div className="tab-content" id="cvTabsContent">
-                                {/* TAB: Preview (main form) */}
-                                {activeTab === 'tabPreview' && (
-                                    <>
-                                        <div className="tab-pane fade active show" id="tabPreview" role="tabpanel" aria-labelledby="tabPreview-tab" tabIndex="0">
-                                            <div className="d-flex justify-content-between align-items-center mb-3">
-                                                <h4 className="mb-0">Basic Information</h4>
-                                            </div>
-                                            <div className="accordion" id="cvAccordion">
-                                                {/* Personal details */}
-                                                <div className="accordion-item">
-                                                    <h2 className="accordion-header" id="headingPersonal">
-                                                        <div className="d-flex justify-content-between align-items-center w-100">
-                                                            <div className="d-flex align-items-center w-100 gap-2">
-
-                                                                {parsedResume?.editingPersonalTitle ? (
-                                                                    <div className="d-flex align-items-center">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control form-control-sm me-2"
-                                                                            style={{ width: '200px' }}
-                                                                            value={parsedResume?.personalTitle || "Personal details"}
-                                                                            onChange={(e) =>
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "personalTitle",
-                                                                                        value: e.target.value
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                            onBlur={() =>
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "editingPersonalTitle",
-                                                                                        value: false
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                            onKeyDown={(e) => {
-                                                                                if (e.key === 'Enter') {
-                                                                                    dispatch(
-                                                                                        updateField({
-                                                                                            path: "editingPersonalTitle",
-                                                                                            value: false
-                                                                                        })
-                                                                                    );
-                                                                                }
-                                                                            }}
-                                                                        />
-                                                                        <span
-                                                                            type="button"
-                                                                            className="btn btn-sm btn-outline-success"
-                                                                            onClick={() =>
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "editingPersonalTitle",
-                                                                                        value: false
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                        >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                <path d="M5 12l5 5l10 -10" />
-                                                                            </svg>
-                                                                        </span>
-                                                                    </div>
-                                                                ) : (
-                                                                    <button
-                                                                        className={`accordion-button ${openSections.personal ? '' : 'collapsed'} ${parsedResume?.personalDisabled ? 'text-muted' : ''}`}
-                                                                        type="button"
-                                                                        onClick={() => toggleSection('personal')}
-                                                                        style={{ background: 'none', border: 'none', textAlign: 'left' }}
-                                                                    >
-                                                                        {parsedResume?.personalTitle || "Personal details"}
-                                                                        <span
-                                                                            type="button"
-                                                                            className=" ms-2"
-                                                                            onClick={(e) => {
-                                                                                e.stopPropagation();
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "editingPersonalTitle",
-                                                                                        value: true
-                                                                                    })
-                                                                                );
-                                                                            }}
-                                                                        >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                                                <path d="M16 5l3 3" />
-                                                                            </svg>
-                                                                        </span>
-                                                                    </button>
-                                                                )}
-
-                                                            </div>
-                                                        </div>
-                                                    </h2>
-                                                    <div
-                                                        id="collapsePersonal"
-                                                        className={`accordion-collapse collapse ${openSections.personal ? 'show' : ''}`}
-                                                        aria-labelledby="headingPersonal"
-                                                    >
-                                                        <div className="accordion-body">
-                                                            {!parsedResume?.personalDisabled ? (
-                                                                <div className="card border-0 shadow-none">
-                                                                    {/* Avatar + Name/Headline */}
-                                                                    <div className="row g-3 mb-3">
-                                                                        <div className="col-md-3 col-4">
-                                                                            <div className="border rounded d-flex flex-column justify-content-center align-items-center overflow-hidden" style={{ height: '120px' }}>
-                                                                                {profilePic || parsedResume?.profilePic ? (
-                                                                                    <img
-                                                                                        src={profilePic || parsedResume.profilePic}
-                                                                                        alt="Profile"
-                                                                                        style={{
-                                                                                            width: '100%',
-                                                                                            height: '100%',
-                                                                                            objectFit: 'cover',
-                                                                                        }}
-                                                                                    />
-                                                                                ) : (
-                                                                                    <div className="text-muted">
-                                                                                        <i className="bi bi-person-circle" style={{ fontSize: '3rem' }}></i>
-                                                                                        <div className="small mt-1">Upload Photo</div>
-                                                                                    </div>
-                                                                                )}
-                                                                                <input
-                                                                                    id="avatarInput"
-                                                                                    ref={fileInputRef}
-                                                                                    type="file"
-                                                                                    accept="image/*"
-                                                                                    className="d-none"
-                                                                                    onChange={handleAvatarUpload}
-                                                                                />
-                                                                            </div>
-                                                                            <div className="d-flex flex-column gap-2 mt-2">
-                                                                                <button
-                                                                                    className="btn btn-outline-secondary btn-sm w-100"
-                                                                                    type="button"
-                                                                                    onClick={() => fileInputRef.current.click()}
-                                                                                >
-                                                                                    <svg
-                                                                                        xmlns="http://www.w3.org/2000/svg"
-                                                                                        width="24"
-                                                                                        height="24"
-                                                                                        viewBox="0 0 24 24"
-                                                                                        fill="none"
-                                                                                        stroke="currentColor"
-                                                                                        strokeWidth="2"
-                                                                                        strokeLinecap="round"
-                                                                                        strokeLinejoin="round"
-                                                                                        className="feather feather-upload me-1"
-                                                                                    >
-                                                                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                                                                        <polyline points="17 8 12 3 7 8"></polyline>
-                                                                                        <line x1="12" y1="3" x2="12" y2="15"></line>
-                                                                                    </svg>
-                                                                                    Upload Photo
-                                                                                </button>
-                                                                                {(profilePic || parsedResume?.profilePic) && (
-                                                                                    <button
-                                                                                        className="btn btn-outline-danger btn-sm w-100"
-                                                                                        type="button"
-                                                                                        onClick={handleRemovePhoto}
-                                                                                    >
-                                                                                        <svg
-                                                                                            xmlns="http://www.w3.org/2000/svg"
-                                                                                            width="24"
-                                                                                            height="24"
-                                                                                            viewBox="0 0 24 24"
-                                                                                            fill="none"
-                                                                                            stroke="currentColor"
-                                                                                            strokeWidth="2"
-                                                                                            strokeLinecap="round"
-                                                                                            strokeLinejoin="round"
-                                                                                            className="feather feather-trash-2 me-1"
-                                                                                        >
-                                                                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                                                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                                                                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                                                            <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                                                        </svg>
-                                                                                        Remove Photo
-                                                                                    </button>
-                                                                                )}
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="col-md-9 col-8">
-                                                                            <div className="row g-3">
-                                                                                <div className="col-md-6">
-                                                                                    <label className="form-label">First Name</label>
-                                                                                    <input
-                                                                                        type="text"
-                                                                                        className="form-control"
-                                                                                        name="firstName"
-                                                                                        value={parsedResume?.candidateName?.[0]?.firstName || ""}
-                                                                                        onChange={(e) =>
-                                                                                            dispatch(
-                                                                                                updateField({
-                                                                                                    path: "candidateName[0].firstName",
-                                                                                                    value: e.target.value
-                                                                                                })
-                                                                                            )
-                                                                                        }
-                                                                                    />
-                                                                                </div>
-                                                                                <div className="col-md-6">
-                                                                                    <label className="form-label">Last name</label>
-                                                                                    <input
-                                                                                        type="text"
-                                                                                        className="form-control"
-                                                                                        name="lastName"
-                                                                                        value={`${parsedResume?.candidateName?.[0]?.familyName || ''}`}
-                                                                                        onChange={(e) =>
-                                                                                            dispatch(
-                                                                                                updateField({
-                                                                                                    path: "candidateName[0].familyName",
-                                                                                                    value: e.target.value
-                                                                                                })
-                                                                                            )
-                                                                                        }
-                                                                                    />
-                                                                                </div>
-                                                                                <div className="col-12">
-                                                                                    <label className="form-label">Headline</label>
-                                                                                    <input
-                                                                                        type="text"
-                                                                                        className="form-control"
-                                                                                        name="headline"
-                                                                                        value={parsedResume?.headline || ''}
-                                                                                        onChange={(e) =>
-                                                                                            dispatch(
-                                                                                                updateField({
-                                                                                                    path: "headline",
-                                                                                                    value: e.target.value
-                                                                                                })
-                                                                                            )
-                                                                                        }
-                                                                                    />
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    {/* Email / Phone */}
-                                                                    <div className="row g-3 mb-3">
-                                                                        <div className="col-md-6">
-                                                                            <label className="form-label">Email address</label>
-                                                                            <input
-                                                                                type="email"
-                                                                                className="form-control"
-                                                                                name="email"
-                                                                                value={parsedResume?.email?.[0] || ''}
-                                                                                onChange={(e) =>
-                                                                                    dispatch(
-                                                                                        updateField({
-                                                                                            path: "email",
-                                                                                            value: [e.target.value]
-                                                                                        })
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                        </div>
-                                                                        <div className="col-md-6">
-                                                                            <label className="form-label">Phone number</label>
-                                                                            <input
-                                                                                type="text"
-                                                                                className="form-control"
-                                                                                name="phone"
-                                                                                value={parsedResume?.phoneNumber?.[0]?.formattedNumber || ''}
-                                                                                onChange={(e) =>
-                                                                                    dispatch(
-                                                                                        updateField({
-                                                                                            path: "phoneNumber[0].formattedNumber",
-                                                                                            value: e.target.value
-                                                                                        })
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-
-                                                                    {/* Address */}
-                                                                    <div className="row g-3 mb-3">
-                                                                        <div className="col-12">
-                                                                            <label className="form-label">Address</label>
-                                                                            <input
-                                                                                type="text"
-                                                                                className="form-control"
-                                                                                name="address"
-                                                                                value={parsedResume?.location?.formatted || ''}
-                                                                                onChange={(e) =>
-                                                                                    dispatch(
-                                                                                        updateField({
-                                                                                            path: "location.formatted",
-                                                                                            value: e.target.value
-                                                                                        })
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-
-                                                                    {/* Post code / City */}
-                                                                    <div className="row g-3 mb-3">
-                                                                        <div className="col-md-6">
-                                                                            <label className="form-label">Post code</label>
-                                                                            <input
-                                                                                type="text"
-                                                                                className="form-control"
-                                                                                name="postCode"
-                                                                                value={parsedResume?.location?.postCode || ''}
-                                                                                onChange={(e) =>
-                                                                                    dispatch(
-                                                                                        updateField({
-                                                                                            path: "location.postCode",
-                                                                                            value: e.target.value
-                                                                                        })
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                        </div>
-                                                                        <div className="col-md-6">
-                                                                            <label className="form-label">City</label>
-                                                                            <input
-                                                                                type="text"
-                                                                                className="form-control"
-                                                                                name="city"
-                                                                                value={parsedResume?.location?.city || ''}
-                                                                                onChange={(e) =>
-                                                                                    dispatch(
-                                                                                        updateField({
-                                                                                            path: "location.city",
-                                                                                            value: e.target.value
-                                                                                        })
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-
-                                                                    {/* Summary */}
-                                                                    <div className="row g-3 mb-4">
-                                                                        <div className="col-12">
-                                                                            <label className="form-label fw-bold small">Summary</label>
-                                                                            <textarea
-                                                                                rows="5"
-                                                                                className="form-control"
-                                                                                placeholder="Describe your professional background, key skills, achievements, and career goals..."
-                                                                                name="summary"
-                                                                                value={parsedResume?.summary?.paragraph || ''}
-                                                                                onChange={(e) =>
-                                                                                    dispatch(
-                                                                                        updateField({
-                                                                                            path: "summary.paragraph",
-                                                                                            value: e.target.value,
-                                                                                        })
-                                                                                    )
-                                                                                }
-                                                                            ></textarea>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    {/* 🔗 Social Links */}
-                                                                    <div className="row g-3 mb-3">
-                                                                        <div className="col-12">
-                                                                            <h6 className="fw-bold mb-2">Social Links</h6>
-                                                                        </div>
-
-                                                                        <div className="col-md-4">
-                                                                            <label className="form-label">GitHub</label>
-                                                                            <input
-                                                                                type="url"
-                                                                                className="form-control"
-                                                                                name="github"
-                                                                                placeholder="https://github.com/username"
-                                                                                value={parsedResume?.socialLinks?.github || ''}
-                                                                                onChange={(e) =>
-                                                                                    dispatch(
-                                                                                        updateField({
-                                                                                            path: "socialLinks.github",
-                                                                                            value: e.target.value,
-                                                                                        })
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                        </div>
-
-                                                                        <div className="col-md-4">
-                                                                            <label className="form-label">LinkedIn</label>
-                                                                            <input
-                                                                                type="url"
-                                                                                className="form-control"
-                                                                                name="linkedin"
-                                                                                placeholder="https://linkedin.com/in/username"
-                                                                                value={parsedResume?.socialLinks?.linkedin || ''}
-                                                                                onChange={(e) =>
-                                                                                    dispatch(
-                                                                                        updateField({
-                                                                                            path: "socialLinks.linkedin",
-                                                                                            value: e.target.value,
-                                                                                        })
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                        </div>
-
-                                                                        <div className="col-md-4">
-                                                                            <label className="form-label">Portfolio / Website</label>
-                                                                            <input
-                                                                                type="url"
-                                                                                className="form-control"
-                                                                                name="website"
-                                                                                placeholder="https://yourwebsite.com"
-                                                                                value={parsedResume?.socialLinks?.website || ''}
-                                                                                onChange={(e) =>
-                                                                                    dispatch(
-                                                                                        updateField({
-                                                                                            path: "socialLinks.website",
-                                                                                            value: e.target.value,
-                                                                                        })
-                                                                                    )
-                                                                                }
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            ) : (
-                                                                <div className="text-muted text-center py-3 d-flex flex-column gap-2">
-                                                                    <span
-                                                                        className={`icon-toggle border-0 bg-transparent`}
-                                                                    >
-                                                                        <img
-                                                                            src={toggleImage}
-                                                                            alt="Complete icon"
-                                                                            width="36"
-                                                                            height="36"
-                                                                        />
-                                                                    </span>
-                                                                    This section is disabled
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-
-                                                {/* Employment */}
-                                                <div className="accordion-item">
-                                                    <h2 className="accordion-header" id="headingEmployment">
-                                                        <div className="d-flex justify-content-between align-items-center w-100">
-                                                            <div className="d-flex gap-2 align-items-center w-100">
-                                                                <button
-                                                                    className={`icon-toggle border-0 bg-transparent ${!parsedResume?.employmentDisabled ? 'is-active' : ''}`}
-                                                                    type="button"
-                                                                    onClick={() =>
-                                                                        dispatch(
-                                                                            updateField({
-                                                                                path: "employmentDisabled",
-                                                                                value: !parsedResume?.employmentDisabled
-                                                                            })
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    {/* <img
-                                                                        src={toggleImage}
-                                                                        alt="Complete icon"
-                                                                        width="28"
-                                                                        height="28"
-                                                                    /> */}
-                                                                    {!parsedResume?.employmentDisabled ?
-                                                                        (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
-                                                                        : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
-                                                                    }
-                                                                </button>
-                                                                {parsedResume?.editingEmploymentTitle ? (
-                                                                    <div className="d-flex align-items-center">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control form-control-sm me-2"
-                                                                            style={{ width: '200px' }}
-                                                                            value={parsedResume?.employmentTitle || "Employment"}
-                                                                            onChange={(e) =>
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "employmentTitle",
-                                                                                        value: e.target.value
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                            onBlur={() =>
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "editingEmploymentTitle",
-                                                                                        value: false
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                            onKeyDown={(e) => {
-                                                                                if (e.key === 'Enter') {
-                                                                                    dispatch(
-                                                                                        updateField({
-                                                                                            path: "editingEmploymentTitle",
-                                                                                            value: false
-                                                                                        })
-                                                                                    );
-                                                                                }
-                                                                            }}
-                                                                        />
-                                                                        <span
-                                                                            type="button"
-                                                                            className=""
-                                                                            onClick={() =>
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "editingEmploymentTitle",
-                                                                                        value: false
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                        >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                <path d="M5 12l5 5l10 -10" />
-                                                                            </svg>
-                                                                        </span>
-                                                                    </div>
-                                                                ) : (
-                                                                    <button
-                                                                        className={`accordion-button flex-grow-1 w-100 d-flex gap-2 ${openSections.employment ? '' : 'collapsed'} ${parsedResume?.employmentDisabled ? 'text-muted' : ''}`}
-                                                                        type="button"
-                                                                        onClick={() => toggleSection('employment')}
-                                                                        style={{ background: 'none', border: 'none', textAlign: 'left' }}
-                                                                    >
-                                                                        {parsedResume?.employmentTitle || "Experience"}
-                                                                        <span
-                                                                            type="button"
-                                                                            className=""
-                                                                            onClick={(e) => {
-                                                                                e.stopPropagation();
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "editingEmploymentTitle",
-                                                                                        value: true
-                                                                                    })
-                                                                                );
-                                                                            }}
-                                                                        >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                                                <path d="M16 5l3 3" />
-                                                                            </svg>
-                                                                        </span>
-                                                                    </button>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    </h2>
-                                                    <div
-                                                        id="collapseEmployment"
-                                                        className={`accordion-collapse collapse ${openSections.employment ? 'show' : ''}`}
-                                                        aria-labelledby="headingEmployment"
-                                                    >
-                                                        <div className="accordion-body">
-                                                            {!parsedResume?.employmentDisabled ? (
-                                                                <div className="card border-0 shadow-none">
-                                                                    {parsedResume.workExperience?.map((expItem, expIndex) => (
-                                                                        <div key={expIndex} className="mb-3 p-3 border rounded">
-
-                                                                            {(editingExperience.index === expIndex) ? (
-                                                                                // Edit mode
-                                                                                <div className="experience-edit-form">
-                                                                                    <div className="d-flex justify-content-between align-items-center mb-2">
-                                                                                        <small className="fw-bold text-muted">
-                                                                                            {parsedResume?.employmentTitle || "Experience"} #{expIndex + 1}
-                                                                                        </small>
-                                                                                        <button
-                                                                                            type="button"
-                                                                                            className="btn btn-sm btn-outline-danger"
-                                                                                            onClick={expHandleCancelEdit}
-                                                                                            title="Cancel editing"
-                                                                                        >
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                                                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                                                                                            </svg>
-                                                                                        </button>
-                                                                                    </div>
-                                                                                    <div className="mb-2">
-                                                                                        <label className="form-label">Job Title</label>
-                                                                                        <input
-                                                                                            className="form-control"
-                                                                                            value={editingExperience.data.workExperienceJobTitle}
-                                                                                            onChange={(e) => setEditingExperience(prev => ({
-                                                                                                ...prev,
-                                                                                                data: {
-                                                                                                    ...prev.data,
-                                                                                                    workExperienceJobTitle: e.target.value
-                                                                                                }
-                                                                                            }))}
-                                                                                        />
-                                                                                    </div>
-                                                                                    <div className="mb-2">
-                                                                                        <label className="form-label">Company</label>
-                                                                                        <input
-                                                                                            className="form-control"
-                                                                                            value={editingExperience.data.workExperienceOrganization}
-                                                                                            onChange={(e) => setEditingExperience(prev => ({
-                                                                                                ...prev,
-                                                                                                data: {
-                                                                                                    ...prev.data,
-                                                                                                    workExperienceOrganization: e.target.value
-                                                                                                }
-                                                                                            }))}
-                                                                                        />
-                                                                                    </div>
-                                                                                    <div className="row">
-                                                                                        <div className="col-md-6">
-                                                                                            <div className="mb-2">
-                                                                                                <label className="form-label">Start Date</label>
-                                                                                                <input
-                                                                                                    placeholder="2020"
-                                                                                                    className="form-control"
-                                                                                                    type="text"
-                                                                                                    value={editingExperience.data.workExperienceDates?.start?.date || ''}
-                                                                                                    onChange={(e) => setEditingExperience(prev => ({
-                                                                                                        ...prev,
-                                                                                                        data: {
-                                                                                                            ...prev.data,
-                                                                                                            workExperienceDates: {
-                                                                                                                ...prev.data.workExperienceDates,
-                                                                                                                start: {
-                                                                                                                    ...prev.data.workExperienceDates?.start,
-                                                                                                                    date: e.target.value
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }))}
-                                                                                                />
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div className="col-md-6">
-                                                                                            <div className="mb-2">
-                                                                                                <label className="form-label">End Date</label>
-                                                                                                <input
-                                                                                                    placeholder="2021 or Present"
-                                                                                                    className="form-control"
-                                                                                                    type="text"
-                                                                                                    value={editingExperience.data.workExperienceDates?.end?.date || ''}
-                                                                                                    onChange={(e) => setEditingExperience(prev => ({
-                                                                                                        ...prev,
-                                                                                                        data: {
-                                                                                                            ...prev.data,
-                                                                                                            workExperienceDates: {
-                                                                                                                ...prev.data.workExperienceDates,
-                                                                                                                end: {
-                                                                                                                    ...prev.data.workExperienceDates?.end,
-                                                                                                                    date: e.target.value
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }))}
-                                                                                                />
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div className="mb-3">
-                                                                                        <div className="mb-3">
-                                                                                            <label className="form-label">Additional Notes (Optional)</label>
-                                                                                            <textarea
-                                                                                                rows="3"
-                                                                                                className="form-control"
-                                                                                                value={editingExperience.data.workExperienceDescription || ''}
-                                                                                                onChange={(e) => setEditingExperience(prev => ({
-                                                                                                    ...prev,
-                                                                                                    data: {
-                                                                                                        ...prev.data,
-                                                                                                        workExperienceDescription: e.target.value
-                                                                                                    }
-                                                                                                }))}
-                                                                                                placeholder="Any additional details about this role"
-                                                                                            ></textarea>
-                                                                                        </div>
-                                                                                        <div className="d-flex justify-content-between align-items-center mb-2">
-                                                                                            <label className="form-label">Key Achievements</label>
-                                                                                            <button
-                                                                                                type="button"
-                                                                                                className="btn btn-sm btn-outline-primary"
-                                                                                                onClick={() => {
-                                                                                                    setEditingExperience(prev => ({
-                                                                                                        ...prev,
-                                                                                                        data: {
-                                                                                                            ...prev.data,
-                                                                                                            highlights: {
-                                                                                                                ...prev.data.highlights,
-                                                                                                                items: [
-                                                                                                                    ...(prev.data.highlights?.items || []),
-                                                                                                                    { id: Date.now(), bullet: '' }
-                                                                                                                ]
-                                                                                                            }
-                                                                                                        }
-                                                                                                    }));
-                                                                                                }}
-                                                                                            >
-                                                                                                <FiPlus size={14} className="me-1" /> Add Bullet Point
-                                                                                            </button>
-                                                                                        </div>
-
-                                                                                        {editingExperience.data.highlights?.items?.map((bullet, bulletIndex) => (
-                                                                                            <div key={bullet.id || bulletIndex} className="d-flex align-items-start mb-2">
-                                                                                                <span className="me-2 mt-2">•</span>
-                                                                                                <div className="flex-grow-1">
-                                                                                                    <input
-                                                                                                        type="text"
-                                                                                                        className="form-control form-control-sm"
-                                                                                                        value={bullet.bullet}
-                                                                                                        onChange={(e) => {
-                                                                                                            setEditingExperience(prev => ({
-                                                                                                                ...prev,
-                                                                                                                data: {
-                                                                                                                    ...prev.data,
-                                                                                                                    highlights: {
-                                                                                                                        ...prev.data.highlights,
-                                                                                                                        items: prev.data.highlights.items.map((b, i) =>
-                                                                                                                            i === bulletIndex ? { ...b, bullet: e.target.value } : b
-                                                                                                                        )
-                                                                                                                    }
-                                                                                                                }
-                                                                                                            }));
-                                                                                                        }}
-                                                                                                        placeholder="Enter achievement or responsibility"
-                                                                                                    />
-                                                                                                </div>
-                                                                                                <button
-                                                                                                    type="button"
-                                                                                                    className="btn btn-sm btn-link text-danger ms-2"
-                                                                                                    onClick={() => {
-                                                                                                        setEditingExperience(prev => ({
-                                                                                                            ...prev,
-                                                                                                            data: {
-                                                                                                                ...prev.data,
-                                                                                                                highlights: {
-                                                                                                                    ...prev.data.highlights,
-                                                                                                                    items: prev.data.highlights.items.filter((_, i) => i !== bulletIndex)
-                                                                                                                }
-                                                                                                            }
-                                                                                                        }));
-                                                                                                    }}
-                                                                                                >
-                                                                                                    <FiTrash2 size={14} />
-                                                                                                </button>
-                                                                                            </div>
-                                                                                        ))}
-
-
-
-                                                                                    </div>
-                                                                                    <div className="d-flex justify-content-end gap-2">
-                                                                                        <button
-                                                                                            type="button"
-                                                                                            className="btn btn-outline-secondary"
-                                                                                            onClick={expHandleCancelEdit}
-                                                                                        >
-                                                                                            Cancel
-                                                                                        </button>
-                                                                                        <button
-                                                                                            type="button"
-                                                                                            className="btn btn-primary"
-                                                                                            onClick={expHandleSaveExperience}
-                                                                                        >
-                                                                                            Done
-                                                                                        </button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            ) : (
-
-                                                                                // Display completed experience item
-                                                                                <>
-                                                                                    <div className="d-flex justify-content-between align-items-center mb-2">
-                                                                                        <small className="fw-bold text-muted">{parsedResume?.employmentTitle || "Experience"} #{expIndex + 1}</small>
-                                                                                        <button
-                                                                                            type="button"
-                                                                                            className="btn btn-sm btn-outline-danger"
-                                                                                            onClick={() => expHandleDeleteExperience(expIndex)}
-                                                                                            title="Delete experience entry"
-                                                                                        >
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                                                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                                                                                <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                                                                                            </svg>
-                                                                                        </button>
-                                                                                    </div>
-                                                                                    <div className="d-flex gap-2 align-items-start">
-                                                                                        <div className="icon-span text-info">
-                                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-briefcase">
-                                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                                                <path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
-                                                                                                <path d="M8 7v-2a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v2"></path>
-                                                                                                <path d="M12 12l0 .01"></path>
-                                                                                                <path d="M3 13a20 20 0 0 0 18 0"></path>
-                                                                                            </svg>
-                                                                                        </div>
-                                                                                        <div className="content-d">
-                                                                                            <h6 className="exp-title mb-1">{expItem.workExperienceJobTitle}</h6>
-                                                                                            <h6 className="exp-company text-muted">{expItem.workExperienceOrganization}</h6>
-                                                                                            {expItem.workExperienceDescription && (
-                                                                                                <p className="exp-description mt-2">{expItem.workExperienceDescription}</p>
-                                                                                            )}
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <small className="exp-time text-muted">
-                                                                                        <em>{expItem.workExperienceDates?.start?.date} - {expItem.workExperienceDates?.end?.date}</em>
-                                                                                    </small>
-                                                                                    <div className="d-flex justify-content-end align-items-center gap-2 mt-2">
-                                                                                        <button
-                                                                                            type="button"
-                                                                                            className="content-confirm-btn btn btn-outline-secondary btn-sm"
-                                                                                            onClick={() => expHandleEditExperience(expIndex)}
-                                                                                        >
-                                                                                            <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                                                                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                                                                                            </svg>
-                                                                                            Edit
-                                                                                        </button>
-                                                                                    </div>
-                                                                                </>
-                                                                            )}
-                                                                        </div>
-                                                                    ))}
-
-                                                                    {/* Add Experience Button */}
-                                                                    <button
-                                                                        type="button"
-                                                                        className="btn btn-outline-secondary btn-sm mt-2"
-                                                                        style={{ maxWidth: 'fit-content' }}
-                                                                        onClick={expHandleAddExperience}
-                                                                    >
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus me-1">
-                                                                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                                                                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                                                                        </svg>
-                                                                        Add {parsedResume?.employmentTitle || "Experience"}
-                                                                    </button>
-                                                                </div>
-                                                            ) : (
-                                                                <div className="text-muted text-center py-3 d-flex flex-column gap-2">
-                                                                    <span
-                                                                        className={`icon-toggle border-0 bg-transparent`}
-                                                                    >
-                                                                        <img
-                                                                            src={toggleImage}
-                                                                            alt="Complete icon"
-                                                                            width="36"
-                                                                            height="36"
-                                                                        />
-                                                                    </span>
-                                                                    This section is disabled
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                {/* Education */}
-                                                <div className="accordion-item">
-                                                    <h2 className="accordion-header" id="headingEducation">
-                                                        <div className="d-flex justify-content-between align-items-center w-100">
-                                                            <div className="d-flex align-items-center w-100 gap-2">
-
-                                                                <button
-                                                                    className={`icon-toggle border-0 bg-transparent ${!parsedResume?.educationDisabled ? 'is-active' : ''}`}
-                                                                    type="button"
-                                                                    onClick={() =>
-                                                                        dispatch(
-                                                                            updateField({
-                                                                                path: "educationDisabled",
-                                                                                value: !parsedResume?.educationDisabled
-                                                                            })
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    {/* <img
-                                                                        src={toggleImage}
-                                                                        alt="Complete icon"
-                                                                        width="28"
-                                                                        height="28"
-                                                                    /> */}
-                                                                    {!parsedResume?.educationDisabled ?
-                                                                        (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
-                                                                        : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
-                                                                    }
-                                                                </button>
-                                                                {parsedResume?.editingEducationTitle ? (
-                                                                    <div className="d-flex align-items-center">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control form-control-sm me-2"
-                                                                            style={{ width: '200px' }}
-                                                                            value={parsedResume?.educationTitle || "Education"}
-                                                                            onChange={(e) =>
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "educationTitle",
-                                                                                        value: e.target.value
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                            onBlur={() =>
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "editingEducationTitle",
-                                                                                        value: false
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                            onKeyDown={(e) => {
-                                                                                if (e.key === 'Enter') {
-                                                                                    dispatch(
-                                                                                        updateField({
-                                                                                            path: "editingEducationTitle",
-                                                                                            value: false
-                                                                                        })
-                                                                                    );
-                                                                                }
-                                                                            }}
-                                                                        />
-                                                                        <span
-                                                                            type="button"
-                                                                            onClick={() =>
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "editingEducationTitle",
-                                                                                        value: false
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                        >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                <path d="M5 12l5 5l10 -10" />
-                                                                            </svg>
-                                                                        </span>
-                                                                    </div>
-                                                                ) : (
-                                                                    <button
-                                                                        className={`accordion-button flex-grow-1 w-100 gap-2 d-flex ${openSections.education ? '' : 'collapsed'} ${parsedResume?.educationDisabled ? 'text-muted' : ''}`}
-                                                                        type="button"
-                                                                        onClick={() => toggleSection('education')}
-                                                                        style={{ background: 'none', border: 'none', textAlign: 'left' }}
-                                                                    >
-                                                                        {parsedResume?.educationTitle || "Education"}
-                                                                        <span
-                                                                            type="button"
-                                                                            onClick={(e) => {
-                                                                                e.stopPropagation();
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "editingEducationTitle",
-                                                                                        value: true
-                                                                                    })
-                                                                                );
-                                                                            }}
-                                                                        >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                                                <path d="M16 5l3 3" />
-                                                                            </svg>
-                                                                        </span>
-                                                                    </button>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    </h2>
-                                                    <div
-                                                        id="collapseEducation"
-                                                        className={`accordion-collapse collapse ${openSections.education ? 'show' : ''}`}
-                                                        aria-labelledby="headingEducation"
-                                                    >
-                                                        <div className="accordion-body">
-                                                            {!parsedResume?.educationDisabled ? (
-                                                                <div className="card border-0 shadow-none">
-                                                                    {parsedResume.education?.map((eduItem, eduIndex) => (
-                                                                        <div key={eduIndex} className="mb-3 p-3 border rounded">
-                                                                            <div className="d-flex justify-content-between align-items-center mb-2">
-                                                                                <small className="fw-bold text-muted">{parsedResume?.educationTitle || "Education"} #{eduIndex + 1}</small>
-                                                                                <button
-                                                                                    type="button"
-                                                                                    className="btn btn-sm btn-outline-danger"
-                                                                                    onClick={() => eduHandleDeleteEducation(eduIndex)}
-                                                                                    title="Delete education entry"
-                                                                                >
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                                                                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                                                                        <path fillRule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                                                                                    </svg>
-                                                                                </button>
-                                                                            </div>
-                                                                            <div className="d-flex gap-2 align-items-start">
-                                                                                <div className="icon-span text-primary">
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                                        <path d="M22 9l-10 -4l-10 4l10 4l10 -4v6"></path>
-                                                                                        <path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4"></path>
-                                                                                    </svg>
-                                                                                </div>
-                                                                                <div className="content-d">
-                                                                                    <h6 className="edu-degree mb-1">{eduItem.educationLevel.label}</h6>
-                                                                                    <h6 className="edu-institute text-muted">{eduItem.educationOrganization}</h6>
-                                                                                </div>
-                                                                            </div>
-                                                                            <small className="edu-time text-muted">
-                                                                                <em>{eduItem.educationDates.start.date} / {eduItem.educationDates.end.date}</em>
-                                                                            </small>
-                                                                            <div className="d-flex justify-content-end align-items-center gap-2 mt-2">
-                                                                                <button
-                                                                                    type="button"
-                                                                                    className="content-confirm-btn btn btn-outline-secondary btn-sm"
-                                                                                    onClick={() => eduHandleEditEducation(eduIndex)}
-                                                                                >
-                                                                                    <svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-                                                                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                                                                                    </svg>
-                                                                                    Edit
-                                                                                </button>
-                                                                            </div>
-                                                                        </div>
-                                                                    ))}
-
-
-                                                                    {/* Current form for adding/editing */}
-                                                                    {eduCurrentForm && (
-                                                                        <div className="mb-3 p-3 border rounded">
-                                                                            <div className="d-flex justify-content-between align-items-center mb-2">
-                                                                                <small className="fw-bold text-muted">
-                                                                                    {eduList.length > 0 ? `${parsedResume?.educationTitle || "Education"} #${eduList.length + 1}` : 'Education #1'}
-                                                                                </small>
-                                                                            </div>
-                                                                            <div className="mb-2">
-                                                                                <label className="form-label">Degree/Qualification</label>
-                                                                                <input
-                                                                                    className="form-control"
-                                                                                    name="eduDegree"
-                                                                                    value={eduFormData.eduDegree}
-                                                                                    onChange={eduHandleInputChange}
-                                                                                />
-                                                                            </div>
-                                                                            <div className="mb-2">
-                                                                                <label className="form-label">Institution</label>
-                                                                                <input
-                                                                                    className="form-control"
-                                                                                    name="eduInstitution"
-                                                                                    value={eduFormData.eduInstitution}
-                                                                                    onChange={eduHandleInputChange}
-                                                                                />
-                                                                            </div>
-                                                                            <div className="row">
-                                                                                <div className="col-md-6">
-                                                                                    <div className="mb-2">
-                                                                                        <label className="form-label">Start Date</label>
-                                                                                        <input
-                                                                                            placeholder="2017"
-                                                                                            className="form-control"
-                                                                                            type="text"
-                                                                                            name="eduStartDate"
-                                                                                            value={eduFormData.eduStartDate}
-                                                                                            onChange={eduHandleInputChange}
-                                                                                        />
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div className="col-md-6">
-                                                                                    <div className="mb-2">
-                                                                                        <label className="form-label">End Date</label>
-                                                                                        <input
-                                                                                            placeholder="2018"
-                                                                                            className="form-control"
-                                                                                            type="text"
-                                                                                            name="eduEndDate"
-                                                                                            value={eduFormData.eduEndDate}
-                                                                                            onChange={eduHandleInputChange}
-                                                                                        />
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            {/* Inside your education form, add this section after the achieved grade field */}
-                                                                            <div className="mb-3">
-                                                                                <label className="form-label">Major(s)</label>
-                                                                                {eduFormData.educationMajor.map((major, index) => (
-                                                                                    <div key={index} className="input-group mb-2">
-                                                                                        <input
-                                                                                            type="text"
-                                                                                            className="form-control"
-                                                                                            value={major}
-                                                                                            onChange={(e) => handleMajorChange(index, e.target.value)}
-                                                                                            placeholder={`Major ${index + 1}`}
-                                                                                        />
-                                                                                        {eduFormData.educationMajor.length > 1 && (
-                                                                                            <button
-                                                                                                type="button"
-                                                                                                className="btn btn-outline-danger"
-                                                                                                onClick={() => handleRemoveMajor(index)}
-                                                                                            >
-                                                                                                <FiTrash2 />
-                                                                                            </button>
-                                                                                        )}
-                                                                                    </div>
-                                                                                ))}
-                                                                                <button
-                                                                                    type="button"
-                                                                                    className="btn btn-sm btn-outline-secondary mt-2"
-                                                                                    onClick={handleAddMajor}
-                                                                                >
-                                                                                    <FiPlus /> Add Another Major
-                                                                                </button>
-                                                                            </div>
-                                                                            <div className="mb-2">
-                                                                                <label className="form-label">Grade Achieved</label>
-                                                                                <input
-                                                                                    className="form-control"
-                                                                                    name="achievedGrade"
-                                                                                    value={eduFormData.achievedGrade}
-                                                                                    onChange={eduHandleInputChange}
-                                                                                />
-                                                                            </div>
-                                                                            <div className="d-flex align-items-center justify-content-end gap-2 mt-2">
-                                                                                <button
-                                                                                    type="button"
-                                                                                    className="btn btn-outline-danger"
-                                                                                    onClick={eduHandleCancelEdit}
-                                                                                >
-                                                                                    Cancel
-                                                                                </button>
-                                                                                <button
-                                                                                    type="button"
-                                                                                    className="content-confirm-btn btn btn-outline-primary"
-                                                                                    onClick={eduHandleSaveEducation}
-                                                                                >
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                                        <path d="M5 12l5 5l10 -10"></path>
-                                                                                    </svg>
-                                                                                    Done
-                                                                                </button>
-                                                                            </div>
-                                                                        </div>
-                                                                    )}
-
-                                                                    {/* Add Education Button */}
-                                                                    <button
-                                                                        type="button"
-                                                                        className="btn btn-outline-secondary btn-sm mt-2"
-                                                                        style={{ maxWidth: 'fit-content' }}
-                                                                        onClick={eduHandleAddEducation}
-                                                                    >
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus me-1">
-                                                                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                                                                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                                                                        </svg>
-                                                                        Add {parsedResume?.educationTitle || "Education"}
-                                                                    </button>
-                                                                </div>
-                                                            ) : (
-                                                                <div className="text-muted text-center py-3 d-flex flex-column gap-2">
-                                                                    <span
-                                                                        className={`icon-toggle border-0 bg-transparent`}
-                                                                    >
-                                                                        <img
-                                                                            src={toggleImage}
-                                                                            alt="Complete icon"
-                                                                            width="36"
-                                                                            height="36"
-                                                                        />
-                                                                    </span>
-                                                                    This section is disabled
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {/* Skills */}
-                                                <div className="accordion-item">
-                                                    <h2 className="accordion-header" id="headingSkills">
-                                                        <div className="d-flex justify-content-between align-items-center w-100">
-                                                            <div className="d-flex align-items-center w-100 gap-2">
-
-                                                                <button
-                                                                    className={`icon-toggle border-0 bg-transparent ${!parsedResume?.skillsDisabled ? 'is-active' : ''}`}
-                                                                    type="button"
-                                                                    onClick={() =>
-                                                                        dispatch(
-                                                                            updateField({
-                                                                                path: "skillsDisabled",
-                                                                                value: !parsedResume?.skillsDisabled
-                                                                            })
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    {/* <img
-                                                                        src={toggleImage}
-                                                                        alt="Complete icon"
-                                                                        width="28"
-                                                                        height="28"
-                                                                    /> */}
-                                                                    {!parsedResume?.skillsDisabled ?
-                                                                        (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
-                                                                        : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
-                                                                    }
-                                                                </button>
-                                                                {parsedResume?.editingSkillsTitle ? (
-                                                                    <div className="d-flex align-items-center">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control form-control-sm me-2"
-                                                                            style={{ width: '200px' }}
-                                                                            value={parsedResume?.skillsTitle || "Skills"}
-                                                                            onChange={(e) =>
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "skillsTitle",
-                                                                                        value: e.target.value
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                            onBlur={() =>
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "editingSkillsTitle",
-                                                                                        value: false
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                            onKeyDown={(e) => {
-                                                                                if (e.key === 'Enter') {
-                                                                                    dispatch(
-                                                                                        updateField({
-                                                                                            path: "editingSkillsTitle",
-                                                                                            value: false
-                                                                                        })
-                                                                                    );
-                                                                                }
-                                                                            }}
-                                                                        />
-                                                                        <span
-                                                                            type="button"
-                                                                            className="btn btn-sm btn-outline-success"
-                                                                            onClick={() =>
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "editingSkillsTitle",
-                                                                                        value: false
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                        >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                <path d="M5 12l5 5l10 -10" />
-                                                                            </svg>
-                                                                        </span>
-                                                                    </div>
-                                                                ) : (
-                                                                    <button
-                                                                        className={`accordion-button w-100 flex-grow-1 gap-2 d-flex ${openSections.skills ? '' : 'collapsed'} ${parsedResume?.skillsDisabled ? 'text-muted' : ''}`}
-                                                                        type="button"
-                                                                        onClick={() => toggleSection('skills')}
-                                                                        style={{ background: 'none', border: 'none', textAlign: 'left' }}
-                                                                    >
-                                                                        {parsedResume?.skillsTitle || "Skills"}
-                                                                        <span
-                                                                            type="button"
-                                                                            className=""
-                                                                            onClick={(e) => {
-                                                                                e.stopPropagation();
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "editingSkillsTitle",
-                                                                                        value: true
-                                                                                    })
-                                                                                );
-                                                                            }}
-                                                                        >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                                                <path d="M16 5l3 3" />
-                                                                            </svg>
-                                                                        </span>
-                                                                    </button>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    </h2>
-                                                    <div
-                                                        id="collapseSkills"
-                                                        className={`accordion-collapse collapse ${openSections.skills ? 'show' : ''}`}
-                                                        aria-labelledby="headingSkills"
-                                                    >
-                                                        <div className="accordion-body">
-                                                            {!parsedResume?.skillsDisabled ? (
-                                                                <div className="card border-0 shadow-none p-2">
-                                                                    <div className="border rounded p-3">
-                                                                        <label className="form-label">Add {parsedResume?.skillsTitle || "Skills"} (one per line)</label>
-                                                                        <div className='d-flex'>
-                                                                            <input type="text" className="form-control me-2" placeholder={(parsedResume?.skillsTitle ? parsedResume.skillsTitle + ' name' : "Type a skill and press Enter to add it")}
-                                                                                value={currentSkill}
-                                                                                onChange={(e) => setCurrentSkill(e.target.value)}
-                                                                                onKeyDown={(e) => {
-                                                                                    if (e.key === 'Enter' && !e.shiftKey) {
-                                                                                        e.preventDefault();
-                                                                                        handleAddSkill();
-                                                                                    }
-                                                                                }}
-                                                                            />
-                                                                            <button type="button" className="btn btn-outline-primary btn-sm"
-                                                                                onClick={() => {
-                                                                                    if (currentSkill.trim()) {
-                                                                                        const currentSkills = parsedResume?.skill || [];
-                                                                                        handleAddSkill();
-                                                                                        setCurrentSkill('');
-                                                                                    }
-                                                                                }}
-                                                                            >
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-check me-1">
-                                                                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                                                                </svg>
-                                                                            </button>
-                                                                        </div>
-
-                                                                    </div>
-
-                                                                    <div className="mt-3">
-                                                                        <div className="mb-3">
-                                                                            <h6>Selected {parsedResume?.skillsTitle || "Skills"}</h6>
-                                                                            <div className="d-flex flex-wrap gap-2">
-                                                                                {parsedResume?.skill
-                                                                                    ?.filter(skill => skill.selected)
-                                                                                    .map((skill, index) => (
-                                                                                        <span key={index} className="badge bg-primary d-inline-flex align-items-center skill-badge">
-                                                                                            {skill.name}
-                                                                                            <button
-                                                                                                type="button"
-                                                                                                className="ms-1 bg-transparent border-0"
-                                                                                                aria-label="Remove"
-                                                                                                onClick={() => {
-                                                                                                    const updatedSkills = [...parsedResume.skill];
-                                                                                                    updatedSkills.splice(updatedSkills.findIndex(s => s.name === skill.name), 1);
-                                                                                                    dispatch(updateField({ path: "skill", value: updatedSkills }));
-                                                                                                }}
-                                                                                            >
-                                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-x">
-                                                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                                    <path d="M18 6l-12 12" />
-                                                                                                    <path d="M6 6l12 12" />
-                                                                                                </svg>
-                                                                                            </button>
-                                                                                        </span>
-                                                                                    ))}
-                                                                            </div>
-                                                                        </div>
-                                                                        <div>
-                                                                            <h6>Suggested {parsedResume?.skillsTitle || "Skills"}</h6>
-                                                                            <div className="d-flex flex-wrap gap-2">
-                                                                                {parsedResume?.skill
-                                                                                    ?.filter(skill => !skill.selected)
-                                                                                    .map((skill, index) => (
-                                                                                        <span key={index} className="badge bg-primary d-inline-flex align-items-center skill-badge">
-                                                                                            {skill.name}
-                                                                                            <button
-                                                                                                type="button"
-                                                                                                className="ms-1 bg-transparent border-0"
-                                                                                                aria-label="Select"
-                                                                                                onClick={() => {
-                                                                                                    const updatedSkills = [...parsedResume.skill];
-                                                                                                    const skillIndex = updatedSkills.findIndex(s => s.name === skill.name);
-                                                                                                    updatedSkills[skillIndex] = {
-                                                                                                        ...updatedSkills[skillIndex],
-                                                                                                        selected: true
-                                                                                                    };
-                                                                                                    dispatch(updateField({ path: "skill", value: updatedSkills }));
-                                                                                                }}
-                                                                                            >
-                                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
-                                                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                                    <path d="M5 12l5 5l10 -10" />
-                                                                                                </svg>
-                                                                                            </button>
-                                                                                        </span>
-                                                                                    ))}
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <small className="text-muted d-block">Type a skill and press Enter or click Add</small>
-                                                                </div>
-                                                            ) : (
-                                                                <div className="text-muted text-center py-3 d-flex flex-column gap-2">
-                                                                    <span
-                                                                        className={`icon-toggle border-0 bg-transparent`}
-                                                                    >
-                                                                        <img
-                                                                            src={toggleImage}
-                                                                            alt="Complete icon"
-                                                                            width="36"
-                                                                            height="36"
-                                                                        />
-                                                                    </span>
-                                                                    This section is disabled
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {/* Languages */}
-                                                <div className="accordion-item">
-                                                    <h2 className="accordion-header" id="headingLanguages">
-                                                        <div className="d-flex justify-content-between align-items-center w-100">
-                                                            <div className="d-flex align-items-center gap-2 w-100">
-
-                                                                <button
-                                                                    className={`icon-toggle border-0 bg-transparent ${!parsedResume?.languagesDisabled ? 'is-active' : ''}`}
-                                                                    type="button"
-                                                                    onClick={() =>
-                                                                        dispatch(
-                                                                            updateField({
-                                                                                path: "languagesDisabled",
-                                                                                value: !parsedResume?.languagesDisabled
-                                                                            })
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    {/* <img
-                                                                        src={toggleImage}
-                                                                        alt="Complete icon"
-                                                                        width="28"
-                                                                        height="28"
-                                                                    /> */}
-                                                                    {!parsedResume?.languagesDisabled ?
-                                                                        (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
-                                                                        : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
-                                                                    }
-                                                                </button>
-                                                                {parsedResume?.editingLanguagesTitle ? (
-                                                                    <div className="d-flex align-items-center">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control form-control-sm me-2"
-                                                                            style={{ width: '200px' }}
-                                                                            value={parsedResume?.languagesTitle || "Languages"}
-                                                                            onChange={(e) =>
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "languagesTitle",
-                                                                                        value: e.target.value
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                            onBlur={() =>
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "editingLanguagesTitle",
-                                                                                        value: false
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                            onKeyDown={(e) => {
-                                                                                if (e.key === 'Enter') {
-                                                                                    dispatch(
-                                                                                        updateField({
-                                                                                            path: "editingLanguagesTitle",
-                                                                                            value: false
-                                                                                        })
-                                                                                    );
-                                                                                }
-                                                                            }}
-                                                                        />
-                                                                        <span
-                                                                            type="button"
-                                                                            className="btn btn-sm btn-outline-success"
-                                                                            onClick={() =>
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "editingLanguagesTitle",
-                                                                                        value: false
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                        >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                <path d="M5 12l5 5l10 -10" />
-                                                                            </svg>
-                                                                        </span>
-                                                                    </div>
-                                                                ) : (
-                                                                    <button
-                                                                        className={`accordion-button w-100 flex-grow-1 d-flex gap-2 ${openSections.languages ? '' : 'collapsed'} ${parsedResume?.languagesDisabled ? 'text-muted' : ''}`}
-                                                                        type="button"
-                                                                        onClick={() => toggleSection('languages')}
-                                                                        style={{ background: 'none', border: 'none', textAlign: 'left' }}
-                                                                    >
-                                                                        {parsedResume?.languagesTitle || "Languages"}
-                                                                        <span
-                                                                            type="button"
-                                                                            className=""
-                                                                            onClick={(e) => {
-                                                                                e.stopPropagation();
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "editingLanguagesTitle",
-                                                                                        value: true
-                                                                                    })
-                                                                                );
-                                                                            }}
-                                                                        >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                                                <path d="M16 5l3 3" />
-                                                                            </svg>
-                                                                        </span>
-                                                                    </button>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    </h2>
-                                                    <div
-                                                        id="collapseLanguages"
-                                                        className={`accordion-collapse collapse ${openSections.languages ? 'show' : ''}`}
-                                                        aria-labelledby="headingLanguages"
-                                                    >
-                                                        <div className="accordion-body">
-                                                            {!parsedResume?.languagesDisabled ? (
-                                                                <div className="card border-0 shadow-none">
-                                                                    <div className="border rounded p-3">
-                                                                        <label className="form-label">Add {parsedResume?.languagesTitle || "Language"}</label>
-                                                                        <div className="row g-2">
-                                                                            <div className="col-md-8">
-                                                                                <input type="text" className="form-control" placeholder={(parsedResume?.languagesTitle ? parsedResume.languagesTitle + ' name' : "Language name")}
-                                                                                    value={currentLanguage}
-                                                                                    onChange={(e) => setCurrentLanguage(e.target.value)}
-                                                                                    onKeyDown={(e) => {
-                                                                                        if (e.key === 'Enter' && !e.shiftKey) {
-                                                                                            e.preventDefault();
-                                                                                            handleAddLanguage();
-                                                                                        }
-                                                                                    }}
-                                                                                />
-                                                                            </div>
-                                                                            <div className="col-md-3">
-                                                                                <select className="form-select"
-                                                                                    value={languageLevel}
-                                                                                    onChange={(e) => setLanguageLevel(e.target.value)}
-                                                                                >
-                                                                                    <option value="Beginner">Beginner</option>
-                                                                                    <option value="Intermediate">Intermediate</option>
-                                                                                    <option value="Advanced">Advanced</option>
-                                                                                    <option value="Native">Native</option>
-                                                                                </select>
-                                                                            </div>
-                                                                            <div className='col-md-1'>
-                                                                                <button type="button" className="btn btn-outline-primary btn-sm " style={{ padding: "5px" }}
-                                                                                    onClick={handleAddLanguage}
-                                                                                >
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-check me-1">
-                                                                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                                                                    </svg>
-                                                                                </button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="mt-3 d-flex flex-wrap gap-2">
-
-                                                                        {(parsedResume?.languages ?? [])
-                                                                            .filter((l) => {
-                                                                                if (!l) return false;
-                                                                                if (typeof l === 'object' && Object.keys(l).length === 0) return false;
-                                                                                return Boolean(l.name || l.level || l.language);
-                                                                            })
-                                                                            .map((lang, index) => (
-                                                                                <span key={index} className="badge bg-primary d-inline-flex align-items-center skill-badge">
-                                                                                    {lang.name || lang.language}
-                                                                                    {lang.level ? ` (${lang.level})` : ''}
-                                                                                    <button
-                                                                                        type="button"
-                                                                                        className="bg-transparent border-0"
-                                                                                        aria-label="Remove"
-                                                                                        onClick={() => {
-                                                                                            const updatedLangs = [...parsedResume.languages];
-                                                                                            updatedLangs.splice(index, 1);
-                                                                                            dispatch(updateField({ path: "languages", value: updatedLangs }));
-                                                                                        }}
-                                                                                    >
-                                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
-                                                                                    </button>
-                                                                                </span>
-                                                                            ))}
-                                                                    </div>
-                                                                </div>
-                                                            ) : (
-                                                                <div className="text-muted text-center py-3 d-flex flex-column gap-2">
-                                                                    <span
-                                                                        className={`icon-toggle border-0 bg-transparent`}
-                                                                    >
-                                                                        <img
-                                                                            src={toggleImage}
-                                                                            alt="Complete icon"
-                                                                            width="36"
-                                                                            height="36"
-                                                                        />
-                                                                    </span>
-                                                                    This section is disabled
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {/* Hobbies */}
-                                                <div className="accordion-item">
-                                                    <h2 className="accordion-header" id="headingHobbies">
-                                                        <div className="d-flex justify-content-between align-items-center w-100">
-                                                            <div className="d-flex align-items-center gap-2 w-100">
-
-                                                                <button
-                                                                    className={`icon-toggle border-0 bg-transparent ${!parsedResume?.hobbiesDisabled ? 'is-active' : ''}`}
-                                                                    type="button"
-                                                                    onClick={() =>
-                                                                        dispatch(
-                                                                            updateField({
-                                                                                path: "hobbiesDisabled",
-                                                                                value: !parsedResume?.hobbiesDisabled
-                                                                            })
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    {/* <img
-                                                                        src={toggleImage}
-                                                                        alt="Complete icon"
-                                                                        width="28"
-                                                                        height="28"
-                                                                    /> */}
-                                                                    {!parsedResume?.hobbiesDisabled ?
-                                                                        (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
-                                                                        : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
-                                                                    }
-                                                                </button>
-                                                                {parsedResume?.editingHobbiesTitle ? (
-                                                                    <div className="d-flex align-items-center">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control form-control-sm me-2"
-                                                                            style={{ width: '200px' }}
-                                                                            value={parsedResume?.hobbiesTitle || "Hobbies"}
-                                                                            onChange={(e) =>
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "hobbiesTitle",
-                                                                                        value: e.target.value
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                            onBlur={() =>
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "editingHobbiesTitle",
-                                                                                        value: false
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                            onKeyDown={(e) => {
-                                                                                if (e.key === 'Enter') {
-                                                                                    dispatch(
-                                                                                        updateField({
-                                                                                            path: "editingHobbiesTitle",
-                                                                                            value: false
-                                                                                        })
-                                                                                    );
-                                                                                }
-                                                                            }}
-                                                                        />
-                                                                        <span
-                                                                            type="button"
-                                                                            onClick={() =>
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "editingHobbiesTitle",
-                                                                                        value: false
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                        >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                <path d="M5 12l5 5l10 -10" />
-                                                                            </svg>
-                                                                        </span>
-                                                                    </div>
-                                                                ) : (
-                                                                    <button
-                                                                        className={`accordion-button flex-grow-1 w-100 gap-2 ${openSections.hobbies ? '' : 'collapsed'} ${parsedResume?.hobbiesDisabled ? 'text-muted' : ''}`}
-                                                                        type="button"
-                                                                        onClick={() => toggleSection('hobbies')}
-                                                                        style={{ background: 'none', border: 'none', textAlign: 'left' }}
-                                                                    >
-                                                                        {parsedResume?.hobbiesTitle || "Hobbies"}
-                                                                        <span
-                                                                            type="button"
-                                                                            onClick={(e) => {
-                                                                                e.stopPropagation();
-                                                                                dispatch(
-                                                                                    updateField({
-                                                                                        path: "editingHobbiesTitle",
-                                                                                        value: true
-                                                                                    })
-                                                                                );
-                                                                            }}
-                                                                        >
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                                                <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                                                <path d="M16 5l3 3" />
-                                                                            </svg>
-                                                                        </span>
-                                                                    </button>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    </h2>
-                                                    <div
-                                                        id="collapseHobbies"
-                                                        className={`accordion-collapse collapse ${openSections.hobbies ? 'show' : ''}`}
-                                                        aria-labelledby="headingHobbies"
-                                                    >
-                                                        <div className="accordion-body">
-                                                            {!parsedResume?.hobbiesDisabled ? (
-                                                                <div className="card border-0 shadow-none">
-                                                                    <div className="border rounded p-3">
-                                                                        <label className="form-label">Add {parsedResume?.hobbiesTitle || "Hobby"}</label>
-                                                                        <div className='d-flex'>
-                                                                            <input type="text" className="form-control me-2" placeholder={(parsedResume?.hobbiesTitle ? parsedResume.hobbiesTitle + ' name' : "Hobby name")}
-                                                                                value={currentHobby}
-                                                                                onChange={(e) => setCurrentHobby(e.target.value)}
-                                                                                onKeyDown={(e) => {
-                                                                                    if (e.key === 'Enter' && !e.shiftKey) {
-                                                                                        e.preventDefault();
-                                                                                        handleAddHobby();
-                                                                                    }
-                                                                                }}
-                                                                            />
-                                                                            <button type="button" className="btn btn-outline-primary btn-sm"
-                                                                                onClick={handleAddHobby}
-                                                                            >
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-check me-1">
-                                                                                    <polyline points="20 6 9 17 4 12"></polyline>
-                                                                                </svg>
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="mt-3 d-flex flex-wrap gap-2">
-
-                                                                        {parsedResume?.hobbies?.map((hobby, index) => (
-                                                                            <span key={index} className="badge bg-primary d-inline-flex align-items-center skill-badge">
-                                                                                {hobby}
-                                                                                <button
-                                                                                    type="button"
-                                                                                    className="ms-2 bg-transparent border-0"
-                                                                                    aria-label="Remove"
-                                                                                    onClick={() => {
-                                                                                        const updatedHobbies = [...parsedResume.hobbies];
-                                                                                        updatedHobbies.splice(index, 1);
-                                                                                        dispatch(updateField({ path: "hobbies", value: updatedHobbies }));
-                                                                                    }}
-                                                                                >
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
-                                                                                </button>
-                                                                            </span>
-                                                                        ))}
-                                                                    </div>
-                                                                </div>
-                                                            ) : (
-                                                                <div className="text-muted text-center py-3 d-flex flex-column gap-2">
-                                                                    <span
-                                                                        className={`icon-toggle border-0 bg-transparent`}
-                                                                    >
-                                                                        <img
-                                                                            src={toggleImage}
-                                                                            alt="Complete icon"
-                                                                            width="36"
-                                                                            height="36"
-                                                                        />
-                                                                    </span>
-                                                                    This section is disabled
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {parsedResume?.customSections?.map((section, index) => (
-                                                    <div key={section.id} className="accordion-item">
-                                                        <h2 className="accordion-header" id={`headingCustom-${section.id}`}>
-                                                            <div className="d-flex justify-content-between align-items-center w-100">
-                                                                <div className="d-flex align-items-center w-100 gap-2">
-                                                                    <button
-                                                                        className={`icon-toggle border-0 bg-transparent ${!section?.disabled ? 'is-active' : ''}`}
-                                                                        type="button"
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-                                                                            handleUpdateCustomSection(section.id, {
-                                                                                disabled: !section?.disabled
-                                                                            });
-                                                                        }}
-                                                                    >
-                                                                        {!section?.disabled ? (
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                                                                                <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-                                                                            </svg>
-                                                                        ) : (
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off">
-                                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                <path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" />
-                                                                                <path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" />
-                                                                                <path d="M3 3l18 18" />
-                                                                            </svg>
-                                                                        )}
-                                                                    </button>
-
-                                                                    {section?.editingTitle ? (
-                                                                        <div className="d-flex align-items-center">
-                                                                            <input
-                                                                                type="text"
-                                                                                className="form-control form-control-sm me-2"
-                                                                                style={{ width: '200px' }}
-                                                                                value={section?.title || "Custom Section"}
-                                                                                onChange={(e) => {
-                                                                                    handleUpdateCustomSection(section.id, {
-                                                                                        title: e.target.value
-                                                                                    });
-                                                                                }}
-                                                                                onBlur={() => {
-                                                                                    handleUpdateCustomSection(section.id, {
-                                                                                        editingTitle: false
-                                                                                    });
-                                                                                }}
-                                                                                onKeyDown={(e) => {
-                                                                                    if (e.key === 'Enter') {
-                                                                                        handleUpdateCustomSection(section.id, {
-                                                                                            editingTitle: false
-                                                                                        });
-                                                                                    }
-                                                                                }}
-                                                                                autoFocus
-                                                                            />
-                                                                            <span
-                                                                                type="button"
-                                                                                onClick={() => {
-                                                                                    handleUpdateCustomSection(section.id, {
-                                                                                        editingTitle: false
-                                                                                    });
-                                                                                }}
-                                                                            >
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
-                                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                    <path d="M5 12l5 5l10 -10" />
-                                                                                </svg>
-                                                                            </span>
-                                                                        </div>
-                                                                    ) : (
-                                                                        <button
-                                                                            className={`accordion-button flex-grow-1 w-100 d-flex gap-2 ${openSections[`custom-${section.id}`] ? '' : 'collapsed'} ${section?.disabled ? 'text-muted' : ''}`}
-                                                                            type="button"
-                                                                            onClick={() => toggleSection(`custom-${section.id}`)}
-                                                                            style={{ background: 'none', border: 'none', textAlign: 'left' }}
-                                                                        >
-                                                                            {section?.title || "Custom Section"}
-                                                                            <span
-                                                                                type="button"
-                                                                                onClick={(e) => {
-                                                                                    e.stopPropagation();
-                                                                                    handleUpdateCustomSection(section.id, {
-                                                                                        editingTitle: true
-                                                                                    });
-                                                                                }}
-                                                                            >
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit">
-                                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                                                    <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
-                                                                                    <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
-                                                                                    <path d="M16 5l3 3" />
-                                                                                </svg>
-                                                                            </span>
-                                                                        </button>
-                                                                    )}
-
-                                                                    <button
-                                                                        className="btn btn-sm btn-outline-danger ms-2"
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-                                                                            handleRemoveCustomSection(section.id);
-                                                                        }}
-                                                                        title="Delete this section"
-                                                                    >
-                                                                        <FiTrash2 size={14} />
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </h2>
-                                                        <div
-                                                            id={`collapseCustom-${section.id}`}
-                                                            className={`accordion-collapse collapse ${openSections[`custom-${section.id}`] ? 'show' : ''}`}
-                                                            aria-labelledby={`headingCustom-${section.id}`}
-                                                        >
-                                                            <div className="accordion-body">
-                                                                {!section?.disabled ? (
-                                                                    <div className="card border-0 shadow-none">
-                                                                        <CKEditor
-                                                                            editor={ClassicEditor}
-                                                                            data={section?.content}
-                                                                            onChange={(event, editor) => {
-                                                                                const data = editor.getData();
-                                                                                handleUpdateCustomSection(section.id, { content: data });
-                                                                            }}
-                                                                            config={{
-                                                                                toolbar: [
-                                                                                    'heading', '|',
-                                                                                    'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|',
-                                                                                    'outdent', 'indent', '|',
-                                                                                    'undo', 'redo'
-                                                                                ]
-                                                                            }}
-                                                                        />
-                                                                        <div className="mt-2 text-muted small">
-                                                                            Use the editor above to add content to your custom section.
-                                                                        </div>
-                                                                    </div>
-                                                                ) : (
-                                                                    <div className="text-muted text-center py-3 d-flex flex-column gap-2">
-                                                                        <span className={`icon-toggle border-0 bg-transparent`}>
-                                                                            <img
-                                                                                src={toggleImage}
-                                                                                alt="Complete icon"
-                                                                                width="36"
-                                                                                height="36"
-                                                                            />
-                                                                        </span>
-                                                                        This section is disabled
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                                <div>
-                                                    <button
-                                                        onClick={() => {
-                                                            handleAddCustomSection()
-                                                        }}
-                                                        className='btn btn-primary mt-3'
-                                                    >
-                                                        Add Custom Section
-                                                    </button>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </>
-                                )}
-
-                                {/* TAB placeholders */}
-                                {activeTab === 'tabDesign' && (
-                                    <div className={`tab-pane fade ${activeTab === 'tabDesign' ? 'show active' : ''}`} id="tabDesign" role="tabpanel" aria-labelledby="tabDesign-tab" tabIndex="0">
-                                        <div className="card border-0 shadow-none shadow-sm"><div className="card-body">
-                                            <Row className="g-4">
-                                                {cardTemplate.map((template) => (
-                                                    <Col key={template.name} xs={6} sm={6} md={4} lg={3} xl={4}>
-                                                        <div
-                                                            className={`template-card p-3 text-center cursor-pointer ${selectedTemplate === template.name ? 'border border-primary rounded-3' : 'border border-light-subtle rounded-3'}`}
-                                                            onClick={() => handleTemplateChange(template.name)}
-                                                            style={{
-                                                                transition: 'all 0.2s ease-in-out',
-                                                                height: '100%',
-                                                                backgroundColor: selectedTemplate === template.name ? 'rgba(13, 110, 253, 0.05)' : 'white',
-                                                                position: 'relative', // Important for ribbon positioning
-                                                                overflow: 'hidden'
-                                                            }}
-                                                        >
-                                                            {/* Recommended Ribbon */}
-                                                            {template.recommended && (
-                                                                <div
-                                                                    style={{
-                                                                        position: 'absolute',
-                                                                        top: '12px',
-                                                                        right: '-40px',
-                                                                        backgroundColor: '#1D0948',
-                                                                        color: 'white',
-                                                                        padding: '5px 40px',
-                                                                        transform: 'rotate(45deg)',
-                                                                        fontSize: '7px',
-                                                                        fontWeight: '600',
-                                                                        boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
-                                                                        zIndex: '99999'
-                                                                    }}
-                                                                >
-                                                                    Recommended
-                                                                </div>
-                                                            )}
-
-                                                            <div className="position-relative mb-3" style={{ paddingTop: '141.4%' }}>
-                                                                <img
-                                                                    src={`/assets/images/${template.image}`}
-                                                                    alt={template.name}
-                                                                    className="img-fluid position-absolute top-0 start-0 w-100 h-100 object-fit-cover rounded-2 border"
-                                                                    style={{
-                                                                        objectFit: 'cover',
-                                                                        transition: 'transform 0.3s ease-in-out',
-                                                                    }}
-                                                                    onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
-                                                                    onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                                                />
-                                                                {selectedTemplate === template.name && (
-                                                                    <div className="position-absolute top-0 end-0 m-2">
-                                                                        <span className="badge bg-primary rounded-pill">
-                                                                            <i className="fas fa-check"></i> Selected
-                                                                        </span>
-                                                                    </div>
-                                                                )}
-                                                            </div>
-                                                            <h6 className="mb-0 fw-medium">{template.name}</h6>
-                                                        </div>
-
-                                                    </Col>
-                                                ))}
-                                            </Row>
-                                        </div></div>
-                                    </div>
-                                )}
-                                {activeTab === 'tabAnalysis' && (
-                                    <div className={`tab-pane fade ${activeTab === 'tabAnalysis' ? 'show active' : ''}`}
-                                        id="tabAnalysis"
-                                        role="tabpanel"
-                                        aria-labelledby="tabAnalysis-tab"
-                                        tabIndex="0">
-                                        <div className="accordion" id="analysisAccordion">
-                                            {/* Headline Section */}
-                                            <div className="accordion-item border-0 mb-3">
-                                                <h2 className="accordion-header" id="headingHeadline">
-                                                    <button
-                                                        className={`accordion-button ${activeAccordion === 'headline' ? '' : 'collapsed'}`}
-                                                        type="button"
-                                                        onClick={() => toggleAccordion('headline')}
-                                                        aria-expanded={activeAccordion === 'headline'}
-                                                        aria-controls="collapseHeadline">
-                                                        <h4 className="mb-0">Headline Analysis</h4>
-                                                    </button>
-                                                </h2>
-                                                <div
-                                                    id="collapseHeadline"
-                                                    className={`accordion-collapse collapse ${activeAccordion === 'headline' ? 'show' : ''}`}
-                                                    aria-labelledby="headingHeadline"
-                                                    data-bs-parent="#analysisAccordion">
-                                                    <div className="accordion-body">
-                                                        <div className="my-2">{AnalyseResumeData?.headline?.original || parsedResume?.headline || 'No headline available'}</div>
-
-                                                        {AnalyseResumeData?.headline?.issues?.length > 0 && (
-                                                            <div className="mt-3">
-                                                                <h5>Issues:</h5>
-                                                                <ul className="list-group list-group-flush">
-                                                                    {AnalyseResumeData.headline.issues.map((item, index) => (
-                                                                        <li key={index} className="list-group-item">
-                                                                            <strong>{item.issue}</strong>: {item.description}
-                                                                        </li>
-                                                                    ))}
-                                                                </ul>
-                                                            </div>
-                                                        )}
-
-                                                        {AnalyseResumeData?.headline?.suggested_paragraph && (
-                                                            <div className="mt-3">
-                                                                <h5>Suggested Headline:</h5>
-                                                                <div className="p-3 bg-light rounded mb-3">
-                                                                    {AnalyseResumeData.headline?.suggested_paragraph}
-                                                                </div>
-                                                                <div className='d-flex space-between' style={{ "gap": "15px" }}>
-                                                                    <button
-                                                                        className="btn btn-primary w-75"
-                                                                        onClick={() => handleApply("headline")}
-                                                                        disabled={AiResumeLoader || parsedResume.headline == AnalyseResumeData?.headline?.suggested_paragraph}>
-                                                                        Apply Suggestion
-                                                                    </button>
-                                                                    <button
-                                                                        className="btn btn-outline-primary w-25"
-                                                                        onClick={() => handleUndoApply("headline")}
-                                                                        disabled={AiResumeLoader || parsedResume.headline != AnalyseResumeData?.headline?.suggested_paragraph}>
-                                                                        Undo Suggestion
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            {/* Summary Section */}
-                                            <div className="accordion-item border-0 mb-3">
-                                                <h2 className="accordion-header" id="headingSummary">
-                                                    <button
-                                                        className={`accordion-button ${activeAccordion === 'summary' ? '' : 'collapsed'}`}
-                                                        type="button"
-                                                        onClick={() => toggleAccordion('summary')}
-                                                        aria-expanded={activeAccordion === 'summary'}
-                                                        aria-controls="collapseSummary">
-                                                        <h4 className="mb-0">Summary Analysis</h4>
-                                                    </button>
-                                                </h2>
-                                                <div
-                                                    id="collapseSummary"
-                                                    className={`accordion-collapse collapse ${activeAccordion === 'summary' ? 'show' : ''}`}
-                                                    aria-labelledby="headingSummary"
-                                                    data-bs-parent="#analysisAccordion">
-                                                    <div className="accordion-body">
-                                                        <div className="my-2">{AnalyseResumeData?.summary?.original || parsedResume?.summary || 'No summary available'}</div>
-
-                                                        {AnalyseResumeData?.summary?.issues?.length > 0 && (
-                                                            <div className="mt-3">
-                                                                <h5>Issues:</h5>
-                                                                <ul className="list-group list-group-flush">
-                                                                    {AnalyseResumeData.summary.issues.map((item, index) => (
-                                                                        <li key={index} className="list-group-item">
-                                                                            <strong>{item.issue}</strong>: {item.description}
-                                                                        </li>
-                                                                    ))}
-                                                                </ul>
-                                                            </div>
-                                                        )}
-
-                                                        {AnalyseResumeData?.summary?.suggested_paragraph && (
-                                                            <div className="mt-3">
-                                                                <h5>Suggested Summary:</h5>
-                                                                <div className="p-3 bg-light rounded mb-3">
-                                                                    {AnalyseResumeData.summary.suggested_paragraph}
-                                                                </div>
-                                                                <div className='d-flex space-between' style={{ "gap": "15px" }}>
-                                                                    <button
-                                                                        className="btn btn-primary w-75"
-                                                                        onClick={() => handleApply("summary")}
-                                                                        disabled={AiResumeLoader || parsedResume?.summary == AnalyseResumeData?.summary?.suggested_paragraph}>
-                                                                        Apply Suggestion
-                                                                    </button>
-                                                                    <button
-                                                                        className="btn btn-primary w-25"
-                                                                        onClick={() => handleUndoApply("summary")}
-                                                                        disabled={AiResumeLoader || parsedResume?.summary != AnalyseResumeData?.summary?.suggested_paragraph}>
-                                                                        Undo Suggestion
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            {/* Work Experience Section */}
-                                            {(parsedResume?.workExperience?.length > 0 || AnalyseResumeData?.workExperience?.length > 0) && (
-                                                <div className="accordion-item border-0 mb-3">
-                                                    <h2 className="accordion-header" id="headingWorkExp">
-                                                        <button
-                                                            className={`accordion-button ${activeAccordion === 'work' ? '' : 'collapsed'}`}
-                                                            type="button"
-                                                            onClick={() => toggleAccordion('work')}
-                                                            aria-expanded={activeAccordion === 'work'}
-                                                            aria-controls="collapseWorkExp">
-                                                            <h4 className="mb-0">Work Experience Analysis</h4>
-                                                        </button>
-                                                    </h2>
-                                                    <div
-                                                        id="collapseWorkExp"
-                                                        className={`accordion-collapse collapse ${activeAccordion === 'work' ? 'show' : ''}`}
-                                                        aria-labelledby="headingWorkExp"
-                                                        data-bs-parent="#analysisAccordion">
-                                                        <div className="accordion-body">
-                                                            {!(AnalyseResumeData?.workExperience?.length > 0) && parsedResume?.workExperience?.map((exp, index) => (
-                                                                <div key={`original-${index}`} className="mb-4">
-                                                                    <div className="card mb-2">
-                                                                        <div
-                                                                            className="card-header bg-light"
-                                                                            onClick={() => toggleWorkExpItem(index)}
-                                                                            style={{ cursor: 'pointer' }}>
-                                                                            <div className="d-flex justify-content-between align-items-center">
-                                                                                <h6 className="mb-0">
-                                                                                    {exp.workExperienceJobTitle || `Work Experience #${index + 1}`}
-                                                                                </h6>
-                                                                                {expandedWorkExpItems.includes(index) ? <FiChevronUp /> : <FiChevronDown />}
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className={`collapse ${expandedWorkExpItems.includes(index) ? 'show' : ''}`}>
-                                                                            <div className="card-body">
-                                                                                <div className="mb-3">
-                                                                                    <h6>Job Title:</h6>
-                                                                                    <p className="mb-2">{exp.workExperienceJobTitle || 'Not specified'}</p>
-
-                                                                                    <h6>Company:</h6>
-                                                                                    <p className="mb-2">{exp.workExperienceOrganization || 'Not specified'}</p>
-
-                                                                                    <h6>Duration:</h6>
-                                                                                    <p className="mb-2">
-                                                                                        {exp.workExperienceDates?.start?.date || 'Not specified'}
-                                                                                        to {exp.workExperienceDates?.end?.date || 'Present'}
-                                                                                    </p>
-
-                                                                                    <h6>Description:</h6>
-                                                                                    <p className="mb-0">{exp.workExperienceDescription || 'No description provided'}</p>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            ))}
-
-                                                            {AnalyseResumeData?.workExperience?.map((exp, index) => (
-                                                                <div key={`analysis-${index}`} className="mb-4">
-                                                                    <div className="card mb-2 border-primary">
-                                                                        <div
-                                                                            className="card-header bg-primary text-white"
-                                                                            onClick={() => toggleWorkExpItem(index + 1000)}
-                                                                            style={{ cursor: 'pointer' }}>
-                                                                            <div className="d-flex justify-content-between align-items-center">
-                                                                                <h6 className="mb-0">
-                                                                                    {parsedResume?.workExperience[index]?.workExperienceJobTitle?.split(' ').length > 7
-                                                                                        ? parsedResume?.workExperience[index]?.workExperienceJobTitle.split(' ').slice(0, 7).join(' ') + '...'
-                                                                                        : parsedResume?.workExperience[index]?.workExperienceJobTitle || `Analysis #${index + 1}`}
-                                                                                </h6>
-                                                                                {expandedWorkExpItems.includes(index + 1000) ? <FiChevronUp /> : <FiChevronDown />}
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className={`collapse ${expandedWorkExpItems.includes(index + 1000) ? 'show' : ''}`}>
-                                                                            <div className="card-body">
-                                                                                {exp.original && (
-                                                                                    <div>
-                                                                                        <h6>Orignal:</h6>
-                                                                                        <div className="p-3 bg-light rounded mb-3">
-                                                                                            {exp.original}
-                                                                                        </div>
-                                                                                    </div>
-                                                                                )}
-
-                                                                                {exp.issues?.length > 0 && (
-                                                                                    <div className="mb-3">
-                                                                                        <h6>Issues:</h6>
-                                                                                        <ul className="list-group list-group-flush">
-                                                                                            {exp.issues.map((issue, idx) => (
-                                                                                                <li key={idx} className="list-group-item">
-                                                                                                    <strong>{issue.issue}</strong>: {issue.description}
-                                                                                                </li>
-                                                                                            ))}
-                                                                                        </ul>
-                                                                                    </div>
-                                                                                )}
-
-                                                                                {exp.suggested_paragraph && (
-                                                                                    <div>
-                                                                                        <h6>Suggested Improvement:</h6>
-                                                                                        <div className="p-3 bg-light rounded mb-3">
-                                                                                            {exp.suggested_paragraph}
-                                                                                        </div>
-                                                                                        <div className='d-flex space-between' style={{ "gap": "15px" }}>
-                                                                                            <button
-                                                                                                className="btn btn-primary w-75"
-                                                                                                onClick={() => handleApplyWorkExp(index)}
-                                                                                                disabled={AiResumeLoader ||
-                                                                                                    parsedResume?.workExperience[index]["workExperienceDescription"] == AnalyseResumeData?.workExperience[index]?.suggested_paragraph}>
-                                                                                                Apply Suggestion
-                                                                                            </button>
-                                                                                            <button
-                                                                                                className="btn btn-primary w-25"
-                                                                                                onClick={() => handleUndoWorkExp(index)}
-                                                                                                disabled={AiResumeLoader || parsedResume?.workExperience[index]["workExperienceDescription"] != AnalyseResumeData?.workExperience[index]?.suggested_paragraph}>
-                                                                                                Undo Suggestion
-                                                                                            </button>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                )}
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
-
-                                {activeTab === 'tabMatching' && (
-                                    <div className={`tab-pane fade ${activeTab === 'tabMatching' ? 'show active' : ''}`} id="tabMatching" role="tabpanel" aria-labelledby="tabMatching-tab" tabIndex="0">
-                                        <div className="card border-0 shadow-none shadow-sm"><div className="card-body">Job matching goes here.</div></div>
-                                    </div>
-                                )}
-                                {activeTab === 'tabCover' && (
-                                    <div className={`tab-pane fade ${activeTab === 'tabCover' ? 'show active' : ''}`} id="tabCover" role="tabpanel" aria-labelledby="tabCover-tab" tabIndex="0">
-                                        <div className="card border-0 shadow-none shadow-sm"><div className="card-body">
-                                            <CoverLetter />
-
-                                        </div></div>
-                                    </div>
-                                )}
-
-                                {/* Prev/Next */}
-                                <div className="card border-0 shadow-none shadow-sm mt-3">
-                                    <div className="card-body p-3 d-flex justify-content-center align-items-center">
-                                        <button type="button" className={`btn btn-outline-primary d-flex align-items-center gap-2 ${activeTab == "tabPreview" && 'd-none'}`} onClick={handlePreviousTab}>
-                                            <span aria-hidden="true">←</span> Previous
-                                        </button>
-                                        <button type="button" className={`btn btn-primary d-flex align-items-center gap-2 ${activeTab == "tabDesign" && 'd-none'}`}
-                                            onClick={handleNextTab}
-                                        >
-                                            Next <span aria-hidden="true">→</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
             {isGeneratingPDF && (
                 <div style={{
