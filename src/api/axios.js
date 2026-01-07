@@ -8,12 +8,12 @@ import axios from 'axios';
 
 // const baseURL = 'https://slateblue-snake-907020.hostingersite.com';
 
-// const baseURL = 'http://72.62.194.87/api';
+const baseURL = 'http://72.62.194.87/api';
 
-// const baseURLAPI = 'http://72.62.194.87/api/api';
+const baseURLAPI = 'http://72.62.194.87/api/api';
 
-const baseURL = 'http://127.0.0.1:8085';
-const baseURLAPI = 'http://127.0.0.1:8085/api';
+// const baseURL = 'http://127.0.0.1:8085';
+// const baseURLAPI = 'http://127.0.0.1:8085/api';
 
 // const baseURLAPI = 'http://localhost:8000';
 
