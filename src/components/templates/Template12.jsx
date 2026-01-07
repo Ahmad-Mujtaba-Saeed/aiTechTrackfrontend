@@ -11,7 +11,7 @@ const Template12 = ({ resumeData }) => {
       color: '#000',
     },
     container: {
-      maxWidth: '800px',
+      // maxWidth: '800px',
       margin: '0 auto',
       border: '1px solid #ccc',
       padding: 0,

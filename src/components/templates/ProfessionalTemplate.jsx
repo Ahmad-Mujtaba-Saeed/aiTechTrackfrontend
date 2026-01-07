@@ -7,7 +7,7 @@ const ProfessionalTemplate = ({ resumeData }) => {
   return (
     <div style={{
       display: 'flex',
-      maxWidth: '900px',
+      // maxWidth: '900px',
       margin: '0 auto',
       border: '1px solid #ccc',
       fontFamily: "'Inter', Tahoma, sans-serif",

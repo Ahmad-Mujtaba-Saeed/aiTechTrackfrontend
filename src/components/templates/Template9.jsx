@@ -10,7 +10,7 @@ const Template9 = ({ resumeData }) => {
       backgroundColor: '#fff',
       lineHeight: 1.4,
       fontSize: '14px',
-      maxWidth: '850px',
+      // maxWidth: '850px',
       margin: '0 auto'
     },
     wrapper: {

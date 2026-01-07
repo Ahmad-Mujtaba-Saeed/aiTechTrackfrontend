@@ -12,7 +12,7 @@ const Template13 = ({ resumeData }) => {
     },
     resume: {
       background: '#fff',
-      width: '800px',
+      // width: '800px',
       margin: '40px auto',
       padding: '40px 50px',
       boxShadow: '0 0 10px rgba(0,0,0,0.1)'

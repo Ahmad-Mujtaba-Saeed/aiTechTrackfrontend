@@ -23,7 +23,8 @@ import {
 } from "../templates";
 import toggleImage from '../../assets/images/P-solid-rgb.svg';
 
-import { Row, Col, Button, Card, Dropdown } from "react-bootstrap";
+import { Row, Col, Button, Card, Dropdown, Modal } from "react-bootstrap";
+import Draggable from 'react-draggable';
 
 import { useDispatch, useSelector } from "react-redux";
 import { setParsedResume, updateField, analyzeResumeAi, setSelectedTemplate, fetchResumeById, updateResumeById } from "../../features/resume/resumeSlice";
@@ -1404,156 +1405,599 @@ export default function CVBuilder() {
     };
 
 
+    const [modalShow, setModalShow] = useState(false);
+    const [modalFor, setModalFor] = useState('')
+
+    const handleClose = () => {
+        setModalShow(false);
+        setModalFor('');
+    };
+
+    const handleShow = (modalFor) => {
+        setModalShow(true);
+        setModalFor(modalFor);
+    }
+
+    const getEditorModalContent = () => {
+        if (modalFor == 'personal') {
+            return (
+                <div className='personal-detail-wrapper'>
+                    <h3 className="editor-section-title">
+                        {parsedResume?.editingPersonalTitle ? (
+                            <div className="d-flex align-items-center gap-2">
+                                <div className="form-group">
+                                    <input
+                                        type="text"
+                                        className="form-control "
+                                        value={parsedResume?.personalTitle || "Personal details"}
+                                        onChange={(e) =>
+                                            dispatch(
+                                                updateField({
+                                                    path: "personalTitle",
+                                                    value: e.target.value
+                                                })
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            dispatch(
+                                                updateField({
+                                                    path: "editingPersonalTitle",
+                                                    value: false
+                                                })
+                                            )
+                                        }
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                dispatch(
+                                                    updateField({
+                                                        path: "editingPersonalTitle",
+                                                        value: false
+                                                    })
+                                                );
+                                            }
+                                        }}
+                                    />
+                                </div>
+                                <span
+                                    className='cursor-pointer'
+                                    onClick={() =>
+                                        dispatch(
+                                            updateField({
+                                                path: "editingPersonalTitle",
+                                                value: false
+                                            })
+                                        )
+                                    }
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M5 12l5 5l10 -10" />
+                                    </svg>
+                                </span>
+                            </div>
+                        ) : (
+                            <>
+                                {parsedResume?.personalTitle || "Personal details"}
+                                < span
+                                    className='cursor-pointer'
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        dispatch(
+                                            updateField({
+                                                path: "editingPersonalTitle",
+                                                value: true
+                                            })
+                                        );
+                                    }}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                        <path d="M16 5l3 3" />
+                                    </svg>
+                                </span>
+                            </>
+                        )}
+                    </h3>
+                    <div className="h-wrap">
+                        <div className="v-wrap justify-content-center">
+                            <div className="h-wrap">
+                                <div className="form-group">
+                                    <label className="form-label">First Name</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        name="firstName"
+                                        value={parsedResume?.candidateName?.[0]?.firstName || ""}
+                                        onChange={(e) =>
+                                            dispatch(
+                                                updateField({
+                                                    path: "candidateName[0].firstName",
+                                                    value: e.target.value
+                                                })
+                                            )
+                                        }
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">Last name</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        name="lastName"
+                                        value={`${parsedResume?.candidateName?.[0]?.familyName || ''}`}
+                                        onChange={(e) =>
+                                            dispatch(
+                                                updateField({
+                                                    path: "candidateName[0].familyName",
+                                                    value: e.target.value
+                                                })
+                                            )
+                                        }
+                                    />
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="form-label">Headline</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="headline"
+                                    value={parsedResume?.headline || ''}
+                                    onChange={(e) =>
+                                        dispatch(
+                                            updateField({
+                                                path: "headline",
+                                                value: e.target.value
+                                            })
+                                        )
+                                    }
+                                />
+                            </div>
+                        </div>
+                        {profilePic || parsedResume?.profilePic ? (
+                            <div className="d-flex flex-column justify-content-center align-items-center personal-image-wrapper">
+                                <img
+                                    src={profilePic || parsedResume.profilePic}
+                                    alt="Profile"
+                                />
+                                {(profilePic || parsedResume?.profilePic) && (
+                                    <button
+                                        className="custom-remove-btn"
+                                        type="button"
+                                        onClick={handleRemovePhoto}
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                    </button>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="d-flex flex-column justify-content-center align-items-center personal-image-wrapper cursor-pointer" onClick={() => fileInputRef.current.click()}>
+                                <div className="d-flex flex-column gap-0 align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-photo"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 8h.01" /><path d="M3 6a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-12" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5" /><path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3" /></svg>
+                                    <div className="small mt-1">Upload Photo</div>
+                                </div>
+                            </div>
+                        )}
+                        <input
+                            id="avatarInput"
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            className="d-none"
+                            onChange={handleAvatarUpload}
+                        />
+                    </div>
+                    <div className="h-wrap">
+                        <div className="form-group">
+                            <label className="form-label">Email address</label>
+                            <input
+                                type="email"
+                                className="form-control"
+                                name="email"
+                                value={parsedResume?.email?.[0] || ''}
+                                onChange={(e) =>
+                                    dispatch(
+                                        updateField({
+                                            path: "email",
+                                            value: [e.target.value]
+                                        })
+                                    )
+                                }
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Phone number</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="phone"
+                                value={parsedResume?.phoneNumber?.[0]?.formattedNumber || ''}
+                                onChange={(e) =>
+                                    dispatch(
+                                        updateField({
+                                            path: "phoneNumber[0].formattedNumber",
+                                            value: e.target.value
+                                        })
+                                    )
+                                }
+                            />
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <label className="form-label">Address</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            name="address"
+                            value={parsedResume?.location?.formatted || ''}
+                            onChange={(e) =>
+                                dispatch(
+                                    updateField({
+                                        path: "location.formatted",
+                                        value: e.target.value
+                                    })
+                                )
+                            }
+                        />
+                    </div>
+                    <div className="h-wrap">
+                        <div className="form-group">
+                            <label className="form-label">Post code</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="postCode"
+                                value={parsedResume?.location?.postCode || ''}
+                                onChange={(e) =>
+                                    dispatch(
+                                        updateField({
+                                            path: "location.postCode",
+                                            value: e.target.value
+                                        })
+                                    )
+                                }
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">City</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="city"
+                                value={parsedResume?.location?.city || ''}
+                                onChange={(e) =>
+                                    dispatch(
+                                        updateField({
+                                            path: "location.city",
+                                            value: e.target.value
+                                        })
+                                    )
+                                }
+                            />
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <label className="form-label">Summary</label>
+                        <textarea
+                            rows="5"
+                            className="form-control"
+                            placeholder="Describe your professional background, key skills, achievements, and career goals..."
+                            name="summary"
+                            value={parsedResume?.summary?.paragraph || ''}
+                            onChange={(e) =>
+                                dispatch(
+                                    updateField({
+                                        path: "summary.paragraph",
+                                        value: e.target.value,
+                                    })
+                                )
+                            }
+                        ></textarea>
+                    </div>
+                    <h6 className="fw-bold mb-2">Social Links</h6>
+                    <div className="h-wrap">
+                        <div className="form-group">
+                            <label className="form-label">GitHub</label>
+                            <input
+                                type="url"
+                                className="form-control"
+                                name="github"
+                                placeholder="https://github.com/username"
+                                value={parsedResume?.socialLinks?.github || ''}
+                                onChange={(e) =>
+                                    dispatch(
+                                        updateField({
+                                            path: "socialLinks.github",
+                                            value: e.target.value,
+                                        })
+                                    )
+                                }
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">LinkedIn</label>
+                            <input
+                                type="url"
+                                className="form-control"
+                                name="linkedin"
+                                placeholder="https://linkedin.com/in/username"
+                                value={parsedResume?.socialLinks?.linkedin || ''}
+                                onChange={(e) =>
+                                    dispatch(
+                                        updateField({
+                                            path: "socialLinks.linkedin",
+                                            value: e.target.value,
+                                        })
+                                    )
+                                }
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Portfolio / Website</label>
+                            <input
+                                type="url"
+                                className="form-control"
+                                name="website"
+                                placeholder="https://yourwebsite.com"
+                                value={parsedResume?.socialLinks?.website || ''}
+                                onChange={(e) =>
+                                    dispatch(
+                                        updateField({
+                                            path: "socialLinks.website",
+                                            value: e.target.value,
+                                        })
+                                    )
+                                }
+                            />
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+
+
+        if (modalFor == 'design') {
+            return (
+                <div className="design-wrapper">
+                    {cardTemplate.map((template) => (
+                        <div key={template.name}
+                            className={`template-card text-center cursor-pointer ${selectedTemplate === template.name && 'selected'}`}
+                            onClick={() => handleTemplateChange(template.name)}
+                        >
+                            {/* Recommended Ribbon */}
+                            {template.recommended && (
+                                <div className='recomended-badge'>
+                                    Recommended
+                                </div>
+                            )}
+
+                            <div className="template-card-image">
+                                <img
+                                    src={`/assets/images/${template.image}`}
+                                    alt={template.name}
+                                    className="img-fluid w-100 h-100"
+                                />
+                                {selectedTemplate === template.name && (
+                                    <span className="selected-badge">
+                                        Selected
+                                    </span>
+                                )}
+                            </div>
+                            <div className="template-title">
+                                <h6 className="">{template.name}</h6>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )
+        }
+    }
+
+    const getEditorModalHeader = () => {
+        if (modalFor == 'personal') {
+            return (
+                <Modal.Title>
+                    <span className="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user-scan"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 9a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8 16a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2" /></svg>
+                    </span>
+                    Personal Modal
+                </Modal.Title >
+            )
+        }
+
+        if (modalFor == 'design') {
+            return (
+                <Modal.Title>
+                    <span className="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-palette"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 21a9 9 0 0 1 0 -18c4.97 0 9 3.582 9 8c0 1.06 -.474 2.078 -1.318 2.828c-.844 .75 -1.989 1.172 -3.182 1.172h-2.5a2 2 0 0 0 -1 3.75a1.3 1.3 0 0 1 -1 2.25" /><path d="M7.5 10.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M11.5 7.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M15.5 10.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+                    </span>
+                    Design Modal
+                </Modal.Title>
+            )
+        }
+    }
+
+    const panelItems = [
+        {
+            icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user-scan"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 9a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8 16a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2" /></svg>),
+            title: 'Personal',
+            slug: 'personal'
+        },
+        {
+            icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-report-analytics"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" /><path d="M9 17v-5" /><path d="M12 17v-1" /><path d="M15 17v-3" /></svg>),
+            title: 'Experence',
+            slug: 'experence'
+        },
+        {
+            icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-school"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" /><path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" /></svg>),
+            title: 'Education',
+            slug: 'education'
+        },
+        {
+            icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-bulb"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" /><path d="M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0 -1 3a2 2 0 0 1 -4 0a3.5 3.5 0 0 0 -1 -3" /><path d="M9.7 17l4.6 0" /></svg>),
+            title: 'Skills',
+            slug: 'skills'
+        },
+        {
+            icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-language"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 6.371c0 4.418 -2.239 6.629 -5 6.629" /><path d="M4 6.371h7" /><path d="M5 9c0 2.144 2.252 3.908 6 4" /><path d="M12 20l4 -9l4 9" /><path d="M19.1 18h-6.2" /><path d="M6.694 3l.793 .582" /></svg>),
+            title: 'Language',
+            slug: 'language'
+        },
+        {
+            icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-object-scan"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8 10a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-4a2 2 0 0 1 -2 -2l0 -4" /></svg>),
+            title: 'Habies',
+            slug: 'habie'
+        },
+        {
+            icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-layout-grid-add"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /><path d="M14 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /><path d="M4 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /><path d="M14 17h6m-3 -3v6" /></svg>),
+            title: 'Custom',
+            slug: 'custom'
+        },
+        {
+            icon: (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-palette"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 21a9 9 0 0 1 0 -18c4.97 0 9 3.582 9 8c0 1.06 -.474 2.078 -1.318 2.828c-.844 .75 -1.989 1.172 -3.182 1.172h-2.5a2 2 0 0 0 -1 3.75a1.3 1.3 0 0 1 -1 2.25" /><path d="M7.5 10.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M11.5 7.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M15.5 10.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>),
+            title: 'Design',
+            slug: 'design'
+        },
+    ]
+
+
     // Render the component
     return (
         <div className="my-0" style={{ translate: 'none', rotate: 'none', scale: 'none', transform: 'translate(0px, 0px)', opacity: 1 }}>
             <div className="custom-editor">
                 <div className="control-panel">
-                    <div className="panel-item">
-                        <div className="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user-scan"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 9a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8 16a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2" /></svg>
+                    {panelItems.map((item, index) => (
+                        <div className="panel-item" onClick={() => handleShow(item.slug)}>
+                            <div className="icon">
+                                {item.icon}
+                            </div>
+                            <span className='panel-text'>{item.title}</span>
                         </div>
-                        <span className='panel-text'>Personal</span>
-                    </div>
-                    <div className="panel-item">
-                        <div className="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-report-analytics"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" /><path d="M9 17v-5" /><path d="M12 17v-1" /><path d="M15 17v-3" /></svg>
-                        </div>
-                        <span className='panel-text'>Experience</span>
-                    </div>
-                    <div className="panel-item">
-                        <div className="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-school"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M22 9l-10 -4l-10 4l10 4l10 -4v6" /><path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4" /></svg>
-                        </div>
-                        <span className='panel-text'>Education</span>
-                    </div>
-                    <div className="panel-item">
-                        <div className="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-bulb"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 12h1m8 -9v1m8 8h1m-15.4 -6.4l.7 .7m12.1 -.7l-.7 .7" /><path d="M9 16a5 5 0 1 1 6 0a3.5 3.5 0 0 0 -1 3a2 2 0 0 1 -4 0a3.5 3.5 0 0 0 -1 -3" /><path d="M9.7 17l4.6 0" /></svg>
-                        </div>
-                        <span className='panel-text'>Skills</span>
-                    </div>
-                    <div className="panel-item">
-                        <div className="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-language"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 6.371c0 4.418 -2.239 6.629 -5 6.629" /><path d="M4 6.371h7" /><path d="M5 9c0 2.144 2.252 3.908 6 4" /><path d="M12 20l4 -9l4 9" /><path d="M19.1 18h-6.2" /><path d="M6.694 3l.793 .582" /></svg>
-                        </div>
-                        <span className='panel-text'>Language</span>
-                    </div>
-                    <div className="panel-item">
-                        <div className="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-object-scan"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8 10a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-4a2 2 0 0 1 -2 -2l0 -4" /></svg>
-                        </div>
-                        <span className='panel-text'>Hobiles</span>
-                    </div>
-                    <div className="panel-item">
-                        <div className="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-layout-grid-add"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /><path d="M14 5a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /><path d="M4 15a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1l0 -4" /><path d="M14 17h6m-3 -3v6" /></svg>
-                        </div>
-                        <span className='panel-text'>Custom</span>
-                    </div>
-                    <div className="panel-item">
-                        <div className="icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-palette"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 21a9 9 0 0 1 0 -18c4.97 0 9 3.582 9 8c0 1.06 -.474 2.078 -1.318 2.828c-.844 .75 -1.989 1.172 -3.182 1.172h-2.5a2 2 0 0 0 -1 3.75a1.3 1.3 0 0 1 -1 2.25" /><path d="M7.5 10.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M11.5 7.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M15.5 10.5a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
-                        </div>
-                        <span className='panel-text'>Design</span>
-                    </div>
+                    ))}
                 </div>
                 <div className="editor-preview">
-                    <Button variant="outline-primary" size="sm" onClick={zoomOut} title={`ZoomOut ${round(zoom * 100, 0)}%`}>
-                        <FiMinus />
-                    </Button>
-                    <Button variant="outline-primary" size="sm" onClick={zoomIn} title={`ZoomIn ${round(zoom * 100, 0)}%`}>
-                        <FiPlus />
-                    </Button>
+                    <div className="editor-custom-btns">
+                        <Button className="editor-custom-btn" onClick={handleSaveChanges} title={parsedResume == prevParsedResume ? 'Saving...' : 'Save Progress'} disabled={parsedResume == prevParsedResume || saveChangesLoader}>
+                            {saveChangesLoader ? (
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-loader"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 6l0 -3" /><path d="M16.25 7.75l2.15 -2.15" /><path d="M18 12l3 0" /><path d="M16.25 16.25l2.15 2.15" /><path d="M12 18l0 3" /><path d="M7.75 16.25l-2.15 2.15" /><path d="M6 12l-3 0" /><path d="M7.75 7.75l-2.15 -2.15" /></svg>
+                            ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-device-sd-card"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 21h10a2 2 0 0 0 2 -2v-14a2 2 0 0 0 -2 -2h-6.172a2 2 0 0 0 -1.414 .586l-3.828 3.828a2 2 0 0 0 -.586 1.414v10.172a2 2 0 0 0 2 2" /><path d="M13 6v2" /><path d="M16 6v2" /><path d="M10 7v1" /></svg>
+                            )}
+                        </Button>
+                        <Button className="editor-custom-btn" onClick={zoomOut} title={`ZoomOut ${round(zoom * 100, 0)}%`}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-zoom-out-area"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M13 15h4" /><path d="M10 15a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" /><path d="M22 22l-3 -3" /><path d="M6 18h-1a2 2 0 0 1 -2 -2v-1" /><path d="M3 11v-1" /><path d="M3 6v-1a2 2 0 0 1 2 -2h1" /><path d="M10 3h1" /><path d="M15 3h1a2 2 0 0 1 2 2v1" /></svg>
+                        </Button>
+                        <Button className="editor-custom-btn" onClick={zoomIn} title={`ZoomIn ${round(zoom * 100, 0)}%`}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-zoom-in-area"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 13v4" /><path d="M13 15h4" /><path d="M10 15a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" /><path d="M22 22l-3 -3" /><path d="M6 18h-1a2 2 0 0 1 -2 -2v-1" /><path d="M3 11v-1" /><path d="M3 6v-1a2 2 0 0 1 2 -2h1" /><path d="M10 3h1" /><path d="M15 3h1a2 2 0 0 1 2 2v1" /></svg>
+                        </Button>
 
-                    <Dropdown drop="bottom" align="start">
-                        <Dropdown.Toggle variant="outline-primary" size="sm" className="btn btn-outline-primary">
-                            {downloadPDFLoader ? "Generating..." : "Download"}
-                        </Dropdown.Toggle>
+                        <Dropdown drop="bottom" align="start">
+                            <Dropdown.Toggle className="btn editor-custom-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-cloud-download"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19 18a3.5 3.5 0 0 0 0 -7h-1a5 4.5 0 0 0 -11 -2a4.6 4.4 0 0 0 -2.1 8.4" /><path d="M12 13l0 9" /><path d="M9 19l3 3l3 -3" /></svg>
+                            </Dropdown.Toggle>
 
-                        <Dropdown.Menu className="dropdown-menu-end">
-                            <Dropdown.Item onClick={handleDownloadPDF}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-file-type-pdf me-2"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" /><path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6" /><path d="M17 18h2" /><path d="M20 15h-3v6" /><path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z" /></svg>
-                                Download as PDF
-                            </Dropdown.Item>
+                            <Dropdown.Menu className="dropdown-menu-end">
+                                <Dropdown.Item onClick={handleDownloadPDF}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-file-type-pdf me-2"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" /><path d="M5 18h1.5a1.5 1.5 0 0 0 0 -3h-1.5v6" /><path d="M17 18h2" /><path d="M20 15h-3v6" /><path d="M11 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z" /></svg>
+                                    Download as PDF
+                                </Dropdown.Item>
 
-                            <Dropdown.Item onClick={handleDownloadDocx}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-file-type-docx me-2"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" /><path d="M2 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z" /><path d="M17 16.5a1.5 1.5 0 0 0 -3 0v3a1.5 1.5 0 0 0 3 0" /><path d="M9.5 15a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1 -3 0v-3a1.5 1.5 0 0 1 1.5 -1.5z" /><path d="M19.5 15l3 6" /><path d="M19.5 21l3 -6" /></svg>
-                                Download as DOCX
-                            </Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <div
-                        ref={previewContainerRef}
-                        className="cv-template-div"
-                        style={{ background: '#f2f2f2' }}
-                    >
+                                <Dropdown.Item onClick={handleDownloadDocx}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-file-type-docx me-2"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M5 12v-7a2 2 0 0 1 2 -2h7l5 5v4" /><path d="M2 15v6h1a2 2 0 0 0 2 -2v-2a2 2 0 0 0 -2 -2h-1z" /><path d="M17 16.5a1.5 1.5 0 0 0 -3 0v3a1.5 1.5 0 0 0 3 0" /><path d="M9.5 15a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1 -3 0v-3a1.5 1.5 0 0 1 1.5 -1.5z" /><path d="M19.5 15l3 6" /><path d="M19.5 21l3 -6" /></svg>
+                                    Download as DOCX
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </div>
+                    <div className="editor-inner-wrapper">
                         <div
-                            ref={cvRef}
-                            style={{
-                                background: 'white',
-                                padding: '16px',
-                                // minHeight: `${Math.max(1, totalPages) * 1080}px`,
-                                transform: `scale(${zoom})`,
-                                transformOrigin: 'top center',
-                                transition: 'transform 0.2s ease-in-out',
-                            }}
+                            ref={previewContainerRef}
+                            className="cv-template-div"
+                            style={{ background: '#fff', zoom: zoom, overflow: 'auto', height: 'calc(100vh - 190px)' }}
                         >
-                            {(() => {
-                                const selectedTemplateData = cardTemplate.find(t => t.name === selectedTemplate);
-                                if (!selectedTemplateData) {
-                                    return <div className="alert alert-warning">Please select a template</div>;
-                                }
-
-                                const TemplateComponent = selectedTemplateData.template;
-                                return (
-                                    <div ref={resumeRef}>
-                                        <TemplateComponent
-                                            resumeData={{
-                                                ...(parsedResume || {
-                                                    candidateName: [{ firstName: '', familyName: '' }],
-                                                    headline: '',
-                                                    summary: [{ paragraph: '' }],
-                                                    phoneNumber: [{ formattedNumber: '' }],
-                                                    email: [''],
-                                                    location: { formatted: '' },
-                                                    workExperience: [],
-                                                    education: [],
-                                                    skill: [],
-                                                    profilePic: null,
-                                                    website: [''],
-                                                    certifications: [],
-                                                    languages: [],
-                                                    hobbies: [],
-                                                    customSections: [],
-                                                }),
-                                            }}
-                                        />
-                                    </div>
-                                );
-                            })()}
-                        </div>
-
-                        {/* Only show page dividers if we have multiple pages with content */}
-                        {totalPages > 1 && Array.from({ length: totalPages - 1 }).map((_, index) => (
                             <div
-                                key={index}
+                                ref={cvRef}
                                 style={{
-                                    position: 'absolute',
-                                    left: 0,
-                                    right: 0,
-                                    top: `${(index + 1) * 1123}px`,
-                                    borderTop: '2px dashed #ccc',
-                                    pointerEvents: 'none'
+                                    background: 'white',
+                                    padding: '16px',
+                                    // minHeight: `${Math.max(1, totalPages) * 1080}px`,
+                                    transformOrigin: 'top center',
+                                    transition: 'transform 0.2s ease-in-out',
                                 }}
-                            />
-                        ))}
+                            >
+                                {(() => {
+                                    const selectedTemplateData = cardTemplate.find(t => t.name === selectedTemplate);
+                                    if (!selectedTemplateData) {
+                                        return <div className="alert alert-warning">Please select a template</div>;
+                                    }
+
+                                    const TemplateComponent = selectedTemplateData.template;
+                                    return (
+                                        <div ref={resumeRef}>
+                                            <TemplateComponent
+                                                resumeData={{
+                                                    ...(parsedResume || {
+                                                        candidateName: [{ firstName: '', familyName: '' }],
+                                                        headline: '',
+                                                        summary: [{ paragraph: '' }],
+                                                        phoneNumber: [{ formattedNumber: '' }],
+                                                        email: [''],
+                                                        location: { formatted: '' },
+                                                        workExperience: [],
+                                                        education: [],
+                                                        skill: [],
+                                                        profilePic: null,
+                                                        website: [''],
+                                                        certifications: [],
+                                                        languages: [],
+                                                        hobbies: [],
+                                                        customSections: [],
+                                                    }),
+                                                }}
+                                            />
+                                        </div>
+                                    );
+                                })()}
+                            </div>
+
+                            {/* Only show page dividers if we have multiple pages with content */}
+                            {totalPages > 1 && Array.from({ length: totalPages - 1 }).map((_, index) => (
+                                <div
+                                    key={index}
+                                    style={{
+                                        position: 'absolute',
+                                        left: 0,
+                                        right: 0,
+                                        top: `${(index + 1) * 1123}px`,
+                                        borderTop: '2px dashed #ccc',
+                                        pointerEvents: 'none'
+                                    }}
+                                />
+                            ))}
+                        </div>
                     </div>
                 </div>
+
+                <Modal show={modalShow} onHide={handleClose} centered backdrop="static" size='lg' className='editor-modal'>
+                    <Modal.Header>
+                        {getEditorModalHeader()}
+                        <span onClick={handleClose} className='editor-modal-close'>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c30000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                        </span>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div className="editor-modal-inner-wrapper">
+                            {getEditorModalContent()}
+                        </div>
+                    </Modal.Body>
+                </Modal>
+
             </div>
             <div className="row g-3">
                 {/* LEFT: Tabs + Form */}
-                <div className="col-12 col-xxl-6 col-lg-7">
+                <div className="col-12">
                     <div className="card border" style={{ height: 'calc(100vh - 95px)', overflow: 'hidden' }}>
                         <div className="card-header border-bottom-0 pb-0 d-flex justify-content-between shadow">
                             {/* Tabs */}
@@ -2020,7 +2464,6 @@ export default function CVBuilder() {
                                                                             />
                                                                         </div>
                                                                     </div>
-
                                                                 </div>
                                                             ) : (
                                                                 <div className="text-muted text-center py-3 d-flex flex-column gap-2">

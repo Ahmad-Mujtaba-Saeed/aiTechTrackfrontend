@@ -7,7 +7,7 @@ const Template5 = ({ resumeData }) => {
   console.log(customSections);
   const styles = {
     container: {
-      maxWidth: '850px',
+      // maxWidth: '850px',
       margin: '0px auto',
       fontFamily: 'Arial, sans-serif',
       backgroundColor: '#fff'

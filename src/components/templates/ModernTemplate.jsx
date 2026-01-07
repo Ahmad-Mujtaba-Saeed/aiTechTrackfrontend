@@ -6,7 +6,7 @@ const ModernTemplate = ({ resumeData }) => {
   return (
     <div className="modern-template" style={{ 
     fontFamily: "'Inter', sans-serif",
-    maxWidth: '800px',
+    // maxWidth: '800px',
     margin: '0 auto',
     padding: '40px',
     backgroundColor: '#ffffff',
