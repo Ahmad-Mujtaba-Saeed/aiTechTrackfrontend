@@ -93,7 +93,7 @@ const MasterLayout = ({ children }) => {
   };
 
   return (
-    <main className={`main ${collapsed ? "navbar-vertical-collapsed" : ""} ${isNavToggled('/cv-generate', 'navbar-vertical-collapsed')} `} id="top" data-bs-theme={theme}>
+    <main className={`main ${collapsed ? "navbar-vertical-collapsed" : ""} ${isNavToggled('/cv-generate', 'navbar-vertical-collapsed')} `} id="top" data-bs-theme={'dark'}>
       <nav className={`navbar navbar-vertical ${isMobile ? "navbar-expand" : "navbar-expand active"} navbar-expand-lg mobile-expand bg-white navbar-light dark__bg-dark dark__navbar-dark`}>
         <div className="collapse navbar-collapse" id="navbarVerticalCollapse">
 

@@ -1419,6 +1419,345 @@ export default function CVBuilder() {
     }
 
     const getEditorModalContent = () => {
+        if (modalFor == 'personal') {
+            return (
+                <div className='personal-detail-wrapper'>
+                    <h3 className="editor-section-title">
+                        {parsedResume?.editingPersonalTitle ? (
+                            <div className="d-flex align-items-center gap-2">
+                                <div className="form-group">
+                                    <input
+                                        type="text"
+                                        className="form-control "
+                                        value={parsedResume?.personalTitle || "Personal details"}
+                                        onChange={(e) =>
+                                            dispatch(
+                                                updateField({
+                                                    path: "personalTitle",
+                                                    value: e.target.value
+                                                })
+                                            )
+                                        }
+                                        onBlur={() =>
+                                            dispatch(
+                                                updateField({
+                                                    path: "editingPersonalTitle",
+                                                    value: false
+                                                })
+                                            )
+                                        }
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                dispatch(
+                                                    updateField({
+                                                        path: "editingPersonalTitle",
+                                                        value: false
+                                                    })
+                                                );
+                                            }
+                                        }}
+                                    />
+                                </div>
+                                <span
+                                    className='cursor-pointer'
+                                    onClick={() =>
+                                        dispatch(
+                                            updateField({
+                                                path: "editingPersonalTitle",
+                                                value: false
+                                            })
+                                        )
+                                    }
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M5 12l5 5l10 -10" />
+                                    </svg>
+                                </span>
+                            </div>
+                        ) : (
+                            <>
+                                {parsedResume?.personalTitle || "Personal details"}
+                                < span
+                                    className='cursor-pointer'
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        dispatch(
+                                            updateField({
+                                                path: "editingPersonalTitle",
+                                                value: true
+                                            })
+                                        );
+                                    }}
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                        <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                        <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                        <path d="M16 5l3 3" />
+                                    </svg>
+                                </span>
+                            </>
+                        )}
+                    </h3>
+                    <div className="h-wrap">
+                        <div className="v-wrap justify-content-center">
+                            <div className="h-wrap">
+                                <div className="form-group">
+                                    <label className="form-label">First Name</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        name="firstName"
+                                        value={parsedResume?.candidateName?.[0]?.firstName || ""}
+                                        onChange={(e) =>
+                                            dispatch(
+                                                updateField({
+                                                    path: "candidateName[0].firstName",
+                                                    value: e.target.value
+                                                })
+                                            )
+                                        }
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">Last name</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        name="lastName"
+                                        value={`${parsedResume?.candidateName?.[0]?.familyName || ''}`}
+                                        onChange={(e) =>
+                                            dispatch(
+                                                updateField({
+                                                    path: "candidateName[0].familyName",
+                                                    value: e.target.value
+                                                })
+                                            )
+                                        }
+                                    />
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label className="form-label">Headline</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="headline"
+                                    value={parsedResume?.headline || ''}
+                                    onChange={(e) =>
+                                        dispatch(
+                                            updateField({
+                                                path: "headline",
+                                                value: e.target.value
+                                            })
+                                        )
+                                    }
+                                />
+                            </div>
+                        </div>
+                        {profilePic || parsedResume?.profilePic ? (
+                            <div className="d-flex flex-column justify-content-center align-items-center personal-image-wrapper">
+                                <img
+                                    src={profilePic || parsedResume.profilePic}
+                                    alt="Profile"
+                                />
+                                {(profilePic || parsedResume?.profilePic) && (
+                                    <button
+                                        className="custom-remove-btn"
+                                        type="button"
+                                        onClick={handleRemovePhoto}
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+                                    </button>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="d-flex flex-column justify-content-center align-items-center personal-image-wrapper cursor-pointer" onClick={() => fileInputRef.current.click()}>
+                                <div className="d-flex flex-column gap-0 align-items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-photo"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 8h.01" /><path d="M3 6a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3v-12" /><path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l5 5" /><path d="M14 14l1 -1c.928 -.893 2.072 -.893 3 0l3 3" /></svg>
+                                    <div className="small mt-1">Upload Photo</div>
+                                </div>
+                            </div>
+                        )}
+                        <input
+                            id="avatarInput"
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            className="d-none"
+                            onChange={handleAvatarUpload}
+                        />
+                    </div>
+                    <div className="h-wrap">
+                        <div className="form-group">
+                            <label className="form-label">Email address</label>
+                            <input
+                                type="email"
+                                className="form-control"
+                                name="email"
+                                value={parsedResume?.email?.[0] || ''}
+                                onChange={(e) =>
+                                    dispatch(
+                                        updateField({
+                                            path: "email",
+                                            value: [e.target.value]
+                                        })
+                                    )
+                                }
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Phone number</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="phone"
+                                value={parsedResume?.phoneNumber?.[0]?.formattedNumber || ''}
+                                onChange={(e) =>
+                                    dispatch(
+                                        updateField({
+                                            path: "phoneNumber[0].formattedNumber",
+                                            value: e.target.value
+                                        })
+                                    )
+                                }
+                            />
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <label className="form-label">Address</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            name="address"
+                            value={parsedResume?.location?.formatted || ''}
+                            onChange={(e) =>
+                                dispatch(
+                                    updateField({
+                                        path: "location.formatted",
+                                        value: e.target.value
+                                    })
+                                )
+                            }
+                        />
+                    </div>
+                    <div className="h-wrap">
+                        <div className="form-group">
+                            <label className="form-label">Post code</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="postCode"
+                                value={parsedResume?.location?.postCode || ''}
+                                onChange={(e) =>
+                                    dispatch(
+                                        updateField({
+                                            path: "location.postCode",
+                                            value: e.target.value
+                                        })
+                                    )
+                                }
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">City</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                name="city"
+                                value={parsedResume?.location?.city || ''}
+                                onChange={(e) =>
+                                    dispatch(
+                                        updateField({
+                                            path: "location.city",
+                                            value: e.target.value
+                                        })
+                                    )
+                                }
+                            />
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <label className="form-label">Summary</label>
+                        <textarea
+                            rows="5"
+                            className="form-control"
+                            placeholder="Describe your professional background, key skills, achievements, and career goals..."
+                            name="summary"
+                            value={parsedResume?.summary?.paragraph || ''}
+                            onChange={(e) =>
+                                dispatch(
+                                    updateField({
+                                        path: "summary.paragraph",
+                                        value: e.target.value,
+                                    })
+                                )
+                            }
+                        ></textarea>
+                    </div>
+                    <h6 className="fw-bold mb-2">Social Links</h6>
+                    <div className="h-wrap">
+                        <div className="form-group">
+                            <label className="form-label">GitHub</label>
+                            <input
+                                type="url"
+                                className="form-control"
+                                name="github"
+                                placeholder="https://github.com/username"
+                                value={parsedResume?.socialLinks?.github || ''}
+                                onChange={(e) =>
+                                    dispatch(
+                                        updateField({
+                                            path: "socialLinks.github",
+                                            value: e.target.value,
+                                        })
+                                    )
+                                }
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">LinkedIn</label>
+                            <input
+                                type="url"
+                                className="form-control"
+                                name="linkedin"
+                                placeholder="https://linkedin.com/in/username"
+                                value={parsedResume?.socialLinks?.linkedin || ''}
+                                onChange={(e) =>
+                                    dispatch(
+                                        updateField({
+                                            path: "socialLinks.linkedin",
+                                            value: e.target.value,
+                                        })
+                                    )
+                                }
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Portfolio / Website</label>
+                            <input
+                                type="url"
+                                className="form-control"
+                                name="website"
+                                placeholder="https://yourwebsite.com"
+                                value={parsedResume?.socialLinks?.website || ''}
+                                onChange={(e) =>
+                                    dispatch(
+                                        updateField({
+                                            path: "socialLinks.website",
+                                            value: e.target.value,
+                                        })
+                                    )
+                                }
+                            />
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+
+
         if (modalFor == 'design') {
             return (
                 <div className="design-wrapper">
@@ -1446,7 +1785,9 @@ export default function CVBuilder() {
                                     </span>
                                 )}
                             </div>
-                            <h6 className="mb-0 fw-medium">{template.name}</h6>
+                            <div className="template-title">
+                                <h6 className="">{template.name}</h6>
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -1455,6 +1796,17 @@ export default function CVBuilder() {
     }
 
     const getEditorModalHeader = () => {
+        if (modalFor == 'personal') {
+            return (
+                <Modal.Title>
+                    <span className="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user-scan"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 9a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M4 8v-2a2 2 0 0 1 2 -2h2" /><path d="M4 16v2a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v2" /><path d="M16 20h2a2 2 0 0 0 2 -2v-2" /><path d="M8 16a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2" /></svg>
+                    </span>
+                    Personal Modal
+                </Modal.Title >
+            )
+        }
+
         if (modalFor == 'design') {
             return (
                 <Modal.Title>
@@ -1527,6 +1879,13 @@ export default function CVBuilder() {
                 </div>
                 <div className="editor-preview">
                     <div className="editor-custom-btns">
+                        <Button className="editor-custom-btn" onClick={handleSaveChanges} title={parsedResume == prevParsedResume ? 'Saving...' : 'Save Progress'} disabled={parsedResume == prevParsedResume || saveChangesLoader}>
+                            {saveChangesLoader ? (
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-loader"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 6l0 -3" /><path d="M16.25 7.75l2.15 -2.15" /><path d="M18 12l3 0" /><path d="M16.25 16.25l2.15 2.15" /><path d="M12 18l0 3" /><path d="M7.75 16.25l-2.15 2.15" /><path d="M6 12l-3 0" /><path d="M7.75 7.75l-2.15 -2.15" /></svg>
+                            ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-device-sd-card"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 21h10a2 2 0 0 0 2 -2v-14a2 2 0 0 0 -2 -2h-6.172a2 2 0 0 0 -1.414 .586l-3.828 3.828a2 2 0 0 0 -.586 1.414v10.172a2 2 0 0 0 2 2" /><path d="M13 6v2" /><path d="M16 6v2" /><path d="M10 7v1" /></svg>
+                            )}
+                        </Button>
                         <Button className="editor-custom-btn" onClick={zoomOut} title={`ZoomOut ${round(zoom * 100, 0)}%`}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-zoom-out-area"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M13 15h4" /><path d="M10 15a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" /><path d="M22 22l-3 -3" /><path d="M6 18h-1a2 2 0 0 1 -2 -2v-1" /><path d="M3 11v-1" /><path d="M3 6v-1a2 2 0 0 1 2 -2h1" /><path d="M10 3h1" /><path d="M15 3h1a2 2 0 0 1 2 2v1" /></svg>
                         </Button>
@@ -1556,7 +1915,7 @@ export default function CVBuilder() {
                         <div
                             ref={previewContainerRef}
                             className="cv-template-div"
-                            style={{ background: '#fff', zoom: zoom }}
+                            style={{ background: '#fff', zoom: zoom, overflow: 'auto', height: 'calc(100vh - 190px)' }}
                         >
                             <div
                                 ref={cvRef}
@@ -2105,7 +2464,6 @@ export default function CVBuilder() {
                                                                             />
                                                                         </div>
                                                                     </div>
-
                                                                 </div>
                                                             ) : (
                                                                 <div className="text-muted text-center py-3 d-flex flex-column gap-2">
