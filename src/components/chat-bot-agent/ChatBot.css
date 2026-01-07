@@ -326,3 +326,13 @@
     bottom: 20px;
   }
 }
+
+
+.markdown a {
+    color: #2563eb;        /* blue */
+    text-decoration: underline;
+}
+
+.markdown a:hover {
+    color: #1d4ed8;
+}

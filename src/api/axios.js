@@ -4,16 +4,16 @@ import axios from 'axios';
 // Create axios instance with base URL
 
 // const baseURL = 'https://13.53.164.183';
-const baseURLAPI = 'https://slateblue-snake-907020.hostingersite.com/api';
+// const baseURLAPI = 'https://slateblue-snake-907020.hostingersite.com/api';
 
-const baseURL = 'https://slateblue-snake-907020.hostingersite.com';
+// const baseURL = 'https://slateblue-snake-907020.hostingersite.com';
 
-// const baseURL = 'https://deepskyblue-donkey-692108.hostingersite.com';
+// const baseURL = 'http://72.62.194.87/api';
 
-// const baseURLAPI = 'https://deepskyblue-donkey-692108.hostingersite.com/api';
+// const baseURLAPI = 'http://72.62.194.87/api/api';
 
-// const baseURL = 'http://127.0.0.1:8085';
-// const baseURLAPI = 'http://127.0.0.1:8085/api';
+const baseURL = 'http://127.0.0.1:8085';
+const baseURLAPI = 'http://127.0.0.1:8085/api';
 
 // const baseURLAPI = 'http://localhost:8000';
 

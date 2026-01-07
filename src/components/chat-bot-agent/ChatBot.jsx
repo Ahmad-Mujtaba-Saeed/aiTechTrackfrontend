@@ -237,12 +237,13 @@ const ChatBot = () => {
               key={message.id} 
               className={`message ${message.sender === 'user' ? 'user-message' : 'bot-message'}`}
             >
-                <div className="message-content">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                        {message.text}
-                    </ReactMarkdown>
-                    <span className="message-timestamp">{message.timestamp}</span>
-                </div>
+<div className="message-content markdown">
+    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+        {message.text}
+    </ReactMarkdown>
+    <span className="message-timestamp">{message.timestamp}</span>
+</div>
+
             </div>
           ))}
 
@@ -267,7 +268,7 @@ const ChatBot = () => {
             </div>
           )}
           
-          {isTyping && (
+          {isTyping &
             <div className="message bot-message">
               <div className="message-content typing-indicator">
                 <span></span>
@@ -275,7 +276,7 @@ const ChatBot = () => {
                 <span></span>
               </div>
             </div>
-          )}
+          }
           
           <div ref={messagesEndRef} />
         </div>
@@ -284,7 +285,7 @@ const ChatBot = () => {
         {/* <div className="quick-replies">
           <p>Quick questions:</p>
           <div className="quick-reply-buttons">
-            {["How do I reset my password?", "What are your hours?", "Contact support"].map((text, index) => (
+        {["How do I reset my password?", "What are your hours?", "Contact support"].map((text, index) => (
               <button
                 key={index}
                 className="quick-reply-button"
