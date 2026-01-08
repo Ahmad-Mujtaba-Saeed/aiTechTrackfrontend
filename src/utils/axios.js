@@ -7,7 +7,7 @@ import axios from 'axios';
 // const baseURL = 'https://slateblue-snake-907020.hostingersite.com';
 // const baseURL = 'https://deepskyblue-donkey-692108.hostingersite.com';
 const baseURL = 'http://72.62.194.87:8080';
-
+// const baseURL = 'http://127.0.0.1:8085';
 // const stripe_pub_key = "pk_test_51SGKV9RuRqBB6Uo7RFntsqpgXeeLXkiNz3eGUk3wBjyH74RUT0ANQcksH9RVQu4VlTYdhcl1wdrdOOzDx7Ard4v600ycCSFkEa"
 
 const stripe_pub_key = "pk_live_51SGKUzRsDMWvnk1JRPvPMqDUenPSYHKNAoCRKPiuGmcEnTLVgBicJ22OaAMtiJXlrSJA3mE9CNJOjEzWixyPvlZ000YhO6ZDRD"
