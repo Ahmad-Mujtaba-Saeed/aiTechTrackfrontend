@@ -67,6 +67,7 @@ export default function SignIn() {
       else {
         const errorMessage = error.message || 'Login failed. Please try again.';
         toast.error(errorMessage);
+        console('123132132')
       }
     } finally {
       setSubmitting(false);

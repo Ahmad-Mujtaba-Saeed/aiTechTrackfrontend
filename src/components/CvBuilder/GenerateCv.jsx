@@ -1051,30 +1051,6 @@ export default function CVBuilder() {
         educationMajor: [''] // Add educationMajor as an array to store multiple majors
     });
 
-    // Add a function to handle adding/removing major fields
-    const handleAddMajor = () => {
-        setEduFormData(prev => ({
-            ...prev,
-            educationMajor: [...prev.educationMajor, '']
-        }));
-    };
-
-    const handleRemoveMajor = (index) => {
-        setEduFormData(prev => ({
-            ...prev,
-            educationMajor: prev.educationMajor.filter((_, i) => i !== index)
-        }));
-    };
-
-    const handleMajorChange = (index, value) => {
-        const newMajors = [...eduFormData.educationMajor];
-        newMajors[index] = value;
-        setEduFormData(prev => ({
-            ...prev,
-            educationMajor: newMajors
-        }));
-    };
-
     // Update the form submission to include educationMajor
     const handleAddEducation = () => {
         if (!eduFormData.eduDegree || !eduFormData.eduInstitution) {
@@ -1288,101 +1264,179 @@ export default function CVBuilder() {
 
     const [expItems, setExpItems] = useState([]);
 
-    // Function to add a new incomplete experience item
-    const expHandleAddExperience = () => {
-        // Check if there's already an incomplete form
-        const hasIncomplete = expItems.some(item => !item.expIsComplete);
+    const [expCurrentForm, setExpCurrentForm] = useState(null);
+    const [expFormData, setExpFormData] = useState({
+        expJobTitle: '',
+        expCompany: '',
+        expStartDate: '',
+        expEndDate: '',
+        expDescription: '',
+        expHighlights: ['']
+    });
 
-        if (hasIncomplete) {
-            toast.error('Please complete the current experience form before adding a new one');
-            return;
+    // Handle adding/removing highlights for experience
+    const handleAddHighlight = () => {
+        setExpFormData(prev => ({
+            ...prev,
+            expHighlights: [...prev.expHighlights, '']
+        }));
+    };
+
+    const handleRemoveHighlight = (index) => {
+        setExpFormData(prev => ({
+            ...prev,
+            expHighlights: prev.expHighlights.filter((_, i) => i !== index)
+        }));
+    };
+
+    const handleHighlightChange = (index, value) => {
+        const newHighlights = [...expFormData.expHighlights];
+        newHighlights[index] = value;
+        setExpFormData(prev => ({
+            ...prev,
+            expHighlights: newHighlights
+        }));
+    };
+
+
+    // Handle adding a new experience
+    const handleAddExperience = () => {
+        // Check if there's already an empty form
+        if (expCurrentForm) {
+            // Check if the current form has any data
+            const expHasData = Object.values(expFormData).some(expValue =>
+                expValue && typeof expValue === 'string' ? expValue.trim() !== '' : false
+            );
+
+            if (expHasData) {
+                // Check if all required fields are filled
+                const expAllFieldsFilled =
+                    (expFormData.expJobTitle && expFormData.expJobTitle.trim() !== '') &&
+                    (expFormData.expCompany && expFormData.expCompany.trim() !== '') &&
+                    (expFormData.expStartDate && expFormData.expStartDate.trim() !== '');
+
+                if (!expAllFieldsFilled) {
+                    toast.error('Please complete the current experience form before adding a new one');
+                    return;
+                }
+
+                // If form is complete, save it
+                handleSaveExperience();
+            }
         }
 
-        // Create a new incomplete experience item with highlights
-        const expNewItem = {
+        // Create a new form
+        setExpCurrentForm({
             expId: Date.now(),
             expJobTitle: '',
             expCompany: '',
             expStartDate: '',
             expEndDate: '',
             expDescription: '',
-            expIsComplete: false,
-            highlights: {
-                items: []
-            }
-        };
+            expHighlights: ['']
+        });
 
-        const dispatchExperienceList = {
-            workExperienceJobTitle: expNewItem.expJobTitle,
-            workExperienceOrganization: expNewItem.expCompany,
-            workExperienceDates: {
-                start: { date: expNewItem.expStartDate },
-                end: { date: expNewItem.expEndDate }
-            },
-            highlights: {
-                items: []
-            },
-            expIsComplete: false
-        };
-
-        dispatch(updateField({
-            path: "workExperience",
-            value: [...parsedResume.workExperience, dispatchExperienceList]
-        }));
+        // Reset form data
+        setExpFormData({
+            expJobTitle: '',
+            expCompany: '',
+            expStartDate: '',
+            expEndDate: '',
+            expDescription: '',
+            expHighlights: ['']
+        });
     };
 
-    // Handle input changes for incomplete items
-    const expHandleInputChange = (expIndex, field, value) => {
-        dispatch(updateField({
-            path: "workExperience", value: [...parsedResume.workExperience, parsedResume.workExperience.map((item, index) =>
-                index === expIndex ? { ...item, [field]: value } : item
-            )]
-        }));
-    };
-
-    const expHandleSaveExperience = async () => {
-        const { index, data } = editingExperience;
-
-        // Validate required fields
-        if (!data.workExperienceJobTitle || !data.workExperienceOrganization ||
-            !data.workExperienceDates?.start?.date || !data.workExperienceDates?.end?.date) {
+    // Handle saving experience
+    const handleSaveExperience = () => {
+        // Validate form data
+        if (!expFormData.expJobTitle || !expFormData.expCompany || !expFormData.expStartDate) {
             toast.error('Please fill all the required fields');
             return;
         }
 
-        // Update the experience in the main state
-        const updatedExperience = [...parsedResume.workExperience];
-        updatedExperience[index] = data;
+        const dispatchExperienceList = {
+            workExperienceJobTitle: expFormData.expJobTitle,
+            workExperienceOrganization: expFormData.expCompany,
+            workExperienceDates: {
+                start: {
+                    date: expFormData.expStartDate
+                },
+                end: {
+                    date: expFormData.expEndDate || null
+                }
+            },
+            workExperienceDescription: expFormData.expDescription,
+            highlights: {
+                items: expFormData.expHighlights
+                    .filter(highlight => highlight.trim() !== '')
+                    .map(highlight => ({ bullet: highlight }))
+            }
+        };
 
-        try {
-            const result = await dispatch(updateField({
+        // If editing existing experience, update it
+        if (expCurrentForm?.index !== undefined) {
+            const updatedExperience = [...parsedResume.workExperience];
+            updatedExperience[expCurrentForm.index] = dispatchExperienceList;
+
+            dispatch(updateField({
                 path: "workExperience",
                 value: updatedExperience
             }));
-
-        } catch (error) {
-            console.error('Failed to update work experience:', error);
-            toast.error('Failed to save work experience');
+        } else {
+            // Add new experience
+            dispatch(updateField({
+                path: "workExperience",
+                value: [...(parsedResume.workExperience || []), dispatchExperienceList]
+            }));
         }
 
-        // Reset editing state
-        setEditingExperience({ index: null, data: null });
-    };
-
-    // Edit an existing complete item
-    const expHandleEditExperience = (expIndex) => {
-        setEditingExperience({
-            index: expIndex,
-            data: { ...parsedResume.workExperience[expIndex] }
+        setExpCurrentForm(null);
+        setExpFormData({
+            expJobTitle: '',
+            expCompany: '',
+            expStartDate: '',
+            expEndDate: '',
+            expDescription: '',
+            expHighlights: ['']
         });
     };
-    // Cancel editing and remove incomplete items
-    const expHandleCancelEdit = () => {
-        setEditingExperience({ index: null, data: null });
+
+    // Handle editing an experience
+    const handleEditExperience = (expIndex) => {
+        const expToEdit = parsedResume.workExperience[expIndex];
+        if (expToEdit) {
+            setExpCurrentForm({
+                expId: Date.now(),
+                index: expIndex
+            });
+
+            setExpFormData({
+                expJobTitle: expToEdit.workExperienceJobTitle || '',
+                expCompany: expToEdit.workExperienceOrganization || '',
+                expStartDate: expToEdit.workExperienceDates?.start?.date || '',
+                expEndDate: expToEdit.workExperienceDates?.end?.date || '',
+                expDescription: expToEdit.workExperienceDescription || '',
+                expHighlights: expToEdit.highlights?.items?.map(item => item.bullet) || ['']
+            });
+        }
     };
 
-    // Delete an experience item
-    const expHandleDeleteExperience = (expIndex) => {
+    // Handle canceling experience edit
+    const handleCancelExperienceEdit = () => {
+        setExpCurrentForm(null);
+        setExpFormData({
+            expJobTitle: '',
+            expCompany: '',
+            expStartDate: '',
+            expEndDate: '',
+            expDescription: '',
+            expHighlights: ['']
+        });
+    };
+
+    // Handle deleting an experience
+    const handleDeleteExperience = (expIndex) => {
         Swal.fire({
             title: 'Are you sure?',
             text: 'You are about to delete this experience entry',
@@ -1394,14 +1448,45 @@ export default function CVBuilder() {
             cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
-                const updatedExperience = parsedResume.workExperience.filter((_, index) => index !== expIndex);
-
                 dispatch(updateField({
                     path: "workExperience",
-                    value: updatedExperience
+                    value: parsedResume.workExperience.filter((_, i) => i !== expIndex)
                 }));
             }
         });
+    };
+
+    // Handle input changes for experience form
+    const expHandleInputChange = (e) => {
+        const { name, value } = e.target;
+        setExpFormData({
+            ...expFormData,
+            [name]: value
+        });
+    };
+
+    // Add a function to handle adding/removing major fields for education
+    const handleAddMajor = () => {
+        setEduFormData(prev => ({
+            ...prev,
+            educationMajor: [...prev.educationMajor, '']
+        }));
+    };
+
+    const handleRemoveMajor = (index) => {
+        setEduFormData(prev => ({
+            ...prev,
+            educationMajor: prev.educationMajor.filter((_, i) => i !== index)
+        }));
+    };
+
+    const handleMajorChange = (index, value) => {
+        const newMajors = [...eduFormData.educationMajor];
+        newMajors[index] = value;
+        setEduFormData(prev => ({
+            ...prev,
+            educationMajor: newMajors
+        }));
     };
 
 
@@ -1418,10 +1503,12 @@ export default function CVBuilder() {
         setModalFor(modalFor);
     }
 
-    const educationContainer = (
+    const educationContainer = (edit) => (
         <div className="editor-modal-card v-wrap">
             <div className="d-flex justify-content-between align-items-center gap-2">
-                <small className="">New {parsedResume?.educationTitle || "Education"} Form</small>
+                <small className="">
+                    {edit ? 'Edit' : 'New'} {parsedResume?.educationTitle || "Education"} Form
+                </small>
                 <div className="d-flex justify-content-end align-item-center gap-2">
                     {eduCurrentForm && (
                         <button
@@ -1529,6 +1616,128 @@ export default function CVBuilder() {
                     </div>
                 ))}
             </div>
+        </div>
+    )
+
+    const experenceContainer = (edit) => (
+        <div className="editor-modal-card v-wrap">
+            <div className="d-flex justify-content-between align-items-center gap-2">
+                <small className="">
+                    {edit ? 'Edit' : 'New'} {parsedResume?.employmentTitle || "Experience"} Form
+                </small>
+                <div className="d-flex justify-content-end align-item-center gap-2">
+                    {expCurrentForm && (
+                        <button
+                            type="button"
+                            className="custom-delete-btn-2"
+                            onClick={handleCancelExperienceEdit}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                        </button>
+                    )}
+                    <button
+                        type="button"
+                        className="custom-save-btn"
+                        onClick={handleSaveExperience}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M5 12l5 5l10 -10"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div className="h-wrap">
+                <div className="form-group">
+                    <label className="form-label">Job Title*</label>
+                    <input
+                        className="form-control"
+                        name="expJobTitle"
+                        value={expFormData.expJobTitle}
+                        onChange={expHandleInputChange}
+                        placeholder="e.g., Senior Frontend Developer"
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="form-label">Company*</label>
+                    <input
+                        className="form-control"
+                        name="expCompany"
+                        value={expFormData.expCompany}
+                        onChange={expHandleInputChange}
+                        placeholder="e.g., Google Inc."
+                    />
+                </div>
+            </div>
+            <div className="h-wrap">
+                <div className="form-group">
+                    <label className="form-label">Start Date*</label>
+                    <input
+                        placeholder="e.g., 2020 or Jan 2020"
+                        className="form-control"
+                        type="text"
+                        name="expStartDate"
+                        value={expFormData.expStartDate}
+                        onChange={expHandleInputChange}
+                    />
+                </div>
+                <div className="form-group">
+                    <label className="form-label">End Date</label>
+                    <input
+                        placeholder="e.g., 2023, Present, or Ongoing"
+                        className="form-control"
+                        type="text"
+                        name="expEndDate"
+                        value={expFormData.expEndDate}
+                        onChange={expHandleInputChange}
+                    />
+                </div>
+            </div>
+            <div className="form-group">
+                <label className="form-label">Description (Optional)</label>
+                <textarea
+                    rows="3"
+                    className="form-control"
+                    name="expDescription"
+                    value={expFormData.expDescription}
+                    onChange={expHandleInputChange}
+                    placeholder="Describe your role and responsibilities..."
+                ></textarea>
+            </div>
+
+            <div className="form-group v-wrap">
+                <label className="form-label">Key Achievements (Optional)</label>
+                {expFormData.expHighlights.map((highlight, index) => (
+                    <div key={index} className="h-wrap align-items-center gap-2">
+                        <input
+                            type="text"
+                            className="form-control"
+                            value={highlight}
+                            onChange={(e) => handleHighlightChange(index, e.target.value)}
+                            placeholder={`Achievement ${index + 1}`}
+                        />
+                        {expFormData.expHighlights.length > 1 && (
+                            <button
+                                type="button"
+                                className="custom-delete-btn-2"
+                                onClick={() => handleRemoveHighlight(index)}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                            </button>
+                        )}
+                        {index == (expFormData.expHighlights.length - 1) && (
+                            <button
+                                type="button"
+                                className="custom-save-btn"
+                                onClick={handleAddHighlight}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-square-rounded-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3c7.2 0 9 1.8 9 9c0 7.2 -1.8 9 -9 9c-7.2 0 -9 -1.8 -9 -9c0 -7.2 1.8 -9 9 -9" /><path d="M15 12h-6" /><path d="M12 9v6" /></svg>
+                            </button>
+                        )}
+                    </div>
+                ))}
+            </div>
+
         </div>
     )
 
@@ -1973,21 +2182,21 @@ export default function CVBuilder() {
                         <div className="v-wrap">
                             {parsedResume.workExperience?.map((expItem, expIndex) => (
                                 <div key={expIndex} className="editor-modal-card v-wrap">
-                                    <div className="d-flex justify-content-between align-items-center mb-0">
+                                    <div className="d-flex justify-content-between align-items-center mb-2">
                                         <small className="">{parsedResume?.employmentTitle || "Experience"} #{expIndex + 1}</small>
                                         <div className="d-flex justify-content-end align-items-center gap-2">
                                             <button
                                                 type="button"
                                                 className="custom-delete-btn-2"
-                                                onClick={() => expHandleDeleteExperience(expIndex)}
-                                                title="Delete experience entry"
+                                                onClick={() => handleDeleteExperience(expIndex)}
+                                                title="Delete experence entry"
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
                                             </button>
                                             <button
                                                 type="button"
                                                 className="custom-save-btn"
-                                                onClick={() => expHandleEditExperience(expIndex)}
+                                                onClick={() => handleEditExperience(expIndex)}
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit">
                                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -1998,222 +2207,37 @@ export default function CVBuilder() {
                                             </button>
                                         </div>
                                     </div>
-                                    <div className="h-wrap align-items-end">
-                                        <div className="h-wrap">
-                                            <div className="icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-report-analytics"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" /><path d="M9 17v-5" /><path d="M12 17v-1" /><path d="M15 17v-3" /></svg>
+                                    <div className='h-wrap align-items-end'>
+                                        <div className="v-wrap gap-2">
+                                            <div className="h-wrap">
+                                                <div className="icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-report-analytics"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2" /><path d="M9 5a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2" /><path d="M9 17v-5" /><path d="M12 17v-1" /><path d="M15 17v-3" /></svg>
+                                                </div>
+                                                <div className="v-wrap gap-0">
+                                                    <span className="edu-degree fw-600">{expItem.workExperienceJobTitle}</span>
+                                                    <small className="edu-time text-muted">{expItem.workExperienceOrganization}</small>
+                                                    {expItem.workExperienceDescription && (
+                                                        <small className="edu-time text-muted">{expItem.workExperienceDescription}</small>
+                                                    )}
+                                                </div>
                                             </div>
-                                            <div className="v-wrap gap-0">
-                                                <span className="edu-degree fw-600">{expItem.workExperienceJobTitle}</span>
-                                                <small className="edu-time text-muted">{expItem.workExperienceOrganization}</small>
-                                            </div>
+                                            {expItem.highlights?.items?.length > 0 && (
+                                                <ul className="mb-0 ps-5">
+                                                    {expItem.highlights.items.map((item, idx) => (
+                                                        <li key={idx}><small>{item.bullet}</small></li>
+                                                    ))}
+                                                </ul>
+                                            )}
                                         </div>
-                                        <small className="edu-time text-muted flex-shrink-0">
-                                            {expItem.workExperienceDates?.start?.date} / {expItem.workExperienceDates?.end?.date}
+                                        <small className="exp-time text-muted flex-shrink-0">
+                                            {expItem.workExperienceDates?.start?.date} - {expItem.workExperienceDates?.end?.date || 'Present'}
                                         </small>
                                     </div>
                                 </div>
                             ))}
 
-                            {/* Current form for adding/editing */}
-                            {editingExperience.index !== null ? (
-                                <div className="editor-modal-card v-wrap">
-                                    <div className="d-flex justify-content-between align-items-center gap-2">
-                                        <small className="">Edit Experience Form</small>
-                                        <div className="d-flex justify-content-end align-items-center gap-2">
-                                            <button
-                                                type="button"
-                                                className="custom-delete-btn-2"
-                                                onClick={expHandleCancelEdit}
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
-                                            </button>
-                                            <button
-                                                type="button"
-                                                className="custom-save-btn"
-                                                onClick={expHandleSaveExperience}
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-check">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                    <path d="M5 12l5 5l10 -10" />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div className="h-wrap">
-                                        <div className="form-group">
-                                            <label className="form-label">Job Title</label>
-                                            <input
-                                                className="form-control"
-                                                value={editingExperience.data.workExperienceJobTitle || ''}
-                                                onChange={(e) => setEditingExperience(prev => ({
-                                                    ...prev,
-                                                    data: {
-                                                        ...prev.data,
-                                                        workExperienceJobTitle: e.target.value
-                                                    }
-                                                }))}
-                                            />
-                                        </div>
-                                        <div className="form-group">
-                                            <label className="form-label">Company</label>
-                                            <input
-                                                className="form-control"
-                                                value={editingExperience.data.workExperienceOrganization || ''}
-                                                onChange={(e) => setEditingExperience(prev => ({
-                                                    ...prev,
-                                                    data: {
-                                                        ...prev.data,
-                                                        workExperienceOrganization: e.target.value
-                                                    }
-                                                }))}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="h-wrap">
-                                        <div className="form-group">
-                                            <label className="form-label">Start Date</label>
-                                            <input
-                                                placeholder="2020"
-                                                className="form-control"
-                                                type="text"
-                                                value={editingExperience.data.workExperienceDates?.start?.date || ''}
-                                                onChange={(e) => setEditingExperience(prev => ({
-                                                    ...prev,
-                                                    data: {
-                                                        ...prev.data,
-                                                        workExperienceDates: {
-                                                            ...prev.data.workExperienceDates,
-                                                            start: {
-                                                                ...prev.data.workExperienceDates?.start,
-                                                                date: e.target.value
-                                                            }
-                                                        }
-                                                    }
-                                                }))}
-                                            />
-                                        </div>
-                                        <div className="form-group">
-                                            <label className="form-label">End Date</label>
-                                            <input
-                                                placeholder="2021 or Present"
-                                                className="form-control"
-                                                type="text"
-                                                value={editingExperience.data.workExperienceDates?.end?.date || ''}
-                                                onChange={(e) => setEditingExperience(prev => ({
-                                                    ...prev,
-                                                    data: {
-                                                        ...prev.data,
-                                                        workExperienceDates: {
-                                                            ...prev.data.workExperienceDates,
-                                                            end: {
-                                                                ...prev.data.workExperienceDates?.end,
-                                                                date: e.target.value
-                                                            }
-                                                        }
-                                                    }
-                                                }))}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="form-label">Description (Optional)</label>
-                                        <textarea
-                                            rows="3"
-                                            className="form-control"
-                                            value={editingExperience.data.workExperienceDescription || ''}
-                                            onChange={(e) => setEditingExperience(prev => ({
-                                                ...prev,
-                                                data: {
-                                                    ...prev.data,
-                                                    workExperienceDescription: e.target.value
-                                                }
-                                            }))}
-                                            placeholder="Describe your role and responsibilities"
-                                        ></textarea>
-                                    </div>
-                                    <div className="form-group v-wrap">
-                                        <label className="form-label">Key Achievements</label>
-                                        {editingExperience.data.highlights?.items?.map((bullet, bulletIndex) => (
-                                            <div key={bullet.id || bulletIndex} className="h-wrap align-items-center gap-2">
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    value={bullet.bullet}
-                                                    onChange={(e) => {
-                                                        setEditingExperience(prev => ({
-                                                            ...prev,
-                                                            data: {
-                                                                ...prev.data,
-                                                                highlights: {
-                                                                    ...prev.data.highlights,
-                                                                    items: prev.data.highlights.items.map((b, i) =>
-                                                                        i === bulletIndex ? { ...b, bullet: e.target.value } : b
-                                                                    )
-                                                                }
-                                                            }
-                                                        }));
-                                                    }}
-                                                    placeholder="Enter achievement or responsibility"
-                                                />
-                                                <button
-                                                    type="button"
-                                                    className="custom-delete-btn-2"
-                                                    onClick={() => {
-                                                        setEditingExperience(prev => ({
-                                                            ...prev,
-                                                            data: {
-                                                                ...prev.data,
-                                                                highlights: {
-                                                                    ...prev.data.highlights,
-                                                                    items: prev.data.highlights.items.filter((_, i) => i !== bulletIndex)
-                                                                }
-                                                            }
-                                                        }));
-                                                    }}
-                                                >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
-                                                </button>
-                                            </div>
-                                        ))}
-                                        <button
-                                            type="button"
-                                            className="btn btn-outline-primary btn-sm mt-2"
-                                            onClick={() => {
-                                                setEditingExperience(prev => ({
-                                                    ...prev,
-                                                    data: {
-                                                        ...prev.data,
-                                                        highlights: {
-                                                            ...prev.data.highlights,
-                                                            items: [
-                                                                ...(prev.data.highlights?.items || []),
-                                                                { id: Date.now(), bullet: '' }
-                                                            ]
-                                                        }
-                                                    }
-                                                }));
-                                            }}
-                                        >
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-square-rounded-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3c7.2 0 9 1.8 9 9c0 7.2 -1.8 9 -9 9c-7.2 0 -9 -1.8 -9 -9c0 -7.2 1.8 -9 9 -9" /><path d="M15 12h-6" /><path d="M12 9v6" /></svg>
-                                            Add Bullet Point
-                                        </button>
-                                    </div>
-                                </div>
-                            ) : (
-                                <button
-                                    type="button"
-                                    className="btn btn-outline-secondary btn-sm mt-2"
-                                    style={{ maxWidth: 'fit-content' }}
-                                    onClick={expHandleAddExperience}
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus me-1">
-                                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                    </svg>
-                                    Add {parsedResume?.employmentTitle || "Experience"}
-                                </button>
-                            )}
+                            {/* Current form for adding/editing experience */}
+                            {expCurrentForm ? experenceContainer(true) : experenceContainer(false)}
                         </div>
                     ) : (
                         <div className="text-dark text-center py-3 d-flex flex-column gap-2">
@@ -2381,7 +2405,7 @@ export default function CVBuilder() {
                             ))}
 
                             {/* Current form for adding/editing */}
-                            {eduCurrentForm ? educationContainer : educationContainer}
+                            {eduCurrentForm ? educationContainer(true) : educationContainer(false)}
                         </div>
                     ) : (
                         <div className="text-dark text-center py-3 d-flex flex-column gap-2">
@@ -3457,3 +3481,5 @@ export default function CVBuilder() {
         </div>
     );
 }
+
+

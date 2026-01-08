@@ -21,8 +21,6 @@ const MasterLayout = ({ children }) => {
 
   const { slug } = data.roles[0].slug ? data.roles[0] : { slug: 'user' };
 
-  console.log("Role Slug:", slug);
-
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
 
   const [collapsed, setCollapsed] = useState(() => {
@@ -66,8 +64,6 @@ const MasterLayout = ({ children }) => {
     // Extract the ID from the path if it matches the pattern
     const pathSegments = location.pathname.split('/');
     const routeWithoutId = pathSegments.slice(0, -1).join('/');
-
-    console.log(routeWithoutId)
 
     // If no ID in current path, do exact match
     return routeWithoutId === path ? classes : "";
