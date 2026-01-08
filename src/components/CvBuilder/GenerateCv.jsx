@@ -3298,10 +3298,10 @@ export default function CVBuilder() {
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-device-sd-card"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 21h10a2 2 0 0 0 2 -2v-14a2 2 0 0 0 -2 -2h-6.172a2 2 0 0 0 -1.414 .586l-3.828 3.828a2 2 0 0 0 -.586 1.414v10.172a2 2 0 0 0 2 2" /><path d="M13 6v2" /><path d="M16 6v2" /><path d="M10 7v1" /></svg>
                             )}
                         </Button>
-                        <Button className="editor-custom-btn" onClick={zoomOut} title={`ZoomOut ${round(zoom * 100, 0)}%`}>
+                        <Button className="editor-custom-btn" onClick={zoomOut} title={`ZoomOut ${round(zoom * 100, 0)}%`} disabled={zoom == 0.5 && true}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-zoom-out-area"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M13 15h4" /><path d="M10 15a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" /><path d="M22 22l-3 -3" /><path d="M6 18h-1a2 2 0 0 1 -2 -2v-1" /><path d="M3 11v-1" /><path d="M3 6v-1a2 2 0 0 1 2 -2h1" /><path d="M10 3h1" /><path d="M15 3h1a2 2 0 0 1 2 2v1" /></svg>
                         </Button>
-                        <Button className="editor-custom-btn" onClick={zoomIn} title={`ZoomIn ${round(zoom * 100, 0)}%`}>
+                        <Button className="editor-custom-btn" onClick={zoomIn} title={`ZoomIn ${round(zoom * 100, 0)}%`} disabled={zoom == 2 && true}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-zoom-in-area"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 13v4" /><path d="M13 15h4" /><path d="M10 15a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" /><path d="M22 22l-3 -3" /><path d="M6 18h-1a2 2 0 0 1 -2 -2v-1" /><path d="M3 11v-1" /><path d="M3 6v-1a2 2 0 0 1 2 -2h1" /><path d="M10 3h1" /><path d="M15 3h1a2 2 0 0 1 2 2v1" /></svg>
                         </Button>
 
@@ -3327,7 +3327,7 @@ export default function CVBuilder() {
                         <div
                             ref={previewContainerRef}
                             className="cv-template-div"
-                            style={{ background: '#fff', zoom: zoom, overflow: 'auto', height: 'calc(100vh - 190px)', position: 'relative' }}
+                            style={{ background: '#fff', overflow: 'auto', height: 'calc(100vh - 190px)', position: 'relative' }}
                         >
                             <div
                                 ref={cvRef}
@@ -3337,6 +3337,7 @@ export default function CVBuilder() {
                                     // minHeight: `${Math.max(1, totalPages) * 1080}px`,
                                     transformOrigin: 'top center',
                                     transition: 'transform 0.2s ease-in-out',
+                                    zoom: zoom,
                                 }}
                             >
                                 {(() => {
