@@ -454,7 +454,7 @@ const MasterLayout = ({ children }) => {
           </div>
         </div>
       </div>
-      <ChatBot />
+      {/* <ChatBot /> */}
     </main>
   );
 };
