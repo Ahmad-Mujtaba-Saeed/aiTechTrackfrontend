@@ -210,7 +210,7 @@ const MasterLayout = ({ children }) => {
                   </filter>
 
                   <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-                    <feDropShadow dx="0" dy="4" stdDeviation="6" flood-opacity="0.15" />
+                    <feDropShadow dx="0" dy="4" stdDeviation="6" floodOpacity="0.15" />
                   </filter>
                 </defs>
 
@@ -226,7 +226,7 @@ const MasterLayout = ({ children }) => {
 
                   <circle cx="50" cy="30" r="8" fill="#5a5a5a" opacity="0.5" />
                   <circle cx="50" cy="28" r="3" fill="#fff" />
-                  <path d="M 44 33 Q 44 30, 50 30 T 56 33" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" />
+                  <path d="M 44 33 Q 44 30, 50 30 T 56 33" stroke="#fff" strokeWidth="1.5" fill="none" strokeLinecap="round" />
 
                   <rect x="28" y="45" width="44" height="3" rx="1.5" fill="#5a5a5a" opacity="0.3" />
                   <rect x="28" y="51" width="38" height="2" rx="1" fill="#5a5a5a" opacity="0.15" />
@@ -240,12 +240,12 @@ const MasterLayout = ({ children }) => {
 
                   <g transform="translate(75, 80)">
                     <circle cx="0" cy="0" r="12" fill="url(#accentGradient)" filter="url(#softGlow)" />
-                    <path d="M -5 -1 L -2 3 L 5 -4" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M -5 -1 L -2 3 L 5 -4" stroke="white" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
                   </g>
                 </g>
 
                 <g transform="translate(120, 0)">
-                  <text x="10" y="94" font-family="'Google Sans Flex', cursive, 'Segoe UI', Arial, sans-serif" font-size="60" font-weight="500" letter-spacing="0">
+                  <text x="10" y="94" fontFamily="'Google Sans Flex', cursive, 'Segoe UI', Arial, sans-serif" fontSize="60" fontWeight="500" letterSpacing="0">
                     <tspan fill="#ffffff4d">CV</tspan>
                     <tspan fill="#fff" dx="0">Builder</tspan>
                   </text>
@@ -324,12 +324,13 @@ const MasterLayout = ({ children }) => {
             </div>
           </li> */}
 
-          <li className="nav-item dropdown"><Link className="nav-link lh-1 pe-0" id="navbarDropdownUser" to="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-            <div className="avatar avatar-l ">
-              <img className="rounded-circle " src={data?.profile_img_url || favicon} alt="" />
-            </div>
-          </Link>
-            <div className="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border" aria-labelledby="navbarDropdownUser">
+          <li className="nav-item dropdown">
+            <Link className="nav-link lh-1 pe-0" id="NavDropdownMenu" to="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <div className="avatar avatar-l ">
+                <img className="rounded-circle " src={data?.profile_img_url || favicon} alt="" />
+              </div>
+            </Link>
+            <div className="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border" aria-labelledby="NavDropdownMenu">
               <div className="card position-relative border-0">
                 <div className="card-body p-0">
                   <div className="pt-4 pb-3 d-flex px-3 align-items-center gap-2">

@@ -111,12 +111,12 @@ const CareerAdviceSection = ({ sectionId, count }) => {
     //   </ul>
     // </div>
     <div className="col-12 col-md-6 col-lg-4">
-      <div class="section card h-100" id={sectionId}>
-        <div class="card-body p-0">
-          <div class="border-translucent">
-            <div class="d-flex align-items-start mb-1">
-              <div class="d-sm-flex align-items-center">
-                <h2 class="text-primary">{`${count}. ${section.title}`}</h2>
+      <div className="section card h-100" id={sectionId}>
+        <div className="card-body p-0">
+          <div className="border-translucent">
+            <div className="d-flex align-items-start mb-1">
+              <div className="d-sm-flex align-items-center">
+                <h2 className="text-primary">{`${count}. ${section.title}`}</h2>
               </div>
             </div>
             <ul className="mb-0">
@@ -371,8 +371,8 @@ export default function CareerAdvice() {
           margin-top: .75rem; 
         }
         .section h2 {
-          font-weight: 700;
-          font-size: 1.125rem;
+          fontWeight: 700;
+          fontSize: 1.125rem;
           margin-bottom: .5rem;
         }
         .section ul { 
@@ -380,7 +380,7 @@ export default function CareerAdvice() {
         }
         .section li { 
           margin: .4rem 0; 
-          font-size: 14px;
+          fontSize: 14px;
         }
 
         .toc-card {
