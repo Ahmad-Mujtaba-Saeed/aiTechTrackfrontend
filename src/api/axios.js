@@ -2,7 +2,8 @@ import axios from 'axios';
 
 // const baseURLAPI = 'https://slateblue-snake-907020.hostingersite.com/api';
 
-// const baseURL = 'https://slateblue-snake-907020.hostingersite.com';
+// const baseURL = 'https://13.53.164.183';
+// const baseURLAPI = 'https://slateblue-snake-907020.hostingersite.com/api';
 
 const baseURL = 'http://72.62.194.87:8080';
 
