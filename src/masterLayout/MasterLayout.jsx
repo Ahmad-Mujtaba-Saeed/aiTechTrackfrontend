@@ -301,6 +301,12 @@ const MasterLayout = ({ children }) => {
             </div>
           </Link>
         </div>
+        
+        <span style={{ whiteSpace: 'nowrap' , color: 'red'}}>
+          {new Date(data.plan_expire_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+          {' '}
+          {new Date(data.plan_expire_date).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
+        </span>
         <div className="collapse navbar-collapse navbar-top-collapse order-1 order-lg-0 justify-content-center" id="navbarTopCollapse">
           {/* <ul className="navbar-nav navbar-nav-top" data-dropdown-on-hover="data-dropdown-on-hover">
             <li className="nav-item dropdown"><Link className="nav-link lh-1" to="/" aria-haspopup="true">
