@@ -1,9 +1,65 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react/dist/iconify.js";
-
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import {
+  getrecentCvsCreated,
+  updateResumeName,
+  delCreatedCv
+} from '../../features/resume/resumeSlice';
+import RecentCVsTable from '../CvBuilder/RecentCVsTable';
+import { Card } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 export default function ControlComponents() {
+    const dispatch = useDispatch();
+    const { recentCVs , delResumeLoader} = useSelector((state) => state.resume);
+      // Initialize component
+      useEffect(() => {
+        dispatch(getrecentCvsCreated());
+      }, [dispatch]);
+
+
+        const handleRenameCv = async (resumeId, title) => {
+          const newName = prompt('Enter new name for CV:', title);
+          if (newName && newName.trim() && newName !== title) {
+            try {
+              const updateResult = await dispatch(updateResumeName({ id: resumeId, name: newName })).unwrap();
+              console.log(updateResult);
+              if (updateResult?.data) {
+                dispatch(getrecentCvsCreated({}));
+                toast.success('CV renamed successfully');
+              }
+            } catch (error) {
+              toast.error(error.message || 'Failed to rename CV');
+            }
+          }
+        };
+
+          // Delete CV handler
+          const handleDeleteCv = (resumeId) => {
+            dispatch(delCreatedCv(resumeId))
+              .unwrap()
+              .then(() => {
+                toast.success('CV deleted successfully');
+                dispatch(getrecentCvsCreated());
+              })
+              .catch((error) => {
+                toast.error(error.message || 'Failed to delete CV');
+              });
+          };
+
+        // Add these states at the top of your component
+        const [currentPage, setCurrentPage] = useState(1);
+        const [itemsPerPage, setItemsPerPage] = useState(5); // Default items per page
+      
+        // Update your useEffect that fetches the data
+        useEffect(() => {
+          dispatch(getrecentCvsCreated({ page: currentPage, perPage: itemsPerPage }));
+        }, [dispatch, currentPage, itemsPerPage]);
+
+
     return (
         <div className="row mb-4 g-3 feature-cards" style={{ translate: 'none', rotate: 'none', scale: 'none', transform: 'translate(0px, 0px)', opacity: 1 }}>
             <div className="col-12 col-md-6 col-xl-3">
@@ -22,6 +78,36 @@ export default function ControlComponents() {
                     </div>
                 </div>
             </div>
+
+             {Array.isArray(recentCVs?.data) && recentCVs?.data?.length > 0 && (
+
+          <>
+            {/* Recent CVs Section */}
+            {recentCVs?.data?.length > 0 ? (
+              < div className="col-12 col-xl-6">
+                <Card className="border h-100 w-100 position-relative">
+                  <Card.Body className="position-relative">
+                    <div className="d-flex justify-content-between align-items-center mb-3">
+                      <h5 className="mb-0">Recent CVs</h5>
+
+                    </div>
+
+                    <RecentCVsTable
+                      data={recentCVs.data}
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+                      lastPage={recentCVs.last_page}
+                      delResumeLoader={delResumeLoader}
+                      handleRenameCv={handleRenameCv}
+                      handleDeleteCv={handleDeleteCv}
+                      compact={true}
+                    />
+                  </Card.Body>
+                </Card>
+              </div>
+            ) : null}
+          </>
+        )}
 
 
             {/* <div className="col-12 col-xl-4">
