@@ -4,7 +4,7 @@ import './ProfilePage2.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfileSettings } from '../../features/user/userSlice';
 import favicon from '../../assets/demo_profile.avif';
-import axios, { stripe_public_key } from '../../utils/axios';
+import axios, { stripe_public_key } from '../../api/axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useStripe, useElements, CardElement, Elements } from "@stripe/react-stripe-js";

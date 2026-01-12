@@ -2,7 +2,7 @@
 import React from "react";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../utils/firebase";
-import axios from "../../utils/axios";
+import axios from "../../api/axios";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";

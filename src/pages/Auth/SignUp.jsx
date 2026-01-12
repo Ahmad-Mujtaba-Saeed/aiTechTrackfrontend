@@ -4,7 +4,7 @@ import { Formik, useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from '../../utils/axios';
+import axios from '../../api/axios';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { FaExclamationCircle } from 'react-icons/fa';
 import logo from '../../assets/images/MPF-logo.svg';

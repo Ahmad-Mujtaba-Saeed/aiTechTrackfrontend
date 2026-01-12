@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Spinner } from "react-bootstrap";
-import axios from "../utils/axios";
+import axios from "../api/axios";
 
 const PrivateRoute = ({ children }) => {
   const location = useLocation();
@@ -19,6 +19,7 @@ const PrivateRoute = ({ children }) => {
   // token (redux or fallback to localStorage)
   const token = accessToken || localStorage.getItem("access_token");
 
+  const hasPermission = data?.roles?.some(role => role.permissions?.some(permission => permission.slug === 'system-internal'));
   // Always declare hooks at top — effect below will run consistently
   useEffect(() => {
     // Don't attempt anything if:
@@ -32,8 +33,9 @@ const PrivateRoute = ({ children }) => {
     const path = location.pathname;
     if (path === "/upload-profile" || path === "/subscription") return;
 
+
     // If user has no plan_id, we need to create a subscription session
-    if (!data.plan_id && data.trial_used == 0) {
+    if (!data.plan_id && data.trial_used == 0 && !hasPermission) {
       subscriptionInitiatedRef.current = true; // prevent re-entry
       const createSession = async () => {
         try {
@@ -41,7 +43,7 @@ const PrivateRoute = ({ children }) => {
           // Use a default plan slug or id if you want a fallback. Here we assume backend can handle missing param.
           // IMPORTANT: don't use data.plan_id here because it's null.
           const planIdentifier = "default"; // or choose a real fallback plan id
-          const response = await axios.get(`/api/billing/stripe/create-subscription-session/2?isFreeTrial=true`);
+          const response = await axios.get(`/billing/stripe/create-subscription-session/2?isFreeTrial=true`);
           const checkoutUrl = response?.data?.checkoutUrl || response?.data?.url || null;
           if (checkoutUrl) {
             // Navigate to Stripe hosted checkout (hard navigation is fine here)
@@ -62,7 +64,7 @@ const PrivateRoute = ({ children }) => {
 
       createSession();
     }
-    else if(!data.plan_id){
+    else if(!data.plan_id && !hasPermission){
       window.location.href = "/subscription"
     }
   }, [token, data, location.pathname]);
@@ -98,7 +100,7 @@ const PrivateRoute = ({ children }) => {
 
   // 6) If user still has no plan_id and we didn't navigate away, show subscription link
   // (This is a fallback if the session creation didn't redirect)
-  if (!data.plan_id) {
+  if (!data.plan_id && !hasPermission) {
     return <Navigate to="/" state={{ from: location }} replace />;
   }
 

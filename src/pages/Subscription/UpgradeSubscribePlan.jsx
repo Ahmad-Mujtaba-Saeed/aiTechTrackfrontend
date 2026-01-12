@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Card, Spinner, Alert, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import axios from '../../utils/axios';
+import axios from '../../api/axios';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import MasterLayout from "../../masterLayout/MasterLayout";
@@ -17,7 +17,7 @@ const UpgradeSubscribePlan = () => {
     const fetchPlans = async () => {
         try {
             setLoading(true);
-            const response = await axios.get('/api/billing/plans');
+            const response = await axios.get('/billing/plans');
             setPlans(response.data);
         } catch (err) {
             setError('Failed to load subscription plans. Please try again later.');
@@ -50,7 +50,7 @@ const UpgradeSubscribePlan = () => {
         try {
             setSubscribing(true);
             setError('');
-            await axios.post(`/api/billing/subscription/change-plan/${planId}`);
+            await axios.post(`/billing/subscription/change-plan/${planId}`);
 
             // Show success message with SweetAlert2
             await Swal.fire({
