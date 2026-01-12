@@ -7,14 +7,20 @@ import {
   getrecentCvsCreated,
   updateResumeName,
   delCreatedCv
-} from '../../features/resume/resumeSlice';
-import RecentCVsTable from '../CvBuilder/RecentCVsTable';
+} from '../../../features/resume/resumeSlice';
+import RecentCVsTable from '../../../components/CvBuilder/RecentCVsTable';
 import { Card } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import PaymentAnalyticsGraph from './PaymentAnalyticsGraph';
+import RecentSubscriptionsTable from './RecentSubscriptionsTable';
+import { hasPermission } from '../../../utils/permissions';
 
 export default function ControlComponents() {
     const dispatch = useDispatch();
     const { recentCVs , delResumeLoader} = useSelector((state) => state.resume);
+    const {data} = useSelector((state) => state.user);
+
+    const hasSystemInternalPermission = () => hasPermission(data, 'view-dashboard');
       // Initialize component
       useEffect(() => {
         dispatch(getrecentCvsCreated());
@@ -109,6 +115,18 @@ export default function ControlComponents() {
           </>
         )}
 
+
+{hasSystemInternalPermission() && (
+  <>
+    <div className="col-12 col-xl-6">
+      <PaymentAnalyticsGraph />
+    </div>
+
+    <div className="col-12 col-xl-6">
+      <RecentSubscriptionsTable />
+    </div>
+  </>
+)}
 
             {/* <div className="col-12 col-xl-4">
                 <div className="card border h-100 w-100 overflow-hidden">

@@ -4,6 +4,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Spinner } from "react-bootstrap";
 import axios from "../api/axios";
+import { hasPermission } from "../utils/permissions";
 
 const PrivateRoute = ({ children }) => {
   const location = useLocation();
@@ -19,7 +20,7 @@ const PrivateRoute = ({ children }) => {
   // token (redux or fallback to localStorage)
   const token = accessToken || localStorage.getItem("access_token");
 
-  const hasPermission = data?.roles?.some(role => role.permissions?.some(permission => permission.slug === 'system-internal'));
+  const hasSystemInternalPermission = hasPermission(data, 'system-internal');
   // Always declare hooks at top — effect below will run consistently
   useEffect(() => {
     // Don't attempt anything if:
@@ -35,7 +36,7 @@ const PrivateRoute = ({ children }) => {
 
 
     // If user has no plan_id, we need to create a subscription session
-    if (!data.plan_id && data.trial_used == 0 && !hasPermission) {
+    if (!data.plan_id && data.trial_used == 0 && !hasSystemInternalPermission) {
       subscriptionInitiatedRef.current = true; // prevent re-entry
       const createSession = async () => {
         try {
@@ -64,12 +65,12 @@ const PrivateRoute = ({ children }) => {
 
       createSession();
     }
-    else if(!data.plan_id && !hasPermission){
+    else if(!data.plan_id && !hasSystemInternalPermission){
       window.location.href = "/subscription"
     }
   }, [token, data, location.pathname]);
 
-  // 1) while app is determining auth state or while we are preparing redirect -> spinner
+
   if (bootstrapping || loading) {
     return (
       <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
@@ -100,7 +101,7 @@ const PrivateRoute = ({ children }) => {
 
   // 6) If user still has no plan_id and we didn't navigate away, show subscription link
   // (This is a fallback if the session creation didn't redirect)
-  if (!data.plan_id && !hasPermission) {
+  if (!data.plan_id && !hasSystemInternalPermission) {
     return <Navigate to="/" state={{ from: location }} replace />;
   }
 
@@ -109,3 +110,13 @@ const PrivateRoute = ({ children }) => {
 };
 
 export default PrivateRoute;
+
+
+// Check single permission
+// const canViewDashboard = hasPermission(userData, 'view-dashboard');
+
+// // Check multiple permissions
+// const hasAnyAdminAccess = hasAnyPermission(userData, ['manage-users', 'view-dashboard', 'system-internal']);
+
+// // Check role
+// const isAdmin = hasRole(userData, 'admin');
