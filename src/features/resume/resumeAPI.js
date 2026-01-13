@@ -50,7 +50,7 @@ export const generateUserCoverLetter = async (formData) =>{
 
 // not used currently
 
-export const recentUserCvsCreated = async ({ page = 1, perPage = 3 }) =>{
+export const recentUserCvsCreated = async ({ page = 1, perPage = 5 }) =>{
   const response = await axios.get("/resume", {
     params: {
       page,

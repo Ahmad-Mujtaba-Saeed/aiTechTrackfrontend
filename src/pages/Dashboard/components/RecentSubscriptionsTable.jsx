@@ -4,6 +4,9 @@ import { Icon } from "@iconify/react";
 import axios from '../../../api/axios';
 import { useNavigate } from 'react-router-dom';
 
+import FormatDateTime from '../../../components/FormatDateTime';
+import Avatar from '../../../components/Avatar'
+
 const RecentSubscriptionsTable = () => {
     const navigate = useNavigate();
     const [subscriptions, setSubscriptions] = useState([]);
@@ -122,7 +125,7 @@ const RecentSubscriptionsTable = () => {
     };
 
     return (
-        <Card className="border h-100">
+        <Card className="h-100">
             <Card.Body className="p-0">
                 {/* Header with Stats */}
                 <div className="p-4 border-bottom">
@@ -132,7 +135,7 @@ const RecentSubscriptionsTable = () => {
                             <p className="text-muted mb-0">Latest subscription activities</p>
                         </div>
                         <button 
-                            className="btn btn-sm btn-outline-primary d-flex align-items-center"
+                            className="btn btn-sm btn-primary d-flex align-items-center"
                             onClick={fetchSubscriptions}
                             disabled={loading}
                         >
@@ -146,8 +149,8 @@ const RecentSubscriptionsTable = () => {
                         <div className="col-6 col-md-3">
                             <div className="p-3 bg-light rounded">
                                 <div className="d-flex align-items-center">
-                                    <div className="bg-primary rounded-circle p-2 me-3">
-                                        <Icon icon="mdi:account-group" className="text-white" />
+                                    <div className="bg-primary rounded-circle p-2 me-3 avatar avatar-l  d-flex justify-contebt-center align-items-center">
+                                        <Icon icon="mdi:account-group" className="text-white" width={24} height={20} />
                                     </div>
                                     <div>
                                         <h6 className="mb-0">{stats.total}</h6>
@@ -159,8 +162,8 @@ const RecentSubscriptionsTable = () => {
                         <div className="col-6 col-md-3">
                             <div className="p-3 bg-light rounded">
                                 <div className="d-flex align-items-center">
-                                    <div className="bg-success rounded-circle p-2 me-3">
-                                        <Icon icon="mdi:check-circle" className="text-white" />
+                                    <div className="bg-primary rounded-circle p-2 me-3 avatar avatar-l  d-flex justify-contebt-center align-items-center">
+                                        <Icon icon="mdi:check-circle" className="text-white" width={24} height={20} />
                                     </div>
                                     <div>
                                         <h6 className="mb-0">{stats.active}</h6>
@@ -172,8 +175,8 @@ const RecentSubscriptionsTable = () => {
                         <div className="col-6 col-md-3">
                             <div className="p-3 bg-light rounded">
                                 <div className="d-flex align-items-center">
-                                    <div className="bg-danger rounded-circle p-2 me-3">
-                                        <Icon icon="mdi:cancel" className="text-white" />
+                                    <div className="bg-primary rounded-circle p-2 me-3 avatar avatar-l  d-flex justify-contebt-center align-items-center">
+                                        <Icon icon="mdi:cancel" className="text-white" width={24} height={20} />
                                     </div>
                                     <div>
                                         <h6 className="mb-0">{stats.cancelled}</h6>
@@ -185,8 +188,8 @@ const RecentSubscriptionsTable = () => {
                         <div className="col-6 col-md-3">
                             <div className="p-3 bg-light rounded">
                                 <div className="d-flex align-items-center">
-                                    <div className="bg-warning rounded-circle p-2 me-3">
-                                        <Icon icon="mdi:cash" className="text-white" />
+                                    <div className="bg-primary rounded-circle p-2 me-3 avatar avatar-l  d-flex justify-contebt-center align-items-center">
+                                        <Icon icon="mdi:cash" className="text-white" width={24} height={20} />
                                     </div>
                                     <div>
                                         <h6 className="mb-0">{stats.trial}</h6>
@@ -207,14 +210,15 @@ const RecentSubscriptionsTable = () => {
                         </div>
                         <ProgressBar 
                             now={stats.total > 0 ? (stats.active / stats.total) * 100 : 0} 
-                            variant="success"
+                            variant="primary"
                             style={{ height: '6px' }}
+                            className='mb-0'
                         />
                     </div>
                 </div>
                 
                 {/* Table Section */}
-                <div className="p-4">
+                <div className="p-3">
                     {loading ? (
                         <div className="text-center py-5">
                             <div className="spinner-border text-primary mb-3" role="status">
@@ -234,7 +238,7 @@ const RecentSubscriptionsTable = () => {
                         </div>
                     ) : (
                         <div className="table-responsive">
-                            <table className="table table-hover table-borderless mb-0">
+                            <table className="table mb-0">
                                 <thead>
                                     <tr>
                                         <th className="ps-0">Customer</th>
@@ -254,13 +258,13 @@ const RecentSubscriptionsTable = () => {
                                                 <td className="ps-0">
                                                     <div className="d-flex align-items-center">
                                                         <div className={`avatar avatar-sm bg-${planColor}-subtle text-${planColor} rounded-circle d-flex align-items-center justify-content-center me-3`}>
-                                                            {getInitials(subscription.user?.name)}
+                                                            <Avatar name={subscription.user?.name} />
                                                         </div>
                                                         <div>
-                                                            <div className="fw-medium text-truncate" style={{ maxWidth: '120px' }}>
+                                                            <div className="fw-medium text-truncate">
                                                                 {subscription.user?.name || 'Unknown User'}
                                                             </div>
-                                                            <small className="text-muted text-truncate d-block" style={{ maxWidth: '120px' }}>
+                                                            <small className="text-muted text-truncate d-block">
                                                                 {subscription.user?.email || 'N/A'}
                                                             </small>
                                                         </div>
@@ -287,8 +291,7 @@ const RecentSubscriptionsTable = () => {
                                                 </td>
                                                 <td className="text-end pe-0">
                                                     <div className="text-muted">
-                                                        <Icon icon="mdi:calendar" className="me-1" />
-                                                        {formatDate(subscription.created_at)}
+                                                        <small><FormatDateTime dateString={subscription.created_at} time={false} /></small>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -305,7 +308,7 @@ const RecentSubscriptionsTable = () => {
                             <small className="text-muted">
                                 Showing {Math.min(subscriptions.length, 5)} of {stats.total} subscriptions
                             </small>
-                            <button className="btn btn-sm btn-link text-decoration-none" onClick={()=>{navigate('/billing/subscriptions')}}>
+                            <button className="btn btn-sm btn-primary text-decoration-none" onClick={()=>{navigate('/billing/subscriptions')}}>
                                 View All
                                 <Icon icon="mdi:chevron-right" className="ms-1" />
                             </button>

@@ -157,6 +157,7 @@
     .tier {
         width: 100%;
         max-width: 400px;
+        flex-basis: auto;
     }
 
     .tier.professional {
