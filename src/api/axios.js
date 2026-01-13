@@ -5,15 +5,15 @@ import axios from 'axios';
 // const baseURL = 'https://13.53.164.183';
 // const baseURLAPI = 'https://slateblue-snake-907020.hostingersite.com/api';
 
-// const baseURL = 'http://72.62.194.87:8080';
+const baseURL = 'http://72.62.194.87:8080';
 
-// const baseURLAPI = 'http://72.62.194.87:8080/api';
+const baseURLAPI = 'http://72.62.194.87:8080/api';
 
 // const baseURL = 'http://127.0.0.1:8085';
 // const baseURLAPI = 'http://127.0.0.1:8085/api';
 
-const baseURLAPI = 'http://localhost:8000/api';
-const baseURL = 'http://localhost:8000';
+// const baseURLAPI = 'http://localhost:8000/api';
+// const baseURL = 'http://localhost:8000';
 
 
 

@@ -514,7 +514,7 @@
   --phoenix-dual-nav-border-color: #31374a;
   --phoenix-dual-nav-first-layer-bg: #0f111a;
   /* ------------------------------- navbar-vertical inverted ------------------------------- */
-  --phoenix-navbar-vertical-link-color: #757575;
+  --phoenix-navbar-vertical-link-color: #858585;
   --phoenix-navbar-vertical-link-hover-color: #eff2f6;
   --phoenix-navbar-vertical-link-hover-bg: rgba(255, 255, 255, 0.1);
   --phoenix-navbar-vertical-link-active-color: #fff;
@@ -5942,7 +5942,7 @@ textarea.form-control.is-invalid {
   display: block;
   padding: var(--phoenix-nav-link-padding-y) var(--phoenix-nav-link-padding-x);
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   color: var(--phoenix-nav-link-color);
   background: none;
   border: 0;

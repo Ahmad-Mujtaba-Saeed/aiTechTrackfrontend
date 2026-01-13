@@ -1,5 +1,8 @@
 import React from "react";
 import { Table, Dropdown, Button, Pagination } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
+import FormatDateTime from "../../formatDateTime";
 
 const RecentCVsTable = ({
   data,
@@ -12,22 +15,7 @@ const RecentCVsTable = ({
   compact = false // compact = dashboard mode, full = modal mode
 }) => {
 
-  const formatDateTime = (dateString) => {
-    const date = new Date(dateString);
 
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = date.toLocaleString('en-US', { month: 'short' });
-    const year = date.getFullYear();
-
-    let hours = date.getHours();
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-
-    hours = hours % 12 || 12; // convert 0 to 12
-    hours = String(hours).padStart(2, '0');
-
-    return `${day} ${month} ${year} ${hours}:${minutes} ${ampm}`;
-  }
 
   console.log('Data: ', data);
 
@@ -35,7 +23,7 @@ const RecentCVsTable = ({
   return (
     <>
       <div className="">
-        <table className="table table-hover align-middle mb-0 cv-table">
+        <table className="table  align-middle mb-0 cv-table">
           <thead className="table-light">
             <tr>
               <th className="text-start ps-0" style={{ maxWidth: compact ? 300 : "unset" }}>
@@ -54,70 +42,32 @@ const RecentCVsTable = ({
                   {item?.title || "Untitled"}
                 </td>
 
-                <td><small>{item?.created_at ? formatDateTime(item.created_at) : "Unknown date"}</small></td>
-                <td><small>{item?.updated_at ? formatDateTime(item.updated_at) : "Unknown date"}</small></td>
+                <td><small>{item?.created_at ? <FormatDateTime dateString={item.created_at} /> : "Unknown date"}</small></td>
+                <td><small>{item?.updated_at ? <FormatDateTime dateString={item.updated_at} /> : "Unknown date"}</small></td>
 
                 <td className="text-end">
-                  {/* Dashboard: dropdown | Modal: buttons */}
-                  {compact ? (
-                    <Dropdown drop="bottom" align="start">
-                      <Dropdown.Toggle variant="outline-secondary" size="sm" className="p-2">
-                        {/* <i className="bi bi-three-dots-vertical"></i> */}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-settings-2"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19.875 6.27a2.225 2.225 0 0 1 1.125 1.948v7.284c0 .809 -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z" /><path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /></svg>
-                      </Dropdown.Toggle>
+                  <div className="d-flex gap-1 justify-content-end align-items-center">
+                    <Link href={`/cv-generate/${item?.id}`} className="custom-History-btn">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+                    </Link>
 
-                      <Dropdown.Menu className="dropdown-menu-end">
-                        <Dropdown.Item href={`/cv-generate/${item?.id}`}>
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye me-1"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
-                          View
-                        </Dropdown.Item>
+                    <Link href={`/cv-generate/${item?.id}?download=true`} target="_blank" className="custom-History-btn">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-cloud-download"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19 18a3.5 3.5 0 0 0 0 -7h-1a5 4.5 0 0 0 -11 -2a4.6 4.4 0 0 0 -2.1 8.4" /><path d="M12 13l0 9" /><path d="M9 19l3 3l3 -3" /></svg>
+                    </Link>
 
-                        <Dropdown.Item href={`/cv-generate/${item?.id}?download=true`} target="_blank">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-download me-1"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" /><path d="M7 11l5 5l5 -5" /><path d="M12 4l0 12" /></svg>
-                          Download
-                        </Dropdown.Item>
+                    <Button
+                      onClick={() => handleRenameCv(item?.id, item?.title)} className="custom-History-btn"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
+                    </Button>
 
-                        <Dropdown.Item
-                          onClick={() => handleRenameCv(item?.id, item?.title)}
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-edit me-1"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
-                          Rename
-                        </Dropdown.Item>
-
-                        <Dropdown.Divider />
-
-                        <Dropdown.Item
-                          onClick={() => handleDeleteCv(item?.id)}
-                          disabled={delResumeLoader}
-                          className={delResumeLoader ? "text-muted" : "text-danger"}
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-trash me-1"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
-                          {delResumeLoader ? "Deleting..." : "Delete"}
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  ) : (
-                    <>
-                      <Button
-                        variant="outline-primary"
-                        size="sm"
-                        className="me-2"
-                        href={`/cv-generate/${item?.id}`}
-                      >
-                        View
-                      </Button>
-
-                      <Button
-                        variant="primary"
-                        size="sm"
-                        className="me-2"
-                        href={`/cv-generate/${item?.id}?download=true`}
-                        target="_blank"
-                      >
-                        Download
-                      </Button>
-                    </>
-                  )}
+                    <Button
+                      onClick={() => handleDeleteCv(item?.id)}
+                      className={`${delResumeLoader ? "text-muted" : "text-danger"} custom-History-btn custom-history-danger`}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                    </Button>
+                  </div>
                 </td>
               </tr>
             ))}

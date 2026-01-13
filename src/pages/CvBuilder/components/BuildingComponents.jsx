@@ -38,6 +38,8 @@ export default function BuildingComponents() {
   const [showFinalize, setShowFinalize] = useState(false);
   const [message, setMessage] = useState('Uploading your CV for analysis — this may take a moment...')
 
+  const [historyModalShow, setHistoryModalShow] = useState(false)
+
   // State for file upload modal
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -397,6 +399,14 @@ export default function BuildingComponents() {
     }
   }
 
+  const handleCloseHistory = () => {
+    setHistoryModalShow(false)
+  }
+
+  const handleShowHistory = () => {
+    setHistoryModalShow(true)
+  }
+
 
   return (
     <>
@@ -480,7 +490,7 @@ export default function BuildingComponents() {
               <div className="d-flex justify-content-end">
                 <Button
                   className="btn btn-primary"
-                  onClick={() => alert('Feature is not Available!')}
+                  onClick={handleShowHistory}
                 >
                   Check
                 </Button>
@@ -494,31 +504,50 @@ export default function BuildingComponents() {
           <>
             {/* Recent CVs Section */}
             {recentCVs?.data?.length > 0 ? (
-              < div className="col-12 col-xl-6">
-                <Card className="border h-100 w-100 position-relative">
-                  <Card.Body className="position-relative">
-                    <div className="d-flex justify-content-between align-items-center mb-3">
-                      <h5 className="mb-0">Recent CVs</h5>
-
-                    </div>
-
-                    <RecentCVsTable
-                      data={recentCVs.data}
-                      currentPage={currentPage}
-                      setCurrentPage={setCurrentPage}
-                      lastPage={recentCVs.last_page}
-                      delResumeLoader={delResumeLoader}
-                      handleRenameCv={handleRenameCv}
-                      handleDeleteCv={handleDeleteCv}
-                      compact={true}
-                    />
-                  </Card.Body>
-                </Card>
-              </div>
+              ''
             ) : null}
           </>
         )}
       </div >
+
+      <Modal show={historyModalShow} onHide={handleCloseHistory} centered backdrop="static" size='lg' className='editor-modal'>
+        <Modal.Header>
+          <Modal.Title>
+            <span className="icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-history"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 8l0 4l2 2" /><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" /></svg>
+            </span>
+            Recent CV
+          </Modal.Title >
+          <span onClick={handleCloseHistory} className='editor-modal-close'>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c30000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-x"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M18 6l-12 12" /><path d="M6 6l12 12" /></svg>
+          </span>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="editor-modal-inner-wrapper p-0 pb-3">
+            {recentCVs?.data?.length > 0 ? (
+              <RecentCVsTable
+                data={recentCVs.data}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                lastPage={recentCVs.last_page}
+                delResumeLoader={delResumeLoader}
+                handleRenameCv={handleRenameCv}
+                handleDeleteCv={handleDeleteCv}
+                compact={true}
+              />
+            ) : (
+              <div className="text-dark text-center py-3 d-flex flex-column gap-2">
+                <span
+                  className={`icon-toggle border-0 bg-transparent text-dark`}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-history"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 8l0 4l2 2" /><path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5" /></svg>
+                </span>
+                No History Found
+              </div>
+            )}
+          </div>
+        </Modal.Body>
+      </Modal>
 
       {/* File Upload Modal */}
       < Modal
