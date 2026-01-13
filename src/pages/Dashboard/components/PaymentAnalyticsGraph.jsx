@@ -19,7 +19,7 @@ import axios from '../../../api/axios';
 
 const PaymentAnalyticsGraph = () => {
   // Time period state
-  const [timePeriod, setTimePeriod] = useState('monthly');
+  const [timePeriod, setTimePeriod] = useState('weekly');
   const [chartType, setChartType] = useState('line');
   const [paymentData, setPaymentData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -32,13 +32,13 @@ const PaymentAnalyticsGraph = () => {
     try {
       const response = await axios.get(`/admin/dashboard/payments-data?period=${period}&limit=30`);
       const apiData = response.data.data || [];
-      
+
       // Transform API data to match chart format
       const transformedData = apiData.map(item => {
-        const periodKey = period === 'daily' ? 'date' : 
-                         period === 'weekly' ? 'week' : 
-                         period === 'monthly' ? 'month' : 'year';
-        
+        const periodKey = period === 'daily' ? 'date' :
+          period === 'weekly' ? 'week' :
+            period === 'monthly' ? 'month' : 'year';
+
         return {
           [periodKey]: item.period,
           revenue: parseFloat(item.total) || 0,
@@ -92,8 +92,8 @@ const PaymentAnalyticsGraph = () => {
   // Render chart based on type
   const renderChart = () => {
     const { xKey, xLabel } = chartConfig[timePeriod];
-    
-    switch(chartType) {
+
+    switch (chartType) {
       case 'bar':
         return (
           <BarChart data={paymentData}>
@@ -106,7 +106,7 @@ const PaymentAnalyticsGraph = () => {
             <Bar dataKey="transactions" name="Transactions" fill="#82ca9d" />
           </BarChart>
         );
-      
+
       case 'area':
         return (
           <AreaChart data={paymentData}>
@@ -119,7 +119,7 @@ const PaymentAnalyticsGraph = () => {
             <Area type="monotone" dataKey="transactions" name="Transactions" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.3} />
           </AreaChart>
         );
-      
+
       default: // line chart
         return (
           <LineChart data={paymentData}>
@@ -141,60 +141,69 @@ const PaymentAnalyticsGraph = () => {
     const totalRevenue = paymentData.reduce((sum, item) => sum + item.revenue, 0);
     const totalTransactions = paymentData.reduce((sum, item) => sum + item.transactions, 0);
     const avgRevenue = Math.round(totalRevenue / paymentData.length);
-    
+
     return { totalRevenue, totalTransactions, avgRevenue };
   }, [paymentData]);
 
   return (
-    <Card className="border h-100 w-100 position-relative">
+    <Card className="h-100 w-100 position-relative">
       <Card.Body className="position-relative">
         <div className="d-flex justify-content-between align-items-center mb-4">
           <div>
             <h5 className="mb-1">Payment Analytics</h5>
             <p className="text-muted mb-0">Track your revenue and transactions</p>
           </div>
-          
-          <div className="d-flex gap-2">
+
+          <div className="d-flex gap-1 flex-column-reverse">
             {/* Chart Type Selector */}
-            <Dropdown>
-              <Dropdown.Toggle variant="outline-secondary" size="sm">
-                <Icon icon="mdi:chart-line" className="me-1" />
-                {chartType === 'line' ? 'Line Chart' : chartType === 'bar' ? 'Bar Chart' : 'Area Chart'}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={() => setChartType('line')}>
-                  <Icon icon="mdi:chart-line" className="me-2" /> Line Chart
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => setChartType('bar')}>
-                  <Icon icon="mdi:chart-bar" className="me-2" /> Bar Chart
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => setChartType('area')}>
-                  <Icon icon="mdi:chart-areaspline" className="me-2" /> Area Chart
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+            <div className="d-flex gap-1 justify-content-end">
+              <Dropdown align={'start'}>
+                <Dropdown.Toggle variant="primary" size="sm">
+                  <Icon icon="mdi:chart-line" className="me-1" />
+                  {chartType === 'line' ? 'Line Chart' : chartType === 'bar' ? 'Bar Chart' : 'Area Chart'}
+                </Dropdown.Toggle>
+                <Dropdown.Menu className="dropdown-menu-end">
+                  <Dropdown.Item onClick={() => setChartType('line')}>
+                    <Icon icon="mdi:chart-line" className="me-2" /> Line Chart
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => setChartType('bar')}>
+                    <Icon icon="mdi:chart-bar" className="me-2" /> Bar Chart
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => setChartType('area')}>
+                    <Icon icon="mdi:chart-areaspline" className="me-2" /> Area Chart
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+              <button
+                className="btn btn-sm btn-primary"
+                onClick={() => fetchPaymentData()}
+                disabled={loading}
+              >
+                <Icon icon="mdi:refresh" className="me-1" /> Refresh
+              </button>
+            </div>
 
             {/* Time Period Selector */}
             <ButtonGroup size="sm">
-              <Button 
+              <Button
                 variant={timePeriod === 'daily' ? 'primary' : 'outline-primary'}
                 onClick={() => setTimePeriod('daily')}
               >
                 Daily
               </Button>
-              <Button 
+              <Button
                 variant={timePeriod === 'weekly' ? 'primary' : 'outline-primary'}
                 onClick={() => setTimePeriod('weekly')}
               >
                 Weekly
               </Button>
-              <Button 
+              <Button
                 variant={timePeriod === 'monthly' ? 'primary' : 'outline-primary'}
                 onClick={() => setTimePeriod('monthly')}
               >
                 Monthly
               </Button>
-              <Button 
+              <Button
                 variant={timePeriod === 'yearly' ? 'primary' : 'outline-primary'}
                 onClick={() => setTimePeriod('yearly')}
               >
@@ -205,7 +214,7 @@ const PaymentAnalyticsGraph = () => {
         </div>
 
         {/* Stats Summary */}
-        <div className="row mb-4">
+        <div className="row mb-4 g-3">
           <div className="col-md-4">
             <div className="card border-0 bg-light">
               <div className="card-body text-center">
@@ -242,7 +251,7 @@ const PaymentAnalyticsGraph = () => {
         </div>
 
         {/* Chart Container */}
-        <div style={{ width: '100%', height: 300 }}>
+        <div style={{ width: '100%', maxHeight: 400, height: '100%' }}>
           {loading ? (
             <div className="d-flex justify-content-center align-items-center h-100">
               <div className="spinner-border text-primary" role="status">
@@ -268,26 +277,6 @@ const PaymentAnalyticsGraph = () => {
               {renderChart()}
             </ResponsiveContainer>
           )}
-        </div>
-
-        {/* Export/Additional Options */}
-        <div className="d-flex justify-content-between align-items-center mt-4">
-          <div className="text-muted small">
-            <Icon icon="mdi:information" className="me-1" />
-            Data updates in real-time
-          </div>
-          <div>
-            {/* <button className="btn btn-sm btn-outline-secondary me-2">
-              <Icon icon="mdi:download" className="me-1" /> Export
-            </button> */}
-            <button 
-              className="btn btn-sm btn-outline-primary"
-              onClick={() => fetchPaymentData()}
-              disabled={loading}
-            >
-              <Icon icon="mdi:refresh" className="me-1" /> Refresh
-            </button>
-          </div>
         </div>
       </Card.Body>
     </Card>
