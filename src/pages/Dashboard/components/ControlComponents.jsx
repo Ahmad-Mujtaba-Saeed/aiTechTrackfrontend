@@ -7,12 +7,16 @@ import {
   getrecentCvsCreated,
   updateResumeName,
   delCreatedCv
-} from '../../features/resume/resumeSlice';
-import RecentCVsTable from '../CvBuilder/RecentCVsTable';
+} from '../../../features/resume/resumeSlice';
+import RecentCVsTable from '../../../components/CvBuilder/RecentCVsTable';
 import { Card } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import PaymentAnalyticsGraph from './PaymentAnalyticsGraph';
+import RecentSubscriptionsTable from './RecentSubscriptionsTable';
+import { hasPermission } from '../../../utils/permissions';
 
 export default function ControlComponents() {
+<<<<<<< HEAD:src/components/Dashboard/ControlComponents.jsx
   const dispatch = useDispatch();
   const { recentCVs, delResumeLoader } = useSelector((state) => state.resume);
   // Initialize component
@@ -43,6 +47,15 @@ export default function ControlComponents() {
       .unwrap()
       .then(() => {
         toast.success('CV deleted successfully');
+=======
+    const dispatch = useDispatch();
+    const { recentCVs , delResumeLoader} = useSelector((state) => state.resume);
+    const {data} = useSelector((state) => state.user);
+
+    const hasSystemInternalPermission = () => hasPermission(data, 'view-dashboard');
+      // Initialize component
+      useEffect(() => {
+>>>>>>> 4e2a18c7ff9037c47dbdc717e2ed1b130d082c41:src/pages/Dashboard/components/ControlComponents.jsx
         dispatch(getrecentCvsCreated());
       })
       .catch((error) => {
@@ -110,7 +123,23 @@ export default function ControlComponents() {
       )}
 
 
+<<<<<<< HEAD:src/components/Dashboard/ControlComponents.jsx
       {/* <div className="col-12 col-xl-4">
+=======
+{hasSystemInternalPermission() && (
+  <>
+    <div className="col-12 col-xl-6">
+      <PaymentAnalyticsGraph />
+    </div>
+
+    <div className="col-12 col-xl-6">
+      <RecentSubscriptionsTable />
+    </div>
+  </>
+)}
+
+            {/* <div className="col-12 col-xl-4">
+>>>>>>> 4e2a18c7ff9037c47dbdc717e2ed1b130d082c41:src/pages/Dashboard/components/ControlComponents.jsx
                 <div className="card border h-100 w-100 overflow-hidden">
                     <div className="bg-holder d-block bg-card" style={{backgroundImage: 'url(../assets/img/spot-illustrations/32.png)', backgroundPosition: 'top right'}}>
                     </div>

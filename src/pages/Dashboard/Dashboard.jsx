@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import MasterLayout from "../../masterLayout/MasterLayout";
 import BreadCrum from "../../components/BreadCrum";
 
-import DashboardComponents from '../../components/Dashboard/ControlComponents';
+import DashboardComponents from './components/ControlComponents';
 
 const Dashboard = () => {
 
