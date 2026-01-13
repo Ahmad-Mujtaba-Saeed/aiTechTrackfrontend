@@ -15,11 +15,6 @@ const RecentCVsTable = ({
   compact = false // compact = dashboard mode, full = modal mode
 }) => {
 
-
-
-  console.log('Data: ', data);
-
-
   return (
     <>
       <div className="">

@@ -1,0 +1,163 @@
+.plans-tiers {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.tier {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    width: 320px;
+    box-shadow: 0 0 12px 8px #e0e0e0;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+    border-top: 6px solid #2c2c2c;
+}
+
+.tier.professional{
+    transform: scale(1.05);
+}
+
+.badge-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.tier-badge {
+    background: #222222;
+    color: white;
+    text-align: center;
+    padding: 5px 10px 3px;
+    font-weight: 300;
+    font-size: 10px;
+    letter-spacing: 0px;
+    display: inline-block;
+    border-radius: 5px;
+}
+
+.tier-name {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 0px;
+    color: #000000;
+}
+
+.tier-price {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #000;
+    display: flex;
+    justify-content: center;
+}
+
+.tier-period {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 1.3rem;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tier-features {
+    list-style: none;
+    /* margin-bottom: 2.5rem; */
+    padding: 8px;
+}
+
+.tier-features li {
+    padding: 0.25rem 0;
+    color: #444444;
+    display: flex;
+    align-items: center;
+}
+
+.tier-features li:before {
+    content: "✓";
+    color: #333333;
+    font-weight: 500;
+    margin-right: 7px;
+    font-size: 15px;
+}
+
+.tier-btn {
+    background: #222222;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tier-btn:hover {
+    background: #000000;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.tier-btn:disabled,
+.tier-btn:disabled:hover {
+    background: #8f8f8f;
+    color: white;
+    cursor: no-drop;
+    transition: none;
+    transform: none;
+    box-shadow: none;
+}
+
+.savings-badge {
+    display: inline-block;
+    background: #333333;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 22px;
+    font-size: 12px;
+    font-weight: 200;
+    margin-left: 6px;
+}
+
+.feature-label {
+    color: #000000;
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 1;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 60px !important;
+}
+
+.header h1 {
+    font-size: 36px;
+    font-weight: 700;
+}
+
+@media (max-width: 992px) {
+    .plans-tiers {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tier {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .tier.professional {
+        transform: none;
+    }
+}

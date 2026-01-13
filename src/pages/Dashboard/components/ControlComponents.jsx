@@ -16,7 +16,6 @@ import RecentSubscriptionsTable from './RecentSubscriptionsTable';
 import { hasPermission } from '../../../utils/permissions';
 
 export default function ControlComponents() {
-<<<<<<< HEAD:src/components/Dashboard/ControlComponents.jsx
   const dispatch = useDispatch();
   const { recentCVs, delResumeLoader } = useSelector((state) => state.resume);
   // Initialize component
@@ -47,15 +46,6 @@ export default function ControlComponents() {
       .unwrap()
       .then(() => {
         toast.success('CV deleted successfully');
-=======
-    const dispatch = useDispatch();
-    const { recentCVs , delResumeLoader} = useSelector((state) => state.resume);
-    const {data} = useSelector((state) => state.user);
-
-    const hasSystemInternalPermission = () => hasPermission(data, 'view-dashboard');
-      // Initialize component
-      useEffect(() => {
->>>>>>> 4e2a18c7ff9037c47dbdc717e2ed1b130d082c41:src/pages/Dashboard/components/ControlComponents.jsx
         dispatch(getrecentCvsCreated());
       })
       .catch((error) => {
@@ -122,45 +112,6 @@ export default function ControlComponents() {
         </>
       )}
 
-
-<<<<<<< HEAD:src/components/Dashboard/ControlComponents.jsx
-      {/* <div className="col-12 col-xl-4">
-=======
-{hasSystemInternalPermission() && (
-  <>
-    <div className="col-12 col-xl-6">
-      <PaymentAnalyticsGraph />
-    </div>
-
-    <div className="col-12 col-xl-6">
-      <RecentSubscriptionsTable />
-    </div>
-  </>
-)}
-
-            {/* <div className="col-12 col-xl-4">
->>>>>>> 4e2a18c7ff9037c47dbdc717e2ed1b130d082c41:src/pages/Dashboard/components/ControlComponents.jsx
-                <div className="card border h-100 w-100 overflow-hidden">
-                    <div className="bg-holder d-block bg-card" style={{backgroundImage: 'url(../assets/img/spot-illustrations/32.png)', backgroundPosition: 'top right'}}>
-                    </div>
-                    <div className="card-body px-4 position-relative">
-                        <h4 className="mb-4">AI-Based Interview Coaching Sessions and Feedback Tools.</h4>
-                        <p className="text-body-tertiary fw-semibold">When it’s time to prep for interviews, our AI-powered coach gives you real-time feedback, helping you nail every question like a pro.</p>
-                        <Button className="btn btn-primary w-100" type="submit">Practise for an Interview</Button>
-                    </div>
-                </div>
-            </div>
-            <div className="col-12 col-xl-4">
-                <div className="card border h-100 w-100 overflow-hidden">
-                    <div className="bg-holder d-block bg-card" style={{backgroundImage: 'url(../assets/img/spot-illustrations/32.png)', backgroundPosition: 'top right'}}>
-                    </div>
-                    <div className="card-body px-4 position-relative">
-                        <h4 className="mb-4">AI-Based Interview Coaching Sessions and Feedback Tools.</h4>
-                        <p className="text-body-tertiary fw-semibold">When it’s time to prep for interviews, our AI-powered coach gives you real-time feedback, helping you nail every question like a pro.</p>
-                        <Button className="btn btn-primary w-100" type="submit">Search for a job</Button>
-                    </div>
-                </div>
-            </div> */}
     </div>
   )
 }
