@@ -111,49 +111,25 @@ export default function ControlComponents() {
           <div className="col-12 col-xl-6">
             <RecentSubscriptionsTable />
           </div>
-      {/* Recent Activities Dropdown */}
-      <div className="col-12">
-        <div className="position-relative">
-          <Dropdown drop="up" className="w-100">
-            <Dropdown.Toggle variant="outline-secondary" className="w-100">
-              <Icon icon="mdi:history" className="me-2" />
-              Recent Activities
-              <Icon icon="mdi:chevron-up" className="ms-auto" />
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="w-100 p-0" style={{ maxHeight: '400px', overflow: 'auto' }}>
-              <div className="p-0">
-                <RecentActivitiesPlatform />
-              </div>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-      </div>
+          {/* Recent Activities Dropdown */}
+          <div className="col-12">
+            <div className="position-relative">
+              <Dropdown drop="up" className="w-100">
+                <Dropdown.Toggle variant="primary" className="w-100">
+                  <Icon icon="mdi:history" className="me-2" />
+                  Recent Activities
+                  <Icon icon="mdi:chevron-up" className="ms-auto" />
+                </Dropdown.Toggle>
+                <Dropdown.Menu className="w-100 p-0" style={{ overflow: 'auto' }}>
+                  <div className="p-0">
+                    <RecentActivitiesPlatform />
+                  </div>
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
+          </div>
         </>
       )}
-
-
-      {/* <div className="col-12 col-xl-4">
-                <div className="card border h-100 w-100 overflow-hidden">
-                    <div className="bg-holder d-block bg-card" style={{backgroundImage: 'url(../assets/img/spot-illustrations/32.png)', backgroundPosition: 'top right'}}>
-                    </div>
-                    <div className="card-body px-4 position-relative">
-                        <h4 className="mb-4">AI-Based Interview Coaching Sessions and Feedback Tools.</h4>
-                        <p className="text-body-tertiary fw-semibold">When it’s time to prep for interviews, our AI-powered coach gives you real-time feedback, helping you nail every question like a pro.</p>
-                        <Button className="btn btn-primary w-100" type="submit">Practise for an Interview</Button>
-                    </div>
-                </div>
-            </div>
-            <div className="col-12 col-xl-4">
-                <div className="card border h-100 w-100 overflow-hidden">
-                    <div className="bg-holder d-block bg-card" style={{backgroundImage: 'url(../assets/img/spot-illustrations/32.png)', backgroundPosition: 'top right'}}>
-                    </div>
-                    <div className="card-body px-4 position-relative">
-                        <h4 className="mb-4">AI-Based Interview Coaching Sessions and Feedback Tools.</h4>
-                        <p className="text-body-tertiary fw-semibold">When it’s time to prep for interviews, our AI-powered coach gives you real-time feedback, helping you nail every question like a pro.</p>
-                        <Button className="btn btn-primary w-100" type="submit">Search for a job</Button>
-                    </div>
-                </div>
-            </div> */}
     </div>
   )
 }

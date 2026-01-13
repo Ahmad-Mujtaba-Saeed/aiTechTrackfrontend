@@ -1219,11 +1219,17 @@ div:where(.swal2-container) {
     padding: 8px 14px 7px !important
 }
 
-.recharts-text{
+.recharts-text {
     font-size: 12px !important;
 }
 
-.recharts-legend-item{
+.recharts-legend-item {
     font-size: 14px !important;
     margin-top: 8px !important;
+}
+
+.Profile-toggler,
+.Profile-toggler:hover {
+    background: #0000 !important;
+    padding: 8px 0 8px 8px !important;
 }

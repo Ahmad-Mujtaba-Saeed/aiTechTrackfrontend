@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Link, NavLink, } from "react-router-dom";
-import { Button } from 'react-bootstrap';
+import { Button, Dropdown } from 'react-bootstrap';
 // import ThemeToggleButton from "../helper/ThemeToggleButton";
 // import { useAuth } from "../context/AuthContext";
 
@@ -333,40 +333,43 @@ const MasterLayout = ({ children }) => {
             </span>
           </li>
 
-          <li className="nav-item dropdown">
-            <Link className="nav-link lh-1 pe-0" id="NavDropdownMenu" to="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-              <div className="avatar avatar-l ">
-                <img className="rounded-circle " src={data?.profile_img_url || favicon} alt="" />
-              </div>
-            </Link>
-            <div className="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border" aria-labelledby="NavDropdownMenu">
-              <div className="card position-relative border-0">
-                <div className="card-body p-0">
-                  <div className="pt-4 pb-3 d-flex px-3 align-items-center gap-2">
-                    <div className="avatar avatar-xl ">
-                      <img className="rounded-circle " src={data?.profile_img_url || favicon} alt="" />
-                    </div>
-                    <div>
-                      <h6 className="mt-2 text-body-emphasis mb-0">{data?.name ?? "MPF Admin"}</h6>
-                      <span className="text-body-emphasis-span">{data?.email ?? "MPF Admin"}</span>
+          <li className="nav-item">
+            <Dropdown drop="down" className="w-100">
+              <Dropdown.Toggle variant="primary" className="p-0 Profile-toggler">
+                <div className="avatar avatar-l ">
+                  <img className="rounded-circle " src={data?.profile_img_url || favicon} alt="" />
+                </div>
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu-end navbar-dropdown-caret dropdown-profile p-0 mt-3">
+                <div className="card position-relative border-0">
+                  <div className="card-body p-0">
+                    <div className="pt-4 pb-3 d-flex px-3 align-items-center gap-2">
+                      <div className="avatar avatar-xl ">
+                        <img className="rounded-circle " src={data?.profile_img_url || favicon} alt="" />
+                      </div>
+                      <div>
+                        <h6 className="mt-2 text-body-emphasis mb-0">{data?.name ?? "MPF Admin"}</h6>
+                        <span className="text-body-emphasis-span">{data?.email ?? "MPF Admin"}</span>
+                      </div>
                     </div>
                   </div>
+                  <div className="overflow-auto scrollbar">
+                    <ul className="nav d-flex flex-column mb-2 pb-1">
+                      <li className="nav-item"><Link className="nav-link px-3 d-block" to="/profile"><Icon icon={'tabler:user-circle'} width={'18px'} height={'18px'} className="me-1" /><span>Profile</span></Link></li>
+                      <li className="nav-item"><Link className="nav-link px-3 d-block" to="/"><Icon icon='tabler:layout-dashboard' width={'18px'} height={'18px'} className="me-1" />Dashboard</Link></li>
+                      <li className="nav-item"><Link className="nav-link px-3 d-block" to="/profile?settings=true"> <Icon icon={'tabler:settings'} width={'18px'} height={'18px'} className="me-1" />Settings &amp; Privacy </Link></li>
+                      <li className="nav-item"><Link className="nav-link px-3 d-block logout-link" to="#" onClick={() => dispatch(logout())}> <Icon icon={'tabler:logout'} width={'18px'} height={'18px'} className="me-1" />Sign Out </Link></li>
+                    </ul>
+                  </div>
+                  <div className=" p-0">
+                    <hr className="mt-0" />
+                    <div className="mt-2 mb-3 text-center fw-bold fs-10 text-body-quaternary"><Link className="text-body-quaternary me-1" to="/privacy-policy" target="_blank`">Privacy policy</Link>&bull;<Link className="text-body-quaternary mx-1" to="/terms" target="_blank">Terms</Link>&bull;<Link className="text-body-quaternary ms-1" to="#">Cookies</Link></div>
+                  </div>
                 </div>
-                <div className="overflow-auto scrollbar">
-                  <ul className="nav d-flex flex-column mb-2 pb-1">
-                    <li className="nav-item"><Link className="nav-link px-3 d-block" to="/profile"><Icon icon={'tabler:user-circle'} width={'18px'} height={'18px'} className="me-1" /><span>Profile</span></Link></li>
-                    <li className="nav-item"><Link className="nav-link px-3 d-block" to="/"><Icon icon='tabler:layout-dashboard' width={'18px'} height={'18px'} className="me-1" />Dashboard</Link></li>
-                    <li className="nav-item"><Link className="nav-link px-3 d-block" to="/profile?settings=true"> <Icon icon={'tabler:settings'} width={'18px'} height={'18px'} className="me-1" />Settings &amp; Privacy </Link></li>
-                    <li className="nav-item"><Link className="nav-link px-3 d-block logout-link" to="#" onClick={() => dispatch(logout())}> <Icon icon={'tabler:logout'} width={'18px'} height={'18px'} className="me-1" />Sign Out </Link></li>
-                  </ul>
-                </div>
-                <div className=" p-0">
-                  <hr className="mt-0" />
-                  <div className="mt-2 mb-3 text-center fw-bold fs-10 text-body-quaternary"><Link className="text-body-quaternary me-1" to="/privacy-policy" target="_blank`">Privacy policy</Link>&bull;<Link className="text-body-quaternary mx-1" to="/terms" target="_blank">Terms</Link>&bull;<Link className="text-body-quaternary ms-1" to="#">Cookies</Link></div>
-                </div>
-              </div>
-            </div>
+              </Dropdown.Menu>
+            </Dropdown>
           </li>
+
         </ul>
       </nav>
       <div className={`content ${isNavToggled('/cv-generate', 'pb-0 overflow-hidden')}`} data-bs-theme="light">
