@@ -325,38 +325,6 @@ const MasterLayout = ({ children }) => {
             </div>
           </li> */}
 
-
-
-          <li className="nav-item dropdown"><Link className="nav-link lh-1 pe-0" id="navbarDropdownUser1" to="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-            <div className="avatar avatar-l ">
-              <img className="rounded-circle " src={''} alt="" />
-            </div>
-          </Link>
-            <div className="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border" aria-labelledby="navbarDropdownUser1">
-              <div className="card position-relative border-0">
-                <div className="card-body p-0">
-                  <div className="text-center pt-4 pb-3">
-                    <div className="avatar avatar-xl ">
-                      <img className="rounded-circle " src={''} alt="" />
-                    </div>
-                    <h6 className="mt-2 text-body-emphasis">{data?.name ?? "MPF Admin"}</h6>
-                  </div>
-                </div>
-                <div className="overflow-auto scrollbar">
-                  <ul className="nav d-flex flex-column mb-2 pb-1">
-                    <li className="nav-item"><Link className="nav-link px-3 d-block" to="/profile"> <span className="me-2 align-bottom" data-feather="user"></span><span>Profile</span></Link></li>
-                    <li className="nav-item"><Link className="nav-link px-3 d-block" to="/"><span className="me-2 align-bottom" data-feather="pie-chart"></span>Dashboard</Link></li>
-                    <li className="nav-item"><Link className="nav-link px-3 d-block" to="/profile?settings=true"> <span className="me-2 align-bottom" data-feather="settings"></span>Settings &amp; Privacy </Link></li>
-                  </ul>
-                </div>
-                <div className=" p-0">
-                  <hr />
-                  <div className="px-3"> <Link onClick={() => dispatch(logout())} className="btn btn-phoenix-secondary d-flex flex-center w-100" to="#"> <span className="me-2" data-feather="log-out"> </span>Sign out</Link></div>
-                  <div className="my-2 text-center fw-bold fs-10 text-body-quaternary"><Link className="text-body-quaternary me-1" to="/privacy-policy" target="_blank`">Privacy policy</Link>&bull;<Link className="text-body-quaternary mx-1" to="/terms" target="_blank">Terms</Link>&bull;<Link className="text-body-quaternary ms-1" to="#">Cookies</Link></div>
-                </div>
-              </div>
-            </div>
-          </li>
           <li className="nav-item">
             <span style={{ whiteSpace: 'nowrap', color: 'red' }}>
               {new Date(data.plan_expire_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
