@@ -111,9 +111,6 @@ export default function ControlComponents() {
           <div className="col-12 col-xl-6">
             <RecentSubscriptionsTable />
           </div>
-        </>
-      )}
-
       {/* Recent Activities Dropdown */}
       <div className="col-12">
         <div className="position-relative">
@@ -131,6 +128,9 @@ export default function ControlComponents() {
           </Dropdown>
         </div>
       </div>
+        </>
+      )}
+
 
       {/* <div className="col-12 col-xl-4">
                 <div className="card border h-100 w-100 overflow-hidden">
