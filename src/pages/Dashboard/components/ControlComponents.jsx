@@ -13,7 +13,9 @@ import { Card } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import PaymentAnalyticsGraph from './PaymentAnalyticsGraph';
 import RecentSubscriptionsTable from './RecentSubscriptionsTable';
+import RecentActivitiesPlatform from './RecentActivitiesPlatform';
 import { hasPermission } from '../../../utils/permissions';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 export default function ControlComponents() {
   const dispatch = useDispatch();
@@ -111,6 +113,24 @@ export default function ControlComponents() {
           </div>
         </>
       )}
+
+      {/* Recent Activities Dropdown */}
+      <div className="col-12">
+        <div className="position-relative">
+          <Dropdown drop="up" className="w-100">
+            <Dropdown.Toggle variant="outline-secondary" className="w-100">
+              <Icon icon="mdi:history" className="me-2" />
+              Recent Activities
+              <Icon icon="mdi:chevron-up" className="ms-auto" />
+            </Dropdown.Toggle>
+            <Dropdown.Menu className="w-100 p-0" style={{ maxHeight: '400px', overflow: 'auto' }}>
+              <div className="p-0">
+                <RecentActivitiesPlatform />
+              </div>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+      </div>
 
       {/* <div className="col-12 col-xl-4">
                 <div className="card border h-100 w-100 overflow-hidden">
