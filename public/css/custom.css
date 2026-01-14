@@ -637,8 +637,20 @@ h4 {
 }
 
 .btn-danger {
-    background-color: red;
-    color: white;
+    background-color: rgb(189, 1, 1);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 6px !important;
+    color: #fff !important;
+}
+
+.btn-danger:hover {
+    background: rgb(189, 1, 1) !important;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 6px !important;
 }
 
 .Toastify__progress-bar--info {
@@ -927,24 +939,24 @@ h4 {
     }
 }
 
+.v-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+.h-wrap {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
 .personal-detail-wrapper {
     display: flex;
     flex-direction: column;
     width: 100%;
     gap: 12px;
-
-    .v-wrap {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        width: 100%;
-    }
-
-    .h-wrap {
-        display: flex;
-        gap: 12px;
-        width: 100%;
-    }
 
     .personal-image-wrapper {
         aspect-ratio: 1/1;

@@ -239,7 +239,7 @@ const CoreSettings = () => {
             <div className="row">
                 {Object.entries(groupedSettings).map(([group, settings]) => (
                     <div key={group} className="col-12 mb-4">
-                        <div className="card border">
+                        <div className="card">
                             {/* Group Header */}
                             <div 
                                 className="card-header bg-light cursor-pointer d-flex justify-content-between align-items-center"

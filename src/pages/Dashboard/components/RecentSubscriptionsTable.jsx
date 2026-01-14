@@ -128,7 +128,7 @@ const RecentSubscriptionsTable = () => {
         <Card className="h-100">
             <Card.Body className="p-0">
                 {/* Header with Stats */}
-                <div className="p-4 border-bottom">
+                <div className="pb-3 border-bottom">
                     <div className="d-flex justify-content-between align-items-center mb-3">
                         <div>
                             <h5 className="mb-1">Recent Subscriptions</h5>
@@ -218,7 +218,7 @@ const RecentSubscriptionsTable = () => {
                 </div>
                 
                 {/* Table Section */}
-                <div className="p-3">
+                <div className="pt-3">
                     {loading ? (
                         <div className="text-center py-5">
                             <div className="spinner-border text-primary mb-3" role="status">

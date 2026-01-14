@@ -91,7 +91,7 @@ const Subscriptions = () => {
                 </div>
             </div>
 
-            <div className="card mb-4 border">
+            <div className="card mb-4">
                 <div className="card-body p-3">
                     <div className="row align-items-center">
                         <div className="col-md-12 mb-3 mb-md-0 d-flex gap-2">
@@ -143,7 +143,7 @@ const Subscriptions = () => {
                 </div>
             </div>
 
-            <div className="card mb-4 overflow-hidden border">
+            <div className="card mb-4 overflow-hidden">
                 <div className="card-body p-0">
                     <div className="table-responsive">
                         <table className="table table-hover align-middle mb-0">

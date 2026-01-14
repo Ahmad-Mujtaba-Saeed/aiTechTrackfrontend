@@ -1,6 +1,6 @@
 // ProfilePage.jsx
 import React, { useState, useEffect } from 'react';
-import './ProfilePage2.css';
+import './ProfilePage.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfileSettings } from '../../features/user/userSlice';
 import favicon from '../../assets/demo_profile.avif';
@@ -35,9 +35,9 @@ const ProfilePage = () => {
   }, []);
 
   useEffect(() => {
-      axios.get('api/billing/customer/credit').then(res => {
-          setCredit(res.data.credit);
-      });
+    axios.get('billing/customer/credit').then(res => {
+      setCredit(res.data.credit);
+    });
   }, []);
   const [editedUser, setEditedUser] = useState({
     firstName: 'Johnathan',
@@ -71,7 +71,7 @@ const ProfilePage = () => {
   const saveSettings = async (newSettings, e) => {
     if (e) e.preventDefault();
     try {
-      await axios.post('/api/user/profile-settings', newSettings);
+      await axios.post('/user/profile-settings', newSettings);
       toast.success('Settings saved successfully');
     } catch (error) {
       console.error('Error saving settings:', error);
@@ -122,7 +122,7 @@ const ProfilePage = () => {
   const fetchSubscriptionDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('/api/billing/subscription/details');
+      const response = await axios.get('/billing/subscription/details');
       const { subscription } = response.data;
 
       if (subscription) {
@@ -150,7 +150,7 @@ const ProfilePage = () => {
 
   const fetchPaymentMethods = async () => {
     try {
-      const response = await axios.get('/api/billing/subscription/payment-method');
+      const response = await axios.get('/billing/subscription/payment-method');
       const paymentMethods = response.data.data.map(method => ({
         id: method.id,
         type: method.type,
@@ -181,7 +181,7 @@ const ProfilePage = () => {
 
     try {
       setLoading(true);
-      await axios.delete(`/api/billing/subscription/payment-method/${paymentMethodToRemove}`);
+      await axios.delete(`/billing/subscription/payment-method/${paymentMethodToRemove}`);
       await fetchPaymentMethods();
       toast.success('Payment method removed successfully');
       setPaymentMethodToRemove(null);
@@ -201,7 +201,7 @@ const ProfilePage = () => {
         throw new Error('Customer ID not found');
       }
 
-      const response = await axios.get(`/api/billing/subscription/payment-method-intent/${customerId}`);
+      const response = await axios.get(`/billing/subscription/payment-method-intent/${customerId}`);
       setClientSecret(response.data.clientSecret);
       setShowAddPaymentModal(true);
     } catch (error) {
@@ -239,7 +239,7 @@ const ProfilePage = () => {
 
       toast.success('Payment method added successfully');
       setShowAddPaymentModal(false);
-      await axios.post(`/api/billing/subscription/payment-method-default/${subscription?.cus_id}`, {
+      await axios.post(`/billing/subscription/payment-method-default/${subscription?.cus_id}`, {
         payment_method_id: setupIntent.payment_method
       });
       await fetchPaymentMethods();
@@ -254,7 +254,7 @@ const ProfilePage = () => {
   const handleCancelSubscription = async () => {
     try {
       setLoading(true);
-      await axios.post('/api/billing/subscription/cancel');
+      await axios.post('/billing/subscription/cancel');
       setShowCancelModal(false);
       await fetchSubscriptionDetails();
       toast.success('Subscription has been cancelled successfully');
@@ -269,7 +269,7 @@ const ProfilePage = () => {
   const handleMakeDefault = async (paymentMethodId) => {
     try {
       setLoading(true);
-      await axios.post(`/api/billing/subscription/payment-method-default/${subscription?.cus_id}`, {
+      await axios.post(`/billing/subscription/payment-method-default/${subscription?.cus_id}`, {
         payment_method_id: paymentMethodId
       });
       toast.success('Payment method updated successfully');
@@ -313,14 +313,6 @@ const ProfilePage = () => {
       [name]: value
     }));
   };
-
-  // const handleSettingsChange = (name, value) => {
-  //   setSettings(prev => ({
-  //     ...prev,
-  //     [name]: value
-  //   }));
-  //   saveSettings(null);
-  // };
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
@@ -368,100 +360,84 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="profile-page">
+    <div className="profile-container container p-0 my-0 mx-auto" style={{ maxWidth: 1200 }}>
       {/* Profile Header */}
       <ProfileHeader userData={userData} imagePreview={imagePreview} />
 
-      <div className="container">
-        {/* Tab Navigation */}
-        <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
-
-        {/* Tab Content */}
-        <div className="tab-content">
-          {activeTab === 'personal' && (
-            <PersonalInfoTab userData={userData} />
-          )}
-
-          {activeTab === 'settings' && (
-            <SettingsTab
-              settings={settings}
-              onSettingsChange={handleSettingsChange}
-              onSubmit={(e) => handleSubmit(e, 'settings')}
-            />
-          )}
-
-          {activeTab === 'subscription' && (
-            <SubscriptionTab
-              loading={loading}
-              subscription={subscription}
-              paymentMethods={paymentMethods}
-              onCancelSubscription={() => setShowCancelModal(true)}
-              onUpgradeSubscription={() => navigate('/upgrade-subscription')}
-              onAddPaymentMethod={handleAddPaymentMethod}
-              onMakeDefault={handleMakeDefault}
-              onRemovePaymentMethod={setPaymentMethodToRemove}
-              formatDate={formatDate}
-              credit={credit}
-            />
-          )}
-
-          {activeTab === 'edit' && (
-            <EditProfileTab
-              initialUserData={userData}
-              onSave={async (formData, type) => {
-                try {
-                  const response = await dispatch(updateProfileSettings(formData)).unwrap();
-                  // Show success message
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: 'Profile updated successfully',
-                    timer: 2000,
-                    showConfirmButton: false
-                  });
-                } catch (error) {
-                  // Handle error
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: error.message || 'Failed to update profile',
-                    confirmButtonText: 'OK'
-                  });
-                }
-              }}
-              onPasswordChange={async (passwordData) => {
-                try {
-                  const response = await dispatch(updateCurrentPassword({
-                    current_password: passwordData.currentPassword,
-                    new_password: passwordData.newPassword,
-                    new_password_confirmation: passwordData.confirmPassword
-                  })).unwrap();
+      <div className="profile-content">
+        <EditProfileTab
+          initialUserData={userData}
+          onSave={async (formData, type) => {
+            try {
+              const response = await dispatch(updateProfileSettings(formData)).unwrap();
+              Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: 'Profile updated successfully',
+                timer: 2000,
+                showConfirmButton: false
+              });
+            } catch (error) {
+              // Handle error
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'Failed to update profile',
+                confirmButtonText: 'OK'
+              });
+            }
+          }}
+          onPasswordChange={async (passwordData) => {
+            try {
+              const response = await dispatch(updateCurrentPassword({
+                current_password: passwordData.currentPassword,
+                new_password: passwordData.newPassword,
+                new_password_confirmation: passwordData.confirmPassword
+              })).unwrap();
 
 
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: response.message || 'Password updated successfully',
-                    timer: 2000,
-                    showConfirmButton: false
-                  });
+              Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: response.message || 'Password updated successfully',
+                timer: 2000,
+                showConfirmButton: false
+              });
 
-                  // Clear the form
-                  return true;
-                } catch (error) {
-                  // Handle error
-                  Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: error.message || 'Failed to update password',
-                    confirmButtonText: 'OK'
-                  });
-                  throw error; // Re-throw to let the form handle the error state
-                }
-              }}
-            />
-          )}
-        </div>
+              // Clear the form
+              return true;
+            } catch (error) {
+              // Handle error
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'Failed to update password',
+                confirmButtonText: 'OK'
+              });
+              throw error; // Re-throw to let the form handle the error state
+            }
+          }}
+        />
+
+        <SettingsTab
+          settings={settings}
+          onSettingsChange={handleSettingsChange}
+          onSubmit={(e) => handleSubmit(e, 'settings')}
+        />
+
+        <SubscriptionTab
+          loading={loading}
+          subscription={subscription}
+          paymentMethods={paymentMethods}
+          onCancelSubscription={() => setShowCancelModal(true)}
+          onUpgradeSubscription={() => navigate('/upgrade-subscription')}
+          onAddPaymentMethod={handleAddPaymentMethod}
+          onMakeDefault={handleMakeDefault}
+          onRemovePaymentMethod={setPaymentMethodToRemove}
+          formatDate={formatDate}
+          credit={credit}
+        />
+
       </div>
 
       {/* Modals */}
@@ -492,56 +468,46 @@ const ProfilePage = () => {
 
 // Profile Header Component
 const ProfileHeader = ({ userData, imagePreview }) => (
-  <div className="profile-header">
-    <div className="container">
-      <div className="row justify-content-center">
-        <div className="col-12 text-center">
-          <div className="profile-image-container">
-            <img
-              src={imagePreview || userData?.profile_img_url || favicon}
-              alt="Profile"
-              className="profile-image"
-            />
-          </div>
-          <div className="profile-info">
-            <h1 className="profile-name">{userData?.name}</h1>
-            <p className="profile-email">{userData?.email}</p>
-          </div>
+  <div class="profile-sidebar">
+    {console.log('UserData:', userData)}
+    <div class="profile-avatar">
+      <div class="avatar-container">
+        <img src={imagePreview || userData?.profile_img_url || favicon} alt="User Avatar" class="avatar" />
+        <div class="avatar-edit" id="editAvatar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-camera"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" /><path d="M9 13a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /></svg>
         </div>
+      </div>
+      <div class="user-info">
+        <h2>{userData?.name}</h2>
+        <p>{userData?.email}</p>
+        {userData?.email_verified_at && (
+          <span class="verified-badge">
+            <i class="fas fa-check-circle"></i> Verified
+          </span>
+        )}
+      </div>
+    </div>
+
+    <div class="user-stats">
+      <div class="stat-item">
+        <div class="stat-value">156</div>
+        <div class="stat-label">Projects</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">2.5y</div>
+        <div class="stat-label">Member</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value">24</div>
+        <div class="stat-label">Team</div>
       </div>
     </div>
   </div>
 );
 
-// Tab Navigation Component
-const TabNavigation = ({ activeTab, setActiveTab }) => {
-  const tabs = [
-    { id: 'personal', label: 'Personal Info', icon: '👤' },
-    { id: 'settings', label: 'Settings', icon: '⚙️' },
-    { id: 'subscription', label: 'Subscription', icon: '💳' },
-    { id: 'edit', label: 'Edit Profile', icon: '✏️' }
-  ];
-
-  return (
-    <ul className="nav nav-tabs" role="tablist">
-      {tabs.map(tab => (
-        <li key={tab.id} className="nav-item" role="presentation">
-          <button
-            className={`nav-link ${activeTab === tab.id ? 'active' : ''}`}
-            onClick={() => setActiveTab(tab.id)}
-            type="button"
-          >
-            {tab.icon} {tab.label}
-          </button>
-        </li>
-      ))}
-    </ul>
-  );
-};
-
 // Personal Info Tab Component
 const PersonalInfoTab = ({ userData }) => (
-  <div className="tab-pane active">
+  <div className="profile-section">
     <h3 className="section-title">Personal Information</h3>
     <div className="row">
       <div className="col-md-6">
@@ -621,14 +587,17 @@ const SettingsTab = ({ settings, onSettingsChange }) => {
   };
 
   return (
-    <div className="tab-pane">
-      <h3 className="section-title">Account Settings</h3>
-      <div className="row">
-        <div className="col-md-6">
-          <div className="mb-4">
+    <div className="profile-section">
+      <div className="section-header">
+        <h3>Account Settings</h3>
+      </div>
+
+      <div className="h-wrap">
+        <div className="v-wrap">
+          <div className="form-group">
             <label className="form-label">Language</label>
             <select
-              className="form-select"
+              className="form-select mb-0"
               value={settings.lang}
               onChange={(e) => onSettingsChange('lang', e.target.value)}
             >
@@ -639,8 +608,8 @@ const SettingsTab = ({ settings, onSettingsChange }) => {
               ))}
             </select>
           </div>
-          <div className="mb-4">
-            <label className="form-label">Time Zone</label>
+          <div className="form-group">
+            <label className="form-label mb-0">Time Zone</label>
             <select
               className="form-select"
               value={settings.time_zone}
@@ -654,8 +623,7 @@ const SettingsTab = ({ settings, onSettingsChange }) => {
             </select>
           </div>
         </div>
-        <div className="col-md-6">
-          <h5 className="mb-3">Notification Preferences</h5>
+        <div className="v-wrap justify-content-end gap-4">
           <ToggleSetting
             label="Email Notifications"
             description="Receive updates via email"
@@ -676,12 +644,12 @@ const SettingsTab = ({ settings, onSettingsChange }) => {
 
 // Toggle Setting Component
 const ToggleSetting = ({ label, description, checked, onChange }) => (
-  <div className="settings-option">
+  <div className="settings-option h-wrap align-items-center justify-content-between">
     <div>
       <div className="fw-bold">{label}</div>
       <div className="text-muted small">{description}</div>
     </div>
-    <label className="toggle-switch">
+    <label className="toggle-switch m-0">
       <input
         type="checkbox"
         checked={checked}
@@ -705,91 +673,82 @@ const SubscriptionTab = ({
   formatDate,
   credit
 }) => (
-  <div className="tab-pane">
-    <h3 className="section-title">Subscription Details</h3>
+  <div className="v-wrap gap-4">
+    <div className="profile-section">
+      <div className="section-header">
+        <h3>Currently Active Plan</h3>
+      </div>
 
 
 
-    {/* Subscription Card */}
-     {credit > 0 && (
-    <Alert variant="success" className="mb-4">
-        You have <strong>£{credit.toFixed(2)}</strong> credit available — it will
-        be automatically applied to your next invoice.
-    </Alert>
-)}
-    <div className="subscription-card premium mb-4">
-
-      {loading ? (
-        <div className="text-center py-4">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      ) : subscription ? (
-        <>
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <div>
-              <span className="subscription-title">{subscription.planName}</span>
-              <span className={`badge-${subscription.status === 'active' ? 'premium' : 'warning'} ms-2`}>
-                {subscription.status}
-              </span>
-{/* 
-            {subscription.cancel_at_period_end ? (
-             <span className={`badge-${subscription.cancel_at_period_end == true ? 'premium' : 'warning'} ms-2`}>
-                {subscription.cancel_at_period_end == true ? 'Yes' : 'No'}
-              </span>) : null} */}
-            </div>
-            <div className="subscription-price">
-              {subscription.amount}<span className="text-muted">/{subscription.interval}</span>
-            </div>
-          </div>
-
-          {subscription.nextBillingDate && (
-            <p className="text-muted">
-              {subscription.cancel_at_period_end ? 'Cancel at period end date: ' : 'Next billing date: ' } <strong>{formatDate(subscription.nextBillingDate)}</strong>
-            </p>
-          )}
-
-          {/* {subscription.features && subscription.features.length > 0 && (
-            <ul className="subscription-features">
-              {subscription.features.map((feature, index) => (
-                <li key={index}>{feature}</li>
-              ))}
-            </ul>
-          )} */}
-
-          <div className="mt-4">
-            <button
-              className="btn btn-outline-danger me-2"
-              onClick={onCancelSubscription}
-              disabled={subscription.status === 'canceled'}
-            >
-              Cancel Subscription
-            </button>
-            <button
-              className="btn btn-primary"
-              onClick={onUpgradeSubscription}
-            >
-              Change Subscription
-            </button>
-          </div>
-        </>
-      ) : (
-        <div className="text-center py-4">
-          <p>No active subscription found.</p>
-          <button className="btn btn-primary" onClick={onUpgradeSubscription}>
-            Get Started
-          </button>
-        </div>
+      {/* Subscription Card */}
+      {credit > 0 && (
+        <Alert variant="success" className="mb-4">
+          You have <strong>£{credit.toFixed(2)}</strong> credit available — it will
+          be automatically applied to your next invoice.
+        </Alert>
       )}
+      <div className="subscription-card premium">
+
+        {loading ? (
+          <div className="text-center py-4">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        ) : subscription ? (
+          <>
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <span className="subscription-title">{subscription.planName}</span>
+                <span className={`badge-${subscription.status === 'active' ? 'premium' : 'warning'} ms-2`}>
+                  {subscription.status}
+                </span>
+              </div>
+              <div className="subscription-price">
+                {subscription.amount}<span className="text-muted">/{subscription.interval}</span>
+              </div>
+            </div>
+
+            {subscription.nextBillingDate && (
+              <p className="text-muted">
+                {subscription.cancel_at_period_end ? 'Cancel at period end date: ' : 'Next billing date: '} <strong>{formatDate(subscription.nextBillingDate)}</strong>
+              </p>
+            )}
+
+
+            <div className="mt-4">
+              <button
+                className="btn btn-danger me-2"
+                onClick={onCancelSubscription}
+                disabled={subscription.status === 'canceled'}
+              >
+                Cancel Subscription
+              </button>
+              <button
+                className="btn btn-primary"
+                onClick={onUpgradeSubscription}
+              >
+                Change Subscription
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className="text-center py-4">
+            <p>No active subscription found.</p>
+            <button className="btn btn-primary" onClick={onUpgradeSubscription}>
+              Get Started
+            </button>
+          </div>
+        )}
+      </div>
     </div>
 
-    {/* Payment Methods */}
-    <div className="card">
-      <div className="card-header d-flex justify-content-between align-items-center">
-        <h5 className="mb-0">Payment Methods</h5>
+    <div className="profile-section">
+      <div className="section-header">
+        <h3 className="mb-0">Payment Methods</h3>
         <button
-          className="btn btn-outline-primary btn-sm"
+          className="btn btn-primary btn-sm"
           onClick={onAddPaymentMethod}
           disabled={loading}
         >
@@ -818,14 +777,14 @@ const SubscriptionTab = ({
                 </div>
                 <div className="d-flex gap-2">
                   <button
-                    className="btn btn-outline-warning btn-sm"
+                    className="btn btn-primary btn-sm"
                     onClick={() => onMakeDefault(method.id)}
                     disabled={method.default}
                   >
                     Make Default
                   </button>
                   <button
-                    className="btn btn-outline-danger btn-sm"
+                    className="btn btn-danger btn-sm"
                     onClick={() => onRemovePaymentMethod(method.id)}
                     disabled={paymentMethods.length <= 1}
                   >
@@ -849,8 +808,6 @@ const SubscriptionTab = ({
   </div>
 );
 
-// Edit Profile Tab Component
-// Edit Profile Tab Component
 const EditProfileTab = ({
   initialUserData,
   onSave,
@@ -1003,11 +960,13 @@ const EditProfileTab = ({
   };
 
   return (
-    <div className="tab-pane">
-      <div className="form-section">
-        <h3 className="section-title">Edit Personal Information</h3>
+    <div className="gap-4">
+      <div className="profile-section mb-4">
+        <div className="section-header">
+          <h3>Edit Personal Information</h3>
+        </div>
         <form onSubmit={(e) => handleSubmit(e, 'profile')}>
-          <div className="mb-3">
+          {/* <div className="mb-3">
             <label className="form-label">Profile Image</label>
             <div className="d-flex align-items-center mb-3">
               {(userData.imagePreview || userData.profile_img_url) && (
@@ -1029,62 +988,66 @@ const EditProfileTab = ({
               </div>
             </div>
             {errors.image && <div className="text-danger">{errors.image}</div>}
-          </div>
+          </div> */}
 
-          <div className="mb-3">
-            <label className="form-label">Name</label>
-            <input
-              type="text"
-              className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-              name="name"
-              value={userData.name}
-              onChange={handleInputChange}
-              placeholder="Enter your full name"
-            />
-            {errors.name && <div className="invalid-feedback">{errors.name}</div>}
-          </div>
+          <div className="v-wrap">
+            <div className="form-group">
+              <label className="form-label">Name</label>
+              <input
+                type="text"
+                className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                name="name"
+                value={userData.name}
+                onChange={handleInputChange}
+                placeholder="Enter your full name"
+              />
+              {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+            </div>
 
-          <div className="mb-3">
-            <label className="form-label">Email Address</label>
-            <input
-              type="email"
-              className={`form-control ${errors.email ? 'is-invalid' : ''}`}
-              name="email"
-              value={userData.email}
-              onChange={handleInputChange}
-              placeholder="Enter your email address"
-            />
-            {errors.email && <div className="invalid-feedback">{errors.email}</div>}
-          </div>
+            <div className="h-wrap">
+              <div className="form-group">
+                <label className="form-label">Email Address</label>
+                <input
+                  type="email"
+                  className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                  name="email"
+                  value={userData.email}
+                  onChange={handleInputChange}
+                  placeholder="Enter your email address"
+                />
+                {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+              </div>
 
-          <div className="mb-3">
-            <label className="form-label">Phone Number</label>
-            <input
-              type="tel"
-              className="form-control"
-              name="phone"
-              value={userData.phone}
-              onChange={handleInputChange}
-              placeholder="Enter your phone number"
-            />
-          </div>
+              <div className="form-group">
+                <label className="form-label">Phone Number</label>
+                <input
+                  type="tel"
+                  className="form-control"
+                  name="phone"
+                  value={userData.phone}
+                  onChange={handleInputChange}
+                  placeholder="Enter your phone number"
+                />
+              </div>
+            </div>
 
-          <div className="mb-3">
-            <label className="form-label">Bio</label>
-            <textarea
-              className="form-control"
-              name="bio"
-              rows="4"
-              placeholder="Tell us about yourself"
-              value={userData.bio}
-              onChange={handleInputChange}
-            />
-            <div className="form-text">Write a short bio about yourself (optional)</div>
+            <div className="form-group">
+              <label className="form-label">Bio</label>
+              <textarea
+                className="form-control"
+                name="bio"
+                rows="4"
+                placeholder="Tell us about yourself"
+                value={userData.bio}
+                onChange={handleInputChange}
+              />
+              <div className="form-text">Write a short bio about yourself (optional)</div>
+            </div>
           </div>
 
           <button
             type="submit"
-            className="btn btn-primary"
+            className="btn btn-primary mt-3"
             disabled={isLoading}
           >
             {isLoading ? (
@@ -1099,52 +1062,56 @@ const EditProfileTab = ({
         </form>
       </div>
 
-      <div className="form-section mt-5">
-        <h3 className="section-title">Change Password</h3>
+      <div className="profile-section">
+        <div className="section-header">
+          <h3>Change Password</h3>
+        </div>
         <form onSubmit={(e) => handleSubmit(e, 'password')}>
-          <div className="mb-3">
-            <label className="form-label">Current Password</label>
-            <input
-              type="password"
-              className={`form-control ${errors.currentPassword ? 'is-invalid' : ''}`}
-              name="currentPassword"
-              value={passwordData.currentPassword}
-              onChange={handlePasswordChange}
-              placeholder="Enter your current password"
-            />
-            {errors.currentPassword && <div className="invalid-feedback">{errors.currentPassword}</div>}
-          </div>
+          <div className="v-wrap">
+            <div className="form-group">
+              <label className="form-label">Current Password</label>
+              <input
+                type="password"
+                className={`form-control ${errors.currentPassword ? 'is-invalid' : ''}`}
+                name="currentPassword"
+                value={passwordData.currentPassword}
+                onChange={handlePasswordChange}
+                placeholder="Enter your current password"
+              />
+              {errors.currentPassword && <div className="invalid-feedback">{errors.currentPassword}</div>}
+            </div>
 
-          <div className="mb-3">
-            <label className="form-label">New Password</label>
-            <input
-              type="password"
-              className={`form-control ${errors.newPassword ? 'is-invalid' : ''}`}
-              name="newPassword"
-              value={passwordData.newPassword}
-              onChange={handlePasswordChange}
-              placeholder="Enter your new password"
-            />
-            {errors.newPassword && <div className="invalid-feedback">{errors.newPassword}</div>}
-            <div className="form-text">Password must be at least 6 characters long</div>
-          </div>
+            <div className="form-group">
+              <label className="form-label">New Password</label>
+              <input
+                type="password"
+                className={`form-control ${errors.newPassword ? 'is-invalid' : ''}`}
+                name="newPassword"
+                value={passwordData.newPassword}
+                onChange={handlePasswordChange}
+                placeholder="Enter your new password"
+              />
+              {errors.newPassword && <div className="invalid-feedback">{errors.newPassword}</div>}
+              <div className="form-text">Password must be at least 6 characters long</div>
+            </div>
 
-          <div className="mb-3">
-            <label className="form-label">Confirm New Password</label>
-            <input
-              type="password"
-              className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
-              name="confirmPassword"
-              value={passwordData.confirmPassword}
-              onChange={handlePasswordChange}
-              placeholder="Confirm your new password"
-            />
-            {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
+            <div className="form-group">
+              <label className="form-label">Confirm New Password</label>
+              <input
+                type="password"
+                className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
+                name="confirmPassword"
+                value={passwordData.confirmPassword}
+                onChange={handlePasswordChange}
+                placeholder="Confirm your new password"
+              />
+              {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword}</div>}
+            </div>
           </div>
 
           <button
             type="submit"
-            className="btn btn-primary"
+            className="btn btn-primary mt-3"
             disabled={isLoading}
           >
             {isLoading ? (
