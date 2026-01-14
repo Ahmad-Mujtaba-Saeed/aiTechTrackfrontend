@@ -801,16 +801,21 @@ h4 {
     top: 18px;
 }
 
-.editor-custom-btns .editor-custom-btn {
+.editor-custom-btns .editor-custom-btn.btn-primary {
     padding: 4px !important;
-    width: 48px;
-    height: 48px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    width: 48px !important;
+    height: 48px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
     background: #fff !important;
-    color: #000;
-    box-shadow: 0 0 12px 4px #00000033;
+    color: #000 !important;
+    box-shadow: 0 0 12px 4px #00000033 !important;
+
+    &.zoom-view {
+        font-size: 12px !important;
+        cursor: default !important;
+    }
 }
 
 
@@ -1108,6 +1113,18 @@ h4 {
     padding: 12px;
 }
 
+.card {
+    border: none;
+    background-color: #fff;
+    box-shadow: 0 0 12px 4px #00000033;
+    border-radius: 12px;
+    padding: 0px;
+
+    & .card-body {
+        padding: 16px !important;
+    }
+}
+
 div:where(.swal2-container) {
     z-index: 99999999999999 !important;
 }
@@ -1121,9 +1138,9 @@ div:where(.swal2-container) {
 }
 
 .table> :not(caption)>*>* {
-    padding: 16px 10px !important;
+    padding: 12px 10px !important;
     line-height: 1 !important;
-    font-weight: 300 !important;
+    font-weight: 400 !important;
     font-family: 'Google Sans Flex' !important;
 }
 

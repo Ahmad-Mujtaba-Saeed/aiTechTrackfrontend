@@ -3301,6 +3301,9 @@ export default function CVBuilder() {
                         <Button className="editor-custom-btn" onClick={zoomOut} title={`ZoomOut ${round(zoom * 100, 0)}%`} disabled={zoom == 0.5 && true}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-zoom-out-area"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M13 15h4" /><path d="M10 15a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" /><path d="M22 22l-3 -3" /><path d="M6 18h-1a2 2 0 0 1 -2 -2v-1" /><path d="M3 11v-1" /><path d="M3 6v-1a2 2 0 0 1 2 -2h1" /><path d="M10 3h1" /><path d="M15 3h1a2 2 0 0 1 2 2v1" /></svg>
                         </Button>
+                        <span className="editor-custom-btn btn btn-primary zoom-view">
+                            {round(zoom * 100, 0)}%
+                        </span>
                         <Button className="editor-custom-btn" onClick={zoomIn} title={`ZoomIn ${round(zoom * 100, 0)}%`} disabled={zoom == 2 && true}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-zoom-in-area"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 13v4" /><path d="M13 15h4" /><path d="M10 15a5 5 0 1 0 10 0a5 5 0 1 0 -10 0" /><path d="M22 22l-3 -3" /><path d="M6 18h-1a2 2 0 0 1 -2 -2v-1" /><path d="M3 11v-1" /><path d="M3 6v-1a2 2 0 0 1 2 -2h1" /><path d="M10 3h1" /><path d="M15 3h1a2 2 0 0 1 2 2v1" /></svg>
                         </Button>

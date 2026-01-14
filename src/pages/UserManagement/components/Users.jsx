@@ -4,12 +4,12 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
-import { getAllUsers , getUserSubscriptionDetails , toggleUserActiveStatus} from '../../../features/admin/user-management/userManagementSlice';
+import { getAllUsers, getUserSubscriptionDetails, toggleUserActiveStatus } from '../../../features/admin/user-management/userManagementSlice';
 import { useDispatch } from 'react-redux';
 
 const Users = () => {
     const dispatch = useDispatch();
-    const { users , subscriptionDetails , loading ,togglingUser, error} = useSelector((state) => state.userManagement);
+    const { users, subscriptionDetails, loading, togglingUser, error } = useSelector((state) => state.userManagement);
     const [filteredUsers, setFilteredUsers] = useState([]);
 
     // Search and filter states
@@ -141,7 +141,7 @@ const Users = () => {
             console.log('Toggling user:', userId, 'current status:', currentStatus);
             const result = await dispatch(toggleUserActiveStatus(userId));
             console.log('Toggle result:', result);
-            
+
             // Check if the API call succeeded regardless of Redux state
             if (result.payload && result.payload.status === true) {
                 console.log('API succeeded, showing success message');
@@ -338,42 +338,38 @@ const Users = () => {
             )}
 
             {/* Top Bar with Search, Filter, and Create Button - NO CHANGES */}
-            <div className="card mb-4 border">
-                <div className="card-body p-3">
-                    <div className="row align-items-center">
-                        <div className="col-md-12 mb-3 mb-md-0 d-flex gap-2">
-                            <div className="input-group">
-                                <span className="input-group-text bg-light border-end-0">
-                                    <Icon icon="tabler:search" width={18} height={18} />
-                                </span>
-                                <input
-                                    type="text"
-                                    className="form-control border-start-0"
-                                    placeholder="Search Users with Name, Phone no and Email..."
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                />
-                                {searchTerm && (
-                                    <button
-                                        className="btn btn-outline-secondary"
-                                        type="button"
-                                        onClick={() => setSearchTerm('')}
-                                    >
-                                        <Icon icon="tabler:x" width={18} height={18} />
-                                    </button>
-                                )}
-                            </div>
+            <div className="card mb-3">
+                <div className="card-body p-3 d-flex gap-2">
+                    <div className="input-group">
+                        <span className="input-group-text bg-light border-end-0">
+                            <Icon icon="tabler:search" width={18} height={18} />
+                        </span>
+                        <input
+                            type="text"
+                            className="form-control border-start-0"
+                            placeholder="Search Users with Name, Phone no and Email..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        {searchTerm && (
                             <button
-                                className="btn btn-primary"
-                                onClick={() => fetchUsers(1, searchTerm)}
-                                disabled={loading}
-                                style={{ minWidth: 'fit-content' }}
+                                className="btn btn-outline-secondary"
+                                type="button"
+                                onClick={() => setSearchTerm('')}
                             >
-                                <Icon icon="tabler:refresh" width={18} height={18} className={loading ? 'spin' : ''} />
-                                Refresh Table
+                                <Icon icon="tabler:x" width={18} height={18} />
                             </button>
-                        </div>
+                        )}
                     </div>
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => fetchUsers(1, searchTerm)}
+                        disabled={loading}
+                        style={{ minWidth: 'fit-content' }}
+                    >
+                        <Icon icon="tabler:refresh" width={18} height={18} className={loading ? 'spin' : ''} />
+                        Refresh Table
+                    </button>
                 </div>
             </div>
 
@@ -391,8 +387,8 @@ const Users = () => {
             )}
 
             {/* Users Table - ADDED SUBSCRIPTION BUTTON */}
-            <div className="card mb-4 overflow-hidden border">
-                <div className="card-body p-0">
+            <div className="card mb-4 overflow-hidden">
+                <div className="card-body">
                     <div className="table-responsive">
                         <table className="table table-hover align-middle mb-0">
                             <thead className="table-light">
@@ -429,7 +425,7 @@ const Users = () => {
                                         </td>
                                         <td>
                                             <small className={``}>
-                                                {user.plan?.name || 'No Plan'}  
+                                                {user.plan?.name || 'No Plan'}
                                             </small>
                                         </td>
                                         <td>
@@ -456,19 +452,19 @@ const Users = () => {
                                             </button>
                                         </td>
                                         <td className="pe-4">
-                                           <button
-                                            className={`btn btn-sm ${user.is_active ? 'btn-success' : 'btn-danger'}`}
-                                            onClick={() => handleToggleUser(user.id, user.is_active)}
-                                            disabled={togglingUserId === user.id || loading}
-                                            title={user.is_active ? 'Disable User' : 'Enable User'}
+                                            <button
+                                                className={`btn btn-sm ${user.is_active ? 'btn-success' : 'btn-danger'}`}
+                                                onClick={() => handleToggleUser(user.id, user.is_active)}
+                                                disabled={togglingUserId === user.id || loading}
+                                                title={user.is_active ? 'Disable User' : 'Enable User'}
                                             >
-                                            {togglingUserId === user.id ? (
-                                                <span className="spinner-border spinner-border-sm" role="status">
-                                                <span className="visually-hidden">Loading...</span>
-                                                </span>
-                                            ) : (
-                                                <Icon icon={user.is_active ? 'tabler:toggle-right' : 'tabler:toggle-left'} width={16} height={16} />
-                                            )}
+                                                {togglingUserId === user.id ? (
+                                                    <span className="spinner-border spinner-border-sm" role="status">
+                                                        <span className="visually-hidden">Loading...</span>
+                                                    </span>
+                                                ) : (
+                                                    <Icon icon={user.is_active ? 'tabler:toggle-right' : 'tabler:toggle-left'} width={16} height={16} />
+                                                )}
                                             </button>
                                         </td>
                                     </tr>
@@ -498,7 +494,7 @@ const Users = () => {
                                             Previous
                                         </button>
                                     </li>
-                                    
+
                                     {currentPage > 2 && (
                                         <li className="page-item">
                                             <button
@@ -509,13 +505,13 @@ const Users = () => {
                                             </button>
                                         </li>
                                     )}
-                                    
+
                                     {currentPage > 3 && (
                                         <li className="page-item disabled">
                                             <span className="page-link">...</span>
                                         </li>
                                     )}
-                                    
+
                                     {currentPage > 1 && (
                                         <li className="page-item">
                                             <button
@@ -526,11 +522,11 @@ const Users = () => {
                                             </button>
                                         </li>
                                     )}
-                                    
+
                                     <li className="page-item active">
                                         <span className="page-link">{currentPage}</span>
                                     </li>
-                                    
+
                                     {currentPage < totalPages && (
                                         <li className="page-item">
                                             <button
@@ -541,13 +537,13 @@ const Users = () => {
                                             </button>
                                         </li>
                                     )}
-                                    
+
                                     {currentPage < totalPages - 2 && (
                                         <li className="page-item disabled">
                                             <span className="page-link">...</span>
                                         </li>
                                     )}
-                                    
+
                                     {currentPage < totalPages - 1 && (
                                         <li className="page-item">
                                             <button
@@ -558,7 +554,7 @@ const Users = () => {
                                             </button>
                                         </li>
                                     )}
-                                    
+
                                     <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
                                         <button
                                             className="page-link"
@@ -586,8 +582,8 @@ const Users = () => {
                                     <Icon icon="tabler:calendar-time" width={20} height={20} className="me-2" />
                                     Subscription History - {selectedUserName}
                                 </h5>
-                                <button 
-                                    type="button" 
+                                <button
+                                    type="button"
                                     className="btn-close"
                                     onClick={closeSubscriptionModal}
                                     aria-label="Close"
@@ -603,7 +599,7 @@ const Users = () => {
                                             <Icon icon="tabler:crown" width={18} height={18} className="me-2 text-warning" />
                                             Current Active Plan
                                         </h6>
-                                        
+
                                         {subscriptionLoading ? (
                                             <div className="text-center py-3">
                                                 <div className="spinner-border spinner-border-sm text-primary" role="status">
@@ -635,12 +631,11 @@ const Users = () => {
                                                 </div>
                                                 <div className="col-md-4 text-md-end">
                                                     <div className="mt-2 mt-md-0">
-                                                        <span className={`badge ${
-                                                            currentSubscriptionPlan.status === 'active' ? 'bg-success-subtle text-success' :
-                                                            currentSubscriptionPlan.status === 'canceled' ? 'bg-danger-subtle text-danger' :
-                                                            currentSubscriptionPlan.status === 'past_due' ? 'bg-warning-subtle text-warning' :
-                                                            'bg-secondary-subtle text-secondary'
-                                                        }`}>
+                                                        <span className={`badge ${currentSubscriptionPlan.status === 'active' ? 'bg-success-subtle text-success' :
+                                                                currentSubscriptionPlan.status === 'canceled' ? 'bg-danger-subtle text-danger' :
+                                                                    currentSubscriptionPlan.status === 'past_due' ? 'bg-warning-subtle text-warning' :
+                                                                        'bg-secondary-subtle text-secondary'
+                                                            }`}>
                                                             {currentSubscriptionPlan.status?.charAt(0).toUpperCase() + currentSubscriptionPlan.status?.slice(1) || 'Unknown'}
                                                         </span>
                                                         {currentSubscriptionPlan.amount && (
@@ -674,7 +669,7 @@ const Users = () => {
                                             <Icon icon="tabler:history" width={18} height={18} className="me-2" />
                                             Subscription History
                                         </h6>
-                                        
+
                                         {subscriptionLoading ? (
                                             <div className="text-center py-5">
                                                 <div className="spinner-border text-primary" role="status">
@@ -701,12 +696,11 @@ const Users = () => {
                                                                     <span className="ms-2">{subscription.name || 'N/A'}</span>
                                                                 </td>
                                                                 <td>
-                                                                    <span className={`badge ${
-                                                                        subscription.status === 'active' ? 'bg-success-subtle text-success' :
-                                                                        subscription.status === 'canceled' ? 'bg-danger-subtle text-danger' :
-                                                                        subscription.status === 'past_due' ? 'bg-warning-subtle text-warning' :
-                                                                        'bg-secondary-subtle text-secondary'
-                                                                    }`}>
+                                                                    <span className={`badge ${subscription.status === 'active' ? 'bg-success-subtle text-success' :
+                                                                            subscription.status === 'canceled' ? 'bg-danger-subtle text-danger' :
+                                                                                subscription.status === 'past_due' ? 'bg-warning-subtle text-warning' :
+                                                                                    'bg-secondary-subtle text-secondary'
+                                                                        }`}>
                                                                         {subscription.status?.charAt(0).toUpperCase() + subscription.status?.slice(1) || 'Unknown'}
                                                                     </span>
                                                                 </td>
