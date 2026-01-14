@@ -1,6 +1,6 @@
-import React , {useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import axios from "../../api/axios";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Container, Row, Col, Button, Card, Spinner, Alert, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import logo from "../../assets/images/MPF-logo.svg";
@@ -39,7 +39,7 @@ const SubscribePlan = () => {
         fetchPlans();
     }, []);
 
-        const getIntervalText = (interval) => {
+    const getIntervalText = (interval) => {
         switch (interval) {
             case 'monthly': return '/month';
             case 'quarterly': return '/quarter';
@@ -74,25 +74,25 @@ const SubscribePlan = () => {
     }
 
 
-    return(
+    return (
         <>
-        <Container className="py-5"  style={{maxWidth:"1200px" , marginTop:"40px"}}>
-            <Row className="text-center mb-5">
-                <Col>
-                <img src={logo} style={{width:"120px" , marginBottom:"10px"}}/>
-                
-                    <h1 className="display-4 fw-bold">{userData?.plan_id ? 'Upgrade Your Plan' : 'Choose Your Plan'}</h1>
-                    <p className="lead text-muted">Select the perfect plan for your needs</p>
-                </Col>
-            </Row>
+            <Container className="py-5" style={{ maxWidth: "1200px", marginTop: "40px" }}>
+                <Row className="text-center mb-5">
+                    <Col>
+                        <img src={logo} style={{ width: "120px", marginBottom: "10px" }} />
 
-            {error && (
-                <Alert variant="danger" className="mb-4">
-                    {error}
-                </Alert>
-            )}
+                        <h1 className="display-4 fw-bold">{userData?.plan_id ? 'Upgrade Your Plan' : 'Choose Your Plan'}</h1>
+                        <p className="lead text-muted">Select the perfect plan for your needs</p>
+                    </Col>
+                </Row>
 
-                <Row className="justify-content-center g-3 " style={{marginTop:"100px"}}>
+                {error && (
+                    <Alert variant="danger" className="mb-4">
+                        {error}
+                    </Alert>
+                )}
+
+                <Row className="justify-content-center g-3 " style={{ marginTop: "100px" }}>
                     {plans.map((plan) => (
                         <Col key={plan.id} md={6} lg={4} className="mb-4">
                             <Card
@@ -121,21 +121,13 @@ const SubscribePlan = () => {
                                     <Card.Text className="mb-4">
                                         {plan.subdesc}
                                     </Card.Text>
-                                    {/* <ul className="list-unstyled mt-3 mb-4 flex-grow-1">
-                                    {plan.features.map((feature, i) => (
-                                        <li key={i} className="mb-2">
-                                            <i className="fas fa-check text-success me-2"></i>
-                                            {feature}
-                                        </li>
-                                    ))}
-                                </ul> */}
+
                                     <div className="mt-auto">
                                         <Button
                                             variant={plan.interval === 'monthly' ? 'primary' : 'outline-primary'}
                                             className="w-100"
                                             onClick={() => {
-
-                                                        handleSubscribe(plan.id); // ✅ proceed only if confirmed
+                                                handleSubscribe(plan.id); // ✅ proceed only if confirmed
                                             }}
 
                                             disabled={userData?.plan_id === plan.id || subscribing}
@@ -162,7 +154,7 @@ const SubscribePlan = () => {
                         </Col>
                     ))}
                 </Row>
-        </Container>
+            </Container>
         </>
     );
 }

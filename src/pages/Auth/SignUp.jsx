@@ -58,10 +58,6 @@ export default function SignUp() {
   const [apiError, setApiError] = useState('');
   const dispatch = useDispatch();
 
-
-
-
-
   const {
     values,
     errors,

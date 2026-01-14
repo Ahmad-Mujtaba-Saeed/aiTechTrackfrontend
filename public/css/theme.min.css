@@ -33872,7 +33872,7 @@ html:not(.navbar-vertical-collapsed) .navbar-vertical.navbar-expand-xs .navbar-v
   }
 
   .navbar-vertical.navbar-expand-lg~.navbar-top {
-    padding-right: 2.5rem;
+    padding-right: 1.5rem;
   }
 
   .navbar-vertical.navbar-expand-lg~.navbar-top .navbar-toggler {
