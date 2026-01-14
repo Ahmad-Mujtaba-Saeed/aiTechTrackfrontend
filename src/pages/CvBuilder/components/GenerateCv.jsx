@@ -4,8 +4,8 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Swal from 'sweetalert2';
-import BulletPointsEditor from './BulletPointsEditor';
-import avatar from '../../assets/demo_profile.avif'
+import BulletPointsEditor from '../../../components/CvBuilder/BulletPointsEditor';
+import avatar from '../../../assets/demo_profile.avif'
 import {
     ModernTemplate,
     ClassicTemplate,
@@ -20,22 +20,21 @@ import {
     Template11,
     Template12,
     Template13
-} from "../templates";
-import toggleImage from '../../assets/images/P-solid-rgb.svg';
+} from "../../../components/templates";
 
 import { Row, Col, Button, Card, Dropdown, Modal } from "react-bootstrap";
 import Draggable from 'react-draggable';
 
 import { useDispatch, useSelector } from "react-redux";
-import { setParsedResume, updateField, analyzeResumeAi, setSelectedTemplate, fetchResumeById, updateResumeById } from "../../features/resume/resumeSlice";
+import { setParsedResume, updateField, analyzeResumeAi, setSelectedTemplate, fetchResumeById, updateResumeById } from "../../../features/resume/resumeSlice";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from "react-router-dom";
-import { ClassicCoverLetterTemplate } from "../cover-letter-templates";
-import CoverLetter from "./components/coverLetter";
+import { ClassicCoverLetterTemplate } from "../../../components/cover-letter-templates";
+import CoverLetter from "../../../components/CvBuilder/components/coverLetter";
 import html2pdf from "html2pdf.js";
-import axios, { baseUrl } from "../../api/axios";
+import axios, { baseUrl } from "../../../api/axios";
 import { round } from 'lodash';
 
 
@@ -88,6 +87,7 @@ export default function CVBuilder() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { parsedResume, AnalyseResumeData, AiResumeLoader, prevParsedResume, saveChangesLoader, selectedTemplate, fetchingResumeLoader } = useSelector((state) => state.resume);
+
     const { data } = useSelector((state) => state.user);
     const [zoom, setZoom] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
@@ -102,6 +102,7 @@ export default function CVBuilder() {
     const [languageLevel, setLanguageLevel] = useState('Intermediate');
     const [currentHobby, setCurrentHobby] = useState('');
     const cvRef = useRef();
+
 
     const [customSections, setCustomSections] = useState([]);
 
@@ -172,6 +173,8 @@ export default function CVBuilder() {
         dispatch(setSelectedTemplate(templateName));
     };
 
+    
+
     useEffect(() => {
         let isMounted = true;
         const load = async () => {
@@ -185,7 +188,10 @@ export default function CVBuilder() {
         };
         load();
         return () => { isMounted = false; };
-    }, [id])
+    }, [id, dispatch])
+
+
+
 
 
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -412,13 +418,13 @@ export default function CVBuilder() {
 
 
     useEffect(() => {
-        if (parsedResume?.skill && parsedResume.skill.length > 0) {
+        if (parsedResume?.skill && parsedResume?.skill.length > 0) {
             // Check if any skills have the selected property
-            const hasSelectedProperty = parsedResume.skill.some(skill => 'selected' in skill);
+            const hasSelectedProperty = parsedResume?.skill.some(skill => 'selected' in skill);
 
             if (!hasSelectedProperty) {
                 // Initialize first 5 skills as selected
-                const updatedSkills = parsedResume.skill.map((skill, index) => ({
+                const updatedSkills = parsedResume?.skill.map((skill, index) => ({
                     ...skill,
                     selected: index < 5
                 }));
@@ -2556,17 +2562,27 @@ export default function CVBuilder() {
                             <div className="d-flex flex-wrap gap-2">
                                 {parsedResume?.skill
                                     ?.filter(skill => skill.selected)
-                                    .map((skill, index) => (
+                                    .map((skill, index) => {
+                                        // Debug: log the skill structure
+                                        console.log('Skill structure:', skill, 'name type:', typeof skill.name, 'name value:', skill.name);
+                                        return (
                                         <span key={index} className="badge d-inline-flex align-items-center skill-badge">
-                                            {skill.name}
+                                            {typeof skill.name === 'string' ? skill.name : skill.name?.name || skill.name || 'Unknown Skill'}
                                             <button
                                                 type="button"
                                                 className="ms-1 bg-transparent border-0"
                                                 aria-label="Remove"
                                                 onClick={() => {
+                                                    const skillName = typeof skill.name === 'string' ? skill.name : skill.name?.name || skill.name;
                                                     const updatedSkills = [...parsedResume.skill];
-                                                    updatedSkills.splice(updatedSkills.findIndex(s => s.name === skill.name), 1);
-                                                    dispatch(updateField({ path: "skill", value: updatedSkills }));
+                                                    const skillIndex = updatedSkills.findIndex(s => {
+                                                        const sName = typeof s.name === 'string' ? s.name : s.name?.name || s.name;
+                                                        return sName === skillName;
+                                                    });
+                                                    if (skillIndex > -1) {
+                                                        updatedSkills.splice(skillIndex, 1);
+                                                        dispatch(updateField({ path: "skill", value: updatedSkills }));
+                                                    }
                                                 }}
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-x">
@@ -2576,7 +2592,7 @@ export default function CVBuilder() {
                                                 </svg>
                                             </button>
                                         </span>
-                                    ))}
+                                    )})}
                             </div>
                         </div>
                     ) : (
@@ -2739,7 +2755,7 @@ export default function CVBuilder() {
                                     })
                                     .map((lang, index) => (
                                         <span key={index} className="badge d-inline-flex align-items-center skill-badge">
-                                            {lang.name || lang.language}
+                                            {typeof (lang.name || lang.language) === 'string' ? (lang.name || lang.language) : (lang.name?.name || lang.language?.name || lang.name || lang.language || 'Unknown Language')}
                                             {lang.level ? ` (${lang.level})` : ''}
                                             <button
                                                 type="button"
@@ -3350,28 +3366,42 @@ export default function CVBuilder() {
                                     }
 
                                     const TemplateComponent = selectedTemplateData.template;
+                                    
+                                    // Transform skills to ensure names are strings
+                                    const transformedResumeData = {
+                                        ...(parsedResume || {
+                                            candidateName: [{ firstName: '', familyName: '' }],
+                                            headline: '',
+                                            summary: [{ paragraph: '' }],
+                                            phoneNumber: [{ formattedNumber: '' }],
+                                            email: [''],
+                                            location: { formatted: '' },
+                                            workExperience: [],
+                                            education: [],
+                                            skill: [],
+                                            profilePic: null,
+                                            website: [''],
+                                            certifications: [],
+                                            languages: [],
+                                            hobbies: [],
+                                            customSections: [],
+                                        }),
+                                        // Transform skills to have string names
+                                        skill: (parsedResume?.skill || []).map(skill => ({
+                                            ...skill,
+                                            name: typeof skill.name === 'string' ? skill.name : skill.name?.name || skill.name || 'Unknown Skill'
+                                        })),
+                                        // Transform languages to have string names
+                                        languages: (parsedResume?.languages || []).map(lang => ({
+                                            ...lang,
+                                            name: typeof (lang.name || lang.language) === 'string' ? (lang.name || lang.language) : (lang.name?.name || lang.language?.name || lang.name || lang.language || 'Unknown Language')
+                                        }))
+                                    };
+                                    
                                     return (
                                         <div ref={resumeRef}>
                                             <TemplateComponent
-                                                resumeData={{
-                                                    ...(parsedResume || {
-                                                        candidateName: [{ firstName: '', familyName: '' }],
-                                                        headline: '',
-                                                        summary: [{ paragraph: '' }],
-                                                        phoneNumber: [{ formattedNumber: '' }],
-                                                        email: [''],
-                                                        location: { formatted: '' },
-                                                        workExperience: [],
-                                                        education: [],
-                                                        skill: [],
-                                                        profilePic: null,
-                                                        website: [''],
-                                                        certifications: [],
-                                                        languages: [],
-                                                        hobbies: [],
-                                                        customSections: [],
-                                                    }),
-                                                }}
+                                                resumeData={transformedResumeData}
                                             />
                                         </div>
                                     );

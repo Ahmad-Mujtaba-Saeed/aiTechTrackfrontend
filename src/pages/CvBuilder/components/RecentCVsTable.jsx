@@ -1,6 +1,7 @@
 import React from "react";
 import { Table, Dropdown, Button, Pagination } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import FormatDateTime from "../../../components/FormatDateTime";
 
@@ -14,6 +15,7 @@ const RecentCVsTable = ({
   handleDeleteCv,
   compact = false // compact = dashboard mode, full = modal mode
 }) => {
+  const navigate = useNavigate();
 
   return (
     <>
@@ -42,13 +44,13 @@ const RecentCVsTable = ({
 
                 <td className="text-end">
                   <div className="d-flex gap-1 justify-content-end align-items-center">
-                    <Link href={`/cv-generate/${item?.id}`} className="custom-History-btn">
+                    <span onClick={()=>{navigate(`/cv-generate/${item?.id}`)}} className="custom-History-btn">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
-                    </Link>
+                    </span>
 
-                    <Link href={`/cv-generate/${item?.id}?download=true`} target="_blank" className="custom-History-btn">
+                    <span onClick={()=>{navigate(`/cv-generate/${item?.id}?download=true`)}} target="_blank" className="custom-History-btn">
                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-cloud-download"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19 18a3.5 3.5 0 0 0 0 -7h-1a5 4.5 0 0 0 -11 -2a4.6 4.4 0 0 0 -2.1 8.4" /><path d="M12 13l0 9" /><path d="M9 19l3 3l3 -3" /></svg>
-                    </Link>
+                    </span>
 
                     <span
                       onClick={() => handleRenameCv(item?.id, item?.title)} className="custom-History-btn"
