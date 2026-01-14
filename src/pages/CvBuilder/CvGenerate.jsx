@@ -1,7 +1,6 @@
 import React from "react";
 import MasterLayout from "../../masterLayout/MasterLayout";
-import BreadCrum from "../../components/BreadCrum";
-import GenerateCv from "../../components/CvBuilder/GenerateCv";
+import GenerateCv from "./components/GenerateCv";
 
 export default function CvGenerate() {
   return (
