@@ -39,6 +39,7 @@ import UserManagement from "./pages/UserManagement/UserManagement";
 import TransactionsManagement from "./pages/Billing/TransactionsManagement";
 import SubscriptionManagement from "./pages/Subscriptions/SubscriptionManagement";
 import CoreSettingsManagement from "./pages/CoreSettings/CoreSettingsManagement";
+import PlanManagement from "./pages/PlanSettings/PlanManagement"
 
 import Career from "./pages/CareerAdvice";
 import SignOut from "./pages/Auth/SignOut";
@@ -93,6 +94,7 @@ const protectedRoutes = [
   { path: '/manage-users', element: <UserManagement /> },
   { path: '/billing/transactions', element: <TransactionsManagement /> },
   { path: '/billing/subscriptions', element: <SubscriptionManagement /> },
+  { path:'/billing/plan-management', element: <PlanManagement /> },
   { path: '/core-settings', element: <CoreSettingsManagement /> },
 ];
 

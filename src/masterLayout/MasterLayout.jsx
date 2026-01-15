@@ -140,6 +140,12 @@ const MasterLayout = ({ children }) => {
                     </Link>
                   </div>
                   <div className="nav-item-wrapper">
+                    <Link className={`nav-link label-1 ${isActive('/billing/plan-management')}`} to="/billing/plan-management" role="button" data-bs-toggle="" aria-expanded="true">
+                      <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:notes' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Plan Management</span></span>
+                      </div>
+                    </Link>
+                  </div>
+                  <div className="nav-item-wrapper">
                     <Link className={`nav-link label-1 ${isActive('/core-settings')}`} to="/core-settings" role="button" data-bs-toggle="" aria-expanded="false">
                       <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:settings' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Core Settings</span></span>
                       </div>
