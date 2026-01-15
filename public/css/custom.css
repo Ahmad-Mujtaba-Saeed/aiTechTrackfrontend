@@ -797,10 +797,17 @@ h4 {
     width: 100%;
     height: 100%;
     max-height: calc(100vh - 190px);
-    overflow: auto;
+    overflow: hidden;
     flex-grow: 1;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
+}
+
+.custom-editor .editor-preview .editor-inner-wrapper .cv-wrapper{
+    width: 100%;
+    height: 100%;
+    max-height: calc(100vh - 190px);
+    overflow: auto;
 }
 
 .editor-custom-btns {

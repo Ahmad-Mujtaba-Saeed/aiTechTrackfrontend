@@ -173,7 +173,7 @@ export default function CVBuilder() {
         dispatch(setSelectedTemplate(templateName));
     };
 
-    
+
 
     useEffect(() => {
         let isMounted = true;
@@ -390,7 +390,7 @@ export default function CVBuilder() {
 
     const zoomIn = () => {
         setZoom(prev => {
-            const newZoom = Math.min(prev + 0.1, 2);
+            const newZoom = Math.min(prev + 0.25, 3);
             console.log('Zoom In clicked. New zoom level:', newZoom);
             return newZoom;
         });
@@ -398,7 +398,7 @@ export default function CVBuilder() {
 
     const zoomOut = () => {
         setZoom(prev => {
-            const newZoom = Math.max(prev - 0.1, 0.5);
+            const newZoom = Math.max(prev - 0.25, 0.5);
             console.log('Zoom Out clicked. New zoom level:', newZoom);
             return newZoom;
         });
@@ -2566,33 +2566,34 @@ export default function CVBuilder() {
                                         // Debug: log the skill structure
                                         console.log('Skill structure:', skill, 'name type:', typeof skill.name, 'name value:', skill.name);
                                         return (
-                                        <span key={index} className="badge d-inline-flex align-items-center skill-badge">
-                                            {typeof skill.name === 'string' ? skill.name : skill.name?.name || skill.name || 'Unknown Skill'}
-                                            <button
-                                                type="button"
-                                                className="ms-1 bg-transparent border-0"
-                                                aria-label="Remove"
-                                                onClick={() => {
-                                                    const skillName = typeof skill.name === 'string' ? skill.name : skill.name?.name || skill.name;
-                                                    const updatedSkills = [...parsedResume.skill];
-                                                    const skillIndex = updatedSkills.findIndex(s => {
-                                                        const sName = typeof s.name === 'string' ? s.name : s.name?.name || s.name;
-                                                        return sName === skillName;
-                                                    });
-                                                    if (skillIndex > -1) {
-                                                        updatedSkills.splice(skillIndex, 1);
-                                                        dispatch(updateField({ path: "skill", value: updatedSkills }));
-                                                    }
-                                                }}
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-x">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                    <path d="M18 6l-12 12" />
-                                                    <path d="M6 6l12 12" />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    )})}
+                                            <span key={index} className="badge d-inline-flex align-items-center skill-badge">
+                                                {typeof skill.name === 'string' ? skill.name : skill.name?.name || skill.name || 'Unknown Skill'}
+                                                <button
+                                                    type="button"
+                                                    className="ms-1 bg-transparent border-0"
+                                                    aria-label="Remove"
+                                                    onClick={() => {
+                                                        const skillName = typeof skill.name === 'string' ? skill.name : skill.name?.name || skill.name;
+                                                        const updatedSkills = [...parsedResume.skill];
+                                                        const skillIndex = updatedSkills.findIndex(s => {
+                                                            const sName = typeof s.name === 'string' ? s.name : s.name?.name || s.name;
+                                                            return sName === skillName;
+                                                        });
+                                                        if (skillIndex > -1) {
+                                                            updatedSkills.splice(skillIndex, 1);
+                                                            dispatch(updateField({ path: "skill", value: updatedSkills }));
+                                                        }
+                                                    }}
+                                                >
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-x">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                        <path d="M18 6l-12 12" />
+                                                        <path d="M6 6l12 12" />
+                                                    </svg>
+                                                </button>
+                                            </span>
+                                        )
+                                    })}
                             </div>
                         </div>
                     ) : (
@@ -3343,85 +3344,87 @@ export default function CVBuilder() {
                         </Dropdown>
                     </div>
                     <div className="editor-inner-wrapper">
-                        <div
-                            ref={previewContainerRef}
-                            className="cv-template-div"
-                            style={{ background: '#fff', overflow: 'auto', height: 'calc(100vh - 190px)', position: 'relative' }}
-                        >
+                        <div className="cv-wrapper">
                             <div
-                                ref={cvRef}
-                                style={{
-                                    background: 'white',
-                                    padding: '16px',
-                                    // minHeight: `${Math.max(1, totalPages) * 1080}px`,
-                                    transformOrigin: 'top center',
-                                    transition: 'transform 0.2s ease-in-out',
-                                    zoom: zoom,
-                                }}
+                                ref={previewContainerRef}
+                                className="cv-template-div"
+                                style={{ background: '#fff', overflow: 'auto', height: 'calc(100vh - 190px)', position: 'relative', width: 'fit-content', zoom: zoom, }}
                             >
-                                {(() => {
-                                    const selectedTemplateData = cardTemplate.find(t => t.name === selectedTemplate);
-                                    if (!selectedTemplateData) {
-                                        return <div className="alert alert-warning">Please select a template</div>;
-                                    }
-
-                                    const TemplateComponent = selectedTemplateData.template;
-                                    
-                                    // Transform skills to ensure names are strings
-                                    const transformedResumeData = {
-                                        ...(parsedResume || {
-                                            candidateName: [{ firstName: '', familyName: '' }],
-                                            headline: '',
-                                            summary: [{ paragraph: '' }],
-                                            phoneNumber: [{ formattedNumber: '' }],
-                                            email: [''],
-                                            location: { formatted: '' },
-                                            workExperience: [],
-                                            education: [],
-                                            skill: [],
-                                            profilePic: null,
-                                            website: [''],
-                                            certifications: [],
-                                            languages: [],
-                                            hobbies: [],
-                                            customSections: [],
-                                        }),
-                                        // Transform skills to have string names
-                                        skill: (parsedResume?.skill || []).map(skill => ({
-                                            ...skill,
-                                            name: typeof skill.name === 'string' ? skill.name : skill.name?.name || skill.name || 'Unknown Skill'
-                                        })),
-                                        // Transform languages to have string names
-                                        languages: (parsedResume?.languages || []).map(lang => ({
-                                            ...lang,
-                                            name: typeof (lang.name || lang.language) === 'string' ? (lang.name || lang.language) : (lang.name?.name || lang.language?.name || lang.name || lang.language || 'Unknown Language')
-                                        }))
-                                    };
-                                    
-                                    return (
-                                        <div ref={resumeRef}>
-                                            <TemplateComponent
-                                                resumeData={transformedResumeData}
-                                            />
-                                        </div>
-                                    );
-                                })()}
-                            </div>
-
-                            {/* Only show page dividers if we have multiple pages with content */}
-                            {totalPages > 1 && Array.from({ length: totalPages - 1 }).map((_, index) => (
                                 <div
-                                    key={index}
+                                    ref={cvRef}
                                     style={{
-                                        position: 'absolute',
-                                        left: 0,
-                                        right: 0,
-                                        top: `${(index + 1) * 1123}px`,
-                                        borderTop: '2px dashed #ccc',
-                                        pointerEvents: 'none'
+                                        background: 'white',
+                                        padding: '16px',
+                                        // minHeight: `${Math.max(1, totalPages) * 1080}px`,
+                                        transformOrigin: 'top center',
+                                        transition: 'transform 0.2s ease-in-out',
+                                        width: 920,
                                     }}
-                                />
-                            ))}
+                                >
+                                    {(() => {
+                                        const selectedTemplateData = cardTemplate.find(t => t.name === selectedTemplate);
+                                        if (!selectedTemplateData) {
+                                            return <div className="alert alert-warning">Please select a template</div>;
+                                        }
+
+                                        const TemplateComponent = selectedTemplateData.template;
+
+                                        // Transform skills to ensure names are strings
+                                        const transformedResumeData = {
+                                            ...(parsedResume || {
+                                                candidateName: [{ firstName: '', familyName: '' }],
+                                                headline: '',
+                                                summary: [{ paragraph: '' }],
+                                                phoneNumber: [{ formattedNumber: '' }],
+                                                email: [''],
+                                                location: { formatted: '' },
+                                                workExperience: [],
+                                                education: [],
+                                                skill: [],
+                                                profilePic: null,
+                                                website: [''],
+                                                certifications: [],
+                                                languages: [],
+                                                hobbies: [],
+                                                customSections: [],
+                                            }),
+                                            // Transform skills to have string names
+                                            skill: (parsedResume?.skill || []).map(skill => ({
+                                                ...skill,
+                                                name: typeof skill.name === 'string' ? skill.name : skill.name?.name || skill.name || 'Unknown Skill'
+                                            })),
+                                            // Transform languages to have string names
+                                            languages: (parsedResume?.languages || []).map(lang => ({
+                                                ...lang,
+                                                name: typeof (lang.name || lang.language) === 'string' ? (lang.name || lang.language) : (lang.name?.name || lang.language?.name || lang.name || lang.language || 'Unknown Language')
+                                            }))
+                                        };
+
+                                        return (
+                                            <div ref={resumeRef}>
+                                                <TemplateComponent
+                                                    resumeData={transformedResumeData}
+                                                />
+                                            </div>
+                                        );
+                                    })()}
+                                </div>
+
+                                {/* Only show page dividers if we have multiple pages with content */}
+                                {totalPages > 1 && Array.from({ length: totalPages - 1 }).map((_, index) => (
+                                    <div
+                                        key={index}
+                                        style={{
+                                            position: 'absolute',
+                                            left: 0,
+                                            right: 0,
+                                            top: `${(index + 1) * 1123}px`,
+                                            borderTop: '2px dashed #ccc',
+                                            pointerEvents: 'none'
+                                        }}
+                                    />
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
