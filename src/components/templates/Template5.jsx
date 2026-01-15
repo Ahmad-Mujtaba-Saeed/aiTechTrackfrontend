@@ -44,13 +44,13 @@ const Template5 = ({ resumeData }) => {
       display: 'flex'
     },
     leftSection: {
-      width: '516px',
-      padding: '40px'
+      width: '587px',
+      padding: '32px'
     },
     rightSidebar: {
-      width: '278px',
+      width: '300px',
       backgroundColor: '#f7f7f7',
-      padding: '40px'
+      padding: '32px'
     },
     section: {
       padding: "0px",

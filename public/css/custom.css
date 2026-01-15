@@ -783,8 +783,8 @@ h4 {
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
     box-shadow: 0 0 12px 4px #0003;
-    min-width: 920px;
-    max-width: 920px;
+    min-width: 925px;
+    max-width: 925px;
     height: 100%;
     flex-grow: 1;
     position: relative;
@@ -803,11 +803,12 @@ h4 {
     border-top-right-radius: 12px;
 }
 
-.custom-editor .editor-preview .editor-inner-wrapper .cv-wrapper{
+.custom-editor .editor-preview .editor-inner-wrapper .cv-wrapper {
     width: 100%;
     height: 100%;
     max-height: calc(100vh - 190px);
     overflow: auto;
+    overflow-y: hidden;
 }
 
 .editor-custom-btns {
@@ -1268,4 +1269,10 @@ div:where(.swal2-container) {
 .Profile-toggler:hover {
     background: #0000 !important;
     padding: 8px 0 8px 8px !important;
+}
+
+.zoom-out {
+    width: 100% !important;
+    justify-content: center !important;
+    display: grid !important;
 }
