@@ -31,7 +31,7 @@ export const updateUserProfile = async (userData) => {
 };
 
 export const updateUserProfileSettings = async (formData) => {
-  const response = await axios.post('/profile-settings', formData, {
+  const response = await axios.post('/user/profile-settings', formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
