@@ -83,9 +83,9 @@ export default function SignIn() {
 
         <div className="row flex-center position-relative min-vh-100 g-0">
           <div className="col-11 col-sm-10 col-xl-4">
-            <div className="card border border-translucent auth-card">
+            <div className="card auth-card">
               <div className="card-body py-5">
-                <div className="row align-items-center gx-0 gy-7">
+                <div className="row align-items-center">
                   <div className="col mx-auto">
                     <div className="auth-form-box">
                       <div className="text-center mb-5">

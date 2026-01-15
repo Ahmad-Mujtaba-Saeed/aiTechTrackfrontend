@@ -12,14 +12,14 @@ import "./plans.css";
 const UpgradeSubscribePlan = () => {
     const userData = useSelector(state => state.user?.data);
     const hasPermissionManagePlan = () => hasPermission(userData, 'manage-plans');
-    
+
     // Existing states
     const [plans, setPlans] = useState([]);
     const [loading, setLoading] = useState(true);
     const [subscribing, setSubscribing] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    
+
     // New states for admin functionality
     const [showModal, setShowModal] = useState(false);
     const [editingPlan, setEditingPlan] = useState(null);
@@ -123,7 +123,7 @@ const UpgradeSubscribePlan = () => {
     // Submit form (create or update)
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         // Validation
         if (!formData.name.trim() || !formData.price) {
             Swal.fire('Error', 'Please fill in required fields', 'error');
@@ -132,7 +132,7 @@ const UpgradeSubscribePlan = () => {
 
         try {
             setModalLoading(true);
-            
+
             // Prepare form data
             const data = new FormData();
             data.append('name', formData.name);
@@ -141,7 +141,7 @@ const UpgradeSubscribePlan = () => {
             data.append('interval', formData.interval);
             data.append('interval_count', formData.interval_count);
             data.append('subdesc', formData.subdesc);
-            
+
             // Add features (filter out empty ones)
             const validFeatures = formData.features.filter(f => f.trim() !== '');
             validFeatures.forEach(feature => {
@@ -156,7 +156,7 @@ const UpgradeSubscribePlan = () => {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
-                
+
                 Swal.fire('Success', 'Plan updated successfully', 'success');
             } else {
                 // Create new plan
@@ -165,14 +165,14 @@ const UpgradeSubscribePlan = () => {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
-                
+
                 Swal.fire('Success', 'Plan created successfully', 'success');
             }
-            
+
             // Refresh plans and close modal
             fetchPlans();
             setShowModal(false);
-            
+
         } catch (error) {
             console.error('Error saving plan:', error);
             Swal.fire('Error', error.response?.data?.message || 'Failed to save plan', 'error');
@@ -313,12 +313,12 @@ const UpgradeSubscribePlan = () => {
                 <div className="header">
                     <h1>Choose Your Plan</h1>
                     <p className="subtitle">Select the perfect tier for your needs and budget</p>
-                    
+
                     {/* Admin controls */}
                     {hasPermissionManagePlan() && (
                         <div className="admin-controls mb-4">
-                            <Button 
-                                variant="success" 
+                            <Button
+                                variant="primary"
                                 onClick={handleCreateNew}
                                 className="me-2"
                             >
@@ -340,28 +340,7 @@ const UpgradeSubscribePlan = () => {
                 <div className="plans-tiers">
                     {plans.map((plan) => (
                         <div key={plan.id} className={`tier ${plan.name === 'Monthly Plan' && 'professional'}`}>
-                            {/* Admin actions - only visible to admins */}
-                            {hasPermissionManagePlan() && (
-                                <div className="admin-actions mb-2">
-                                    <Button 
-                                        size="sm" 
-                                        variant="outline-primary" 
-                                        onClick={() => handleEditPlan(plan)}
-                                        className="me-2"
-                                    >
-                                        <i className="fas fa-edit"></i>
-                                    </Button>
-                                    <Button 
-                                        size="sm" 
-                                        variant={plan.is_active ? "outline-warning" : "outline-success"}
-                                        onClick={() => handleToggleActive(plan)}
-                                        className="me-2"
-                                    >
-                                        <i className={plan.is_active ? "fas fa-toggle-on" : "fas fa-toggle-off"}></i>
-                                    </Button>
-                                </div>
-                            )}
-                            
+
                             <div className="badge-wrapper">
                                 {plan.name === 'Monthly Plan' && (
                                     <span className="tier-badge">RECOMMENDED</span>
@@ -373,27 +352,27 @@ const UpgradeSubscribePlan = () => {
                                     <span className="tier-badge bg-secondary">INACTIVE</span>
                                 )}
                             </div>
-                            
+
                             <div className="tier-name">
-                                {plan.name === 'Weekly Plan' ? 'Basic' : 
-                                 plan.name === 'Monthly Plan' ? 'Professional' : 
-                                 plan.name === 'Quarterly Plan' ? 'Premium' : 
-                                 plan.name}
+                                {plan.name === 'Weekly Plan' ? 'Basic' :
+                                    plan.name === 'Monthly Plan' ? 'Professional' :
+                                        plan.name === 'Quarterly Plan' ? 'Premium' :
+                                            plan.name}
                             </div>
-                            
+
                             <div className="tier-price">${plan.price}</div>
                             <div className="tier-period">
                                 {plan.name}
-                                {plan.name === 'Weekly Plan' ? ('') : 
-                                 plan.name === 'Monthly Plan' ? (
-                                    badges.monthly && (
-                                        <span className="savings-badge">{badges.monthly}</span>
-                                    )
-                                ) : plan.name === 'Quarterly Plan' && (
-                                    badges.quaterly && (
-                                        <span className="savings-badge">{badges.quaterly}</span>
-                                    )
-                                )}
+                                {plan.name === 'Weekly Plan' ? ('') :
+                                    plan.name === 'Monthly Plan' ? (
+                                        badges.monthly && (
+                                            <span className="savings-badge">{badges.monthly}</span>
+                                        )
+                                    ) : plan.name === 'Quarterly Plan' && (
+                                        badges.quaterly && (
+                                            <span className="savings-badge">{badges.quaterly}</span>
+                                        )
+                                    )}
                             </div>
 
                             {/* Show actual plan features from API */}
@@ -408,17 +387,17 @@ const UpgradeSubscribePlan = () => {
                                 ) : (
                                     // Fallback to hardcoded features if API doesn't provide
                                     (plan.name === 'Weekly Plan' ? features.weekly :
-                                     plan.name === 'Monthly Plan' ? features.monthly :
-                                     plan.name === 'Quarterly Plan' ? features.quaterly : []).map((feature, index) => (
-                                        <li key={index}>
-                                            <i className="fas fa-check text-success me-2"></i>
-                                            <span className="feature-label">{feature}</span>
-                                        </li>
-                                    ))
+                                        plan.name === 'Monthly Plan' ? features.monthly :
+                                            plan.name === 'Quarterly Plan' ? features.quaterly : []).map((feature, index) => (
+                                                <li key={index}>
+                                                    <i className="fas fa-check text-success me-2"></i>
+                                                    <span className="feature-label">{feature}</span>
+                                                </li>
+                                            ))
                                 )}
                             </ul>
 
-                            <button 
+                            <button
                                 className="tier-btn"
                                 onClick={() => {
                                     Swal.fire({
@@ -499,7 +478,7 @@ const UpgradeSubscribePlan = () => {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        
+
                         <Row>
                             <Col md={6}>
                                 <Form.Group className="mb-3">
@@ -531,7 +510,7 @@ const UpgradeSubscribePlan = () => {
                                 </Form.Group>
                             </Col>
                         </Row>
-                        
+
                         <Form.Group className="mb-3">
                             <Form.Label>Description</Form.Label>
                             <Form.Control
@@ -543,13 +522,13 @@ const UpgradeSubscribePlan = () => {
                                 placeholder="Plan description for users"
                             />
                         </Form.Group>
-                        
+
                         <Form.Group className="mb-3">
                             <div className="d-flex justify-content-between align-items-center mb-2">
                                 <Form.Label>Features *</Form.Label>
-                                <Button 
-                                    type="button" 
-                                    variant="outline-success" 
+                                <Button
+                                    type="button"
+                                    variant="outline-success"
                                     size="sm"
                                     onClick={addFeatureField}
                                 >
