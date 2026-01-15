@@ -10,7 +10,7 @@ const SubscribePlan = () => {
     const [plans, setPlans] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-
+    
     const [subscribing, setSubscribing] = useState(false); // New state for subscription loading
     const userData = useSelector((state) => state.user.data);
 
@@ -98,6 +98,7 @@ const SubscribePlan = () => {
                             <Card
                                 className={`h-100 shadow-sm ${plan.interval === 'monthly' ? ' border border-primary' : ''}`}
                             >
+
                                 {plan.interval === 'monthly' && (
                                     <div className="position-absolute top-0 end-0 m-2">
                                         <Badge bg="primary">Popular</Badge>
