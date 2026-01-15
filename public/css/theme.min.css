@@ -42848,19 +42848,19 @@ html:not(.navbar-vertical-collapsed) .navbar-vertical .firefox .chat-sidebar .na
 
 @media (min-width: 768px) {
   .auth-card .auth-form-box {
-    max-width: 16.625rem;
+    max-width: 20rem;
   }
 }
 
 @media (min-width: 992px) {
   .auth-card .auth-form-box {
-    max-width: 18.75rem;
+    max-width: 26rem;
   }
 }
 
 @media (min-width: 1540px) {
   .auth-card .auth-form-box {
-    max-width: 25rem;
+    max-width: 26rem;
   }
 }
 

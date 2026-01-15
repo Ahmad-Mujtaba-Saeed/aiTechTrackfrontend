@@ -143,34 +143,21 @@ export default function SignUp() {
         <div className="bg-holder bg-auth-card-overlay auth-bg-image"></div>
         <div className="row flex-center position-relative min-vh-100 g-0">
           <div className="col-11 col-sm-10 col-xl-4">
-            <div className="card border border-translucent auth-card">
+            <div className="card auth-card">
               <div className="card-body">
                 <div className="auth-form-box">
-                  <div className="text-center mb-5">
+                  <div className="text-center my-5">
                     <div className="d-flex flex-center text-decoration-none mb-4">
                       <div className="d-flex align-items-center fw-bolder fs-3 d-inline-block">
                         <img src={logo} alt="MyPathfinder logo" width="200" />
                       </div>
                     </div>
-                    <h3 className="fw-bold">Access AI-powered CVs, job-matching & interview practise</h3>
+                    <h3 className="fw-bold">Sign Up</h3>
                     
                     <p>Free and unlimited for 7 days</p>
                   </div>
 
-                  {/* <Button variant="light" className="w-100 mb-3 gap-2 d-flex align-items-center justify-content-center border google-btn" onClick={() => window.location.href = '/auth/google'}>
-                    <svg width={13} className="me-2 text-danger" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512">
-                      <path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path>
-                    </svg>
-                    sign in with Google
-                  </Button> */}
                   <GoogleSignIn />
-
-                  {/* <Button variant="light" className="w-100 mb-3 gap-2 d-flex align-items-center justify-content-center border facebook-btn" onClick={() => window.location.href = '/auth/facebook'}>
-                    <svg width={13} className="me-2" style={{ color: '#1877f2' }} aria-hidden="true" focusable="false" data-prefix="fab" data-icon="facebook" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                      <path fill="currentColor" d="M512 256C512 114.6 397.4 0 256 0S0 114.6 0 256C0 376 82.7 476.8 194.2 504.5V334.2H141.4V256h52.8V222.3c0-87.1 39.4-127.5 125-127.5c16.2 0 44.2 3.2 55.7 6.4V172c-6-.6-16.5-1-29.6-1c-42 0-58.2 15.9-58.2 57.2V256h83.6l-14.4 78.2H287V510.1C413.8 494.8 512 386.9 512 256h0z"></path>
-                    </svg>
-                    Continue with Facebook
-                  </Button> */}
 
                   <div className="position-relative mt-4">
                     <hr className="bg-body-secondary" />
@@ -185,7 +172,7 @@ export default function SignUp() {
                       </Alert>
                     )}
 
-                    <div className="mb-3 text-start">
+                    <div className="mb-3 text-start form-group">
                       <label className="form-label" htmlFor="name">Name</label>
                       <BootstrapForm.Control
                         id="name"
@@ -206,7 +193,7 @@ export default function SignUp() {
                       )}
                     </div>
 
-                    <div className="mb-3 text-start">
+                    <div className="mb-3 text-start form-group">
                       <label className="form-label" htmlFor="email">Email address</label>
                       <BootstrapForm.Control
                         id="email"
@@ -227,7 +214,7 @@ export default function SignUp() {
                       )}
                     </div>
 
-                    <div className="mb-3 text-start">
+                    <div className="mb-3 text-start form-group">
                       <label className="form-label" htmlFor="phone">Phone number</label>
                       <label className="form-label" htmlFor="phone" style={{fontSize:"9px", color:"#6c757d" , margin:"0" , padding:"0 8px"}}>(Your one-time verification code)</label>
                       <div>
@@ -251,7 +238,7 @@ export default function SignUp() {
                     </div>
 
                     {/* <div className="row g-3 mb-3"> */}
-                      <div className="col-sm-12">
+                      <div className="col-sm-12  form-group">
                         <label className="form-label" htmlFor="password">Password</label>
                         <div className="position-relative">
                           <div className="position-relative">

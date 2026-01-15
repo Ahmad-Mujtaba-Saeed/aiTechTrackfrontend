@@ -203,7 +203,7 @@ const MasterLayout = ({ children }) => {
           </li> */}
 
           <li className="nav-item">
-            <span style={{ whiteSpace: 'nowrap', color: 'red' }}>
+            <span style={{ whiteSpace: 'nowrap', color: 'white' }}>
               {new Date(data.plan_expire_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
               {' '}
               {new Date(data.plan_expire_date).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
@@ -252,6 +252,7 @@ const MasterLayout = ({ children }) => {
         </ul>
       </nav>
       <div className={`content ${isNavToggled('/cv-generate', 'pb-0 overflow-hidden')}`} data-bs-theme="light">
+        <div className="content-bg"></div>
         {children}
         <footer className={`footer position-absolute ${isNavToggled('/cv-generate', 'd-none')}`} style={{ translate: 'none', rotate: 'none', scale: 'none', transform: 'translate(0px, 0px)', opacity: 1 }}>
           <div className="row g-0 justify-content-between align-items-center h-100">

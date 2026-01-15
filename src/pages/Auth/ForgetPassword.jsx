@@ -51,13 +51,13 @@ export default function ForgetPassword() {
 
         <div className="row flex-center position-relative min-vh-100 g-0 py-5">
           <div className="col-11 col-sm-10 col-xl-4">
-            <div className="card border border-translucent auth-card auth-card--narrow">
+            <div className="card auth-card auth-card--narrow">
               <div className="card-body pb-6">
-                <div className="row align-items-center gx-0 gy-7">
+                <div className="row align-items-center">
                   <div className="col mx-auto">
                     <div className="auth-form-box">
                       <div className="text-center">
-                        <div className="d-flex flex-center text-decoration-none mb-4">
+                        <div className="d-flex flex-center text-decoration-none my-4">
                           <div className="d-flex align-items-center fw-bolder fs-3 d-inline-block">
                             <img src={logo} alt="MyPathfinder logo" width="200" />
                           </div>
@@ -69,7 +69,7 @@ export default function ForgetPassword() {
                         </p>
 
                         <form onSubmit={handleSubmit}>
-                          <div className="mb-3 text-start">
+                          <div className="mb-3 text-start form-group">
                             <label className="form-label" htmlFor="email">Email Address</label>
                             <div className="form-icon-container">
                               <input
