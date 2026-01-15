@@ -32,16 +32,6 @@ const UpgradeSubscribePlan = () => {
         fetchPlans();
     }, []);
 
-    const getIntervalText = (interval) => {
-        switch (interval) {
-            case 'monthly': return '/month';
-            case 'quarterly': return '/quarter';
-            case 'yearly': return '/year';
-            case 'weekly': return '/week';
-            case 'daily': return '/day';
-            default: return '';
-        }
-    };
     const handleSubscribe = async (planId) => {
         if (userData?.plan_id === planId) {
             navigate('/upgrade-subscription');
@@ -123,8 +113,6 @@ const UpgradeSubscribePlan = () => {
         monthly: 'Save 25%',
         quaterly: 'Save 67%'
     }
-
-    console.table(plans)
 
     return (
         <MasterLayout>
