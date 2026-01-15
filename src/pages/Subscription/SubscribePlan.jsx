@@ -74,13 +74,44 @@ const SubscribePlan = () => {
     }
 
 
+    const features = {
+        weekly: [
+            'Access to basic features',
+            'Email support',
+            '5GB storage',
+            'Up to 3 projects'
+        ],
+        monthly: [
+            'All Basic features',
+            'Priority email & chat support',
+            '50GB storage',
+            'Unlimited projects',
+            'Advanced analytics',
+            'Custom branding'
+        ],
+        quaterly: [
+            'All Professional features',
+            '24/7 phone support',
+            '500GB storage',
+            'Unlimited projects',
+            'Advanced analytics & reporting',
+            'Custom branding & white-label',
+            'Dedicated account manager'
+        ]
+    }
+
+    const badges = {
+        monthly: 'Save 25%',
+        quaterly: 'Save 67%'
+    }
+
+
     return (
         <>
             <Container className="py-5" style={{ maxWidth: "1200px", marginTop: "40px" }}>
                 <Row className="text-center mb-5">
                     <Col>
                         <img src={logo} style={{ width: "120px", marginBottom: "10px" }} />
-
                         <h1 className="display-4 fw-bold">{userData?.plan_id ? 'Upgrade Your Plan' : 'Choose Your Plan'}</h1>
                         <p className="lead text-muted">Select the perfect plan for your needs</p>
                     </Col>
@@ -92,7 +123,7 @@ const SubscribePlan = () => {
                     </Alert>
                 )}
 
-                <Row className="justify-content-center g-3 " style={{ marginTop: "100px" }}>
+                <Row className="justify-content-center g-3 d-none" style={{ marginTop: "100px" }}>
                     {plans.map((plan) => (
                         <Col key={plan.id} md={6} lg={4} className="mb-4">
                             <Card
@@ -155,6 +186,101 @@ const SubscribePlan = () => {
                         </Col>
                     ))}
                 </Row>
+                <div className="plans-tiers">
+                    {plans.map((plan) => (
+                        <div className={`tier ${plan.name === 'Monthly Plan' && 'professional'}`}>
+                            <div className="badge-wrapper">
+                                {plan.name === 'Monthly Plan' && (
+                                    <span className="tier-badge">
+                                        RECOMMENDED
+                                    </span>
+                                )}
+                                {userData?.plan_id === plan.id && (
+                                    <span className="tier-badge">
+                                        ACTIVE
+                                    </span>
+                                )}
+                            </div>
+                            <div className="tier-name">
+                                {plan.name === 'Weekly Plan' ? 'Basic' : plan.name === 'Monthly Plan' ? 'Professional' : plan.name === 'Quarterly Plan' ? 'Premium' : 'Basic'}
+                            </div>
+                            <div className="tier-price"> ${plan.price}</div>
+                            <div className="tier-period">
+                                {plan.name}
+                                {plan.name === 'Weekly Plan' ? ('') : plan.name === 'Monthly Plan' ? (
+                                    badges.monthly && (
+                                        <span className="savings-badge">{badges.monthly}</span>
+                                    )
+                                ) : plan.name === 'Quarterly Plan' && (
+                                    badges.quaterly && (
+                                        <span className="savings-badge">{badges.quaterly}</span>
+                                    )
+                                )}
+                            </div>
+
+                            <ul className="tier-features">
+                                {plan.name === 'Weekly Plan' ? (
+                                    features?.weekly.map((feature, index) => (
+                                        <li key={index}>
+                                            <span className="feature-label">{feature}</span>
+                                        </li>
+                                    ))
+                                ) : plan.name === 'Monthly Plan' ? (
+                                    features?.monthly.map((feature, index) => (
+                                        <li key={index}>
+                                            <span className="feature-label">{feature}</span>
+                                        </li>
+                                    ))
+                                ) : plan.name === 'Quarterly Plan' && (
+                                    features?.quaterly.map((feature, index) => (
+                                        <li key={index}>
+                                            <span className="feature-label">{feature}</span>
+                                        </li>
+                                    ))
+                                )}
+                            </ul>
+
+                            <button className="tier-btn"
+                                onClick={() => {
+                                    Swal.fire({
+                                        title: "Confirm Plan Change",
+                                        html: `
+                                            Changing your subscription may result in additional charges or credits.<br>
+                                            Stripe will automatically adjust your next billing cycle based on usage and time left in current plan.<br><br>
+                                            <strong>Do you want to continue?</strong>
+                                        `,
+                                        icon: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonText: "Yes, proceed",
+                                        cancelButtonText: "Cancel",
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            handleSubscribe(plan.id); // ✅ proceed only if confirmed
+                                        }
+                                    });
+                                }}
+                                disabled={userData?.plan_id === plan.id || subscribing}
+                            >
+                                {subscribing ? (
+                                    <>
+                                        <Spinner
+                                            as="span"
+                                            animation="border"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                            className="me-2"
+                                        />
+                                        Processing...
+                                    </>
+                                ) : (
+                                    `Choose ${plan.name}`
+                                )}
+                            </button>
+                        </div>
+                    ))}
+
+                </div>
             </Container>
         </>
     );
