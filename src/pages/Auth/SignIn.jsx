@@ -114,7 +114,7 @@ export default function SignIn() {
                       </div>
 
                       <Formik
-                        initialValues={{ email: "", password: "", remember: false }}
+                        initialValues={{ email: "admin@admin.com", password: "AIProj@techtrack", remember: false }}
                         validationSchema={loginSchema}
                         onSubmit={handleLogin}
                       >
