@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -11,11 +11,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/user/userSlice";
 import GoogleSignIn from "./GoogleSignIn";
 
-// Validation schema
+// Validation schema for login (email or name)
 const loginSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Please enter a valid email address")
-    .required("Email is required"),
+  login: Yup.string()
+    .required("Email or name is required")
+    .test(
+      "email-or-name",
+      "Please enter a valid email or name",
+      (value) => {
+        if (!value) return false;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(value) || value.length >= 3; // name min length 3
+      }
+    ),
   password: Yup.string()
     .required("Password is required")
     .min(8, "Password must be at least 8 characters"),
@@ -24,50 +32,45 @@ const loginSchema = Yup.object().shape({
 export default function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const [showPassword, setShowPassword] = useState(false);
+
+  // Formik ref
+  const formikRef = useRef(null);
 
   // Get loading/error from Redux
   const { loading, error } = useSelector((state) => state.user);
 
   const handleLogin = async (values, { setSubmitting, setFieldError }) => {
     try {
-      // Clear previous errors
-      setFieldError('email', '');
-      setFieldError('password', '');
-      
-      // Reset loading state in Redux
-      dispatch({ type: 'user/login/pending' });
-      
+      setFieldError("login", "");
+      setFieldError("password", "");
+
+      dispatch({ type: "user/login/pending" });
       const result = await dispatch(login(values)).unwrap();
-      
+
       toast.success("Login successful!");
       window.location.href = "/";
     } catch (error) {
       console.error("Login error:", error);
-      
-      // Ensure loading is set to false in both Redux and local state
-      dispatch({ type: 'user/login/rejected', error: error });
+
+      dispatch({ type: "user/login/rejected", error: error });
       setSubmitting(false);
-      
-      // Handle 401 Unauthorized (invalid credentials)
-      if (error.status === 401 || error.message?.includes('Unauthenticated')) {
-        setFieldError('password', 'Invalid email or password');
-        toast.error('Invalid email or password');
-      } 
-      // Handle validation errors (422)
-      else if (error.errors) {
+
+      if (error.status === 401 || error.message?.includes("Unauthenticated")) {
+        setFieldError("password", "Invalid email or password");
+        toast.error("Invalid email or password");
+      } else if (error.errors) {
         Object.entries(error.errors).forEach(([field, messages]) => {
-          const errorMessage = Array.isArray(messages) ? messages[0] : String(messages);
+          const errorMessage = Array.isArray(messages)
+            ? messages[0]
+            : String(messages);
           setFieldError(field.toLowerCase(), errorMessage);
         });
-        toast.error('Please correct the errors in the form');
-      } 
-      // Handle other errors
-      else {
-        const errorMessage = error.message || 'Login failed. Please try again.';
+        toast.error("Please correct the errors in the form");
+      } else {
+        const errorMessage = error.message || "Login failed. Please try again.";
         toast.error(errorMessage);
-        console('123132132')
+        console.log("123132132");
       }
     } finally {
       setSubmitting(false);
@@ -82,79 +85,97 @@ export default function SignIn() {
         <div className="bg-holder bg-auth-card-overlay auth-bg-image"></div>
 
         <div className="row flex-center position-relative min-vh-100 g-0">
-          <div className="col-11 col-sm-10 col-xl-4">
-            <div className="card auth-card">
-              <div className="card-body py-5">
-                <div className="row align-items-center">
-                  <div className="col mx-auto">
-                    <div className="auth-form-box">
-                      <div className="text-center mb-5">
-                        <Link
-                          className="d-flex flex-center text-decoration-none my-4"
-                          to="/"
-                          aria-label="Go to homepage"
-                        >
-                          <div className="d-flex align-items-center fw-bolder fs-3 d-inline-block">
-                            <img
-                              src={logo}
-                              alt="MyPathfinder logo"
-                              width="200"
-                            />
+          <div className="col-11 col-sm-10 col-xl-8">
+            <div className="row g-3">
+              {/* Left: Login Form */}
+              <div className="col-xl-6">
+                <div className="card auth-card">
+                  <div className="card-body py-5">
+                    <div className="row align-items-center">
+                      <div className="col mx-auto">
+                        <div className="auth-form-box">
+                          <div className="text-center mb-5">
+                            <Link
+                              className="d-flex flex-center text-decoration-none my-4"
+                              to="/"
+                              aria-label="Go to homepage"
+                            >
+                              <div className="d-flex align-items-center fw-bolder fs-3 d-inline-block">
+                                <img
+                                  src={logo}
+                                  alt="MyPathfinder logo"
+                                  width="200"
+                                />
+                              </div>
+                            </Link>
+                            <h3 className="fw-bold">Sign In</h3>
+                            <p>Get access to your account</p>
                           </div>
-                        </Link>
-                        <h3 className="fw-bold">Sign In</h3>
-                        <p>Get access to your account</p>
-                      </div>
-                      <GoogleSignIn />
-                      <div className="position-relative">
-                        <hr className="bg-body-secondary mt-5 mb-4" />
-                        <div className="divider-content-center bg-body-emphasis">
-                          or use email
-                        </div>
-                      </div>
-
-                      <Formik
-                        initialValues={{ email: "admin@admin.com", password: "AIProj@techtrack", remember: false }}
-                        validationSchema={loginSchema}
-                        onSubmit={handleLogin}
-                      >
-                        {({
-                          values,
-                          errors,
-                          touched,
-                          handleChange,
-                          handleBlur,
-                          handleSubmit,
-                          isSubmitting,
-                        }) => (
-                          <form onSubmit={handleSubmit} noValidate>
-
-                            {/* Email */}
-                            <div className="mb-3 text-start form-group">
-                              <label className="form-label" htmlFor="email">
-                                Email address
-                              </label>
-                              <input
-                                className={`form-control ${
-                                  touched.email && errors.email ? "is-invalid" : ""
-                                }`}
-                                id="email"
-                                name="email"
-                                type="email"
-                                placeholder="name@example.com"
-                                value={values.email}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                disabled={loading}
-                              />
-                              {touched.email && errors.email && (
-                                <div className="invalid-feedback d-block">
-                                  {errors.email}
-                                </div>
-                              )}
+                          <GoogleSignIn />
+                          <div className="position-relative">
+                            <hr className="bg-body-secondary mt-5 mb-4" />
+                            <div className="divider-content-center bg-body-emphasis">
+                              or use email / name
                             </div>
+                          </div>
 
-                            {/* Password */}
+                          <Formik
+                            innerRef={formikRef}
+                            initialValues={{
+                              login: "",
+                              password: "",
+                              remember: false,
+                            }}
+                            validationSchema={loginSchema}
+                            onSubmit={handleLogin}
+                          >
+                            {({
+                              values,
+                              errors,
+                              touched,
+                              handleChange,
+                              handleBlur,
+                              handleSubmit,
+                              isSubmitting,
+                              setFieldValue,
+                            }) => {
+                              const copyAdmin = () => {
+                                setFieldValue("login", "admin@admin.com");
+                                setFieldValue("password", "AIProj@techtrack");
+                              };
+
+                              const copyUser = () => {
+                                setFieldValue("login", "user@user.com");
+                                setFieldValue("password", "User@123");
+                              };
+
+                              return (
+                                <form onSubmit={handleSubmit} noValidate>
+                                  {/* Login field */}
+                                  <div className="mb-3 text-start form-group">
+                                    <label className="form-label">
+                                      Email or name
+                                    </label>
+                                    <input
+                                      className={`form-control ${
+                                        touched.login && errors.login
+                                          ? "is-invalid"
+                                          : ""
+                                      }`}
+                                      name="login"
+                                      type="text"
+                                      value={values.login}
+                                      onChange={handleChange}
+                                      onBlur={handleBlur}
+                                    />
+                                    {touched.login && errors.login && (
+                                      <div className="invalid-feedback d-block">
+                                        {errors.login}
+                                      </div>
+                                    )}
+                                  </div>
+
+                                   {/* Password */}
                             <div className="mb-3 text-start form-group">
                               <label className="form-label" htmlFor="password">
                                 Password
@@ -248,12 +269,128 @@ export default function SignIn() {
                               </Link>
                             </div>
                           </form>
-                        )}
-                      </Formik>
+                              );
+                            }}
+                          </Formik>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+
+              {/* Right: Credentials Card */}
+              <div className="col-xl-6">
+                <div
+                  className="card auth-card shadow-lg rounded-4 border-0 p-4"
+                  style={{ backgroundColor: "#f8f9fa" }}
+                >
+                  {/* Admin Section */}
+                  <div className="mb-5">
+                    <div className="d-flex align-items-center mb-3">
+                      <span className="badge bg-dark me-2 py-2 px-3 rounded-pill">
+                        Admin
+                      </span>
+                      <h5 className="fw-bold mb-0">Credentials</h5>
+                    </div>
+                    <div className="mb-3">
+                      <div className="input-group">
+                        <span className="input-group-text bg-primary text-white">
+                          <i className="bi bi-envelope-fill"></i>
+                        </span>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value="admin@admin.com"
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <div className="input-group">
+                        <span className="input-group-text bg-primary text-white">
+                          <i className="bi bi-lock-fill"></i>
+                        </span>
+                        <input
+                          type="password"
+                          className="form-control"
+                          value="AIProj@techtrack"
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                    <button
+                      className="btn btn-primary w-100 fw-bold"
+                      onClick={() => {
+                        formikRef.current?.setFieldValue(
+                          "login",
+                          "admin@admin.com"
+                        );
+                        formikRef.current?.setFieldValue(
+                          "password",
+                          "AIProj@techtrack"
+                        );
+                      }}
+                    >
+                      Copy Admin
+                    </button>
+                  </div>
+
+                  <hr className="my-4" />
+
+                  {/* User Section */}
+                  <div>
+                    <div className="d-flex align-items-center mb-3">
+                      <span className="badge me-2 py-2 px-3 rounded-pill" style={{ backgroundColor: 'green' }}>
+                        User
+                      </span>
+                      <h5 className="fw-bold mb-0">Credentials</h5>
+                    </div>
+                    <div className="mb-3">
+                      <div className="input-group">
+                        <span className="input-group-text bg-success text-white">
+                          <i className="bi bi-envelope-fill"></i>
+                        </span>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value="user@user.com"
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <div className="input-group">
+                        <span className="input-group-text bg-success text-white">
+                          <i className="bi bi-lock-fill"></i>
+                        </span>
+                        <input
+                          type="password"
+                          className="form-control"
+                          value="User@123"
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                    <button
+                      className="btn  w-100 fw-bold" style={{ backgroundColor: 'green', color:'white' }}
+                      onClick={() => {
+                        formikRef.current?.setFieldValue(
+                          "login",
+                          "user@user.com"
+                        );
+                        formikRef.current?.setFieldValue(
+                          "password",
+                          "User@123"
+                        );
+                      }}
+                    >
+                      Copy User
+                    </button>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
