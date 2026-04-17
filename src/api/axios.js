@@ -1,27 +1,9 @@
 import axios from 'axios';
 
-// const baseURLAPI = 'https://slateblue-snake-907020.hostingersite.com/api';
-
-// const baseURL = 'https://13.53.164.183';
-// const baseURLAPI = 'https://slateblue-snake-907020.hostingersite.com/api';
-
 const baseURL = 'https://cv-api.wasimdev.com';
-
 const baseURLAPI = 'https://cv-api.wasimdev.com/api';
 
-// const baseURL = 'http://127.0.0.1:8085';
-// const baseURLAPI = 'http://127.0.0.1:8085/api';
-
-// const baseURLAPI = 'http://localhost:8000/api';
-// const baseURL = 'http://localhost:8000';
-
-
-
-
-
-
 const stripe_pub_key = "pk_live_51SGKUzRsDMWvnk1JRPvPMqDUenPSYHKNAoCRKPiuGmcEnTLVgBicJ22OaAMtiJXlrSJA3mE9CNJOjEzWixyPvlZ000YhO6ZDRD"
-
 const instance = axios.create({
     baseURL: baseURLAPI,
     headers: {
@@ -29,7 +11,6 @@ const instance = axios.create({
         'Accept': 'application/json'
     }
 });
-
 
 instance.interceptors.request.use(
     (config) => {

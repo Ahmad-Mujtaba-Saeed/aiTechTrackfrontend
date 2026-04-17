@@ -102,14 +102,6 @@ const CareerAdviceSection = ({ sectionId, count }) => {
   if (!section) return null;
 
   return (
-    // <div className="section" id={sectionId}>
-    //   <h2 className="mb-2">{section.title}</h2>
-    //   <ul className="mb-0">
-    //     {section.tips.map((tip, index) => (
-    //       <li key={index}>{tip}</li>
-    //     ))}
-    //   </ul>
-    // </div>
     <div className="col-12 col-md-6 col-lg-4">
       <div className="section card h-100" id={sectionId}>
         <div className="card-body p-0">
@@ -135,11 +127,7 @@ export default function CareerAdvice() {
   return (
     <MasterLayout>
       <BreadCrum title='Support' subTitle='MyPathfinder makes the job search simple, personalised, and efficient.' />
-
-
-
       <div className="row g-3">
-
         <div className="col-12">
           <div className="feature-cards">
             <div className="row g-3">

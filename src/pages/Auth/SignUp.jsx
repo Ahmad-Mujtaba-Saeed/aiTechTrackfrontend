@@ -30,9 +30,6 @@ const validationSchema = Yup.object().shape({
       'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
     )
     .required('Password is required'),
-  // password_confirmation: Yup.string()
-  //   .oneOf([Yup.ref('password'), null], 'Passwords must match')
-  //   .required('Confirm Password is required'),
   phone: Yup.string()
     .required('Phone number is required')
     .test('is-valid-e164', 'Enter a valid phone number with country code', (value) => !!value && isValidPhoneNumber(value)),
@@ -74,7 +71,6 @@ export default function SignUp() {
       name: '',
       email: '',
       password: '',
-      // password_confirmation: '',
       phone: '',
       terms: false
     },
@@ -237,7 +233,7 @@ export default function SignUp() {
                       )}
                     </div>
 
-                    {/* <div className="row g-3 mb-3"> */}
+
                       <div className="col-sm-12  form-group">
                         <label className="form-label" htmlFor="password">Password</label>
                         <div className="position-relative">
@@ -269,39 +265,6 @@ export default function SignUp() {
                           )}
                         </div>
                       </div>
-
-                      {/* <div className="col-sm-6">
-                        <label className="form-label" htmlFor="password_confirmation">Confirm Password</label>
-                        <div className="position-relative">
-                          <div className="position-relative">
-                            <BootstrapForm.Control
-                              id="password_confirmation"
-                              name="password_confirmation"
-                              type={showConfirmPassword ? 'text' : 'password'}
-                              placeholder="Confirm Password"
-                              className={`pe-5 ${touched.password_confirmation && errors.password_confirmation ? 'is-invalid' : ''}`}
-                              onChange={handleChange}
-                              onBlur={handleBlur}
-                              value={values.password_confirmation}
-                              autoComplete="new-password"
-                              required
-                            />
-                            <div
-                              className="position-absolute top-50 end-0 translate-middle-y me-2"
-                              style={{ cursor: 'pointer' }}
-                              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                            >
-                            {showConfirmPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
-                            </div>
-                          </div>
-                          {touched.password_confirmation && errors.password_confirmation && (
-                            <div className="invalid-feedback d-block">
-                              {errors.password_confirmation}
-                            </div>
-                          )}
-                        </div>
-                      </div> */}
-                    {/* </div> */}
 
                     <div className="form-check mb-3 mt-2">
                       <input

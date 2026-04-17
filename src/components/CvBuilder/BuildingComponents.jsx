@@ -83,7 +83,6 @@ export default function BuildingComponents() {
     dispatch(getrecentCvsCreated({ page: currentPage, perPage: itemsPerPage }));
   }, [dispatch, currentPage, itemsPerPage]);
 
-  // In your component's return, add the pagination controls
   <div className="d-flex justify-content-between align-items-center mt-3">
     <div className="d-flex align-items-center">
       <span className="me-2">Show:</span>
@@ -268,42 +267,25 @@ export default function BuildingComponents() {
       formData.append('additionalInfo', uploadFormData.additionalInfo);
     }
 
-
     setShowFinalize(true);
-
     setMessage('Uploading your CV for analysis — this may take a moment...')
-
-    // toast.info('Uploading your CV for analysis — this may take a moment...', {
-    //   autoClose: 5000,
-    //   position: 'top-right'
-    // });
-    // Schedule sequential toasts
 
 
     try {
           setTimeout(() => {
-      // toast.info('Parsing your CV content...', {
-      //   autoClose: 5000,
-      //   position: 'top-right'
-      // });
+
       setMessage('Parsing your CV content...')
 
       setTimeout(() => {
-        // toast.info(`Analyzing your CV in ${uploadFormData.languageStyle || 'standard'} style...`, {
-        //   autoClose: 5000,
-        //   position: 'top-right'
-        // });
+
         setMessage(`Analysing your CV in ${uploadFormData.languageStyle || 'standard'} style...`)
 
         setTimeout(() => {
-          // toast.info('Finalising your CV...', {
-          //   autoClose: 20000,
-          //   position: 'top-right'
-          // });
+
           setMessage('Finalising your CV...')
-        }, 9000); // 7 seconds after the second toast (12s total)
-      }, 9000); // 7 seconds after the first toast (7s total)
-    }, 20000); // 20 seconds after initial toast
+        }, 9000); 
+      }, 9000); 
+    }, 20000); 
 
 
       const uploadResult = await dispatch(uploadExistingResume(formData)).unwrap();
@@ -513,10 +495,8 @@ export default function BuildingComponents() {
 
         <Form onSubmit={handleUploadSubmit}>
           <Modal.Body>
-            {/* File Info Display */}
             {selectedFile && (
               <div className="alert alert-info d-flex align-items-center p-0 gap-2">
-                {/* <FiFile className="me-2" /> */}
                 {getFileIcon(selectedFile.name)}
                 <div>
                   <strong>Selected file:</strong> {selectedFile.name}<br />
@@ -586,7 +566,6 @@ export default function BuildingComponents() {
         </Form>
       </Modal>
 
-      {/* AI Generation Modal */}
       <Modal
         show={showAiModal}
         onHide={handleCloseAiModal}

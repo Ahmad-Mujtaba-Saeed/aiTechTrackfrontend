@@ -6,7 +6,6 @@ const firebaseConfig = {
   apiKey: "AIzaSyAuu2ed5WspBJo13KZVRL6BNBdoooZQiP8",
   authDomain: "aitechtrackbackend.firebaseapp.com",
   projectId: "aitechtrackbackend",
-  // ...other config from Firebase console
 };
 
 const app = initializeApp(firebaseConfig);

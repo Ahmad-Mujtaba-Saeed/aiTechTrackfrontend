@@ -30,7 +30,6 @@ const ProfessionalTemplate2 = ({ resumeData }) => {
           <p>{resumeData?.location?.formatted}</p>
           <p>{resumeData?.location?.city}</p>
           <p>{resumeData?.location?.postCode}</p>
-          {/* <p>{resumeData?.website?.[0]}</p> */}
         </div>
 
         <div style={styles.section}>

@@ -7,14 +7,12 @@ const ProfessionalTemplate = ({ resumeData }) => {
   return (
     <div style={{
       display: 'flex',
-      // maxWidth: '900px',
       margin: '0 auto',
       border: '1px solid #ccc',
       fontFamily: "'Inter', Tahoma, sans-serif",
       color: '#4e4e4e',
       background: '#fff'
     }}>
-      {/* Left Section */}
       <div style={{
         width: '30%',
         backgroundColor: '#b48c7a',
@@ -56,12 +54,10 @@ const ProfessionalTemplate = ({ resumeData }) => {
             <p>{resumeData?.location?.formatted}</p>
             <p>{resumeData?.location?.city}</p>
             <p>{resumeData?.location?.postCode}</p>
-            {/* <p>{resumeData?.website?.[0]}</p> */}
           </div>
         </div>
       </div>
 
-      {/* Right Section */}
       <div style={{
         width: '70%',
         padding: '30px',
@@ -114,7 +110,6 @@ const ProfessionalTemplate = ({ resumeData }) => {
           ))}
         </Section>
 
-                  {/* Custom sections in left panel */}
         {customSections
           .filter(section => section.type === 'description' || section.type === 'skills' || section.type === 'list' || section.type === 'entries')
           .map((section, idx) => (

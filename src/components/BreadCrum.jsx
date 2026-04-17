@@ -13,7 +13,7 @@ export default function BreadCrum(props) {
                             </span>
                             {props.title}
                         </h1>
-                        <h3 className="fs-7 fw-normal lh-lg breadcrumb-subtitle">{props.subTitle}</h3>
+                        <p className="fs-7 fw-normal lh-lg breadcrumb-subtitle mb-0">{props.subTitle}</p>
                     </div>
                 </div>
             </div>

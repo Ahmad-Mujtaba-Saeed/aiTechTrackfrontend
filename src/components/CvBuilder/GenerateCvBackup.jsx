@@ -39,10 +39,6 @@ import axios, { baseUrl } from "../../api/axios";
 
 
 const cardTemplate = [
-    // { name: 'Template1', template: ModernTemplate, image: 'dummy.jpg' },
-    // { name: 'Template2', template: ClassicTemplate, image: 'dummy.jpg' },
-    // { name: 'Template3', template: ProfessionalTemplate, image: 'dummy.jpg' },
-    // { name: 'Template4', template: ProfessionalTemplate2, image: 'dummy.jpg' },
     { name: 'Default', template: Template9, image: 'default1.png', recommended: true },
     { name: 'Basic', template: Template12, image: 'classic.png' },
     { name: 'Professional', template: Template5, image: 'professional.png' },
@@ -103,10 +99,6 @@ export default function CVBuilder() {
 
     const [customSections, setCustomSections] = useState([]);
 
-    // State for active tab
-    // const [selectedTemplate, setSelectedTemplate] = useState("Default");
-
-
     const handleTabClick = (tabName) => {
         setActiveTab((prevTab) => (prevTab === tabName ? '' : tabName)); // toggle if same, else set new
     };
@@ -141,12 +133,6 @@ export default function CVBuilder() {
             }));
         }
 
-        // Batch all updates in a single dispatch
-        // if (updates.length > 0) {
-        //     dispatch(
-        //         updateField(updates.reduce((acc, curr) => ({ ...acc, [curr.path]: curr.value }), []))
-        //     );
-        // }
     }, [data, parsedResume, dispatch]);
 
     const handleNextTab = () => {
@@ -543,8 +529,6 @@ export default function CVBuilder() {
         return calculatedPages;
     };
 
-    // Update total pages when resume data changes
-    // Update total pages when resume data changes
     useEffect(() => {
         if (parsedResume && cvRef.current) {
             setTimeout(() => {
@@ -558,12 +542,7 @@ export default function CVBuilder() {
     }, [parsedResume, currentPage]);
 
     const [downloadPDFLoader, setDownloadPDFLoader] = useState(false);
-
-    // Add this ref at the top of your component with other hooks
     const hasAutoDownloaded = useRef(false);
-
-    // Update the auto-download effect
-    // Add this state at the top with other states
     const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
 
@@ -651,20 +630,13 @@ export default function CVBuilder() {
         } catch {
         }
 
-        // For all templates including Classic, Default, Luxe
         if (["Classic", "Default", "Luxe"].includes(selectedTemplate)) {
             try {
                 const response = await axios.get(`/resume/${id}/download?template=${selectedTemplate}`, {
                     responseType: 'blob'
                 });
-
-                // Create a blob from the PDF stream
                 const blob = new Blob([response.data], { type: 'application/pdf' });
-
-                // Create object URL
                 const fileURL = URL.createObjectURL(blob);
-
-                // Create PDF viewer with download option
                 createPDFViewer(fileURL, blob, `${parsedResume?.candidateName?.[0]?.firstName || "CV"}.pdf`);
 
             } catch (error) {
@@ -676,7 +648,6 @@ export default function CVBuilder() {
             return;
         }
 
-        // For other templates that use html2pdf (if any)
         if (!cvRef.current) {
             setDownloadPDFLoader(false);
             return;
@@ -693,13 +664,11 @@ export default function CVBuilder() {
         };
 
         try {
-            // Generate PDF as blob instead of saving directly
             const pdfBlob = await html2pdf().from(element).set(opt).output('blob');
 
             // Create object URL
             const pdfUrl = URL.createObjectURL(pdfBlob);
 
-            // Create PDF viewer with download option
             createPDFViewer(pdfUrl, pdfBlob, `${parsedResume?.candidateName?.[0]?.firstName || "CV"}.pdf`);
 
         } catch (error) {
@@ -709,10 +678,6 @@ export default function CVBuilder() {
             setDownloadPDFLoader(false);
         }
     };
-
-    // Helper function to create PDF viewer with consistent layout
-
-
 
     const createPDFViewer = (pdfUrl, pdfBlob, filename) => {
         // Create overlay container
@@ -726,7 +691,6 @@ export default function CVBuilder() {
         overlay.style.zIndex = '9998';
         overlay.id = 'pdf-overlay';
 
-        // Create iframe to display PDF
         const iframe = document.createElement('iframe');
         iframe.style.width = '100%';
         iframe.style.height = 'calc(100vh - 60px)'; // Leave space for header
@@ -845,8 +809,6 @@ export default function CVBuilder() {
         };
 
         document.addEventListener('keydown', handleEscape);
-
-        // Store cleanup function on elements for potential external use
         overlay.cleanup = cleanup;
         header.cleanup = cleanup;
     };
@@ -892,9 +854,6 @@ export default function CVBuilder() {
 
     const handleAnalysis = () => {
         setActiveTab('tabAnalysis');
-        // if (!AnalyseResumeData || Object.keys(AnalyseResumeData).length === 0) {
-        //     handleAnalyze();
-        // }
     }
 
 
@@ -902,13 +861,11 @@ export default function CVBuilder() {
         // clone the parsedResume object
         const updatedResume = { ...parsedResume };
 
-        // Ensure workExperience exists and has the item at the given index
         if (!updatedResume.workExperience?.[index]) {
             console.error('Invalid work experience index or work experience not found');
             return;
         }
 
-        // Get the suggested paragraph from either returnAction or AnalyseResumeData
         const suggestedParagraph =
             returnAction?.data?.workExperience?.[index]?.suggested_paragraph ||
             AnalyseResumeData?.workExperience?.[index]?.suggested_paragraph;
@@ -918,7 +875,6 @@ export default function CVBuilder() {
             return;
         }
 
-        // Update the work experience description
         updatedResume.workExperience = updatedResume.workExperience.map((item, i) =>
             i === index
                 ? { ...item, workExperienceDescription: suggestedParagraph }
@@ -931,22 +887,15 @@ export default function CVBuilder() {
 
 
     const handleUndoWorkExp = (index) => {
-        // clone the parsedResume object
         const updatedResume = { ...parsedResume };
-
-        // clone workExperience array
         const updatedWorkExperience = [...updatedResume.workExperience];
 
-        // replace only the description at the given index
         updatedWorkExperience[index] = {
             ...updatedWorkExperience[index],
             workExperienceDescription: AnalyseResumeData.workExperience[index].original,
         };
 
-        // assign updated array back
         updatedResume.workExperience = updatedWorkExperience;
-
-        // dispatch back to redux
         dispatch(setParsedResume(updatedResume));
     };
 
@@ -1016,12 +965,10 @@ export default function CVBuilder() {
     // Toggle accordion sections
     const toggleSection = (section) => {
         setOpenSections((prev) => {
-            // If the clicked section is already open, close it
+
             if (prev[section]) {
                 return { [section]: false };
             }
-
-            // Otherwise, close all and open only the clicked one
             return { [section]: true };
         });
     };
@@ -1038,18 +985,15 @@ export default function CVBuilder() {
         data: null
     });
 
-
-    // Update the education form state to include educationMajor
     const [eduFormData, setEduFormData] = useState({
         eduDegree: '',
         eduInstitution: '',
         eduStartDate: '',
         eduEndDate: '',
         achievedGrade: '',
-        educationMajor: [''] // Add educationMajor as an array to store multiple majors
+        educationMajor: [''] 
     });
 
-    // Add a function to handle adding/removing major fields
     const handleAddMajor = () => {
         setEduFormData(prev => ({
             ...prev,
@@ -1109,15 +1053,12 @@ export default function CVBuilder() {
     };
 
     const eduHandleAddEducation = () => {
-        // Check if there's already an empty form
         if (eduCurrentForm) {
-            // Check if the current form has any data
             const eduHasData = Object.values(eduFormData).some(eduValue =>
                 eduValue && typeof eduValue === 'string' ? eduValue.trim() !== '' : false
             );
 
             if (eduHasData) {
-                // Check if all required fields are filled
                 const eduAllFieldsFilled =
                     (eduFormData.eduDegree && eduFormData.eduDegree.trim() !== '') &&
                     (eduFormData.eduInstitution && eduFormData.eduInstitution.trim() !== '') &&
@@ -1128,8 +1069,6 @@ export default function CVBuilder() {
                     toast.error('Please complete the current education form before adding a new one');
                     return;
                 }
-
-                // If form is complete, save it
                 eduHandleSaveEducation();
             }
         }
@@ -1191,8 +1130,6 @@ export default function CVBuilder() {
 
 
         dispatch(updateField({ path: "education", value: [...parsedResume.education, dispatcheducationList] }));
-
-        // setEduList([...eduList, eduNewEducation]);
         setEduCurrentForm(null);
         setEduFormData({
             eduDegree: '',
@@ -1203,8 +1140,6 @@ export default function CVBuilder() {
             educationMajor: ['']
         });
 
-
-        // toast.success('');
     };
 
     const eduHandleEditEducation = (eduIndex) => {
@@ -1282,13 +1217,8 @@ export default function CVBuilder() {
         });
     };
 
-    // =================================================================================
-
     const [expItems, setExpItems] = useState([]);
-
-    // Function to add a new incomplete experience item
     const expHandleAddExperience = () => {
-        // Check if there's already an incomplete form
         const hasIncomplete = expItems.some(item => !item.expIsComplete);
 
         if (hasIncomplete) {
@@ -1296,7 +1226,6 @@ export default function CVBuilder() {
             return;
         }
 
-        // Create a new incomplete experience item with highlights
         const expNewItem = {
             expId: Date.now(),
             expJobTitle: '',
@@ -1468,7 +1397,6 @@ export default function CVBuilder() {
                             style={{
                                 background: 'white',
                                 padding: '16px',
-                                // minHeight: `${Math.max(1, totalPages) * 1080}px`,
                                 transform: `scale(${zoom})`,
                                 transformOrigin: 'top center',
                                 transition: 'transform 0.2s ease-in-out',
@@ -1509,7 +1437,6 @@ export default function CVBuilder() {
                             })()}
                         </div>
 
-                        {/* Only show page dividers if we have multiple pages with content */}
                         {totalPages > 1 && Array.from({ length: totalPages - 1 }).map((_, index) => (
                             <div
                                 key={index}
@@ -2035,12 +1962,6 @@ export default function CVBuilder() {
                                                                         )
                                                                     }
                                                                 >
-                                                                    {/* <img
-                                                                        src={toggleImage}
-                                                                        alt="Complete icon"
-                                                                        width="28"
-                                                                        height="28"
-                                                                    /> */}
                                                                     {!parsedResume?.employmentDisabled ?
                                                                         (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
                                                                         : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
@@ -2347,8 +2268,6 @@ export default function CVBuilder() {
                                                                                     </div>
                                                                                 </div>
                                                                             ) : (
-
-                                                                                // Display completed experience item
                                                                                 <>
                                                                                     <div className="d-flex justify-content-between align-items-center mb-2">
                                                                                         <small className="fw-bold text-muted">{parsedResume?.employmentTitle || "Experience"} #{expIndex + 1}</small>
@@ -2402,7 +2321,7 @@ export default function CVBuilder() {
                                                                         </div>
                                                                     ))}
 
-                                                                    {/* Add Experience Button */}
+
                                                                     <button
                                                                         type="button"
                                                                         className="btn btn-outline-secondary btn-sm mt-2"
@@ -2452,12 +2371,6 @@ export default function CVBuilder() {
                                                                         )
                                                                     }
                                                                 >
-                                                                    {/* <img
-                                                                        src={toggleImage}
-                                                                        alt="Complete icon"
-                                                                        width="28"
-                                                                        height="28"
-                                                                    /> */}
                                                                     {!parsedResume?.educationDisabled ?
                                                                         (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
                                                                         : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
@@ -2601,8 +2514,6 @@ export default function CVBuilder() {
                                                                         </div>
                                                                     ))}
 
-
-                                                                    {/* Current form for adding/editing */}
                                                                     {eduCurrentForm && (
                                                                         <div className="mb-3 p-3 border rounded">
                                                                             <div className="d-flex justify-content-between align-items-center mb-2">
@@ -2656,7 +2567,6 @@ export default function CVBuilder() {
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            {/* Inside your education form, add this section after the achieved grade field */}
                                                                             <div className="mb-3">
                                                                                 <label className="form-label">Major(s)</label>
                                                                                 {eduFormData.educationMajor.map((major, index) => (
@@ -2770,12 +2680,6 @@ export default function CVBuilder() {
                                                                         )
                                                                     }
                                                                 >
-                                                                    {/* <img
-                                                                        src={toggleImage}
-                                                                        alt="Complete icon"
-                                                                        width="28"
-                                                                        height="28"
-                                                                    /> */}
                                                                     {!parsedResume?.skillsDisabled ?
                                                                         (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
                                                                         : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
@@ -3005,12 +2909,6 @@ export default function CVBuilder() {
                                                                         )
                                                                     }
                                                                 >
-                                                                    {/* <img
-                                                                        src={toggleImage}
-                                                                        alt="Complete icon"
-                                                                        width="28"
-                                                                        height="28"
-                                                                    /> */}
                                                                     {!parsedResume?.languagesDisabled ?
                                                                         (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
                                                                         : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
@@ -3211,12 +3109,6 @@ export default function CVBuilder() {
                                                                         )
                                                                     }
                                                                 >
-                                                                    {/* <img
-                                                                        src={toggleImage}
-                                                                        alt="Complete icon"
-                                                                        width="28"
-                                                                        height="28"
-                                                                    /> */}
                                                                     {!parsedResume?.hobbiesDisabled ?
                                                                         (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
                                                                         : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
@@ -3565,7 +3457,6 @@ export default function CVBuilder() {
                                                                 overflow: 'hidden'
                                                             }}
                                                         >
-                                                            {/* Recommended Ribbon */}
                                                             {template.recommended && (
                                                                 <div
                                                                     style={{
@@ -3992,7 +3883,6 @@ export default function CVBuilder() {
                                 })()}
                             </div>
 
-                            {/* Only show page dividers if we have multiple pages with content */}
                             {totalPages > 1 && Array.from({ length: totalPages - 1 }).map((_, index) => (
                                 <div
                                     key={index}

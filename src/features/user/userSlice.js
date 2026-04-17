@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { registerUser, loginUser, fetchUser, updateUserProfile, updateUserProfileSettings ,userForgotPassword , userResetPassword , updateUserCurrentPassword , userGoogleSignIn} from "./userAPI";
+import { registerUser, loginUser, fetchUser, updateUserProfile, updateUserProfileSettings, userForgotPassword, userResetPassword, updateUserCurrentPassword, userGoogleSignIn } from "./userAPI";
 import { REHYDRATE } from 'redux-persist';
 
 
@@ -67,10 +67,10 @@ export const resetPassword = createAsyncThunk(
       const response = await userResetPassword(resetData);
       return response;
     } catch (error) {
-      const errorMessage = error.response?.data?.message || 
-                         (error.response?.data?.errors ? 
-                          Object.values(error.response.data.errors).flat().join(' ') : 
-                          'Failed to reset password');
+      const errorMessage = error.response?.data?.message ||
+        (error.response?.data?.errors ?
+          Object.values(error.response.data.errors).flat().join(' ') :
+          'Failed to reset password');
       return rejectWithValue(errorMessage);
     }
   }
@@ -91,8 +91,8 @@ const userSlice = createSlice({
     error: null,
     accessToken: null,
     success: "",
-    forgetPasswordError:"",
-    forgetPasswordSuccess:""
+    forgetPasswordError: "",
+    forgetPasswordSuccess: ""
   },
   reducers: {
     logout: (state) => {
@@ -132,7 +132,6 @@ const userSlice = createSlice({
         state.loading = false;
         // The error payload is already formatted by the API
         state.error = action.error?.message || 'Login failed. Please check your credentials and try again.';
-        // Don't re-throw the error here as it's already handled in the component
       })
       .addCase(getUser.pending, (state) => { state.bootstrapping = true; })
       .addCase(getUser.fulfilled, (state, action) => {
@@ -148,7 +147,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
-      .addCase(updateProfileSettings.pending, (state) => { 
+      .addCase(updateProfileSettings.pending, (state) => {
         // state.completedSteps = [];
         state.loading = true;
       })
@@ -178,7 +177,7 @@ const userSlice = createSlice({
         state.forgetPasswordError = action.payload || 'Failed to send reset email';
         state.forgetPasswordSuccess = null;
       })
-      
+
       .addCase(resetPassword.pending, (state) => {
         state.loading = true;
         state.forgetPasswordError = null;
@@ -219,7 +218,7 @@ const userSlice = createSlice({
         state.error = null;
         state.success = "";
       })
-      
+
   },
 });
 

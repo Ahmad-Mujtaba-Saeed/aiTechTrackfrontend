@@ -44,7 +44,6 @@ const ProfilePage = () => {
     try {
       const formData = new FormData();
       
-      // Add all the form fields to FormData
       if (editedUser.name) formData.append('name', editedUser.name);
       if (editedUser.address) formData.append('address', editedUser.address);
       if (editedUser.email) formData.append('email', editedUser.email);
@@ -53,21 +52,16 @@ const ProfilePage = () => {
       if (editedUser.profile_img && editedUser.profile_img instanceof File) {
         formData.append('profile_img', editedUser.profile_img);
       } else if (typeof editedUser.profile_img === 'string') {
-        // If it's a string (URL), it means the image wasn't changed
-        // formData.append('profile_img', editedUser.profile_img);
       }
 
-      // Dispatch the update action with formData
       const resultAction = await dispatch(updateProfileSettings(formData));
       
-      // If the update was successful, update the local state
       if (resultAction) {
         setUser(editedUser);
         setIsEditing(false);
       }
     } catch (error) {
       console.error('Error updating profile:', error);
-      // Handle error (you might want to show an error message to the user)
     }
   };
 

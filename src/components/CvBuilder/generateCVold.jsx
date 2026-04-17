@@ -34,10 +34,6 @@ import html2pdf from "html2pdf.js";
 
 
 const cardTemplate = [
-    // { name: 'Template1', template: ModernTemplate, image: 'dummy.jpg' },
-    // { name: 'Template2', template: ClassicTemplate, image: 'dummy.jpg' },
-    // { name: 'Template3', template: ProfessionalTemplate, image: 'dummy.jpg' },
-    // { name: 'Template4', template: ProfessionalTemplate2, image: 'dummy.jpg' },
     { name: 'Luxe', template: Template13, image: 'Luxe.png' },
     { name: 'Default', template: Template9, image: 'default1.png' },
     { name: 'Professional', template: Template5, image: 'professional.png', recommended: true },
@@ -96,11 +92,6 @@ export default function CVBuilder() {
 
     const [customSections, setCustomSections] = useState([]);
 
-    // State for active tab
-    // const [selectedTemplate, setSelectedTemplate] = useState("Default");
-
-
-
 
     const handleTabClick = (tabName) => {
         setActiveTab((prevTab) => (prevTab === tabName ? '' : tabName)); // toggle if same, else set new
@@ -108,13 +99,13 @@ export default function CVBuilder() {
 
     const handleNextTab = () => {
         if (activeTab == "tabPreview") {
-            setActiveTab("tabDesign"); // toggle if same, else set new
-        } 
+            setActiveTab("tabDesign");
+        }
     }
 
     const handlePreviousTab = () => {
         if (activeTab == "tabDesign") {
-            setActiveTab("tabPreview"); // toggle if same, else set new
+            setActiveTab("tabPreview");
         }
     }
 
@@ -153,20 +144,18 @@ export default function CVBuilder() {
 
     useEffect(() => {
         const handleClick = (e) => {
-            // If we're already processing navigation or no unsaved changes, allow the click
             if (isNavigating || !hasUnsavedChanges || saveChangesLoader) return;
-    
+
             const link = e.target.closest('a');
             if (link && link.href) {
-                // Check if it's an external link or different route
                 const currentUrl = window.location.href;
                 const targetUrl = link.href;
-                
+
                 // Only intercept if it's a different page
                 if (currentUrl !== targetUrl && !targetUrl.includes('#')) {
                     e.preventDefault();
                     e.stopPropagation();
-                    
+
                     Swal.fire({
                         title: 'Unsaved Changes',
                         text: 'You have unsaved changes. Are you sure you want to leave? Your changes will be lost.',
@@ -180,7 +169,6 @@ export default function CVBuilder() {
                         backdrop: true
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // Set a flag in sessionStorage to prevent the beforeunload alert
                             sessionStorage.setItem('allowNavigation', 'true');
                             setIsNavigating(true);
                             window.location.href = targetUrl;
@@ -189,12 +177,12 @@ export default function CVBuilder() {
                 }
             }
         };
-    
+
         // Use capture phase to catch all clicks
         document.addEventListener('click', handleClick, true);
         return () => document.removeEventListener('click', handleClick, true);
     }, [hasUnsavedChanges, saveChangesLoader, isNavigating]);
-    
+
     // Update the beforeunload handler to check the flag
     useEffect(() => {
         const handleBeforeUnload = (e) => {
@@ -203,16 +191,16 @@ export default function CVBuilder() {
                 sessionStorage.removeItem('allowNavigation');
                 return;
             }
-            
+
             if (hasUnsavedChanges && !saveChangesLoader) {
                 e.preventDefault();
                 e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
                 return 'You have unsaved changes. Are you sure you want to leave?';
             }
         };
-    
+
         window.addEventListener('beforeunload', handleBeforeUnload);
-        
+
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
@@ -255,13 +243,10 @@ export default function CVBuilder() {
         }
     };
 
-
-
-      // Add visual indicator in your save button
-      const renderSaveButton = () => (
-        <button 
-            className="btn btn-primary btn-sm position-relative" 
-            onClick={handleSaveChanges} 
+    const renderSaveButton = () => (
+        <button
+            className="btn btn-primary btn-sm position-relative"
+            onClick={handleSaveChanges}
             disabled={parsedResume == prevParsedResume || saveChangesLoader}
         >
             {saveChangesLoader ? (
@@ -270,7 +255,7 @@ export default function CVBuilder() {
                 <>
                     Save Changes
                     {hasUnsavedChanges && (
-                        <span 
+                        <span
                             className="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"
                             title="Unsaved changes"
                             style={{ fontSize: '6px' }}
@@ -282,74 +267,11 @@ export default function CVBuilder() {
             )}
         </button>
     );
-
-    // Reset navigation flag when component unmounts or changes occur
     useEffect(() => {
         return () => {
             setIsNavigating(false);
         };
     }, []);
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         if (parsedResume?.languageStyle) {
-    //             // setActiveTab("tabAnalysis");
-    //             console.log("I am here");
-    //             if (!(parsedResume?.analysingDone)) {
-
-    //                 try {
-    //                     const returnAction = await dispatch(analyzeResumeAi({
-    //                         languageStyle: parsedResume?.languageStyle ?? null,
-    //                         headline: parsedResume?.headline,
-    //                         summary: parsedResume?.summary,
-    //                         workExperience: parsedResume?.workExperience?.map((item) => item.workExperienceDescription)
-    //                     })).unwrap();
-
-    //                     if (returnAction?.data) {
-    //                         // Create a single updated resume object with the new flag
-    //                         const updatedResume = {
-    //                             ...parsedResume,
-    //                             analysingDone: true  // Add the flag here
-    //                         };
-
-    //                         // Update headline if exists in response
-    //                         if (returnAction.data.headline?.suggested_paragraph) {
-    //                             updatedResume.headline = returnAction.data.headline.suggested_paragraph;
-    //                         }
-
-    //                         // Update summary if exists in response
-    //                         if (returnAction.data.summary?.suggested_paragraph) {
-    //                             updatedResume.summary = returnAction.data.summary.suggested_paragraph;
-    //                         }
-
-    //                         // Update work experiences
-    //                         if (Array.isArray(returnAction.data.workExperience)) {
-    //                             updatedResume.workExperience = (updatedResume.workExperience || []).map((item, index) => {
-    //                                 const suggested = returnAction.data.workExperience[index]?.suggested_paragraph;
-    //                                 return suggested
-    //                                     ? { ...item, workExperienceDescription: suggested }
-    //                                     : item;
-    //                             });
-    //                         }
-
-    //                         // Dispatch the update
-    //                         dispatch(setParsedResume(updatedResume));
-
-    //                         // Save to the server
-    //                         dispatch(updateResumeById({ id, parsedResume: updatedResume }));
-    //                     }
-    //                 } catch (error) {
-    //                     console.error('Error analyzing resume:', error);
-    //                 }
-
-    //             }
-    //         }
-    //     };
-
-    //     fetchData();
-    // }, [parsedResume.languageStyle]);
-
-
 
     useEffect(() => {
         if (AiResumeLoader) {
@@ -405,11 +327,9 @@ export default function CVBuilder() {
 
     useEffect(() => {
         if (parsedResume?.skill && parsedResume.skill.length > 0) {
-            // Check if any skills have the selected property
             const hasSelectedProperty = parsedResume.skill.some(skill => 'selected' in skill);
 
             if (!hasSelectedProperty) {
-                // Initialize first 5 skills as selected
                 const updatedSkills = parsedResume.skill.map((skill, index) => ({
                     ...skill,
                     selected: index < 5
@@ -491,50 +411,19 @@ export default function CVBuilder() {
     };
 
 
-
-    //     const updateField = (path, value) => {
-    //         dispatch(setParsedResume((prev) => {
-    //             const newResume = { ...prev };
-    //             const pathParts = path.match(/(\w+)(?:\[(\d+)\])?\.?(\w+)?/);
-    //             if (!pathParts) {
-    //                 newResume[path] = value;
-    //                 return newResume;
-    //             }
-
-    //             const [_, key, index, subKey] = pathParts;
-    //             if (index && subKey) {
-    //                 if (!newResume[key]) newResume[key] = [];
-    //                 if (!newResume[key][index]) newResume[key][index] = {};
-    //                 newResume[key][index][subKey] = value;
-    //             } else if (index) {
-    //                 if (!newResume[key]) newResume[key] = [];
-    //                 newResume[key][index] = value;
-    //             } else {
-    //                 newResume[key] = value;
-    //             }
-    //             return newResume;
-    //         })
-    //     );
-    //    }
-
-
     const calculatePages = () => {
         if (!cvRef.current) return 1;
 
-        const a4HeightPx = 1123; // A4 height in pixels at 96 DPI
+        const a4HeightPx = 1123;
         const contentHeight = cvRef.current.scrollHeight;
         const calculatedPages = Math.ceil(contentHeight / a4HeightPx);
 
-        // Check if the last page has meaningful content (at least 20% filled)
         const lastPageContent = contentHeight % a4HeightPx;
         if (calculatedPages > 1 && lastPageContent < (a4HeightPx * 0.2)) {
             return calculatedPages - 1;
         }
         return calculatedPages;
     };
-
-    // Update total pages when resume data changes
-    // Update total pages when resume data changes
     useEffect(() => {
         if (parsedResume && cvRef.current) {
             setTimeout(() => {
@@ -549,7 +438,6 @@ export default function CVBuilder() {
 
     const [downloadPDFLoader, setDownloadPDFLoader] = useState(false);
 
-    // Handle auto-download when URL contains download=true
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const shouldAutoDownload = urlParams.get('download') === 'true';
@@ -557,7 +445,6 @@ export default function CVBuilder() {
         if (shouldAutoDownload && !downloadPDFLoader && parsedResume) {
             const downloadAndClose = async () => {
                 await handleDownloadPDF();
-                // Small delay to ensure download starts before closing
                 setTimeout(() => {
                     window.close();
                 }, 1000);
@@ -577,7 +464,7 @@ export default function CVBuilder() {
             image: { type: "jpeg", quality: 0.98 },
             html2canvas: { scale: 2, useCORS: true },
             jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-            pagebreak: { mode: ["css", "legacy"] } // 👈 respects CSS page-break rules
+            pagebreak: { mode: ["css", "legacy"] }
         };
 
         await html2pdf().from(element).set(opt).save();
@@ -625,23 +512,17 @@ export default function CVBuilder() {
 
     const handleAnalysis = () => {
         setActiveTab('tabAnalysis');
-        // if (!AnalyseResumeData || Object.keys(AnalyseResumeData).length === 0) {
-        //     handleAnalyze();
-        // }
+
     }
 
 
     const handleApplyWorkExp = (index, returnAction = null) => {
-        // clone the parsedResume object
         const updatedResume = { ...parsedResume };
 
-        // Ensure workExperience exists and has the item at the given index
         if (!updatedResume.workExperience?.[index]) {
             console.error('Invalid work experience index or work experience not found');
             return;
         }
-
-        // Get the suggested paragraph from either returnAction or AnalyseResumeData
         const suggestedParagraph =
             returnAction?.data?.workExperience?.[index]?.suggested_paragraph ||
             AnalyseResumeData?.workExperience?.[index]?.suggested_paragraph;
@@ -651,7 +532,6 @@ export default function CVBuilder() {
             return;
         }
 
-        // Update the work experience description
         updatedResume.workExperience = updatedResume.workExperience.map((item, i) =>
             i === index
                 ? { ...item, workExperienceDescription: suggestedParagraph }
@@ -670,7 +550,6 @@ export default function CVBuilder() {
         // clone workExperience array
         const updatedWorkExperience = [...updatedResume.workExperience];
 
-        // replace only the description at the given index
         updatedWorkExperience[index] = {
             ...updatedWorkExperience[index],
             workExperienceDescription: AnalyseResumeData.workExperience[index].original,
@@ -682,41 +561,6 @@ export default function CVBuilder() {
         // dispatch back to redux
         dispatch(setParsedResume(updatedResume));
     };
-
-
-    // const handleApply = (type, returnAction = null) => {
-    //     const updatedResume = { ...parsedResume };
-
-    //     if (type === "headline") {
-    //         const suggestedHeadline = returnAction?.data?.headline?.suggested_paragraph ||
-    //             (AnalyseResumeData?.headline?.suggested_paragraph ?? '');
-    //         updatedResume.headline = suggestedHeadline;
-    //     }
-
-    //     if (type === "summary") {
-    //         const suggestedSummary = returnAction?.data?.summary?.suggested_paragraph ||
-    //             (AnalyseResumeData?.summary?.suggested_paragraph ?? '');
-    //         updatedResume.summary?.paragraph = suggestedSummary;
-    //     }
-
-    //     dispatch(setParsedResume(updatedResume));
-    // };
-
-
-    // const handleUndoApply = (type) => {
-    //     const updatedResume = { ...parsedResume };
-
-    //     if (type === "headline") {
-    //         updatedResume.headline = AnalyseResumeData.headline.original;
-    //     }
-
-    //     if (type === "summary") {
-    //         updatedResume.summary = AnalyseResumeData.summary.original;
-    //     }
-
-    //     dispatch(setParsedResume(updatedResume));
-    // };
-
 
     // State for form fields
     const [formData, setFormData] = useState({
@@ -769,17 +613,6 @@ export default function CVBuilder() {
     };
     // Handle avatar upload
     const handleAvatarUpload = (e) => {
-        // const file = e.target.files[0];
-        // if (file) {
-        //     const reader = new FileReader();
-        //     reader.onload = (event) => {
-        //         setFormData(prev => ({
-        //             ...prev,
-        //             avatar: event.target.result
-        //         }));
-        //     };
-        //     reader.readAsDataURL(file);
-        // }
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
@@ -812,75 +645,75 @@ export default function CVBuilder() {
     const [eduCurrentForm, setEduCurrentForm] = useState(null);
 
 
-// Update the education form state to include educationMajor
-const [eduFormData, setEduFormData] = useState({
-    eduDegree: '',
-    eduInstitution: '',
-    eduStartDate: '',
-    eduEndDate: '',
-    achievedGrade: '',
-    educationMajor: [''] // Add educationMajor as an array to store multiple majors
-});
-
-// Add a function to handle adding/removing major fields
-const handleAddMajor = () => {
-    setEduFormData(prev => ({
-        ...prev,
-        educationMajor: [...prev.educationMajor, '']
-    }));
-};
-
-const handleRemoveMajor = (index) => {
-    setEduFormData(prev => ({
-        ...prev,
-        educationMajor: prev.educationMajor.filter((_, i) => i !== index)
-    }));
-};
-
-const handleMajorChange = (index, value) => {
-    const newMajors = [...eduFormData.educationMajor];
-    newMajors[index] = value;
-    setEduFormData(prev => ({
-        ...prev,
-        educationMajor: newMajors
-    }));
-};
-
-// Update the form submission to include educationMajor
-const handleAddEducation = () => {
-    if (!eduFormData.eduDegree || !eduFormData.eduInstitution) {
-        toast.error('Please fill in all required fields');
-        return;
-    }
-
-    const newEducation = {
-        educationLevel: { label: eduFormData.eduDegree },
-        educationOrganization: eduFormData.eduInstitution,
-        educationDates: {
-            start: { date: eduFormData.eduStartDate },
-            end: { date: eduFormData.eduEndDate || null }
-        },
-        educationMajor: eduFormData.educationMajor.filter(major => major.trim() !== ''),
-        achievedGrade: eduFormData.achievedGrade || null
-    };
-
-    dispatch(updateField({
-        path: 'education',
-        value: [...(parsedResume.education || []), newEducation]
-    }));
-
-    // Reset form
-    setEduFormData({
+    // Update the education form state to include educationMajor
+    const [eduFormData, setEduFormData] = useState({
         eduDegree: '',
         eduInstitution: '',
         eduStartDate: '',
         eduEndDate: '',
         achievedGrade: '',
-        educationMajor: ['']
+        educationMajor: [''] // Add educationMajor as an array to store multiple majors
     });
-    setShowEducationForm(false);
-};
-    
+
+    // Add a function to handle adding/removing major fields
+    const handleAddMajor = () => {
+        setEduFormData(prev => ({
+            ...prev,
+            educationMajor: [...prev.educationMajor, '']
+        }));
+    };
+
+    const handleRemoveMajor = (index) => {
+        setEduFormData(prev => ({
+            ...prev,
+            educationMajor: prev.educationMajor.filter((_, i) => i !== index)
+        }));
+    };
+
+    const handleMajorChange = (index, value) => {
+        const newMajors = [...eduFormData.educationMajor];
+        newMajors[index] = value;
+        setEduFormData(prev => ({
+            ...prev,
+            educationMajor: newMajors
+        }));
+    };
+
+    // Update the form submission to include educationMajor
+    const handleAddEducation = () => {
+        if (!eduFormData.eduDegree || !eduFormData.eduInstitution) {
+            toast.error('Please fill in all required fields');
+            return;
+        }
+
+        const newEducation = {
+            educationLevel: { label: eduFormData.eduDegree },
+            educationOrganization: eduFormData.eduInstitution,
+            educationDates: {
+                start: { date: eduFormData.eduStartDate },
+                end: { date: eduFormData.eduEndDate || null }
+            },
+            educationMajor: eduFormData.educationMajor.filter(major => major.trim() !== ''),
+            achievedGrade: eduFormData.achievedGrade || null
+        };
+
+        dispatch(updateField({
+            path: 'education',
+            value: [...(parsedResume.education || []), newEducation]
+        }));
+
+        // Reset form
+        setEduFormData({
+            eduDegree: '',
+            eduInstitution: '',
+            eduStartDate: '',
+            eduEndDate: '',
+            achievedGrade: '',
+            educationMajor: ['']
+        });
+        setShowEducationForm(false);
+    };
+
     const eduHandleAddEducation = () => {
         // Check if there's already an empty form
         if (eduCurrentForm) {
@@ -943,27 +776,6 @@ const handleAddEducation = () => {
             toast.error('Please fill all the required fields');
             return;
         }
-
-        // Add to educations list
-        // const eduNewEducation = {
-        //   eduId: eduCurrentForm.eduId,
-        //   eduDegree: eduFormData.eduDegree,
-        //   eduInstitution: eduFormData.eduInstitution,
-        //   eduStartDate: eduFormData.eduStartDate,
-        //   eduEndDate: eduFormData.eduEndDate
-        // };
-
-
-        // const newEducation = {
-        //     educationLevel: { label: eduFormData.eduDegree },
-        //     educationOrganization: eduFormData.eduInstitution,
-        //     educationDates: {
-        //         start: { date: eduFormData.eduStartDate },
-        //         end: { date: eduFormData.eduEndDate || null }
-        //     },
-        //     educationMajor: eduFormData.educationMajor.filter(major => major.trim() !== ''),
-        //     achievedGrade: eduFormData.achievedGrade || null
-        // };
 
         const dispatcheducationList = {
             educationOrganization: eduFormData.eduInstitution,
@@ -1071,16 +883,9 @@ const handleAddEducation = () => {
                     path: "education",
                     value: parsedResume.education.filter((_, i) => i !== index)
                 }));
-                // Swal.fire(
-                //     'Deleted!',
-                //     'Education entry has been deleted.',
-                //     'success'
-                // );
             }
         });
     };
-
-    // =================================================================================
 
     const [expItems, setExpItems] = useState([]);
 
@@ -1088,12 +893,12 @@ const handleAddEducation = () => {
     const expHandleAddExperience = () => {
         // Check if there's already an incomplete form
         const hasIncomplete = expItems.some(item => !item.expIsComplete);
-    
+
         if (hasIncomplete) {
             toast.error('Please complete the current experience form before adding a new one');
             return;
         }
-    
+
         // Create a new incomplete experience item with highlights
         const expNewItem = {
             expId: Date.now(),
@@ -1107,7 +912,7 @@ const handleAddEducation = () => {
                 items: []
             }
         };
-    
+
         const dispatchExperienceList = {
             workExperienceJobTitle: expNewItem.expJobTitle,
             workExperienceOrganization: expNewItem.expCompany,
@@ -1120,10 +925,10 @@ const handleAddEducation = () => {
             },
             expIsComplete: false
         };
-    
-        dispatch(updateField({ 
-            path: "workExperience", 
-            value: [...parsedResume.workExperience, dispatchExperienceList] 
+
+        dispatch(updateField({
+            path: "workExperience",
+            value: [...parsedResume.workExperience, dispatchExperienceList]
         }));
     };
 
@@ -1236,39 +1041,6 @@ const handleAddEducation = () => {
                                         Design
                                     </button>
                                 </li>
-                                {/* <li className="nav-item" role="presentation">
-                                    <button
-                                        className={`nav-link d-flex align-items-center gap-2 ${activeTab === 'tabAnalysis' ? 'active' : ''}`}
-                                        onClick={() => handleAnalysis()}
-                                        disabled={AiResumeLoader}
-                                    >
-                                        {AiResumeLoader ? (<><FiLoader size={14} className="me-2 animate-spin" /> analyzing </>) : <> <svg width={14} className="svg-inline--fa fa-chart-line" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chart-line" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                            <path fill="currentColor" d="M64 64c0-17.7-14.3-32-32-32S0 46.3 0 64L0 400c0 44.2 35.8 80 80 80l400 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L80 416c-8.8 0-16-7.2-16-16L64 64zm406.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L320 210.7l-57.4-57.4c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L240 221.3l57.4 57.4c12.5 12.5 32.8 12.5 45.3 0l128-128z"></path>
-                                        </svg> Analysis </>}
-                                    </button>
-                                </li> */}
-                                {/* <li className="nav-item" role="presentation">
-                                <button
-                                className={`nav-link d-flex align-items-center gap-2 ${activeTab === 'tabMatching' ? 'active' : ''}`}
-                                onClick={() => setActiveTab('tabMatching')}
-                                >
-                                <svg width={16} className="svg-inline--fa fa-link" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="link" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
-                                <path fill="currentColor" d="M579.8 267.7c56.5-56.5 56.5-148 0-204.5c-50-50-128.8-56.5-186.3-15.4l-1.6 1.1c-14.4 10.3-17.7 30.3-7.4 44.6s30.3 17.7 44.6 7.4l1.6-1.1c32.1-22.9 76-19.3 103.8 8.6c31.5 31.5 31.5 82.5 0 114L422.3 334.8c-31.5 31.5-82.5 31.5-114 0c-27.9-27.9-31.5-71.8-8.6-103.8l1.1-1.6c10.3-14.4 6.9-34.4-7.4-44.6s-34.4-6.9-44.6 7.4l-1.1 1.6C206.5 251.2 213 330 263 380c56.5 56.5 148 56.5 204.5 0L579.8 267.7zM60.2 244.3c-56.5 56.5-56.5 148 0 204.5c50 50 128.8 56.5 186.3 15.4l1.6-1.1c14.4-10.3 17.7-30.3 7.4-44.6s-30.3-17.7-44.6-7.4l-1.6 1.1c-32.1 22.9-76 19.3-103.8-8.6C74 372 74 321 105.5 289.5L217.7 177.2c31.5-31.5 82.5-31.5 114 0c27.9 27.9 31.5 71.8 8.6 103.9l-1.1 1.6c-10.3 14.4-6.9 34.4 7.4 44.6s34.4 6.9 44.6-7.4l1.1-1.6C433.5 260.8 427 182 377 132c-56.5-56.5-148-56.5-204.5 0L60.2 244.3z"></path>
-                                </svg>
-                                Job Matching
-                                </button>
-                                </li> */}
-                                {/* <li className="nav-item" role="presentation">
-                                <button
-                                className={`nav-link d-flex align-items-center gap-2 ${activeTab === 'tabCover' ? 'active' : ''}`}
-                                onClick={() => setActiveTab('tabCover')}
-                                >
-                                <svg width={10} className="svg-inline--fa fa-file-lines" aria-hidden="true" focusable="false" data-prefix="far" data-icon="file-lines" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-                                <path fill="currentColor" d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24l144 0c13.3 0 24-10.7 24-24s-10.7-24-24-24l-144 0z"></path>
-                                </svg>
-                                Cover Letter
-                                </button>
-                                </li> */}
                             </ul>
                             <button className="btn btn-primary btn-sm" onClick={handleSaveChanges} disabled={parsedResume == prevParsedResume || saveChangesLoader}>{saveChangesLoader ? (<><FiLoader size={14} className="me-2 animate-spin" />Saving...</>) : "Save Changes"}</button>
                         </div>
@@ -1680,15 +1452,9 @@ const handleAddEducation = () => {
                                                                         )
                                                                     }
                                                                 >
-                                                                    {/* <img
-                                                                        src={toggleImage}
-                                                                        alt="Complete icon"
-                                                                        width="28"
-                                                                        height="28"
-                                                                    /> */}
-                                                                    {!parsedResume?.employmentDisabled ? 
-                                                                    (<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="#222"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
-                                                                    : (<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="#222"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
+                                                                    {!parsedResume?.employmentDisabled ?
+                                                                        (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
+                                                                        : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
                                                                     }
                                                                 </button>
                                                                 {parsedResume?.editingEmploymentTitle ? (
@@ -1839,7 +1605,7 @@ const handleAddEducation = () => {
                                                                                     </div>
                                                                                 </>
                                                                             ) : (
-                                                                                // Display incomplete experience form
+
                                                                                 <>
                                                                                     <div className="d-flex justify-content-between align-items-center mb-2">
                                                                                         <small className="fw-bold text-muted">
@@ -1899,119 +1665,119 @@ const handleAddEducation = () => {
                                                                                         </div>
                                                                                     </div>
                                                                                     <div className="mb-3">
-                                                                                    <div className="mb-3">
-        <label className="form-label">Additional Notes (Optional)</label>
-        <textarea
-            rows="3"
-            className="form-control"
-            value={expItem.workExperienceDescription || ''}
-            onChange={(e) => dispatch(updateField({ 
-                path: 'workExperience.' + expIndex + '.workExperienceDescription', 
-                value: e.target.value 
-            }))}
-            placeholder="Any additional details about this role"
-        ></textarea>
-    </div>
-    <div className="d-flex justify-content-between align-items-center mb-2">
-        <label className="form-label">Key Achievements</label>
-        <button 
-            type="button" 
-            className="btn btn-sm btn-outline-primary"
-// Update the onClick handler for adding a new bullet point
-onClick={() => {
-    const updatedExperience = parsedResume.workExperience.map((item, idx) => {
-        if (idx === expIndex) {
-            // Create a new work experience item with updated highlights
-            return {
-                ...item,
-                highlights: {
-                    ...item.highlights,
-                    items: [
-                        ...(item.highlights?.items || []),
-                        { id: Date.now(), bullet: '' }
-                    ]
-                }
-            };
-        }
-        return item;
-    });
+                                                                                        <div className="mb-3">
+                                                                                            <label className="form-label">Additional Notes (Optional)</label>
+                                                                                            <textarea
+                                                                                                rows="3"
+                                                                                                className="form-control"
+                                                                                                value={expItem.workExperienceDescription || ''}
+                                                                                                onChange={(e) => dispatch(updateField({
+                                                                                                    path: 'workExperience.' + expIndex + '.workExperienceDescription',
+                                                                                                    value: e.target.value
+                                                                                                }))}
+                                                                                                placeholder="Any additional details about this role"
+                                                                                            ></textarea>
+                                                                                        </div>
+                                                                                        <div className="d-flex justify-content-between align-items-center mb-2">
+                                                                                            <label className="form-label">Key Achievements</label>
+                                                                                            <button
+                                                                                                type="button"
+                                                                                                className="btn btn-sm btn-outline-primary"
+                                                                                                // Update the onClick handler for adding a new bullet point
+                                                                                                onClick={() => {
+                                                                                                    const updatedExperience = parsedResume.workExperience.map((item, idx) => {
+                                                                                                        if (idx === expIndex) {
+                                                                                                            // Create a new work experience item with updated highlights
+                                                                                                            return {
+                                                                                                                ...item,
+                                                                                                                highlights: {
+                                                                                                                    ...item.highlights,
+                                                                                                                    items: [
+                                                                                                                        ...(item.highlights?.items || []),
+                                                                                                                        { id: Date.now(), bullet: '' }
+                                                                                                                    ]
+                                                                                                                }
+                                                                                                            };
+                                                                                                        }
+                                                                                                        return item;
+                                                                                                    });
 
-    dispatch(updateField({
-        path: 'workExperience',
-        value: updatedExperience
-    }));
-}}
-        >
-            <FiPlus size={14} className="me-1" /> Add Bullet Point
-        </button>
-    </div>
-    
-    {expItem.highlights?.items?.map((bullet, bulletIndex) => (
-        <div key={bullet.id || bulletIndex} className="d-flex align-items-start mb-2">
-            <span className="me-2 mt-2">•</span>
-            <div className="flex-grow-1">
-                <input
-                    type="text"
-                    className="form-control form-control-sm"
-                    value={bullet.bullet}
-                   // Update the onChange handler for editing a bullet point
-onChange={(e) => {
-    const updatedExperience = parsedResume.workExperience.map((item, idx) => {
-        if (idx === expIndex) {
-            return {
-                ...item,
-                highlights: {
-                    ...item.highlights,
-                    items: item.highlights.items.map((b, i) => 
-                        i === bulletIndex 
-                            ? { ...b, bullet: e.target.value }
-                            : b
-                    )
-                }
-            };
-        }
-        return item;
-    });
+                                                                                                    dispatch(updateField({
+                                                                                                        path: 'workExperience',
+                                                                                                        value: updatedExperience
+                                                                                                    }));
+                                                                                                }}
+                                                                                            >
+                                                                                                <FiPlus size={14} className="me-1" /> Add Bullet Point
+                                                                                            </button>
+                                                                                        </div>
 
-    dispatch(updateField({
-        path: 'workExperience',
-        value: updatedExperience
-    }));
-}}
-                    placeholder="Enter achievement or responsibility"
-                />
-            </div>
-            <button
-                type="button"
-                className="btn btn-sm btn-link text-danger ms-2"
-// Update the onClick handler for removing a bullet point
-onClick={() => {
-    const updatedExperience = parsedResume.workExperience.map((item, idx) => {
-        if (idx === expIndex) {
-            return {
-                ...item,
-                highlights: {
-                    ...item.highlights,
-                    items: item.highlights.items.filter((_, i) => i !== bulletIndex)
-                }
-            };
-        }
-        return item;
-    });
+                                                                                        {expItem.highlights?.items?.map((bullet, bulletIndex) => (
+                                                                                            <div key={bullet.id || bulletIndex} className="d-flex align-items-start mb-2">
+                                                                                                <span className="me-2 mt-2">•</span>
+                                                                                                <div className="flex-grow-1">
+                                                                                                    <input
+                                                                                                        type="text"
+                                                                                                        className="form-control form-control-sm"
+                                                                                                        value={bullet.bullet}
+                                                                                                        // Update the onChange handler for editing a bullet point
+                                                                                                        onChange={(e) => {
+                                                                                                            const updatedExperience = parsedResume.workExperience.map((item, idx) => {
+                                                                                                                if (idx === expIndex) {
+                                                                                                                    return {
+                                                                                                                        ...item,
+                                                                                                                        highlights: {
+                                                                                                                            ...item.highlights,
+                                                                                                                            items: item.highlights.items.map((b, i) =>
+                                                                                                                                i === bulletIndex
+                                                                                                                                    ? { ...b, bullet: e.target.value }
+                                                                                                                                    : b
+                                                                                                                            )
+                                                                                                                        }
+                                                                                                                    };
+                                                                                                                }
+                                                                                                                return item;
+                                                                                                            });
 
-    dispatch(updateField({
-        path: 'workExperience',
-        value: updatedExperience
-    }));
-}}
-            >
-                <FiTrash2 size={14} />
-            </button>
-        </div>
-    ))}
+                                                                                                            dispatch(updateField({
+                                                                                                                path: 'workExperience',
+                                                                                                                value: updatedExperience
+                                                                                                            }));
+                                                                                                        }}
+                                                                                                        placeholder="Enter achievement or responsibility"
+                                                                                                    />
+                                                                                                </div>
+                                                                                                <button
+                                                                                                    type="button"
+                                                                                                    className="btn btn-sm btn-link text-danger ms-2"
+                                                                                                    // Update the onClick handler for removing a bullet point
+                                                                                                    onClick={() => {
+                                                                                                        const updatedExperience = parsedResume.workExperience.map((item, idx) => {
+                                                                                                            if (idx === expIndex) {
+                                                                                                                return {
+                                                                                                                    ...item,
+                                                                                                                    highlights: {
+                                                                                                                        ...item.highlights,
+                                                                                                                        items: item.highlights.items.filter((_, i) => i !== bulletIndex)
+                                                                                                                    }
+                                                                                                                };
+                                                                                                            }
+                                                                                                            return item;
+                                                                                                        });
+
+                                                                                                        dispatch(updateField({
+                                                                                                            path: 'workExperience',
+                                                                                                            value: updatedExperience
+                                                                                                        }));
+                                                                                                    }}
+                                                                                                >
+                                                                                                    <FiTrash2 size={14} />
+                                                                                                </button>
+                                                                                            </div>
+                                                                                        ))}
 
 
-</div>
+                                                                                    </div>
                                                                                     <div className="d-flex align-items-center justify-content-end gap-2 mt-3">
                                                                                         <button
                                                                                             type="button"
@@ -2069,8 +1835,8 @@ onClick={() => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                                                                {/* Education */}
-                                                                                                <div className="accordion-item">
+                                                {/* Education */}
+                                                <div className="accordion-item">
                                                     <h2 className="accordion-header" id="headingEducation">
                                                         <div className="d-flex justify-content-between align-items-center w-100">
                                                             <div className="d-flex align-items-center w-100 gap-2">
@@ -2087,15 +1853,9 @@ onClick={() => {
                                                                         )
                                                                     }
                                                                 >
-                                                                    {/* <img
-                                                                        src={toggleImage}
-                                                                        alt="Complete icon"
-                                                                        width="28"
-                                                                        height="28"
-                                                                    /> */}
-                                                                    {!parsedResume?.educationDisabled ? 
-                                                                    (<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="#222"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
-                                                                    : (<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="#222"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
+                                                                    {!parsedResume?.educationDisabled ?
+                                                                        (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
+                                                                        : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
                                                                     }
                                                                 </button>
                                                                 {parsedResume?.editingEducationTitle ? (
@@ -2405,15 +2165,9 @@ onClick={() => {
                                                                         )
                                                                     }
                                                                 >
-                                                                    {/* <img
-                                                                        src={toggleImage}
-                                                                        alt="Complete icon"
-                                                                        width="28"
-                                                                        height="28"
-                                                                    /> */}
-                                                                    {!parsedResume?.skillsDisabled ? 
-                                                                    (<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="#222"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
-                                                                    : (<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="#222"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
+                                                                    {!parsedResume?.skillsDisabled ?
+                                                                        (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
+                                                                        : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
                                                                     }
                                                                 </button>
                                                                 {parsedResume?.editingSkillsTitle ? (
@@ -2640,15 +2394,9 @@ onClick={() => {
                                                                         )
                                                                     }
                                                                 >
-                                                                    {/* <img
-                                                                        src={toggleImage}
-                                                                        alt="Complete icon"
-                                                                        width="28"
-                                                                        height="28"
-                                                                    /> */}
-                                                                    {!parsedResume?.languagesDisabled ? 
-                                                                    (<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="#222"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
-                                                                    : (<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="#222"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
+                                                                    {!parsedResume?.languagesDisabled ?
+                                                                        (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
+                                                                        : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
                                                                     }
                                                                 </button>
                                                                 {parsedResume?.editingLanguagesTitle ? (
@@ -2846,15 +2594,9 @@ onClick={() => {
                                                                         )
                                                                     }
                                                                 >
-                                                                    {/* <img
-                                                                        src={toggleImage}
-                                                                        alt="Complete icon"
-                                                                        width="28"
-                                                                        height="28"
-                                                                    /> */}
-                                                                    {!parsedResume?.hobbiesDisabled ? 
-                                                                    (<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="#222"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
-                                                                    : (<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="#222"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
+                                                                    {!parsedResume?.hobbiesDisabled ?
+                                                                        (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
+                                                                        : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
                                                                     }
                                                                 </button>
                                                                 {parsedResume?.editingHobbiesTitle ? (
@@ -3017,7 +2759,6 @@ onClick={() => {
                                     </>
                                 )}
 
-                                {/* TAB placeholders */}
                                 {activeTab === 'tabDesign' && (
                                     <div className={`tab-pane fade ${activeTab === 'tabDesign' ? 'show active' : ''}`} id="tabDesign" role="tabpanel" aria-labelledby="tabDesign-tab" tabIndex="0">
                                         <div className="card border-0 shadow-sm"><div className="card-body">
@@ -3389,15 +3130,6 @@ onClick={() => {
                                         <Button variant="outline-primary" size="sm" onClick={zoomIn}>
                                             <FiPlus />
                                         </Button>
-                                        {/* <Button
-                                        variant="outline-primary"
-                                        size="sm"
-                                        onClick={handleUploadNew}
-                                        className="btn btn-outline-primary"
-                                        >
-                                        <FiUpload size={14} /> 
-                                        <span className="d-none d-xl-inline ms-1">New Upload</span>
-                                        </Button> */}
                                         <Button
                                             variant="outline-primary"
                                             size="sm"
@@ -3476,28 +3208,6 @@ onClick={() => {
                                 />
                             ))}
                         </div>
-                    </Card>
-                    <Card className="border-0 shadow-custom">
-                        <Card.Body className="p-3">
-                            <div className="d-flex justify-content-between align-items-center">
-                                {/* <Button
-                                    variant="outline-primary"
-                                    onClick={handlePreviousStep}
-                                    disabled={activeTab === "Preview"}
-                                    className="d-flex align-items-center gap-2"
-                                    >
-                                    <FiChevronLeft /> Previous
-                                    </Button>
-                                    <Button
-                                    variant="primary"
-                                    onClick={handleNextStep}
-                                    disabled={activeTab === "Cover Letter"}
-                                    className="d-flex align-items-center gap-2"
-                                    >
-                                    Next <FiChevronRight />
-                                </Button> */}
-                            </div>
-                        </Card.Body>
                     </Card>
                 </Col>
             </div>

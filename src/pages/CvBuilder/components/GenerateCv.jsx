@@ -40,10 +40,6 @@ import { round } from 'lodash';
 
 
 const cardTemplate = [
-    // { name: 'Template1', template: ModernTemplate, image: 'dummy.jpg' },
-    // { name: 'Template2', template: ClassicTemplate, image: 'dummy.jpg' },
-    // { name: 'Template3', template: ProfessionalTemplate, image: 'dummy.jpg' },
-    // { name: 'Template4', template: ProfessionalTemplate2, image: 'dummy.jpg' },
     { name: 'Default', template: Template9, image: 'default1.png', recommended: true },
     { name: 'Basic', template: Template12, image: 'classic.png' },
     { name: 'Professional', template: Template5, image: 'professional.png' },
@@ -103,12 +99,7 @@ export default function CVBuilder() {
     const [currentHobby, setCurrentHobby] = useState('');
     const cvRef = useRef();
 
-
     const [customSections, setCustomSections] = useState([]);
-
-    // State for active tab
-    // const [selectedTemplate, setSelectedTemplate] = useState("Default");
-
 
     const handleTabClick = (tabName) => {
         setActiveTab((prevTab) => (prevTab === tabName ? '' : tabName)); // toggle if same, else set new
@@ -144,12 +135,6 @@ export default function CVBuilder() {
             }));
         }
 
-        // Batch all updates in a single dispatch
-        // if (updates.length > 0) {
-        //     dispatch(
-        //         updateField(updates.reduce((acc, curr) => ({ ...acc, [curr.path]: curr.value }), []))
-        //     );
-        // }
     }, [data, parsedResume, dispatch]);
 
     const handleNextTab = () => {
@@ -197,19 +182,17 @@ export default function CVBuilder() {
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
     const [isNavigating, setIsNavigating] = useState(false);
 
-    // Check if there are unsaved changes
+
     useEffect(() => {
         setHasUnsavedChanges(parsedResume !== prevParsedResume);
     }, [parsedResume, prevParsedResume]);
 
     useEffect(() => {
         const handleClick = (e) => {
-            // If we're already processing navigation or no unsaved changes, allow the click
             if (isNavigating || !hasUnsavedChanges || saveChangesLoader) return;
 
             const link = e.target.closest('a');
             if (link && link.href) {
-                // Check if it's an external link or different route
                 const currentUrl = window.location.href;
                 const targetUrl = link.href;
 
@@ -330,33 +313,6 @@ export default function CVBuilder() {
     };
 
 
-
-    // Add visual indicator in your save button
-    const renderSaveButton = () => (
-        <button
-            className="btn btn-primary btn-sm position-relative"
-            onClick={handleSaveChanges}
-            disabled={parsedResume == prevParsedResume || saveChangesLoader}
-        >
-            {saveChangesLoader ? (
-                <><FiLoader size={14} className="me-2 animate-spin" />Saving...</>
-            ) : (
-                <>
-                    Save Changes
-                    {hasUnsavedChanges && (
-                        <span
-                            className="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"
-                            title="Unsaved changes"
-                            style={{ fontSize: '6px' }}
-                        >
-                            <span className="visually-hidden">Unsaved changes</span>
-                        </span>
-                    )}
-                </>
-            )}
-        </button>
-    );
-
     // Reset navigation flag when component unmounts or changes occur
     useEffect(() => {
         return () => {
@@ -403,19 +359,6 @@ export default function CVBuilder() {
             return newZoom;
         });
     };
-
-
-
-    const handleAnalyze = () => {
-        dispatch(analyzeResumeAi({
-            languageStyle: parsedResume?.languageStyle ?? null,
-            headline: parsedResume?.headline,
-            summary: parsedResume?.summary?.paragraph,
-            workExperience: parsedResume?.workExperience?.map((item) => item.workExperienceDescription)
-        }));
-    };
-
-
 
     useEffect(() => {
         if (parsedResume?.skill && parsedResume?.skill.length > 0) {
@@ -551,8 +494,6 @@ export default function CVBuilder() {
         return calculatedPages;
     };
 
-    // Update total pages when resume data changes
-    // Update total pages when resume data changes
     useEffect(() => {
         if (parsedResume && cvRef.current) {
             setTimeout(() => {
@@ -567,11 +508,8 @@ export default function CVBuilder() {
 
     const [downloadPDFLoader, setDownloadPDFLoader] = useState(false);
 
-    // Add this ref at the top of your component with other hooks
     const hasAutoDownloaded = useRef(false);
 
-    // Update the auto-download effect
-    // Add this state at the top with other states
     const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
 
@@ -585,13 +523,11 @@ export default function CVBuilder() {
             const downloadAndClose = async () => {
                 setIsGeneratingPDF(true);
                 try {
-                    // Show loading for at least 1 second for better UX
                     const loadingPromise = new Promise(resolve => setTimeout(resolve, 1000));
 
                     // Start the download process
                     const downloadPromise = handleDownloadPDF();
 
-                    // Wait for both the minimum loading time and the download to complete
                     await Promise.all([loadingPromise, downloadPromise]);
                 } finally {
                     setIsGeneratingPDF(false);
@@ -605,7 +541,7 @@ export default function CVBuilder() {
     const handleDownloadDocx = async () => {
         setDownloadPDFLoader(true);
         try {
-            // Save changes first and wait for it to complete
+
             if (parsedResume !== prevParsedResume) {
                 await new Promise((resolve, reject) => {
                     dispatch(updateResumeById({ id, parsedResume }))
@@ -659,20 +595,17 @@ export default function CVBuilder() {
         } catch {
         }
 
-        // For all templates including Classic, Default, Luxe
         if (["Classic", "Default", "Luxe"].includes(selectedTemplate)) {
             try {
                 const response = await axios.get(`/resume/${id}/download?template=${selectedTemplate}`, {
                     responseType: 'blob'
                 });
 
-                // Create a blob from the PDF stream
                 const blob = new Blob([response.data], { type: 'application/pdf' });
 
                 // Create object URL
                 const fileURL = URL.createObjectURL(blob);
 
-                // Create PDF viewer with download option
                 createPDFViewer(fileURL, blob, `${parsedResume?.candidateName?.[0]?.firstName || "CV"}.pdf`);
 
             } catch (error) {
@@ -684,7 +617,7 @@ export default function CVBuilder() {
             return;
         }
 
-        // For other templates that use html2pdf (if any)
+
         if (!cvRef.current) {
             setDownloadPDFLoader(false);
             return;
@@ -701,13 +634,9 @@ export default function CVBuilder() {
         };
 
         try {
-            // Generate PDF as blob instead of saving directly
             const pdfBlob = await html2pdf().from(element).set(opt).output('blob');
-
-            // Create object URL
             const pdfUrl = URL.createObjectURL(pdfBlob);
 
-            // Create PDF viewer with download option
             createPDFViewer(pdfUrl, pdfBlob, `${parsedResume?.candidateName?.[0]?.firstName || "CV"}.pdf`);
 
         } catch (error) {
@@ -717,10 +646,6 @@ export default function CVBuilder() {
             setDownloadPDFLoader(false);
         }
     };
-
-    // Helper function to create PDF viewer with consistent layout
-
-
 
     const createPDFViewer = (pdfUrl, pdfBlob, filename) => {
         // Create overlay container
@@ -734,7 +659,6 @@ export default function CVBuilder() {
         overlay.style.zIndex = '9998';
         overlay.id = 'pdf-overlay';
 
-        // Create iframe to display PDF
         const iframe = document.createElement('iframe');
         iframe.style.width = '100%';
         iframe.style.height = 'calc(100vh - 60px)'; // Leave space for header
@@ -854,7 +778,6 @@ export default function CVBuilder() {
 
         document.addEventListener('keydown', handleEscape);
 
-        // Store cleanup function on elements for potential external use
         overlay.cleanup = cleanup;
         header.cleanup = cleanup;
     };
@@ -880,9 +803,6 @@ export default function CVBuilder() {
         scrollToPage(page);
     }, [scrollToPage]);
 
-
-
-
     const [activeTab, setActiveTab] = useState('tabPreview');
 
 
@@ -900,9 +820,6 @@ export default function CVBuilder() {
 
     const handleAnalysis = () => {
         setActiveTab('tabAnalysis');
-        // if (!AnalyseResumeData || Object.keys(AnalyseResumeData).length === 0) {
-        //     handleAnalyze();
-        // }
     }
 
 
@@ -916,7 +833,6 @@ export default function CVBuilder() {
             return;
         }
 
-        // Get the suggested paragraph from either returnAction or AnalyseResumeData
         const suggestedParagraph =
             returnAction?.data?.workExperience?.[index]?.suggested_paragraph ||
             AnalyseResumeData?.workExperience?.[index]?.suggested_paragraph;
@@ -926,40 +842,28 @@ export default function CVBuilder() {
             return;
         }
 
-        // Update the work experience description
         updatedResume.workExperience = updatedResume.workExperience.map((item, i) =>
             i === index
                 ? { ...item, workExperienceDescription: suggestedParagraph }
                 : item
         );
 
-        // dispatch back to redux
         dispatch(setParsedResume(updatedResume));
     };
 
-
     const handleUndoWorkExp = (index) => {
-        // clone the parsedResume object
         const updatedResume = { ...parsedResume };
-
-        // clone workExperience array
         const updatedWorkExperience = [...updatedResume.workExperience];
 
-        // replace only the description at the given index
         updatedWorkExperience[index] = {
             ...updatedWorkExperience[index],
             workExperienceDescription: AnalyseResumeData.workExperience[index].original,
         };
 
-        // assign updated array back
         updatedResume.workExperience = updatedWorkExperience;
-
-        // dispatch back to redux
         dispatch(setParsedResume(updatedResume));
     };
 
-
-    // State for form fields
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -1024,12 +928,10 @@ export default function CVBuilder() {
     // Toggle accordion sections
     const toggleSection = (section) => {
         setOpenSections((prev) => {
-            // If the clicked section is already open, close it
             if (prev[section]) {
                 return { [section]: false };
             }
 
-            // Otherwise, close all and open only the clicked one
             return { [section]: true };
         });
     };
@@ -1054,7 +956,7 @@ export default function CVBuilder() {
         eduStartDate: '',
         eduEndDate: '',
         achievedGrade: '',
-        educationMajor: [''] // Add educationMajor as an array to store multiple majors
+        educationMajor: [''] 
     });
 
     // Update the form submission to include educationMajor
@@ -1095,7 +997,6 @@ export default function CVBuilder() {
     const eduHandleAddEducation = () => {
         // Check if there's already an empty form
         if (eduCurrentForm) {
-            // Check if the current form has any data
             const eduHasData = Object.values(eduFormData).some(eduValue =>
                 eduValue && typeof eduValue === 'string' ? eduValue.trim() !== '' : false
             );
@@ -1176,7 +1077,6 @@ export default function CVBuilder() {
 
         dispatch(updateField({ path: "education", value: [...parsedResume.education, dispatcheducationList] }));
 
-        // setEduList([...eduList, eduNewEducation]);
         setEduCurrentForm(null);
         setEduFormData({
             eduDegree: '',
@@ -1186,9 +1086,6 @@ export default function CVBuilder() {
             achievedGrade: "",
             educationMajor: ['']
         });
-
-
-        // toast.success('');
     };
 
     const eduHandleEditEducation = (eduIndex) => {
@@ -1265,8 +1162,6 @@ export default function CVBuilder() {
             }
         });
     };
-
-    // =================================================================================
 
     const [expItems, setExpItems] = useState([]);
 
@@ -1471,7 +1366,6 @@ export default function CVBuilder() {
         });
     };
 
-    // Add a function to handle adding/removing major fields for education
     const handleAddMajor = () => {
         setEduFormData(prev => ({
             ...prev,
@@ -2242,7 +2136,6 @@ export default function CVBuilder() {
                                 </div>
                             ))}
 
-                            {/* Current form for adding/editing experience */}
                             {expCurrentForm ? experenceContainer(true) : experenceContainer(false)}
                         </div>
                     ) : (
@@ -2410,7 +2303,6 @@ export default function CVBuilder() {
                                 </div>
                             ))}
 
-                            {/* Current form for adding/editing */}
                             {eduCurrentForm ? educationContainer(true) : educationContainer(false)}
                         </div>
                     ) : (
@@ -3355,7 +3247,6 @@ export default function CVBuilder() {
                                     style={{
                                         background: 'white',
                                         padding: '16px',
-                                        // minHeight: `${Math.max(1, totalPages) * 1080}px`,
                                         transformOrigin: 'top center',
                                         transition: 'transform 0.2s ease-in-out',
                                         width: 921, zoom: zoom,

@@ -14,7 +14,6 @@ import { updateCurrentPassword } from '../../features/user/userSlice';
 import Swal from 'sweetalert2';
 import Alert from "react-bootstrap/Alert";
 
-// Initialize Stripe with your publishable key
 const stripePromise = loadStripe(stripe_public_key);
 
 const ProfilePage = () => {
@@ -336,7 +335,7 @@ const ProfilePage = () => {
         if (userData.email) formData.append('email', userData.email);
         if (userData.phone) formData.append('phone', userData.phone);
         if (userData.bio) formData.append('bio', userData.bio);
-        else formData.append('bio', ''); // Ensure bio is sent as empty string if empty
+        else formData.append('bio', ''); 
 
         // Append image if selected
         if (selectedImage) {
@@ -345,17 +344,14 @@ const ProfilePage = () => {
 
         await onSave(formData, 'profile');
 
-        // Clear selected image after successful save
         if (selectedImage) {
           setSelectedImage(null);
         }
-      } else {
-        // ... rest of your password change logic
       }
     } catch (error) {
       console.error('Error saving changes:', error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -378,7 +374,6 @@ const ProfilePage = () => {
                 showConfirmButton: false
               });
             } catch (error) {
-              // Handle error
               Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -414,7 +409,7 @@ const ProfilePage = () => {
                 text: error.message || 'Failed to update password',
                 confirmButtonText: 'OK'
               });
-              throw error; // Re-throw to let the form handle the error state
+              throw error; 
             }
           }}
         />
@@ -466,7 +461,7 @@ const ProfilePage = () => {
   );
 };
 
-// Profile Header Component
+
 const ProfileHeader = ({ userData, imagePreview }) => (
   <div class="profile-sidebar">
     <div class="profile-avatar">
@@ -504,7 +499,7 @@ const ProfileHeader = ({ userData, imagePreview }) => (
   </div>
 );
 
-// Personal Info Tab Component
+
 const PersonalInfoTab = ({ userData }) => (
   <div className="profile-section">
     <h3 className="section-title">Personal Information</h3>
@@ -574,7 +569,6 @@ const SettingsTab = ({ settings, onSettingsChange }) => {
     'Australia/Perth'
   ];
 
-  // Format timezone for display (e.g., "Europe/London (BST/GMT+1)")
   const formatTimezone = (tz) => {
     const date = new Date();
     const options = { timeZone: tz, timeZoneName: 'short' };
@@ -965,29 +959,6 @@ const EditProfileTab = ({
           <h3>Edit Personal Information</h3>
         </div>
         <form onSubmit={(e) => handleSubmit(e, 'profile')}>
-          {/* <div className="mb-3">
-            <label className="form-label">Profile Image</label>
-            <div className="d-flex align-items-center mb-3">
-              {(userData.imagePreview || userData.profile_img_url) && (
-                <img
-                  src={userData.imagePreview || userData.profile_img_url}
-                  alt="Profile preview"
-                  className="img-thumbnail me-3"
-                  style={{ width: '100px', height: '100px', objectFit: 'cover' }}
-                />
-              )}
-              <div>
-                <input
-                  type="file"
-                  className="form-control"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                />
-                <div className="form-text">Choose a new profile image (optional)</div>
-              </div>
-            </div>
-            {errors.image && <div className="text-danger">{errors.image}</div>}
-          </div> */}
 
           <div className="v-wrap">
             <div className="form-group">
@@ -1232,7 +1203,6 @@ const AddPaymentModal = ({ show, onHide, onSubmit, isProcessing, stripe }) => (
   </div>
 );
 
-// Wrap the component with Elements provider
 const ProfilePageWrapper = () => (
   <Elements stripe={stripePromise}>
     <ProfilePage />

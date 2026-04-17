@@ -8,7 +8,6 @@ const ClassicTemplate = ({ resumeData }) => {
     fontFamily: "'Inter', sans-serif",
     lineHeight: '1.5',
     color: '#333',
-    // maxWidth: '900px',
     margin: '0 auto',
     padding: '20px',
     backgroundColor: '#f5f5f5'

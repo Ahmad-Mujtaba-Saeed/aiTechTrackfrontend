@@ -12,13 +12,11 @@
 
 
 .profile-header {
-  /* background: var(--phoenix-primary); */
   background-image: url(../images/breadcrumBg.jpg);
   color: white;
   padding: 100px 0 100px;
   position: relative;
   margin-bottom: 80px;
-  /* clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); */
   box-shadow: var(--shadow);
   background-position: left;
   background-size: cover;
@@ -201,7 +199,8 @@
 .section-title svg {
   margin-right: 10px;
   stroke: var(--phoenix-primary);
-  -webkit-background-clip: text;
+  /* -webkit-background-clip: text; */
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 

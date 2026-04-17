@@ -12,10 +12,8 @@ const Users = () => {
     const { users, subscriptionDetails, loading, togglingUser, error } = useSelector((state) => state.userManagement);
     const [filteredUsers, setFilteredUsers] = useState([]);
 
-    // Search and filter states
     const [searchTerm, setSearchTerm] = useState('');
 
-    // Pagination states
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
@@ -23,7 +21,6 @@ const Users = () => {
     const [from, setFrom] = useState(0);
     const [to, setTo] = useState(0);
 
-    // Modal states - ADDED SUBSCRIPTION HISTORY MODAL STATE
     const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
     const [subscriptionHistory, setSubscriptionHistory] = useState([]);
     const [currentSubscriptionPlan, setCurrentSubscriptionPlan] = useState(null);
@@ -31,10 +28,8 @@ const Users = () => {
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [selectedUserName, setSelectedUserName] = useState('');
 
-    // Per-user toggle loading state
     const [togglingUserId, setTogglingUserId] = useState(null);
 
-    // Existing modal states (keep as is)
     const [showModal, setShowModal] = useState(false);
     const [modalMode, setModalMode] = useState('create');
     const [currentUser, setCurrentUser] = useState({
@@ -46,7 +41,6 @@ const Users = () => {
     });
     const [submitting, setSubmitting] = useState(false);
 
-    // Fetch users via Redux thunk (getAllUsers) and update local pagination + filters
     const fetchUsers = async (page = 1, search = '') => {
         try {
 
@@ -73,7 +67,6 @@ const Users = () => {
                 setTo(pagination.to || 0);
 
             } else {
-                // Thunk was rejected
                 const err = resultAction.error || {};
                 let errorMessage = 'Failed to load users. ' + (err.message || 'Unknown error occurred.');
 
@@ -121,7 +114,6 @@ const Users = () => {
         fetchUsers();
     }, []);
 
-    // Handle search with debouncing - NO CHANGES
     useEffect(() => {
         const timer = setTimeout(() => {
             if (searchTerm !== '') {
@@ -142,7 +134,6 @@ const Users = () => {
             const result = await dispatch(toggleUserActiveStatus(userId));
             console.log('Toggle result:', result);
 
-            // Check if the API call succeeded regardless of Redux state
             if (result.payload && result.payload.status === true) {
                 console.log('API succeeded, showing success message');
                 toast.success(result.payload.message || 'User status updated successfully');
@@ -159,7 +150,6 @@ const Users = () => {
         }
     };
 
-    // NEW FUNCTION: Fetch subscription history via Redux thunk
     const fetchSubscriptionHistory = async (userId, userName) => {
         try {
             setSubscriptionLoading(true);
@@ -170,7 +160,6 @@ const Users = () => {
 
             if (getUserSubscriptionDetails.fulfilled.match(resultAction)) {
                 const payload = resultAction.payload;
-                // payload is response.data from API helper
                 const subscriptions = payload?.subscriptions || [];
                 const firstSub = subscriptions[0] || null;
 
@@ -195,7 +184,6 @@ const Users = () => {
         }
     };
 
-    // NEW FUNCTION: Close subscription modal
     const closeSubscriptionModal = () => {
         setShowSubscriptionModal(false);
         setSubscriptionHistory([]);
@@ -204,14 +192,12 @@ const Users = () => {
         setSelectedUserName('');
     };
 
-    // Handle page change - NO CHANGES
     const handlePageChange = (page) => {
         if (page >= 1 && page <= totalPages && page !== currentPage) {
             fetchUsers(page, searchTerm);
         }
     };
 
-    // Format date for display - NO CHANGES
     const formatDate = (dateString) => {
         if (!dateString) return 'N/A';
         try {
@@ -226,7 +212,6 @@ const Users = () => {
         }
     };
 
-    // Get plan name from plan_id - NO CHANGES
     const getPlanName = (planId) => {
         const plans = {
             1: 'Free',
@@ -236,20 +221,16 @@ const Users = () => {
         return plans[planId] || `${planId}`;
     };
 
-    // Helper function to safely render user data - NO CHANGES
     const getUserDisplayData = (user, field) => {
         if (!user || typeof user !== 'object') return '';
         return user[field] || '';
     };
 
-    // Ensure filteredUsers is always an array - NO CHANGES
     const safeFilteredUsers = Array.isArray(filteredUsers) ? filteredUsers : [];
 
-    // Debug function - NO CHANGES
     const testApiEndpoint = async () => {
         try {
             const response = await instance.get('/users/management');
-            // console.log('API Test Response:', response.data);
             toast.success('API connection successful!');
         } catch (error) {
             console.error('API Test Error:', error);
@@ -257,7 +238,6 @@ const Users = () => {
         }
     };
 
-    // Close existing modal - NO CHANGES
     const closeModal = () => {
         setShowModal(false);
         setCurrentUser({
@@ -275,19 +255,15 @@ const Users = () => {
         });
     };
 
-    // Handle form submissions - NO CHANGES
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Add your form submission logic here
     };
 
-    // Handle input changes - NO CHANGES
     const handleNameChange = (e) => {
         const value = e.target.value;
         setCurrentUser(prev => ({ ...prev, name: value }));
     };
 
-    // Render loading state - NO CHANGES
     if (loading && users.length === 0) {
         return (
             <div className="row">
@@ -305,7 +281,6 @@ const Users = () => {
 
     return (
         <div className="container-fluid px-4">
-            {/* Existing header - NO CHANGES */}
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h2 className="h4 mb-1">User Management</h2>
@@ -313,7 +288,6 @@ const Users = () => {
                 </div>
             </div>
 
-            {/* Debug button - NO CHANGES */}
             {error && (
                 <div className="mb-3">
                     <button
@@ -328,7 +302,6 @@ const Users = () => {
                         onClick={() => {
                             console.log('Current users state:', users);
                             console.log('Filtered users state:', filteredUsers);
-                            // console.log('Access token:', localStorage.getItem('access_token'));
                         }}
                     >
                         <Icon icon="tabler:bug" width={18} height={18} />
@@ -337,7 +310,6 @@ const Users = () => {
                 </div>
             )}
 
-            {/* Top Bar with Search, Filter, and Create Button - NO CHANGES */}
             <div className="card mb-3">
                 <div className="card-body p-3 d-flex gap-2">
                     <div className="input-group">
@@ -373,7 +345,6 @@ const Users = () => {
                 </div>
             </div>
 
-            {/* Error Display - NO CHANGES */}
             {error && (
                 <div className="alert alert-danger alert-dismissible fade show mb-4" role="alert">
                     <Icon icon="tabler:alert-triangle" width={20} height={20} className="me-2" />
@@ -386,7 +357,6 @@ const Users = () => {
                 </div>
             )}
 
-            {/* Users Table - ADDED SUBSCRIPTION BUTTON */}
             <div className="card mb-4 overflow-hidden">
                 <div className="card-body">
                     <div className="table-responsive">
@@ -419,7 +389,6 @@ const Users = () => {
                                         </td>
                                         <td>
                                             <small className="text-muted">
-                                                {/* {user.email_verified_at ? '✔️' : '❌'}  */}
                                                 {user.email}
                                             </small>
                                         </td>
@@ -437,7 +406,6 @@ const Users = () => {
                                             <small className="text-dark">{user.roles[0]?.name || 'No Role'}</small>
                                         </td>
                                         <td className="pe-4">
-                                            {/* ADDED SUBSCRIPTION HISTORY BUTTON */}
                                             <button
                                                 disabled={user.plan_id === null || loading}
                                                 className="btn btn-sm btn-primary"
@@ -474,7 +442,6 @@ const Users = () => {
                     </div>
                 </div>
 
-                {/* Pagination - NO CHANGES */}
                 {totalPages > 1 && (
                     <div className="card-footer border-top">
                         <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
@@ -571,7 +538,6 @@ const Users = () => {
                 )}
             </div>
 
-            {/* NEW: SUBSCRIPTION HISTORY MODAL */}
             {showSubscriptionModal && (
                 <div className="modal fade show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
                     <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
@@ -590,7 +556,6 @@ const Users = () => {
                                 ></button>
                             </div>
 
-                            {/* Modal Body */}
                             <div className="modal-body">
                                 {/* Current Plan Section */}
                                 <div className="card mb-4 border">
@@ -662,7 +627,6 @@ const Users = () => {
                                     </div>
                                 </div>
 
-                                {/* Subscription History Section */}
                                 <div className="card border">
                                     <div className="card-body">
                                         <h6 className="mb-3">
@@ -734,7 +698,6 @@ const Users = () => {
                                 </div>
                             </div>
 
-                            {/* Modal Footer */}
                             <div className="modal-footer border-top">
                                 <button
                                     type="button"

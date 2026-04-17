@@ -11,7 +11,7 @@ const SubscribePlan = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     
-    const [subscribing, setSubscribing] = useState(false); // New state for subscription loading
+    const [subscribing, setSubscribing] = useState(false);
     const userData = useSelector((state) => state.user.data);
 
 
@@ -255,7 +255,7 @@ const SubscribePlan = () => {
                                         cancelButtonText: "Cancel",
                                     }).then((result) => {
                                         if (result.isConfirmed) {
-                                            handleSubscribe(plan.id); // ✅ proceed only if confirmed
+                                            handleSubscribe(plan.id);
                                         }
                                     });
                                 }}

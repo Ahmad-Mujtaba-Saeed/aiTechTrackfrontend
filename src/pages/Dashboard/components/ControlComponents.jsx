@@ -58,11 +58,10 @@ export default function ControlComponents() {
       });
   };
 
-  // Add these states at the top of your component
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5); // Default items per page
 
-  // Update your useEffect that fetches the data
+
   useEffect(() => {
     dispatch(getrecentCvsCreated({ page: currentPage, perPage: itemsPerPage }));
   }, [dispatch, currentPage, itemsPerPage]);
@@ -74,7 +73,6 @@ export default function ControlComponents() {
       {Array.isArray(recentCVs?.data) && recentCVs?.data?.length > 0 && (
 
         <>
-          {/* Recent CVs Section */}
           {recentCVs?.data?.length > 0 ? (
             < div className="col-12">
               <Card className="h-100 w-100 position-relative z-index-99">

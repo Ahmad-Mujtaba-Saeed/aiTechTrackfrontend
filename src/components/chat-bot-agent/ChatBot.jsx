@@ -18,7 +18,6 @@ const ChatBot = () => {
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
-  // Auto-scroll to latest message
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -281,23 +280,6 @@ const ChatBot = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Quick Replies */}
-        {/* <div className="quick-replies">
-          <p>Quick questions:</p>
-          <div className="quick-reply-buttons">
-        {["How do I reset my password?", "What are your hours?", "Contact support"].map((text, index) => (
-              <button
-                key={index}
-                className="quick-reply-button"
-                onClick={() => handleQuickReply(text)}
-              >
-                {text}
-              </button>
-            ))}
-          </div>
-        </div> */}
-
-        {/* Input Area */}
         <form className="chatbot-input-container" onSubmit={handleSendMessage}>
           <input
             ref={inputRef}

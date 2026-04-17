@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Link, NavLink, } from "react-router-dom";
 import { Button, Dropdown } from 'react-bootstrap';
-// import ThemeToggleButton from "../helper/ThemeToggleButton";
-// import { useAuth } from "../context/AuthContext";
 
 
 import logo from '../assets/images/MPF-Logo-Light.svg';
@@ -35,7 +33,6 @@ const MasterLayout = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("theme", theme);
 
-    // (Optional) update document attribute for styling
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 
@@ -175,9 +172,6 @@ const MasterLayout = ({ children }) => {
             </ul>
           </div>
         </div>
-        {/* <div className="navbar-vertical-footer">
-          <button className="btn navbar-vertical-toggle border-0 fw-semibold w-100 white-space-nowrap d-flex align-items-center" onClick={toggleNavbar}><span className="uil uil-left-arrow-to-left fs-8"></span><span className="uil uil-arrow-from-right fs-8"></span><span className="navbar-vertical-footer-text ms-2">Collapsed View</span></button>
-        </div> */}
       </nav>
       <nav className="navbar navbar-top fixed-top navbar-expand-lg bg-white navbar-light dark__bg-dark dark__navbar-dark" id="navbarDefault">
         <div className="navbar-logo">
@@ -192,15 +186,6 @@ const MasterLayout = ({ children }) => {
         <div className="collapse navbar-collapse navbar-top-collapse order-1 order-lg-0 justify-content-center" id="navbarTopCollapse">
         </div>
         <ul className="navbar-nav navbar-nav-icons flex-row">
-          {/* <li className="nav-item">
-            <div className="theme-control-toggle fa-icon-wait px-2">
-              {theme == 'dark' ? (
-                <label className="mb-0 theme-control-toggle-label theme-control-toggle-light" onClick={toggleTheme} htmlFor="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Switch theme" style={{ height: '32px', width: '32px' }}><Icon icon='tabler:moon' width={'18px'} height={'18px'} /></label>
-              ) : (
-                <label className="mb-0 theme-control-toggle-label theme-control-toggle-dark" onClick={toggleTheme} htmlFor="themeControlToggle" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Switch theme" style={{ height: '32px', width: '32px' }}><Icon icon='tabler:sun-high' width={'18px'} height={'18px'} /></label>
-              )}
-            </div>
-          </li> */}
 
           <li className="nav-item">
             <span style={{ whiteSpace: 'nowrap', color: 'white' }}>
@@ -346,7 +331,6 @@ const MasterLayout = ({ children }) => {
           </div>
         </div>
       </div>
-      {/* <ChatBot /> */}
     </main>
   );
 };

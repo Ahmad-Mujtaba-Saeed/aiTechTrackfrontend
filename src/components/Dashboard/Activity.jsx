@@ -79,8 +79,6 @@ export default function Activity({ recentActivities }) {
                                                 </>
                                             }
 
-                                            {/* <p className="fs-9"><Link className="fw-semibold" to="#!">View in CV Builder</Link></p> */}
-
 
                                         </div>
                                     </div>
@@ -88,44 +86,7 @@ export default function Activity({ recentActivities }) {
                             </div>
                         )
                     })}
-                    {/* <div className="timeline-item position-relative">
-                            <div className="row g-md-3">
-                                <div className="col-12 col-md-auto d-flex">
-                                    <div className="timeline-item-date order-1 order-md-0 me-md-4">
-                                        <p className="fs-10 fw-semibold text-body-tertiary text-opacity-85 text-end">05 DEC, 2023<br className="d-none d-md-block" /> 12:30 AM</p>
-                                    </div>
-                                    <div className="timeline-item-bar position-md-relative me-3 me-md-0">
-                                        <div className="icon-item icon-item-sm rounded-7 shadow-none bg-success-subtle"><svg width={10} className="svg-inline--fa fa-check fs-10 text-success-dark" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="check" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"></path></svg></div><span className="timeline-bar border-end border-dashed"></span>
-                                    </div>
-                                </div>
-                                <div className="col">
-                                    <div className="timeline-item-content ps-6 ps-md-3">
-                                        <h5 className="fs-9 lh-sm">Achieved a score of 96% in General #073: Tell us about yourself</h5>
-                                        <p className="fs-9"><Link className="fw-semibold" to="#!">View Feedback</Link></p>
-                                        <p className="fs-9 text-body-secondary mb-5">Feedback summary: Include specific roles, industries, and measurable experiences (e.g., “4 years in tech and retail sectors”)...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="timeline-item position-relative">
-                            <div className="row g-md-3">
-                                <div className="col-12 col-md-auto d-flex">
-                                    <div className="timeline-item-date order-1 order-md-0 me-md-4">
-                                        <p className="fs-10 fw-semibold text-body-tertiary text-opacity-85 text-end">15 DEC, 2023<br className="d-none d-md-block" /> 2:30 AM</p>
-                                    </div>
-                                    <div className="timeline-item-bar position-md-relative me-3 me-md-0">
-                                        <div className="icon-item icon-item-sm rounded-7 shadow-none bg-warning-subtle"><svg width={10} className="svg-inline--fa fa-minus fs-10 text-warning-dark" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="minus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M432 256c0 17.7-14.3 32-32 32L48 288c-17.7 0-32-14.3-32-32s14.3-32 32-32l352 0c17.7 0 32 14.3 32 32z"></path></svg></div>
-                                    </div>
-                                </div>
-                                <div className="col">
-                                    <div className="timeline-item-content ps-6 ps-md-3">
-                                        <h5 className="fs-9 lh-sm">Achieved a score of 69% in General #746: What are your strengths and weaknesses?</h5>
-                                        <p className="fs-9"><Link className="fw-semibold" to="#!">View Feedback</Link></p>
-                                        <p className="fs-9 text-body-secondary mb-0">Highlight a few key strengths (e.g., communication, problem solving) with examples or proof...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> */}
+                    
                 </div>
             </div>
         </div>

@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { ToastContainer } from 'react-toastify';
 import PrivateRoute from "./components/PrivateRoute";
-// If you're using createBrowserRouter
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 // Pages
@@ -44,13 +43,6 @@ import PlanManagement from "./pages/PlanSettings/PlanManagement"
 import Career from "./pages/CareerAdvice";
 import SignOut from "./pages/Auth/SignOut";
 
-
-
-// const Loader = () => (
-//   <div id="preloader">
-//     <div id="loader"></div>
-//   </div>
-// );
 
 const PageWrapper = ({ children }) => {
 
@@ -105,12 +97,10 @@ function App() {
       <PageWrapper>
         <ToastContainer />
         <Routes>
-          {/* Public routes */}
           {publicRoutes.map((route, index) => (
             <Route key={index} path={route.path} element={route.element} />
           ))}
 
-          {/* Protected routes */}
           {protectedRoutes.map((route, index) => (
             <Route
               key={index}

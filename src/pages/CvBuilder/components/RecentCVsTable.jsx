@@ -13,7 +13,7 @@ const RecentCVsTable = ({
   delResumeLoader,
   handleRenameCv,
   handleDeleteCv,
-  compact = false // compact = dashboard mode, full = modal mode
+  compact = false
 }) => {
   const navigate = useNavigate();
 

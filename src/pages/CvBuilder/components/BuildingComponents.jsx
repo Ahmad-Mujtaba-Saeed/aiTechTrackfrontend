@@ -44,13 +44,11 @@ export default function BuildingComponents() {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
-  // State for upload form data
   const [uploadFormData, setUploadFormData] = useState({
     languageStyle: '',
     additionalInfo: ''
   });
 
-  // State for AI generation form data
   const [aiFormData, setAiFormData] = useState({
     jobTitle: "",
     description: "",
@@ -275,37 +273,19 @@ export default function BuildingComponents() {
 
     setMessage('Uploading your CV for analysis — this may take a moment...')
 
-    // toast.info('Uploading your CV for analysis — this may take a moment...', {
-    //   autoClose: 5000,
-    //   position: 'top-right'
-    // });
-    // Schedule sequential toasts
-
 
     try {
       setTimeout(() => {
-        // toast.info('Parsing your CV content...', {
-        //   autoClose: 5000,
-        //   position: 'top-right'
-        // });
         setMessage('Parsing your CV content...')
 
         setTimeout(() => {
-          // toast.info(`Analyzing your CV in ${uploadFormData.languageStyle || 'standard'} style...`, {
-          //   autoClose: 5000,
-          //   position: 'top-right'
-          // });
           setMessage(`Analysing your CV in ${uploadFormData.languageStyle || 'standard'} style...`)
 
           setTimeout(() => {
-            // toast.info('Finalising your CV...', {
-            //   autoClose: 20000,
-            //   position: 'top-right'
-            // });
             setMessage('Finalising your CV...')
-          }, 9000); // 7 seconds after the second toast (12s total)
-        }, 9000); // 7 seconds after the first toast (7s total)
-      }, 20000); // 20 seconds after initial toast
+          }, 9000);
+        }, 9000);
+      }, 20000);
 
 
       const uploadResult = await dispatch(uploadExistingResume(formData)).unwrap();

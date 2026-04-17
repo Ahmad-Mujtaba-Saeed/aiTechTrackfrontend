@@ -61,9 +61,8 @@ export default function UpdatePassword() {
         password_confirmation: formData.password_confirmation
       })).unwrap();
       
-      // alert("Password updated successfully");
+
     } catch (error) {
-      // Error is handled by the toast in the effect
     }
   };
 

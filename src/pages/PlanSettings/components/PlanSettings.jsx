@@ -74,7 +74,6 @@ const PlanSettings = () => {
         setShowModal(true);
     };
 
-    // Open modal for editing existing plan
     const handleEditPlan = (plan) => {
         setEditingPlan(plan);
         setFormData({
@@ -127,7 +126,6 @@ const PlanSettings = () => {
         }
     };
 
-    // Submit form (create or update)
     const handleSubmit = async (e) => {
         e.preventDefault();
         
@@ -216,7 +214,6 @@ const PlanSettings = () => {
 
     return (
         <div className="container-fluid px-4">
-            {/* Existing header - NO CHANGES */}
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h2 className="h4 mb-1">Plans</h2>

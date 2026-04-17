@@ -28,7 +28,6 @@ const CoreSettings = () => {
         fetchCoreCredentials();
     }, []);
 
-    // Group settings by group
     const groupedSettings = coreSettings?.reduce((acc, setting) => {
         const group = setting.group || 'general';
         if (!acc[group]) {
@@ -38,7 +37,6 @@ const CoreSettings = () => {
         return acc;
     }, {}) || {};
 
-    // Auto-expand first group
     useEffect(() => {
         if (Object.keys(groupedSettings).length > 0) {
             setExpandedGroups({ [Object.keys(groupedSettings)[0]]: true });
@@ -203,14 +201,6 @@ const CoreSettings = () => {
                     <p className="text-muted mb-0">Manage application configuration settings</p>
                 </div>
                 <div className="d-flex gap-2">
-                    {/* <button
-                        className="btn btn-success"
-                        onClick={handleAddNew}
-                        disabled={loading}
-                    >
-                        <Icon icon="tabler:plus" width={18} height={18} />
-                        <span className="ms-2">Add Setting</span>
-                    </button> */}
                     <button
                         className="btn btn-primary"
                         onClick={fetchCoreCredentials}
@@ -222,7 +212,6 @@ const CoreSettings = () => {
                 </div>
             </div>
 
-            {/* Error Display */}
             {error && (
                 <div className="alert alert-danger alert-dismissible fade show mb-4" role="alert">
                     <Icon icon="tabler:alert-triangle" width={20} height={20} className="me-2" />
@@ -235,7 +224,6 @@ const CoreSettings = () => {
                 </div>
             )}
 
-            {/* Settings Groups */}
             <div className="row">
                 {Object.entries(groupedSettings).map(([group, settings]) => (
                     <div key={group} className="col-12 mb-4">

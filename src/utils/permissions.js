@@ -1,8 +1,4 @@
 /**
- * Permission utility functions
- */
-
-/**
  * Check if user has a specific permission
  * @param {Object} userData - User data object containing roles and permissions
  * @param {string} permissionSlug - The permission slug to check (e.g., 'system-internal', 'view-dashboard')

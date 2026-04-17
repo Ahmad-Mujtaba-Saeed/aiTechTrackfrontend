@@ -7,7 +7,6 @@ const Template5 = ({ resumeData }) => {
   console.log(customSections);
   const styles = {
     container: {
-      // maxWidth: '850px',
       margin: '0px auto',
       fontFamily: 'Arial, sans-serif',
       backgroundColor: '#fff'
@@ -200,7 +199,6 @@ const Template5 = ({ resumeData }) => {
         </div>
       )}
 
-      {/* Main Content Container */}
       <div style={styles.pageContainer}>
         {/* Left Section */}
         <div style={styles.leftSection}>
@@ -259,7 +257,6 @@ const Template5 = ({ resumeData }) => {
                           ))}
                         </div>
                       </div>
-                      {/* <br /> */}
                     </>
                   ) : ""}
                   {edu.achievedGrade ? (
@@ -272,7 +269,6 @@ const Template5 = ({ resumeData }) => {
                           {edu.achievedGrade}
                         </div>
                       </div>
-                      {/* <br /> */}
                     </>
                   ) : ""}
                   <p style={styles.company}>{edu.educationOrganization}</p>
@@ -297,11 +293,8 @@ const Template5 = ({ resumeData }) => {
           ))}
         </div>
 
-        {/* Right Sidebar */}
         <div style={styles.rightSidebar}>
 
-
-          {/* Social Links */}
           {(resumeData?.socialLinks?.github || resumeData?.socialLinks?.linkedin || resumeData?.socialLinks?.website) && (
           <div>
               <section style={styles.sidebarSection}>
@@ -324,9 +317,6 @@ const Template5 = ({ resumeData }) => {
               </section>
           </div>
           )}
-
-
-          {/* Languages */}
 
           {resumeData?.languages?.length > 0 && !(resumeData?.languagesDisabled) && (
             <section style={styles.sidebarSection}>

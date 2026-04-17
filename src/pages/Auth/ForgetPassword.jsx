@@ -36,10 +36,6 @@ export default function ForgetPassword() {
     }
     if (forgetPasswordSuccess) {
       toast.success(forgetPasswordSuccess);
-      // Redirect to login or show success message
-      // setTimeout(() => {
-      //   navigate('/sign-in');
-      // }, 3000);
     }
     setIsSubmitting(false);
   }, [forgetPasswordError, forgetPasswordSuccess, navigate]);

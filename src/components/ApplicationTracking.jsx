@@ -40,18 +40,8 @@ export default function ApplicationTracking() {
                     await dispatch(deleteAppliedJob(id)).unwrap();
                     const updatedJobs = appliedJobs.filter(job => job.id !== id);
                     dispatch(setAppliedJobs(updatedJobs));
-                    // Swal.fire(
-                    //     'Deleted!',
-                    //     'Job has been deleted.',
-                    //     'success'
-                    // );
                 } catch (error) {
                     console.error('Failed to delete job:', error);
-                    // Swal.fire(
-                    //     'Failed!',
-                    //     'Failed to delete job.',
-                    //     'error'
-                    // );
                 }
             }
         });
@@ -65,16 +55,6 @@ export default function ApplicationTracking() {
                 updates: { status: newStatus }
             })).unwrap();
 
-            // dispatch(setAppliedJobs(prev => {
-            //     const jobsArray = Array.isArray(prev?.data) ? prev.data : Array.isArray(prev) ? prev : [];
-            //     const updated = jobsArray.map(item =>
-            //         item.id === id ? { ...item, status: newStatus } : item
-            //     );
-
-            //     // Keep original structure if it's `{ data: [] }`
-            //     return Array.isArray(prev?.data) ? { ...prev, data: updated } : updated;
-            // }));
-
             const jobsArray = Array.isArray(appliedJobs?.data)
                 ? appliedJobs.data
                 : Array.isArray(appliedJobs)
@@ -87,26 +67,20 @@ export default function ApplicationTracking() {
 
             dispatch(setAppliedJobs(updated));   // ✅ payload is plain array
 
-
-            // alertify.success("Status updated successfully ✅");
         } catch (error) {
             console.error('Failed to update status:', error);
-            // alertify.error("Failed to update status ❌");
         }
     };
 
 
-    // ✅ Toggle fields (cvCreated, interviewPractised, applied)
     const handleToggle = async (id, field) => {
         try {
-            // First, ensure we have the jobs array
             const jobsArray = Array.isArray(appliedJobs?.data)
                 ? appliedJobs.data
                 : Array.isArray(appliedJobs)
                     ? appliedJobs
                     : [];
 
-            // Find the current value from the jobs array
             const currentItem = jobsArray.find(item => item.id === id);
             if (!currentItem) {
                 throw new Error('Job not found');
@@ -137,7 +111,6 @@ export default function ApplicationTracking() {
 
             dispatch(setAppliedJobs(updated));
 
-            // alertify.success(`${field} updated successfully ✅`);
         } catch (error) {
             console.error(`Failed to update ${field}:`, error);
             // alertify.error(`Failed to update ${field} ❌`);

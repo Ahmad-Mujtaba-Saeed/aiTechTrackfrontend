@@ -6,7 +6,6 @@ const CareerAdvice = () => {
     return (
         <MasterLayout>
         <div>
-
             <h1>Career Advice</h1>
         </div>
         </MasterLayout>
