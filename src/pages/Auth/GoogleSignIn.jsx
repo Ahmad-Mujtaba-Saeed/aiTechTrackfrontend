@@ -20,6 +20,7 @@ export default function GoogleSignIn() {
       const formData = new FormData();
       formData.append("idToken", idToken);
       const response = await dispatch(googleSignIn(formData)).unwrap();
+      
       navigate("/");
       console.log(response);
     } catch (err) {
