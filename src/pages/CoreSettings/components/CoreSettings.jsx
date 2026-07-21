@@ -196,10 +196,10 @@ const CoreSettings = () => {
         <div className="container-fluid px-4">
             {/* Header */}
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <div>
+                {/* <div>
                     <h2 className="h4 mb-1">Core Settings</h2>
                     <p className="text-muted mb-0">Manage application configuration settings</p>
-                </div>
+                </div> */}
                 <div className="d-flex gap-2">
                     <button
                         className="btn btn-primary"
@@ -312,7 +312,7 @@ const CoreSettings = () => {
                                                                     Encrypted
                                                                 </span>
                                                             ) : (
-                                                                <span className="badge bg-success-subtle text-success">
+                                                                <span className="badge bg-success-subtle text-dark">
                                                                     <Icon icon="tabler:lock-open" width={14} height={14} className="me-1" />
                                                                     Plain
                                                                 </span>

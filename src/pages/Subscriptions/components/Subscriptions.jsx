@@ -47,7 +47,7 @@ const Subscriptions = () => {
         const variants = {
             active: 'success',
             canceled: 'danger',
-            trialing: 'info',
+            trialing: 'dark',
             incomplete: 'warning',
             past_due: 'warning',
             unpaid: 'danger'
@@ -85,10 +85,10 @@ const Subscriptions = () => {
     return (
         <div className="container-fluid px-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <div>
+                {/* <div>
                     <h2 className="h4 mb-1">Subscriptions</h2>
                     <p className="text-muted mb-0">Manage user subscriptions</p>
-                </div>
+                </div> */}
             </div>
 
             <div className="card mb-4">

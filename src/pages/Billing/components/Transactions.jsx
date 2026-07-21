@@ -52,7 +52,7 @@ const Transactions = () => {
         };
         const variant = variants[status] || 'secondary';
         return (
-            <span className={`badge bg-${variant}-subtle text-${variant}`}>
+            <span className={`badge bg-${variant}-subtle text-muted`}>
                 {status?.charAt(0).toUpperCase() + status?.slice(1) || 'Unknown'}
             </span>
         );
@@ -84,10 +84,10 @@ const Transactions = () => {
         <div className="container-fluid px-4">
             {/* Existing header - NO CHANGES */}
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <div>
+                {/* <div>
                     <h2 className="h4 mb-1">Transactions</h2>
                     <p className="text-muted mb-0">Manage payment transactions</p>
-                </div>
+                </div> */}
             </div>
 
             <div className="card mb-4">

@@ -219,14 +219,14 @@ const PlanSettings = () => {
                     <h2 className="h4 mb-1">Plans</h2>
                     <p className="text-muted mb-0">Manage subscription plans</p>
                 </div> */}
-                <Button 
-                    variant="success" 
-                    onClick={handleCreateNew}
-                    className="btn-sm"
-                >
-                    <Icon icon="tabler:plus" width={18} height={18} className="me-2" />
-                    Create New Plan
-                </Button>
+               <Button
+    variant="success"
+    onClick={handleCreateNew}
+    className="btn-sm border border-2 border-dark"
+>
+    <Icon icon="tabler:plus" width={18} height={18} className="me-2" />
+    Create New Plan
+</Button>
             </div>
 
             <div className="card mb-4">
@@ -320,7 +320,7 @@ const PlanSettings = () => {
                                             </div>
                                         </td>
                                         <td>
-                                          <span className={`badge ${plan.is_active ? 'bg-success' : 'bg-secondary'} text-dark`}>
+                                          <span className={`badge ${plan.is_active ? 'bg-success' : 'bg-light'} text-dark`}>
     {plan.is_active ? 'Active' : 'Inactive'}
 </span>
                                         </td>
