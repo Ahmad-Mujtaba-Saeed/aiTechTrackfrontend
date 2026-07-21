@@ -17,7 +17,7 @@ const MasterLayout = ({ children }) => {
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.user);
 
-  const { slug } = data.roles[0].slug ? data.roles[0] : { slug: 'user' };
+  const { slug } = data.roles[0]?.slug ? data.roles[0] : { slug: 'user' };
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
 
