@@ -1,5 +1,4 @@
 // src/components/PrivateRoute.jsx
-
 import React, { useEffect, useState, useRef } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -9,102 +8,48 @@ import { hasPermission } from "../utils/permissions";
 
 const PrivateRoute = ({ children }) => {
   const location = useLocation();
+  const { data, accessToken, bootstrapping } = useSelector((state) => state.user);
 
-  const { data, accessToken, bootstrapping } = useSelector(
-    (state) => state.user
-  );
-
+  // Local UI state
   const [loading, setLoading] = useState(false);
-  const [shouldRedirectToSubscription, setShouldRedirectToSubscription] =
-    useState(false);
+  const [shouldRedirectToSubscription, setShouldRedirectToSubscription] = useState(false);
 
+  // Guard to ensure we only initiate the subscription call once per mount
   const subscriptionInitiatedRef = useRef(false);
 
+  // token (redux or fallback to localStorage)
   const token = accessToken || localStorage.getItem("access_token");
 
-  const hasSystemInternalPermission = hasPermission(
-    data,
-    "system-internal"
-  );
-
+  const hasSystemInternalPermission = hasPermission(data, 'system-internal');
+  // Always declare hooks at top — effect below will run consistently
   useEffect(() => {
-    console.log("========================================");
-    console.log("PrivateRoute Loaded");
-    console.log("Current Path:", location.pathname);
-    console.log("Token:", token);
-    console.log("Bootstrapping:", bootstrapping);
-    console.log("User Data:", data);
-    console.log("Plan ID:", data?.plan_id);
-    console.log("Trial Used:", data?.trial_used);
-    console.log("Has Internal Permission:", hasSystemInternalPermission);
-    console.log("========================================");
-
-    if (!token || !data || subscriptionInitiatedRef.current) {
-      console.log("Stopped because:");
-      console.log("Token exists?", !!token);
-      console.log("User exists?", !!data);
-      console.log(
-        "Already initiated?",
-        subscriptionInitiatedRef.current
-      );
-      return;
-    }
+    if (!token || !data || subscriptionInitiatedRef.current) return;
 
     const path = location.pathname;
+   if (
+    path === "/upload-profile" ||
+    path === "/subscription" ||
+    path === "/welcome"
+)  return;
 
-    if (
-      path === "/upload-profile" ||
-      path === "/subscription" ||
-      path === "/welcome"
-    ) {
-      console.log("Allowed page:", path);
-      return;
-    }
-
-    console.log("Checking subscription...");
-    console.log({
-      plan_id: data.plan_id,
-      trial_used: data.trial_used,
-      hasSystemInternalPermission,
-    });
-
-    if (
-      !data.plan_id &&
-      data.trial_used == 0 &&
-      !hasSystemInternalPermission
-    ) {
-      console.log("Creating Stripe Checkout Session...");
-
-      subscriptionInitiatedRef.current = true;
-
+    if (!data.plan_id && data.trial_used == 0 && !hasSystemInternalPermission) {
+      subscriptionInitiatedRef.current = true; // prevent re-entry
       const createSession = async () => {
         try {
           setLoading(true);
-
-          const response = await axios.get(
-            "/billing/stripe/create-subscription-session/2?isFreeTrial=true"
-          );
-
-          console.log("Stripe Session Response:", response.data);
-
-          const checkoutUrl =
-            response?.data?.checkoutUrl ||
-            response?.data?.url ||
-            null;
-
-          console.log("Checkout URL:", checkoutUrl);
-
+          const planIdentifier = "default";
+          const response = await axios.get(`/billing/stripe/create-subscription-session/2?isFreeTrial=true`);
+          const checkoutUrl = response?.data?.checkoutUrl || response?.data?.url || null;
           if (checkoutUrl) {
-            console.log("Redirecting to Stripe Checkout...");
             window.location.href = checkoutUrl;
             return;
+          } else {
+            console.error("No checkout URL returned from backend", response);
+            // fallback to internal subscription page
+            setShouldRedirectToSubscription(true);
           }
-
-          console.error("No checkout URL returned.");
-          setShouldRedirectToSubscription(true);
         } catch (err) {
-          console.error("Stripe Session Error:", err);
-          console.error("Response:", err?.response?.data);
+          console.error("Error creating subscription session:", err);
           setShouldRedirectToSubscription(true);
         } finally {
           setLoading(false);
@@ -112,73 +57,42 @@ const PrivateRoute = ({ children }) => {
       };
 
       createSession();
-    } else if (!data.plan_id && !hasSystemInternalPermission) {
-      console.log(
-        "User has no plan but trial already used. Redirecting to subscription page."
-      );
-      window.location.href = "/subscription";
-    } else {
-      console.log("User already has a plan:", data.plan_id);
+    }
+    else if(!data.plan_id && !hasSystemInternalPermission){
+      window.location.href = "/subscription"
     }
   }, [token, data, location.pathname]);
 
+
   if (bootstrapping || loading) {
     return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "100vh" }}
-      >
+      <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
         <Spinner animation="border" />
       </div>
     );
   }
 
+  // 2) if no token -> go to sign in
   if (!token) {
-    console.log("No token found. Redirecting to Sign In.");
-    return (
-      <Navigate
-        to="/sign-in"
-        state={{ from: location }}
-        replace
-      />
-    );
+    return <Navigate to="/sign-in" state={{ from: location }} replace />;
   }
 
   if (!data) {
-    console.log("Waiting for user data...");
     return null;
   }
 
   if (shouldRedirectToSubscription) {
-    console.log("Redirecting to Subscription page.");
-    return (
-      <Navigate
-        to="/subscription"
-        state={{ from: location }}
-        replace
-      />
-    );
+    return <Navigate to="/subscription" state={{ from: location }} replace />;
   }
 
-  if (
-    location.pathname === "/upload-profile" ||
-    location.pathname === "/subscription"
-  ) {
+  if (location.pathname === "/upload-profile" || location.pathname === "/subscription") {
     return children;
   }
 
   if (!data.plan_id && !hasSystemInternalPermission) {
-    console.log("Redirecting to Home because no plan exists.");
-    return (
-      <Navigate
-        to="/"
-        state={{ from: location }}
-        replace
-      />
-    );
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
 
-  console.log("Access Granted.");
   return children;
 };
 
