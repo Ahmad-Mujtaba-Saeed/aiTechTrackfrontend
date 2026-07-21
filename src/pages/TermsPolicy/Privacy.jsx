@@ -12,7 +12,7 @@ const PrivacyPolicy = () => {
                     Effective Date: 09/09/2025 • Reviewed: 17/10/2025
                 </p>
                 <p className="text-muted">
-                    Company: MyPathfinder Ltd ("MyPathfinder", "we", "us", "our")
+                    Company: CV Builder Ltd ("MyPathfinder", "we", "us", "our")
                 </p>
             </div>
 
@@ -21,12 +21,12 @@ const PrivacyPolicy = () => {
                     <p className="mb-4">
                         We are committed to protecting and respecting your privacy. This Privacy
                         Policy explains how we collect, use, store, and share your personal data
-                        when you use MyPathfinder's services. It also outlines your legal rights
+                        when you use CV Builder services. It also outlines your legal rights
                         under the UK General Data Protection Regulation (UK GDPR) and the Data
                         Protection Act 2018.
                     </p>
                     <p>
-                        MyPathfinder Ltd is registered as a Data Controller with the Information
+                        CV Builder Ltd is registered as a Data Controller with the Information
                         Commissioner's Office (ICO) under registration number: <strong>ZB979330</strong>
                     </p>
                 </Card.Body>
@@ -221,8 +221,8 @@ const PrivacyPolicy = () => {
                         <p>For any privacy-related queries, please contact:</p>
                         <address>
                             <strong>Data Protection Officer</strong><br />
-                            MyPathfinder Ltd<br />
-                            Email: <a href="mailto:hello@mypathfinder.uk">hello@mypathfinder.uk</a>
+                            CV Builder Ltd<br />
+                            Email: <a href="mailto:hello@mypathfinder.uk">hello@CV Builder.uk</a>
                         </address>
                         <p className="mt-3">
                             You also have the right to lodge a complaint with the Information
@@ -238,7 +238,7 @@ const PrivacyPolicy = () => {
             <Card className="border-0 bg-light mt-4">
                 <Card.Body className="text-center py-4">
                     <p className="text-muted mb-0">
-                        &copy; {new Date().getFullYear()} MyPathfinder Ltd. All rights reserved.
+                        &copy; {new Date().getFullYear()} CV Builder Ltd. All rights reserved.
                     </p>
                 </Card.Body>
             </Card>

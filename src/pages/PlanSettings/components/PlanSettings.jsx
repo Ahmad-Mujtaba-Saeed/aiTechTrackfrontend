@@ -215,10 +215,10 @@ const PlanSettings = () => {
     return (
         <div className="container-fluid px-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <div>
+                {/* <div>
                     <h2 className="h4 mb-1">Plans</h2>
                     <p className="text-muted mb-0">Manage subscription plans</p>
-                </div>
+                </div> */}
                 <Button 
                     variant="success" 
                     onClick={handleCreateNew}
@@ -303,7 +303,7 @@ const PlanSettings = () => {
                                             </span>
                                         </td>
                                         <td>
-                                            <span className="badge bg-info">
+                                            <span className="badge bg-light text-dark">
                                                 Every {plan.interval_count} {plan.interval}{plan.interval_count > 1 ? 's' : ''}
                                             </span>
                                         </td>
@@ -320,9 +320,9 @@ const PlanSettings = () => {
                                             </div>
                                         </td>
                                         <td>
-                                            <span className={`badge ${plan.is_active ? 'bg-success' : 'bg-secondary'}`}>
-                                                {plan.is_active ? 'Active' : 'Inactive'}
-                                            </span>
+                                          <span className={`badge ${plan.is_active ? 'bg-success' : 'bg-secondary'} text-dark`}>
+    {plan.is_active ? 'Active' : 'Inactive'}
+</span>
                                         </td>
                                         <td>
                                             <small className="text-muted">{formatDate(plan.created_at)}</small>

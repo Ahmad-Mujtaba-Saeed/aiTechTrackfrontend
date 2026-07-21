@@ -282,10 +282,10 @@ const Users = () => {
     return (
         <div className="container-fluid px-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <div>
+                {/* <div>
                     <h2 className="h4 mb-1">User Management</h2>
                     <p className="text-muted mb-0">Manage users and their Roles</p>
-                </div>
+                </div> */}
             </div>
 
             {error && (
@@ -365,7 +365,7 @@ const Users = () => {
                                 <tr>
                                     <th className="ps-4">ID</th>
                                     <th>Name</th>
-                                    <th>Phone No</th>
+                                   
                                     <th>Email</th>
                                     <th>Active Plan</th>
                                     <th>Created At</th>
@@ -384,9 +384,7 @@ const Users = () => {
                                         <td>
                                             <h6 className="mb-0">{user.name}</h6>
                                         </td>
-                                        <td>
-                                            <small className="text-dark">{user.phone}</small>
-                                        </td>
+                                      
                                         <td>
                                             <small className="text-muted">
                                                 {user.email}
