@@ -353,7 +353,7 @@ export default function SignIn() {
 												<input
 													type="text"
 													className="form-control"
-													value="user@user.com"
+													value="user123@gmail.com"
 													readOnly
 												/>
 											</div>
@@ -366,7 +366,7 @@ export default function SignIn() {
 												<input
 													type="password"
 													className="form-control"
-													value="User@123"
+													value="AIProj@techtrack"
 													readOnly
 												/>
 											</div>
@@ -377,8 +377,8 @@ export default function SignIn() {
 											type="button"
 											onClick={() => {
 												if (formikRef.current) {
-													formikRef.current.setFieldValue("email", "user@user.com");
-													formikRef.current.setFieldValue("password", "User@123");
+													formikRef.current.setFieldValue("email", "user123@gmail.com");
+													formikRef.current.setFieldValue("password", "AIProj@techtrack");
 													toast.info("User credentials copied to form");
 												}
 											}}
