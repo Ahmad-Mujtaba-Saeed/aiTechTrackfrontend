@@ -144,8 +144,6 @@ h4 {
 
 .feature-cards .card {
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    /* border: 1px solid #ddd; */
-    /* default border */
     background: linear-gradient(200deg, rgba(252, 255, 217, 1) 0%, rgba(255, 255, 255, 1) 47%, rgba(255, 255, 255, 1) 70%, rgba(255, 217, 242, 0.7) 100%);
 }
 

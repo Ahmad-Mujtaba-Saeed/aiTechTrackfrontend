@@ -22,7 +22,7 @@ export default function GoogleSignIn() {
       const response = await dispatch(googleSignIn(formData)).unwrap();
       
       navigate("/");
-      // window.location.href = "/";
+    
       console.log(response);
     } catch (err) {
       console.error("Google sign-in error", err);
