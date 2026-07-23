@@ -887,7 +887,6 @@ const EditProfileTab = ({
         newErrors.email = 'Please enter a valid email';
       }
     } else if (type === 'password') {
-      if (!passwordData.currentPassword) newErrors.currentPassword = 'Current password is required';
       if (!passwordData.newPassword) {
         newErrors.newPassword = 'New password is required';
       } else if (passwordData.newPassword.length < 6) {
@@ -932,7 +931,6 @@ const EditProfileTab = ({
         await onPasswordChange(passwordData);
         // Clear password fields after successful change
         setPasswordData({
-          currentPassword: '',
           newPassword: '',
           confirmPassword: ''
         });
@@ -1031,18 +1029,7 @@ const EditProfileTab = ({
         </div>
         <form onSubmit={(e) => handleSubmit(e, 'password')}>
           <div className="v-wrap">
-            <div className="form-group">
-              <label className="form-label">Current Password</label>
-              <input
-                type="password"
-                className={`form-control ${errors.currentPassword ? 'is-invalid' : ''}`}
-                name="currentPassword"
-                value={passwordData.currentPassword}
-                onChange={handlePasswordChange}
-                placeholder="Enter your current password"
-              />
-              {errors.currentPassword && <div className="invalid-feedback">{errors.currentPassword}</div>}
-            </div>
+           
 
             <div className="form-group">
               <label className="form-label">New Password</label>
