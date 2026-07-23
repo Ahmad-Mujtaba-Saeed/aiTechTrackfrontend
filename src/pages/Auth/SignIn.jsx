@@ -110,7 +110,7 @@ export default function SignIn() {
 															<div className="d-flex align-items-center fw-bolder fs-3 d-inline-block">
 																<img
 																	src={logo}
-																	alt="MyPathfinder logo"
+																	alt="CV Builder logo"
 																	width="200"
 																/>
 															</div>

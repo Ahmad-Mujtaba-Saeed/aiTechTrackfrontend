@@ -126,7 +126,7 @@ const CareerAdviceSection = ({ sectionId, count }) => {
 export default function CareerAdvice() {
   return (
     <MasterLayout>
-      <BreadCrum title='Support' subTitle='MyPathfinder makes the job search simple, personalised, and efficient.' />
+      <BreadCrum title='Support' subTitle='CV Builder makes the job search simple, personalised, and efficient.' />
       <div className="row g-3">
         <div className="col-12">
           <div className="feature-cards">

@@ -21,7 +21,7 @@ const ProfilePage = () => {
   const { data: userData } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState('personal');
+  const [activeTab, setActiveTab] = useState('subscription');
   const [imagePreview, setImagePreview] = useState(null);
   const [credit, setCredit] = useState(null);
 
@@ -109,43 +109,50 @@ const ProfilePage = () => {
   const [clientSecret, setClientSecret] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentMethodToRemove, setPaymentMethodToRemove] = useState(null);
+useEffect(() => {
+  console.log("activeTab changed:", activeTab);
 
-  useEffect(() => {
-    if (activeTab === 'subscription') {
-      fetchSubscriptionDetails();
-      fetchPaymentMethods();
-    }
-  }, [activeTab]);
+  if (activeTab === "subscription") {
+    console.log("Fetching subscription...");
+    fetchSubscriptionDetails();
+    fetchPaymentMethods();
+  }
+}, [activeTab]);
 
   // Subscription functions
-  const fetchSubscriptionDetails = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get('/billing/subscription/details');
-      const { subscription } = response.data;
+const fetchSubscriptionDetails = async () => {
+  try {
+    setLoading(true);
 
-      if (subscription) {
-        setSubscription({
-          id: subscription.id,
-          planName: subscription.plan?.title || subscription.name,
-          amount: `£${subscription.plan?.price || '0.00'}`,
-          interval: subscription.plan?.interval || 'monthly',
-          status: subscription.status,
-          nextBillingDate: subscription.ends_at,
-          features: subscription.plan?.features || [],
-          subId: subscription.sub_id,
-          cus_id: subscription.cus_id,
-          subscriptionDetails: subscription,
-          cancel_at_period_end: subscription.cancel_at_period_end
-        });
-      }
-    } catch (error) {
-      console.error('Error fetching subscription:', error);
-      toast.error('Failed to load subscription details');
-    } finally {
-      setLoading(false);
+    const response = await axios.get('/billing/subscription/details');
+
+    console.log("API Response:", response.data);
+
+    const { subscription } = response.data;
+
+    console.log("Subscription:", subscription);
+
+    if (subscription) {
+      setSubscription({
+        id: subscription.id,
+        planName: subscription.plan?.title || subscription.name,
+        amount: `£${subscription.plan?.price || '0.00'}`,
+        interval: subscription.plan?.interval || 'monthly',
+        status: subscription.status,
+        nextBillingDate: subscription.ends_at,
+        features: subscription.plan?.features || [],
+        subId: subscription.sub_id,
+        cus_id: subscription.cus_id,
+      });
+    } else {
+        console.log("Subscription is null");
     }
-  };
+  } catch (err) {
+    console.error(err.response?.data);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const fetchPaymentMethods = async () => {
     try {
@@ -482,20 +489,6 @@ const ProfileHeader = ({ userData, imagePreview }) => (
       </div>
     </div>
 
-    <div class="user-stats">
-      <div class="stat-item">
-        <div class="stat-value">156</div>
-        <div class="stat-label">Projects</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value">2.5y</div>
-        <div class="stat-label">Member</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value">24</div>
-        <div class="stat-label">Team</div>
-      </div>
-    </div>
   </div>
 );
 

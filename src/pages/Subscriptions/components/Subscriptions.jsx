@@ -215,7 +215,12 @@ const Subscriptions = () => {
                                 {(!subscriptions?.data || subscriptions.data.length === 0) && !loading && (
                                     <tr>
                                         <td colSpan="9" className="text-center py-4">
-                                            <Icon icon="tabler:subscription-off" width={48} height={48} className="text-muted mb-2" />
+                                            <Icon
+                        icon="tabler:receipt-off"
+                        width={48}
+                        height={48}
+                        className="text-muted mb-2"
+                    />
                                             <p className="text-muted mb-0">No subscriptions found</p>
                                         </td>
                                     </tr>

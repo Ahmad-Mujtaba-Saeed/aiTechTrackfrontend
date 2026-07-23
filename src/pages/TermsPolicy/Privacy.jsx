@@ -6,13 +6,13 @@ const PrivacyPolicy = () => {
     return (
         <Container className="my-5" style={{ maxWidth: '960px' }}>
             <div className="text-center mb-5">
-                <img src={logo} alt="MyPathfinder logo" style={{ maxWidth: 540, marginBottom: 28 }} />
+                <img src={logo} alt="CV Builder logo" style={{ maxWidth: 540, marginBottom: 28 }} />
                 <h1 className="display-4 text-primary mb-3" style={{ fontWeight: 700 }}>Privacy Policy</h1>
                 <p className="lead text-muted">
                     Effective Date: 09/09/2025 • Reviewed: 17/10/2025
                 </p>
                 <p className="text-muted">
-                    Company: CV Builder Ltd ("MyPathfinder", "we", "us", "our")
+                    Company: CV Builder Ltd ("CV Builder", "we", "us", "our")
                 </p>
             </div>
 
@@ -157,7 +157,7 @@ const PrivacyPolicy = () => {
                         </ul>
                         <p className="mt-3">
                             To exercise these rights, contact us at:{" "}
-                            <a href="mailto:hello@mypathfinder.uk">hello@mypathfinder.uk</a>
+                            <a href="mailto:hello@CV Builder.uk">hello@CV Builder.uk</a>
                         </p>
                     </Accordion.Body>
                 </Accordion.Item>
@@ -222,7 +222,7 @@ const PrivacyPolicy = () => {
                         <address>
                             <strong>Data Protection Officer</strong><br />
                             CV Builder Ltd<br />
-                            Email: <a href="mailto:hello@mypathfinder.uk">hello@CV Builder.uk</a>
+                            Email: <a href="mailto:hello@cvbuilder.uk">hello@CV Builder.uk</a>
                         </address>
                         <p className="mt-3">
                             You also have the right to lodge a complaint with the Information

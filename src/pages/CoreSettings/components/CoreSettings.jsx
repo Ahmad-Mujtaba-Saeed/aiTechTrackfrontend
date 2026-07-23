@@ -325,7 +325,7 @@ const CoreSettings = () => {
                                                             {editingId !== setting.id && (
                                                                 <div className="d-flex gap-1">
                                                                     <button
-                                                                        className="btn btn-sm btn-outline-primary"
+                                                                        className="btn btn-sm"
                                                                         onClick={() => handleEdit(setting)}
                                                                         title="Edit setting"
                                                                     >

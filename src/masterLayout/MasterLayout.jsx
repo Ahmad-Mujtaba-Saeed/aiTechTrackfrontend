@@ -97,14 +97,14 @@ const MasterLayout = ({ children }) => {
                   Navigation
                 </p>
                 <hr className="navbar-vertical-line" />
-                {slug == 'admin' && (
+            
                   <div className="nav-item-wrapper">
                     <Link className={`nav-link label-1 ${isActive('/')}`} to="/" role="button" data-bs-toggle="" aria-expanded="false">
                       <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:layout-dashboard' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text ">Dashboard</span></span>
                       </div>
                     </Link>
                   </div>
-                )}
+                
                 <div className="nav-item-wrapper"><Link className={`nav-link label-1 ${isActive('/cv-builder')}`} to="/cv-builder" role="button" data-bs-toggle="" aria-expanded="false">
                   <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:notes' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">CV Builder</span></span>
                   </div>
@@ -218,11 +218,8 @@ const MasterLayout = ({ children }) => {
                   <div className="overflow-auto scrollbar">
                     <ul className="nav d-flex flex-column mb-2 pb-1">
                       <li className="nav-item"><Link className="nav-link px-3 d-block" to="/profile"><Icon icon={'tabler:user-circle'} width={'18px'} height={'18px'} className="me-1" /><span>Profile</span></Link></li>
-                      {slug == 'admin' && (
-                        <li className="nav-item"><Link className="nav-link px-3 d-block" to="/"><Icon icon='tabler:layout-dashboard' width={'18px'} height={'18px'} className="me-1" />Dashboard</Link></li>
-                      )}
-                      <li className="nav-item"><Link className="nav-link px-3 d-block" to="/profile?settings=true"> <Icon icon={'tabler:settings'} width={'18px'} height={'18px'} className="me-1" />Settings &amp; Privacy </Link></li>
-                      <li className="nav-item"><Link className="nav-link px-3 d-block logout-link" to="#" onClick={() => dispatch(logout())}> <Icon icon={'tabler:logout'} width={'18px'} height={'18px'} className="me-1" />Sign Out </Link></li>
+                                              <li className="nav-item"><Link className="nav-link px-3 d-block" to="/"><Icon icon='tabler:layout-dashboard' width={'18px'} height={'18px'} className="me-1" />Dashboard</Link></li>
+                                          <li className="nav-item"><Link className="nav-link px-3 d-block logout-link" to="#" onClick={() => dispatch(logout())}> <Icon icon={'tabler:logout'} width={'18px'} height={'18px'} className="me-1" />Sign Out </Link></li>
                     </ul>
                   </div>
                   <div className=" p-0">

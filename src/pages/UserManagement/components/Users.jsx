@@ -365,7 +365,7 @@ const Users = () => {
                                 <tr>
                                     <th className="ps-4">ID</th>
                                     <th>Name</th>
-                                   
+
                                     <th>Email</th>
                                     <th>Active Plan</th>
                                     <th>Created At</th>
@@ -375,66 +375,90 @@ const Users = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {safeFilteredUsers.map((user) => (
-                                    <tr key={user.id}>
-                                        {console.log('Rendering user:', user)}
-                                        <td className="ps-4">
-                                            <span className="badge bg-light text-dark">#{user.id}</span>
-                                        </td>
-                                        <td>
-                                            <h6 className="mb-0">{user.name}</h6>
-                                        </td>
-                                      
-                                        <td>
-                                            <small className="text-muted">
-                                                {user.email}
-                                            </small>
-                                        </td>
-                                        <td>
-                                            <small className={``}>
-                                                {user.plan?.name || 'No Plan'}
-                                            </small>
-                                        </td>
-                                        <td>
-                                            <small className="text-muted">
-                                                {formatDate(user.created_at)}
-                                            </small>
-                                        </td>
-                                        <td className="pe-4">
-                                            <small className="text-dark">{user.roles[0]?.name || 'No Role'}</small>
-                                        </td>
-                                        <td className="pe-4">
-                                            <button
-                                                disabled={user.plan_id === null || loading}
-                                                className="btn btn-sm btn-primary"
-                                                onClick={() => fetchSubscriptionHistory(
-                                                    user.id,
-                                                    user.name
-                                                )}
-                                                title="View Subscription History"
-                                            >
-                                                <Icon icon="tabler:history" width={16} height={16} />
-                                                <span className="ms-1 d-none d-md-inline">Subscriptions</span>
-                                            </button>
-                                        </td>
-                                        <td className="pe-4">
-                                            <button
-                                                className={`btn btn-sm ${user.is_active ? 'btn-success' : 'btn-danger'}`}
-                                                onClick={() => handleToggleUser(user.id, user.is_active)}
-                                                disabled={togglingUserId === user.id || loading}
-                                                title={user.is_active ? 'Disable User' : 'Enable User'}
-                                            >
-                                                {togglingUserId === user.id ? (
-                                                    <span className="spinner-border spinner-border-sm" role="status">
-                                                        <span className="visually-hidden">Loading...</span>
-                                                    </span>
-                                                ) : (
-                                                    <Icon icon={user.is_active ? 'tabler:toggle-right' : 'tabler:toggle-left'} width={16} height={16} />
-                                                )}
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
+                                {safeFilteredUsers.length > 0 ? (
+                                    safeFilteredUsers.map((user) => (
+                                        <tr key={user.id}>
+                                            {console.log('Rendering user:', user)}
+                                            <td className="ps-4">
+                                                <span className="badge bg-light text-dark">#{user.id}</span>
+                                            </td>
+                                            <td>
+                                                <h6 className="mb-0">{user.name}</h6>
+                                            </td>
+
+                                            <td>
+                                                <small className="text-muted">
+                                                    {user.email}
+                                                </small>
+                                            </td>
+
+                                            <td>
+                                                <small>
+                                                    {user.plan?.name || 'No Plan'}
+                                                </small>
+                                            </td>
+
+                                            <td>
+                                                <small className="text-muted">
+                                                    {formatDate(user.created_at)}
+                                                </small>
+                                            </td>
+
+                                            <td className="pe-4">
+                                                <small className="text-dark">
+                                                    {user.roles?.[0]?.name || 'No Role'}
+                                                </small>
+                                            </td>
+
+                                            <td className="pe-4">
+                                                <button
+                                                    disabled={user.plan_id === null || loading}
+                                                    className="btn btn-sm btn-primary"
+                                                    onClick={() => fetchSubscriptionHistory(user.id, user.name)}
+                                                    title="View Subscription History"
+                                                >
+                                                    <Icon icon="tabler:history" width={16} height={16} />
+                                                    <span className="ms-1 d-none d-md-inline">Subscriptions</span>
+                                                </button>
+                                            </td>
+
+                                            <td className="pe-4">
+                                                <button
+                                                    className={`btn btn-sm ${user.is_active ? 'btn-success' : 'btn-danger'}`}
+                                                    onClick={() => handleToggleUser(user.id, user.is_active)}
+                                                    disabled={togglingUserId === user.id || loading}
+                                                    title={user.is_active ? 'Disable User' : 'Enable User'}
+                                                >
+                                                    {togglingUserId === user.id ? (
+                                                        <span className="spinner-border spinner-border-sm" role="status">
+                                                            <span className="visually-hidden">Loading...</span>
+                                                        </span>
+                                                    ) : (
+                                                        <Icon
+                                                            icon={user.is_active ? 'tabler:toggle-right' : 'tabler:toggle-left'}
+                                                            width={16}
+                                                            height={16}
+                                                        />
+                                                    )}
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    !loading && (
+                                        <tr>
+                                            <td colSpan="8" className="text-center py-4">
+                                                <Icon
+                                                    icon="tabler:receipt-off"
+                                                    width={48}
+                                                    height={48}
+                                                    className="text-muted mb-2"
+                                                />
+                                                <p className="text-muted mb-0">No users found</p>
+                                            </td>
+                                        </tr>
+                                    )
+                                )}
                             </tbody>
                         </table>
                     </div>
@@ -595,9 +619,9 @@ const Users = () => {
                                                 <div className="col-md-4 text-md-end">
                                                     <div className="mt-2 mt-md-0">
                                                         <span className={`badge ${currentSubscriptionPlan.status === 'active' ? 'bg-success-subtle text-success' :
-                                                                currentSubscriptionPlan.status === 'canceled' ? 'bg-danger-subtle text-danger' :
-                                                                    currentSubscriptionPlan.status === 'past_due' ? 'bg-warning-subtle text-warning' :
-                                                                        'bg-secondary-subtle text-secondary'
+                                                            currentSubscriptionPlan.status === 'canceled' ? 'bg-danger-subtle text-danger' :
+                                                                currentSubscriptionPlan.status === 'past_due' ? 'bg-warning-subtle text-warning' :
+                                                                    'bg-secondary-subtle text-secondary'
                                                             }`}>
                                                             {currentSubscriptionPlan.status?.charAt(0).toUpperCase() + currentSubscriptionPlan.status?.slice(1) || 'Unknown'}
                                                         </span>
@@ -659,9 +683,9 @@ const Users = () => {
                                                                 </td>
                                                                 <td>
                                                                     <span className={`badge ${subscription.status === 'active' ? 'bg-success-subtle text-success' :
-                                                                            subscription.status === 'canceled' ? 'bg-danger-subtle text-danger' :
-                                                                                subscription.status === 'past_due' ? 'bg-warning-subtle text-warning' :
-                                                                                    'bg-secondary-subtle text-secondary'
+                                                                        subscription.status === 'canceled' ? 'bg-danger-subtle text-danger' :
+                                                                            subscription.status === 'past_due' ? 'bg-warning-subtle text-warning' :
+                                                                                'bg-secondary-subtle text-secondary'
                                                                         }`}>
                                                                         {subscription.status?.charAt(0).toUpperCase() + subscription.status?.slice(1) || 'Unknown'}
                                                                     </span>

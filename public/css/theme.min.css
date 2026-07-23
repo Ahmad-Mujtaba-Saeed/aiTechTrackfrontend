@@ -5318,7 +5318,7 @@ textarea.form-control.is-invalid {
 }
 
 .dropup .dropdown-toggle::after {
-  display: inline-block;
+  display:none;
   margin-left: 0.255em;
   vertical-align: 0.255em;
   content: "";
@@ -26591,6 +26591,7 @@ input::-webkit-contacts-auto-fill-button {
   background-color: var(--phoenix-btn-hover-bg);
   border-color: var(--phoenix-btn-hover-border-color); */
   background: #2c2c2c !important;
+  color:white !important;
   text-decoration: none;
   font-size: 14px;
   font-weight: 400;

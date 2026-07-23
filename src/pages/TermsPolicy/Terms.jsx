@@ -6,7 +6,7 @@ const TermsAndConditions = () => {
     return (
         <Container className="my-5" style={{ maxWidth: '960px' }}>
             <div className="text-center mb-5">
-                <img src={logo} alt="MyPathfinder logo" style={{maxWidth: 540, marginBottom: 28}}/>
+                <img src={logo} alt="CV Builder logo" style={{maxWidth: 540, marginBottom: 28}}/>
                 <h1 className="display-4 text-primary mb-3" style={{fontWeight: 700}}>Terms & Conditions</h1>
                 <p className="lead text-muted">
                     Effective Date: 09/09/2025
@@ -287,7 +287,7 @@ const TermsAndConditions = () => {
                                 <h6 className="card-title">For any queries relating to these Terms, please contact:</h6>
                                 <address className="mb-0">
                                     <strong>CV Builder Ltd</strong><br />
-                                    Email: <a href="mailto:hello@mypathfinder.uk" className="text-decoration-none">
+                                    Email: <a href="mailto:hello@cvbuilder.uk" className="text-decoration-none">
                                         hello@CV Builder.uk
                                     </a>
                                 </address>
