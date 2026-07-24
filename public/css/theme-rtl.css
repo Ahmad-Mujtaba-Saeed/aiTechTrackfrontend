@@ -34407,9 +34407,9 @@ a[href].bg-body-secondary:hover, a[href].bg-body-secondary:focus {
 
 .booking-footer {
   clip-path: polygon(0 12%, 100% 0, 100% 100%, 0% 100%);
-  background-image: -webkit-gradient(linear, right bottom, right top, from(rgba(0, 0, 0, 0.8)), to(rgba(0, 0, 0, 0.8))), url("../img/bg/41.jpg");
+  /* background-image: -webkit-gradient(linear, right bottom, right top, from(rgba(0, 0, 0, 0.8)), to(rgba(0, 0, 0, 0.8))), url("../img/bg/41.jpg");
   background-image: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%), url("../img/bg/41.jpg");
-  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%), url("../img/bg/41.jpg");
+  background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.8) 100%), url("../img/bg/41.jpg"); */
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -35006,9 +35006,9 @@ a[href].bg-body-secondary:hover, a[href].bg-body-secondary:focus {
 }
 
 .feed-profile-cover {
-  background-image: -webkit-gradient(linear, right top, right bottom, from(rgba(245, 246, 252, 0.52)), to(rgba(117, 19, 93, 0.73))), url("generic/59.png");
+  /* background-image: -webkit-gradient(linear, right top, right bottom, from(rgba(245, 246, 252, 0.52)), to(rgba(117, 19, 93, 0.73))), url("generic/59.png");
   background-image: -o-linear-gradient(top, rgba(245, 246, 252, 0.52), rgba(117, 19, 93, 0.73)), url("generic/59.png");
-  background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(117, 19, 93, 0.73)), url("generic/59.png");
+  background-image: linear-gradient(to bottom, rgba(245, 246, 252, 0.52), rgba(117, 19, 93, 0.73)), url("generic/59.png"); */
 }
 
 /*-----------------------------------------------
