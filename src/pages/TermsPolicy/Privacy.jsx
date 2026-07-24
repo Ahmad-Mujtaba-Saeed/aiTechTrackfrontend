@@ -11,9 +11,7 @@ const PrivacyPolicy = () => {
                 <p className="lead text-muted">
                     Effective Date: 09/09/2025 • Reviewed: 17/10/2025
                 </p>
-                <p className="text-muted">
-                    Company: CV Builder Ltd ("CV Builder", "we", "us", "our")
-                </p>
+               
             </div>
 
             <Card className="shadow-sm mb-4">

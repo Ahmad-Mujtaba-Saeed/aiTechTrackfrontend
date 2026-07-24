@@ -14,7 +14,7 @@ const UpgradeSubscribePlan = () => {
     // Existing states
     const [plans, setPlans] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [subscribing, setSubscribing] = useState(false);
+    const [subscribingPlan, setSubscribingPlan] = useState(null);
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
@@ -45,7 +45,7 @@ const UpgradeSubscribePlan = () => {
         }
 
         try {
-            setSubscribing(true);
+           setSubscribingPlan(planId);
             setError('');
             await axios.post(`/billing/subscription/change-plan/${planId}`);
 
@@ -70,7 +70,7 @@ const UpgradeSubscribePlan = () => {
                 confirmButtonText: 'OK'
             });
         } finally {
-            setSubscribing(false);
+             setSubscribingPlan(null);
         }
     };
 
@@ -223,9 +223,9 @@ const UpgradeSubscribePlan = () => {
                                         }
                                     });
                                 }}
-                                disabled={userData?.plan_id === plan.id || subscribing || !plan.is_active}
+                                disabled={userData?.plan_id === plan.id ||  subscribingPlan !== null  || !plan.is_active}
                             >
-                                {subscribing ? (
+                                {subscribingPlan === plan.id ? (
                                     <>
                                         <Spinner
                                             as="span"

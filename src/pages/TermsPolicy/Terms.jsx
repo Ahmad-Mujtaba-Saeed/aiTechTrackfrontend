@@ -11,9 +11,7 @@ const TermsAndConditions = () => {
                 <p className="lead text-muted">
                     Effective Date: 09/09/2025
                 </p>
-                <p className="text-muted">
-                    Company: CV Builder Ltd ("CV Builder", "we", "us", "our")
-                </p>
+               
             </div>
 
             <Accordion defaultActiveKey="0" className="mb-4">

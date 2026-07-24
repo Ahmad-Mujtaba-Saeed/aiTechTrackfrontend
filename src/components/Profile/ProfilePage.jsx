@@ -365,9 +365,9 @@ const fetchSubscriptionDetails = async () => {
   return (
     <div className="profile-container container p-0 my-0 mx-auto" style={{ maxWidth: 1200 }}>
       {/* Profile Header */}
-      <ProfileHeader userData={userData} imagePreview={imagePreview} />
+      {/* <ProfileHeader userData={userData} /> */}
 
-      <div className="profile-content">
+      <div className="profile-content" style={{ width: 1200 }}>
         <EditProfileTab
           initialUserData={userData}
           onSave={async (formData, type) => {
@@ -469,28 +469,6 @@ const fetchSubscriptionDetails = async () => {
 };
 
 
-const ProfileHeader = ({ userData, imagePreview }) => (
-  <div class="profile-sidebar">
-    <div class="profile-avatar">
-      <div class="avatar-container">
-        <img src={imagePreview || userData?.profile_img_url || favicon} alt="User Avatar" class="avatar-image" />
-        <div class="avatar-edit" id="editAvatar">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-camera"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" /><path d="M9 13a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /></svg>
-        </div>
-      </div>
-      <div class="user-info">
-        <h2>{userData?.name}</h2>
-        <p>{userData?.email}</p>
-        {userData?.email_verified_at && (
-          <span class="verified-badge">
-            <i class="fas fa-check-circle"></i> Verified
-          </span>
-        )}
-      </div>
-    </div>
-
-  </div>
-);
 
 
 const PersonalInfoTab = ({ userData }) => (
@@ -813,7 +791,8 @@ const EditProfileTab = ({
     confirmPassword: ''
   });
   const [selectedImage, setSelectedImage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isProfileLoading, setIsProfileLoading] = useState(false);
+const [isPasswordLoading, setIsPasswordLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   // Update local state when initialUserData changes
@@ -901,48 +880,96 @@ const EditProfileTab = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e, type) => {
-    e.preventDefault();
-    if (!validateForm(type)) return;
+  // const handleSubmit = async (e, type) => {
+  //   e.preventDefault();
+  //   if (!validateForm(type)) return;
 
-    setIsLoading(true);
-    try {
-      if (type === 'profile') {
-        const formData = new FormData();
+  //   setIsLoading(true);
+  //   try {
+  //     if (type === 'profile') {
+  //       const formData = new FormData();
 
-        // Append profile data
-        formData.append('name', userData.name);
-        formData.append('email', userData.email);
-        formData.append('phone', userData.phone || '');
-        formData.append('bio', userData.bio || '');
+  //       // Append profile data
+  //       formData.append('name', userData.name);
+  //       formData.append('email', userData.email);
+  //       formData.append('phone', userData.phone || '');
+  //       formData.append('bio', userData.bio || '');
 
-        // Append image if selected
-        if (selectedImage) {
-          formData.append('profile_img', selectedImage);
-        }
+  //       // Append image if selected
+  //       if (selectedImage) {
+  //         formData.append('profile_img', selectedImage);
+  //       }
 
-        await onSave(formData, 'profile');
+  //       await onSave(formData, 'profile');
 
-        // Clear selected image after successful save
-        if (selectedImage) {
-          setSelectedImage(null);
-        }
-      } else {
-        await onPasswordChange(passwordData);
-        // Clear password fields after successful change
-        setPasswordData({
-          newPassword: '',
-          confirmPassword: ''
-        });
+  //       // Clear selected image after successful save
+  //       if (selectedImage) {
+  //         setSelectedImage(null);
+  //       }
+  //     } else {
+  //       await onPasswordChange(passwordData);
+  //       // Clear password fields after successful change
+  //       setPasswordData({
+  //         newPassword: '',
+  //         confirmPassword: ''
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('Error saving changes:', error);
+  //     // Handle API errors here
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+const handleSubmit = async (e, type) => {
+  e.preventDefault();
+
+  if (!validateForm(type)) return;
+
+  if (type === "profile") {
+    setIsProfileLoading(true);
+  } else {
+    setIsPasswordLoading(true);
+  }
+
+  try {
+    if (type === "profile") {
+      const formData = new FormData();
+
+      formData.append("name", userData.name);
+      formData.append("email", userData.email);
+      formData.append("phone", userData.phone || "");
+      formData.append("bio", userData.bio || "");
+
+      if (selectedImage) {
+        formData.append("profile_img", selectedImage);
       }
-    } catch (error) {
-      console.error('Error saving changes:', error);
-      // Handle API errors here
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
+      await onSave(formData, "profile");
+
+      if (selectedImage) {
+        setSelectedImage(null);
+      }
+
+    } else {
+      await onPasswordChange(passwordData);
+
+      setPasswordData({
+        newPassword: "",
+        confirmPassword: "",
+      });
+    }
+
+  } catch (error) {
+    console.error(error);
+  } finally {
+    if (type === "profile") {
+      setIsProfileLoading(false);
+    } else {
+      setIsPasswordLoading(false);
+    }
+  }
+};
   return (
     <div className="gap-4">
       <div className="profile-section mb-4">
@@ -1006,20 +1033,24 @@ const EditProfileTab = ({
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="btn btn-primary mt-3"
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <>
-                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                Saving...
-              </>
-            ) : (
-              'Update Profile'
-            )}
-          </button>
+         <button
+  type="submit"
+  className="btn btn-primary mt-3"
+  disabled={isProfileLoading}
+>
+  {isProfileLoading ? (
+    <>
+      <span
+        className="spinner-border spinner-border-sm me-2"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      Saving...
+    </>
+  ) : (
+    "Update Profile"
+  )}
+</button>
         </form>
       </div>
 
@@ -1059,20 +1090,24 @@ const EditProfileTab = ({
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="btn btn-primary mt-3"
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <>
-                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                Updating...
-              </>
-            ) : (
-              'Change Password'
-            )}
-          </button>
+         <button
+  type="submit"
+  className="btn btn-primary mt-3"
+  disabled={isPasswordLoading}
+>
+  {isPasswordLoading ? (
+    <>
+      <span
+        className="spinner-border spinner-border-sm me-2"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      Updating...
+    </>
+  ) : (
+    "Change Password"
+  )}
+</button>
         </form>
       </div>
     </div>

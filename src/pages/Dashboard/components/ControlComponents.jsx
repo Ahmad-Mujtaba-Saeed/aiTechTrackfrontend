@@ -18,6 +18,7 @@ import { hasPermission } from '../../../utils/permissions';
 import Dropdown from 'react-bootstrap/Dropdown';
 
 export default function ControlComponents() {
+    console.log("ControlComponents rendered");
   const dispatch = useDispatch();
   const { recentCVs, delResumeLoader } = useSelector((state) => state.resume);
   const { data } = useSelector((state) => state.user);
@@ -66,9 +67,30 @@ export default function ControlComponents() {
     dispatch(getrecentCvsCreated({ page: currentPage, perPage: itemsPerPage }));
   }, [dispatch, currentPage, itemsPerPage]);
 
+const hasRecentCVs =
+  Array.isArray(recentCVs?.data) && recentCVs.data.length > 0;
 
+const showNoData =
+  !hasRecentCVs && !hasSystemInternalPermission();
+  
   return (
     <div className="row mb-4 g-3 feature-cards" style={{ translate: 'none', rotate: 'none', scale: 'none', transform: 'translate(0px, 0px)', opacity: 1 }}>
+
+  {showNoData && (
+    <div className="col-12">
+      <Card>
+        <Card.Body className="text-center py-5">
+           <Icon
+                                                              icon="tabler:receipt-off"
+                                                              width={48}
+                                                              height={48}
+                                                              className="text-muted mb-2"
+                                                          />
+          <h4 className="text-muted">No data found.</h4>
+        </Card.Body>
+      </Card>
+    </div>
+  )}
 
       {Array.isArray(recentCVs?.data) && recentCVs?.data?.length > 0 && (
 

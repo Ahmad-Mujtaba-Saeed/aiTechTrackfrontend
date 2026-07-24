@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { getAllCoreCredentials , deleteCoreCredential , updateOrCreateCoreCredential } from '../../../features/admin/core-settings-mangement/coreSettingsManagementSlice';
 import { useDispatch } from 'react-redux';
-
+import BreadCrum from "../../../components/BreadCrum";
 const CoreSettings = () => {
     const dispatch = useDispatch();
     const { coreSettings, loading, error } = useSelector((state) => state.coreSettingsManagement);
@@ -195,11 +195,8 @@ const CoreSettings = () => {
     return (
         <div className="container-fluid px-4">
             {/* Header */}
-            <div className="d-flex justify-content-between align-items-center mb-4">
-                {/* <div>
-                    <h2 className="h4 mb-1">Core Settings</h2>
-                    <p className="text-muted mb-0">Manage application configuration settings</p>
-                </div> */}
+            <div className="d-flex justify-content-between align-items-center">
+                <BreadCrum title='Core Settings' subTitle='' />
                 <div className="d-flex gap-2">
                     <button
                         className="btn btn-primary"
