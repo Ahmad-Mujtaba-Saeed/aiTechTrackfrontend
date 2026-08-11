@@ -148,7 +148,7 @@ const PaymentAnalyticsGraph = () => {
   return (
     <Card className="h-100 w-100 position-relative">
       <Card.Body className="position-relative">
-        <div className="d-flex justify-content-between align-items-center mb-4">
+        <div className="d-md-flex d-block justify-content-between align-items-center mb-4">
           <div>
             <h5 className="mb-1">Payment Analytics</h5>
             <p className="text-muted mb-0">Track your revenue and transactions</p>

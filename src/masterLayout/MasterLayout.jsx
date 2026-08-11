@@ -91,6 +91,11 @@ const MasterLayout = ({ children }) => {
         <div className="collapse navbar-collapse" id="navbarVerticalCollapse">
 
           <div className="navbar-vertical-content">
+            <Link className="d-block d-lg-none navbar-brand me-1 me-sm-3" to="/">
+            <div className="d-flex align-items-center mx-3">
+              <img src={logo} alt="phoenix-light" width="120" />
+            </div>
+          </Link>
             <ul className="navbar-nav flex-column" id="navbarVerticalNav">
               <li className="nav-item">
                 <p className="navbar-vertical-label">
@@ -176,7 +181,7 @@ const MasterLayout = ({ children }) => {
       <nav className="navbar navbar-top fixed-top navbar-expand-lg bg-white navbar-light dark__bg-dark dark__navbar-dark" id="navbarDefault">
         <div className="navbar-logo">
           <button className="btn navbar-toggler navbar-toggler-humburger-icon hover-bg-transparent" type="button" onClick={mobileToggle}><span className="navbar-toggle-icon"><span className="toggle-line"></span></span></button>
-          <Link className="navbar-brand me-1 me-sm-3" to="/">
+          <Link className="d-none d-lg-block navbar-brand me-1 me-sm-3" to="/">
             <div className="d-flex align-items-center">
               <img src={logo} alt="phoenix-light" width="120" />
             </div>

@@ -84,17 +84,14 @@ const Subscriptions = () => {
 
     return (
         <div className="container-fluid px-4">
-            <div className="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <h2 className="h4 mb-1">Subscriptions</h2>
-                    <p className="text-muted mb-0">Manage user subscriptions</p>
-                </div>
+            <div className="d-md-flex justify-content-between align-items-center mb-4">
+                
             </div>
 
-            <div className="card mb-4">
-                <div className="card-body p-3">
+            <div className="card mb-4 ">
+                <div className="card-body p-3 ">
                     <div className="row align-items-center">
-                        <div className="col-md-12 mb-3 mb-md-0 d-flex gap-2">
+                        <div className="col-md-12 mb-3 mb-md-0 d-flex gap-2  ">
                             <div className="input-group">
                                 <span className="input-group-text bg-light border-end-0">
                                     <Icon icon="tabler:search" width={18} height={18} />

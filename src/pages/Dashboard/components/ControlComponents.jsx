@@ -110,14 +110,13 @@ export default function ControlComponents() {
             <RecentSubscriptionsTable />
           </div>
           {/* Recent Activities Dropdown */}
-          <div className="col-12">
+          <div className="col-12 d-flex justify-content-center align-items-center">
             <div className="position-relative">
-              <Dropdown drop="up" className="w-100">
+              <Dropdown drop="up" className="col-12 col-md-6 col-lg-12">
                 <Dropdown.Toggle variant="primary" className="w-100">
                   <Icon icon="mdi:history" className="me-2" />
                   Recent Activities
-                  <Icon icon="mdi:chevron-up" className="ms-auto" />
-                </Dropdown.Toggle>
+                   </Dropdown.Toggle>
                 <Dropdown.Menu className="w-100 p-0" style={{ overflow: 'auto' }}>
                   <div className="p-0">
                     <RecentActivitiesPlatform />

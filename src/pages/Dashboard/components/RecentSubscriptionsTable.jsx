@@ -129,7 +129,7 @@ const RecentSubscriptionsTable = () => {
             <Card.Body className="p-0">
                 {/* Header with Stats */}
                 <div className="pb-3 border-bottom">
-                    <div className="d-flex justify-content-between align-items-center mb-3">
+                    <div className="d-md-flex d-block justify-content-between align-items-center mb-3">
                         <div>
                             <h5 className="mb-1">Recent Subscriptions</h5>
                             <p className="text-muted mb-0">Latest subscription activities</p>
@@ -304,7 +304,7 @@ const RecentSubscriptionsTable = () => {
                     
                     {/* Footer */}
                     {subscriptions.length > 0 && (
-                        <div className="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+                        <div className="d-flex justify-content-between align-items-center mt-4 pt-3 border-top gap-3">
                             <small className="text-muted">
                                 Showing {Math.min(subscriptions.length, 5)} of {stats.total} subscriptions
                             </small>
