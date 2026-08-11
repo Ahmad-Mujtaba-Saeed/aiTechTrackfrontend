@@ -7,7 +7,6 @@ import CoreSettings from "./components/CoreSettings";
 const CoreSettingsManagement = () => {
     return (
         <MasterLayout>
-            <BreadCrum title='Core Settings' subTitle='' />
             <CoreSettings />
         </MasterLayout>
     );

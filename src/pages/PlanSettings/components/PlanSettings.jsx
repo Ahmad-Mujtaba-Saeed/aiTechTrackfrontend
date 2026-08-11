@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { Modal, Button, Form, Spinner } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import axios from '../../../api/axios';
-
+import BreadCrum from "../../../components/BreadCrum";
 const PlanSettings = () => {
     const dispatch = useDispatch();
     const [searchTerm, setSearchTerm] = useState('');
@@ -215,19 +215,20 @@ const PlanSettings = () => {
     return (
         <div className="container-fluid px-4">
             <div className="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <h2 className="h4 mb-1">Plans</h2>
-                    <p className="text-muted mb-0">Manage subscription plans</p>
-                </div>
-                <Button 
-                    variant="success" 
-                    onClick={handleCreateNew}
-                    className="btn-sm"
-                >
-                    <Icon icon="tabler:plus" width={18} height={18} className="me-2" />
-                    Create New Plan
-                </Button>
-            </div>
+             
+    <BreadCrum title="Plan Management" subTitle="" />
+
+    <Button
+        variant="success"
+        onClick={handleCreateNew}
+        className="btn-sm border border-2 border-dark"
+    >
+        <Icon icon="tabler:plus" width={18} height={18} className="me-2" />
+        Create New Plan
+    </Button>
+</div>
+             
+            
 
             <div className="card mb-4">
                 <div className="card-body p-3">
@@ -303,7 +304,7 @@ const PlanSettings = () => {
                                             </span>
                                         </td>
                                         <td>
-                                            <span className="badge bg-info">
+                                            <span className="badge bg-light text-dark">
                                                 Every {plan.interval_count} {plan.interval}{plan.interval_count > 1 ? 's' : ''}
                                             </span>
                                         </td>
@@ -320,9 +321,9 @@ const PlanSettings = () => {
                                             </div>
                                         </td>
                                         <td>
-                                            <span className={`badge ${plan.is_active ? 'bg-success' : 'bg-secondary'}`}>
-                                                {plan.is_active ? 'Active' : 'Inactive'}
-                                            </span>
+                                          <span className={`badge ${plan.is_active ? 'bg-success' : 'bg-light'} text-dark`}>
+    {plan.is_active ? 'Active' : 'Inactive'}
+</span>
                                         </td>
                                         <td>
                                             <small className="text-muted">{formatDate(plan.created_at)}</small>
@@ -330,7 +331,7 @@ const PlanSettings = () => {
                                         <td>
                                             <div className="btn-group" role="group">
                                                 <button
-                                                    className="btn btn-sm btn-outline-primary"
+                                                    className="btn btn-sm"
                                                     onClick={() => handleEditPlan(plan)}
                                                     title="Edit Plan"
                                                 >
@@ -350,7 +351,12 @@ const PlanSettings = () => {
                                 {(!plans || plans.length === 0) && !loading && (
                                     <tr>
                                         <td colSpan="8" className="text-center py-4">
-                                            <Icon icon="tabler:package-off" width={48} height={48} className="text-muted mb-2" />
+                                            <Icon
+                        icon="tabler:receipt-off"
+                        width={48}
+                        height={48}
+                        className="text-muted mb-2"
+                    />
                                             <p className="text-muted mb-0">No plans found</p>
                                         </td>
                                     </tr>

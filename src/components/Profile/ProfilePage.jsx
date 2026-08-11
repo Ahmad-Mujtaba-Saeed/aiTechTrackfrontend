@@ -21,7 +21,7 @@ const ProfilePage = () => {
   const { data: userData } = useSelector((state) => state.user);
   const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState('personal');
+  const [activeTab, setActiveTab] = useState('subscription');
   const [imagePreview, setImagePreview] = useState(null);
   const [credit, setCredit] = useState(null);
 
@@ -109,43 +109,50 @@ const ProfilePage = () => {
   const [clientSecret, setClientSecret] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentMethodToRemove, setPaymentMethodToRemove] = useState(null);
+useEffect(() => {
+  console.log("activeTab changed:", activeTab);
 
-  useEffect(() => {
-    if (activeTab === 'subscription') {
-      fetchSubscriptionDetails();
-      fetchPaymentMethods();
-    }
-  }, [activeTab]);
+  if (activeTab === "subscription") {
+    console.log("Fetching subscription...");
+    fetchSubscriptionDetails();
+    fetchPaymentMethods();
+  }
+}, [activeTab]);
 
   // Subscription functions
-  const fetchSubscriptionDetails = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get('/billing/subscription/details');
-      const { subscription } = response.data;
+const fetchSubscriptionDetails = async () => {
+  try {
+    setLoading(true);
 
-      if (subscription) {
-        setSubscription({
-          id: subscription.id,
-          planName: subscription.plan?.title || subscription.name,
-          amount: `£${subscription.plan?.price || '0.00'}`,
-          interval: subscription.plan?.interval || 'monthly',
-          status: subscription.status,
-          nextBillingDate: subscription.ends_at,
-          features: subscription.plan?.features || [],
-          subId: subscription.sub_id,
-          cus_id: subscription.cus_id,
-          subscriptionDetails: subscription,
-          cancel_at_period_end: subscription.cancel_at_period_end
-        });
-      }
-    } catch (error) {
-      console.error('Error fetching subscription:', error);
-      toast.error('Failed to load subscription details');
-    } finally {
-      setLoading(false);
+    const response = await axios.get('/billing/subscription/details');
+
+    console.log("API Response:", response.data);
+
+    const { subscription } = response.data;
+
+    console.log("Subscription:", subscription);
+
+    if (subscription) {
+      setSubscription({
+        id: subscription.id,
+        planName: subscription.plan?.title || subscription.name,
+        amount: `£${subscription.plan?.price || '0.00'}`,
+        interval: subscription.plan?.interval || 'monthly',
+        status: subscription.status,
+        nextBillingDate: subscription.ends_at,
+        features: subscription.plan?.features || [],
+        subId: subscription.sub_id,
+        cus_id: subscription.cus_id,
+      });
+    } else {
+        console.log("Subscription is null");
     }
-  };
+  } catch (err) {
+    console.error(err.response?.data);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const fetchPaymentMethods = async () => {
     try {
@@ -358,9 +365,9 @@ const ProfilePage = () => {
   return (
     <div className="profile-container container p-0 my-0 mx-auto" style={{ maxWidth: 1200 }}>
       {/* Profile Header */}
-      <ProfileHeader userData={userData} imagePreview={imagePreview} />
+      {/* <ProfileHeader userData={userData} /> */}
 
-      <div className="profile-content">
+      <div className="profile-content" style={{ width: 1200 }}>
         <EditProfileTab
           initialUserData={userData}
           onSave={async (formData, type) => {
@@ -462,42 +469,6 @@ const ProfilePage = () => {
 };
 
 
-const ProfileHeader = ({ userData, imagePreview }) => (
-  <div class="profile-sidebar">
-    <div class="profile-avatar">
-      <div class="avatar-container">
-        <img src={imagePreview || userData?.profile_img_url || favicon} alt="User Avatar" class="avatar-image" />
-        <div class="avatar-edit" id="editAvatar">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-camera"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 7h1a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1a2 2 0 0 0 2 2h1a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" /><path d="M9 13a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /></svg>
-        </div>
-      </div>
-      <div class="user-info">
-        <h2>{userData?.name}</h2>
-        <p>{userData?.email}</p>
-        {userData?.email_verified_at && (
-          <span class="verified-badge">
-            <i class="fas fa-check-circle"></i> Verified
-          </span>
-        )}
-      </div>
-    </div>
-
-    <div class="user-stats">
-      <div class="stat-item">
-        <div class="stat-value">156</div>
-        <div class="stat-label">Projects</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value">2.5y</div>
-        <div class="stat-label">Member</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value">24</div>
-        <div class="stat-label">Team</div>
-      </div>
-    </div>
-  </div>
-);
 
 
 const PersonalInfoTab = ({ userData }) => (
@@ -820,7 +791,8 @@ const EditProfileTab = ({
     confirmPassword: ''
   });
   const [selectedImage, setSelectedImage] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isProfileLoading, setIsProfileLoading] = useState(false);
+const [isPasswordLoading, setIsPasswordLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
   // Update local state when initialUserData changes
@@ -894,7 +866,6 @@ const EditProfileTab = ({
         newErrors.email = 'Please enter a valid email';
       }
     } else if (type === 'password') {
-      if (!passwordData.currentPassword) newErrors.currentPassword = 'Current password is required';
       if (!passwordData.newPassword) {
         newErrors.newPassword = 'New password is required';
       } else if (passwordData.newPassword.length < 6) {
@@ -909,49 +880,96 @@ const EditProfileTab = ({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e, type) => {
-    e.preventDefault();
-    if (!validateForm(type)) return;
+  // const handleSubmit = async (e, type) => {
+  //   e.preventDefault();
+  //   if (!validateForm(type)) return;
 
-    setIsLoading(true);
-    try {
-      if (type === 'profile') {
-        const formData = new FormData();
+  //   setIsLoading(true);
+  //   try {
+  //     if (type === 'profile') {
+  //       const formData = new FormData();
 
-        // Append profile data
-        formData.append('name', userData.name);
-        formData.append('email', userData.email);
-        formData.append('phone', userData.phone || '');
-        formData.append('bio', userData.bio || '');
+  //       // Append profile data
+  //       formData.append('name', userData.name);
+  //       formData.append('email', userData.email);
+  //       formData.append('phone', userData.phone || '');
+  //       formData.append('bio', userData.bio || '');
 
-        // Append image if selected
-        if (selectedImage) {
-          formData.append('profile_img', selectedImage);
-        }
+  //       // Append image if selected
+  //       if (selectedImage) {
+  //         formData.append('profile_img', selectedImage);
+  //       }
 
-        await onSave(formData, 'profile');
+  //       await onSave(formData, 'profile');
 
-        // Clear selected image after successful save
-        if (selectedImage) {
-          setSelectedImage(null);
-        }
-      } else {
-        await onPasswordChange(passwordData);
-        // Clear password fields after successful change
-        setPasswordData({
-          currentPassword: '',
-          newPassword: '',
-          confirmPassword: ''
-        });
+  //       // Clear selected image after successful save
+  //       if (selectedImage) {
+  //         setSelectedImage(null);
+  //       }
+  //     } else {
+  //       await onPasswordChange(passwordData);
+  //       // Clear password fields after successful change
+  //       setPasswordData({
+  //         newPassword: '',
+  //         confirmPassword: ''
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('Error saving changes:', error);
+  //     // Handle API errors here
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+const handleSubmit = async (e, type) => {
+  e.preventDefault();
+
+  if (!validateForm(type)) return;
+
+  if (type === "profile") {
+    setIsProfileLoading(true);
+  } else {
+    setIsPasswordLoading(true);
+  }
+
+  try {
+    if (type === "profile") {
+      const formData = new FormData();
+
+      formData.append("name", userData.name);
+      formData.append("email", userData.email);
+      formData.append("phone", userData.phone || "");
+      formData.append("bio", userData.bio || "");
+
+      if (selectedImage) {
+        formData.append("profile_img", selectedImage);
       }
-    } catch (error) {
-      console.error('Error saving changes:', error);
-      // Handle API errors here
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
+      await onSave(formData, "profile");
+
+      if (selectedImage) {
+        setSelectedImage(null);
+      }
+
+    } else {
+      await onPasswordChange(passwordData);
+
+      setPasswordData({
+        newPassword: "",
+        confirmPassword: "",
+      });
+    }
+
+  } catch (error) {
+    console.error(error);
+  } finally {
+    if (type === "profile") {
+      setIsProfileLoading(false);
+    } else {
+      setIsPasswordLoading(false);
+    }
+  }
+};
   return (
     <div className="gap-4">
       <div className="profile-section mb-4">
@@ -1015,20 +1033,24 @@ const EditProfileTab = ({
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="btn btn-primary mt-3"
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <>
-                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                Saving...
-              </>
-            ) : (
-              'Update Profile'
-            )}
-          </button>
+         <button
+  type="submit"
+  className="btn btn-primary mt-3"
+  disabled={isProfileLoading}
+>
+  {isProfileLoading ? (
+    <>
+      <span
+        className="spinner-border spinner-border-sm me-2"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      Saving...
+    </>
+  ) : (
+    "Update Profile"
+  )}
+</button>
         </form>
       </div>
 
@@ -1038,18 +1060,7 @@ const EditProfileTab = ({
         </div>
         <form onSubmit={(e) => handleSubmit(e, 'password')}>
           <div className="v-wrap">
-            <div className="form-group">
-              <label className="form-label">Current Password</label>
-              <input
-                type="password"
-                className={`form-control ${errors.currentPassword ? 'is-invalid' : ''}`}
-                name="currentPassword"
-                value={passwordData.currentPassword}
-                onChange={handlePasswordChange}
-                placeholder="Enter your current password"
-              />
-              {errors.currentPassword && <div className="invalid-feedback">{errors.currentPassword}</div>}
-            </div>
+           
 
             <div className="form-group">
               <label className="form-label">New Password</label>
@@ -1079,20 +1090,24 @@ const EditProfileTab = ({
             </div>
           </div>
 
-          <button
-            type="submit"
-            className="btn btn-primary mt-3"
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <>
-                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                Updating...
-              </>
-            ) : (
-              'Change Password'
-            )}
-          </button>
+         <button
+  type="submit"
+  className="btn btn-primary mt-3"
+  disabled={isPasswordLoading}
+>
+  {isPasswordLoading ? (
+    <>
+      <span
+        className="spinner-border spinner-border-sm me-2"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      Updating...
+    </>
+  ) : (
+    "Change Password"
+  )}
+</button>
         </form>
       </div>
     </div>

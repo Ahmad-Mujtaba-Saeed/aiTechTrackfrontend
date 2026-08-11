@@ -26,7 +26,11 @@ const PrivateRoute = ({ children }) => {
     if (!token || !data || subscriptionInitiatedRef.current) return;
 
     const path = location.pathname;
-    if (path === "/upload-profile" || path === "/subscription") return;
+   if (
+    path === "/upload-profile" ||
+    path === "/subscription" ||
+    path === "/welcome"
+)  return;
 
     if (!data.plan_id && data.trial_used == 0 && !hasSystemInternalPermission) {
       subscriptionInitiatedRef.current = true; // prevent re-entry

@@ -6,14 +6,12 @@ const TermsAndConditions = () => {
     return (
         <Container className="my-5" style={{ maxWidth: '960px' }}>
             <div className="text-center mb-5">
-                <img src={logo} alt="MyPathfinder logo" style={{maxWidth: 540, marginBottom: 28}}/>
+                <img src={logo} alt="CV Builder logo" style={{maxWidth: 540, marginBottom: 28}}/>
                 <h1 className="display-4 text-primary mb-3" style={{fontWeight: 700}}>Terms & Conditions</h1>
                 <p className="lead text-muted">
                     Effective Date: 09/09/2025
                 </p>
-                <p className="text-muted">
-                    Company: MyPathfinder Ltd ("MyPathfinder", "we", "us", "our")
-                </p>
+               
             </div>
 
             <Accordion defaultActiveKey="0" className="mb-4">
@@ -25,7 +23,7 @@ const TermsAndConditions = () => {
                         <dl className="row">
                             <dt className="col-sm-3">"Services"</dt>
                             <dd className="col-sm-9">
-                                means the MyPathfinder online platform including CV tailoring,
+                                means the CV Builder online platform including CV tailoring,
                                 job-matching, interview preparation, and related features.
                             </dd>
 
@@ -84,7 +82,7 @@ const TermsAndConditions = () => {
                     <Accordion.Body>
                         <ul>
                             <li className="mb-2">
-                                MyPathfinder provides career support tools powered by artificial intelligence.
+                               CV Builder provides career support tools powered by artificial intelligence.
                             </li>
                             <li className="mb-2">
                                 While our Services are designed to enhance job applications and
@@ -104,7 +102,7 @@ const TermsAndConditions = () => {
                         <h5 className="mb-0">5. User Obligations</h5>
                     </Accordion.Header>
                     <Accordion.Body>
-                        <p>When using MyPathfinder, you must not:</p>
+                        <p>When using CV Builder, you must not:</p>
                         <ul>
                             <li>Upload unlawful, offensive, discriminatory, or misleading content.</li>
                             <li>Attempt to interfere with the security or operation of the platform.</li>
@@ -156,7 +154,7 @@ const TermsAndConditions = () => {
                                     <Card.Body>
                                         <p className="mb-0">
                                             All platform content, software, branding, and materials are owned by
-                                            MyPathfinder or licensed to us.
+                                            CV Builder or licensed to us.
                                         </p>
                                     </Card.Body>
                                 </Card>
@@ -169,7 +167,7 @@ const TermsAndConditions = () => {
                                     <Card.Body>
                                         <p className="mb-0">
                                             You retain ownership of your personal data and CV content, but grant
-                                            MyPathfinder a limited licence to process and display it solely for
+                                            CV Builder a limited licence to process and display it solely for
                                             delivering our Services.
                                         </p>
                                     </Card.Body>
@@ -212,7 +210,7 @@ const TermsAndConditions = () => {
                         <p>To the fullest extent permitted by law:</p>
                         <ul>
                             <li className="mb-2">
-                                MyPathfinder shall not be liable for indirect, incidental, or
+                                CV Builder shall not be liable for indirect, incidental, or
                                 consequential losses arising from your use of the Services.
                             </li>
                             <li className="mb-2">
@@ -286,9 +284,9 @@ const TermsAndConditions = () => {
                             <Card.Body>
                                 <h6 className="card-title">For any queries relating to these Terms, please contact:</h6>
                                 <address className="mb-0">
-                                    <strong>MyPathfinder Ltd</strong><br />
-                                    Email: <a href="mailto:hello@mypathfinder.uk" className="text-decoration-none">
-                                        hello@mypathfinder.uk
+                                    <strong>CV Builder Ltd</strong><br />
+                                    Email: <a href="mailto:hello@cvbuilder.uk" className="text-decoration-none">
+                                        hello@CV Builder.uk
                                     </a>
                                 </address>
                             </Card.Body>
@@ -300,7 +298,7 @@ const TermsAndConditions = () => {
             <Card className="border-0 bg-light mt-4">
                 <Card.Body className="text-center py-4">
                     <p className="text-muted mb-0">
-                        &copy; {new Date().getFullYear()} MyPathfinder Ltd. All rights reserved.
+                        &copy; {new Date().getFullYear()} CV Builder Ltd. All rights reserved.
                     </p>
                 </Card.Body>
             </Card>

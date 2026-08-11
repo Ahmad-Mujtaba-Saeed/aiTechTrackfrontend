@@ -47,7 +47,7 @@ const Subscriptions = () => {
         const variants = {
             active: 'success',
             canceled: 'danger',
-            trialing: 'info',
+            trialing: 'dark',
             incomplete: 'warning',
             past_due: 'warning',
             unpaid: 'danger'
@@ -84,8 +84,7 @@ const Subscriptions = () => {
 
     return (
         <div className="container-fluid px-4">
-            <div className="d-md-flex justify-content-between align-items-center mb-4">
-                
+            <div className="d-flex justify-content-between align-items-center mb-4">
             </div>
 
             <div className="card mb-4 ">
@@ -212,7 +211,12 @@ const Subscriptions = () => {
                                 {(!subscriptions?.data || subscriptions.data.length === 0) && !loading && (
                                     <tr>
                                         <td colSpan="9" className="text-center py-4">
-                                            <Icon icon="tabler:subscription-off" width={48} height={48} className="text-muted mb-2" />
+                                            <Icon
+                        icon="tabler:receipt-off"
+                        width={48}
+                        height={48}
+                        className="text-muted mb-2"
+                    />
                                             <p className="text-muted mb-0">No subscriptions found</p>
                                         </td>
                                     </tr>

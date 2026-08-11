@@ -8,7 +8,7 @@ export default function GettingStarted({completedSteps}) {
 
   // Step configuration (map API keys to labels)
   const steps = [
-    { key: "sign_up", label: "Signed up to the MyPathfinder platform" },
+    { key: "sign_up", label: "Signed up to the CV Builder platform" },
     { key: "first_cv", label: "Created your first CV using our smart builder" },
     { key: "first_interview", label: "Practised your first interview using our simulator" },
     { key: "applied_job", label: "Applied for a vacancy using our smart job search" },

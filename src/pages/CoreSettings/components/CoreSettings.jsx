@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { getAllCoreCredentials , deleteCoreCredential , updateOrCreateCoreCredential } from '../../../features/admin/core-settings-mangement/coreSettingsManagementSlice';
 import { useDispatch } from 'react-redux';
-
+import BreadCrum from "../../../components/BreadCrum";
 const CoreSettings = () => {
     const dispatch = useDispatch();
     const { coreSettings, loading, error } = useSelector((state) => state.coreSettingsManagement);
@@ -195,11 +195,8 @@ const CoreSettings = () => {
     return (
         <div className="container-fluid px-4">
             {/* Header */}
-            <div className="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <h2 className="h4 mb-1">Core Settings</h2>
-                    <p className="text-muted mb-0">Manage application configuration settings</p>
-                </div>
+            <div className="d-flex justify-content-between align-items-center">
+                <BreadCrum title='Core Settings' subTitle='' />
                 <div className="d-flex gap-2">
                     <button
                         className="btn btn-primary"
@@ -312,7 +309,7 @@ const CoreSettings = () => {
                                                                     Encrypted
                                                                 </span>
                                                             ) : (
-                                                                <span className="badge bg-success-subtle text-success">
+                                                                <span className="badge bg-success-subtle text-dark">
                                                                     <Icon icon="tabler:lock-open" width={14} height={14} className="me-1" />
                                                                     Plain
                                                                 </span>
@@ -325,7 +322,7 @@ const CoreSettings = () => {
                                                             {editingId !== setting.id && (
                                                                 <div className="d-flex gap-1">
                                                                     <button
-                                                                        className="btn btn-sm btn-outline-primary"
+                                                                        className="btn btn-sm"
                                                                         onClick={() => handleEdit(setting)}
                                                                         title="Edit setting"
                                                                     >
