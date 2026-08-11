@@ -7,7 +7,7 @@ import Subscriptions from "./components/Subscriptions";
 const SubscriptionManagement = () => {
     return (
         <MasterLayout>
-            <BreadCrum title='Subscriptions' subTitle='' />
+            <BreadCrum title='Subscriptions' subTitle='Manage All Subscriptions' />
             <Subscriptions />
         </MasterLayout>
     );

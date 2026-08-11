@@ -72,7 +72,7 @@ const Subscriptions = () => {
             <div className="row">
                 <div className="col-12">
                     <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '300px' }}>
-                        <div className="spinner-border text-primary" role="status">
+                        <div className="spinner-border text-primary" role="status" >
                             <span className="visually-hidden">Loading...</span>
                         </div>
                         <span className="ms-3">Loading Subscriptions...</span>
@@ -83,15 +83,17 @@ const Subscriptions = () => {
     }
 
     return (
-        <div className="container-fluid px-4">
+        <div className="container-fluid p-0">
             <div className="d-flex justify-content-between align-items-center mb-4">
             </div>
 
             <div className="card mb-4 ">
                 <div className="card-body p-3 ">
-                    <div className="row align-items-center">
-                        <div className="col-md-12 mb-3 mb-md-0 d-flex gap-2  ">
-                            <div className="input-group">
+                    <div className="d-block d-md-flex align-items-center">
+                        <div className=" ">
+                            
+                            <div className="d-flex flex-column flex-md-row gap-1 w-100">
+                                <div className="w-100  input-group col-4">
                                 <span className="input-group-text bg-light border-end-0">
                                     <Icon icon="tabler:search" width={18} height={18} />
                                 </span>
@@ -112,7 +114,9 @@ const Subscriptions = () => {
                                     </button>
                                 )}
                             </div>
-                            <select
+                            <div className=" d-flex gap-1 my-1">
+                                    <div className="col-6 col-md-12">
+                                    <select
                                 className="form-select"
                                 style={{ maxWidth: '200px' }}
                                 value={statusFilter}
@@ -125,8 +129,10 @@ const Subscriptions = () => {
                                     </option>
                                 ))}
                             </select>
-                            <button
-                                className="btn btn-primary"
+                                </div>
+                                <div className="col-6 col-md-12">
+                                    <button
+                                className="w-100 btn btn-primary"
                                 onClick={() => fetchSubscriptions(1, searchTerm, statusFilter)}
                                 disabled={loading}
                                 style={{ minWidth: 'fit-content' }}
@@ -134,6 +140,12 @@ const Subscriptions = () => {
                                 <Icon icon="tabler:refresh" width={18} height={18} className={loading ? 'spin' : ''} />
                                 Refresh
                             </button>
+                                </div>
+                            </div>
+                                
+                            </div>
+                            
+                            
                         </div>
                     </div>
                 </div>
