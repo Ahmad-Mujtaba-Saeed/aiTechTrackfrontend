@@ -8,6 +8,7 @@ import { Modal, Button, Form, Spinner } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import axios from '../../../api/axios';
 import BreadCrum from "../../../components/BreadCrum";
+ 
 const PlanSettings = () => {
     const dispatch = useDispatch();
     const [searchTerm, setSearchTerm] = useState('');
@@ -214,24 +215,24 @@ const PlanSettings = () => {
 
     return (
         <div className="container-fluid p-0 ">
-            <div className="d-flex justify-content-between align-items-center mb-4">
+            <div className="d-flex justify-content-between align-items-center mb-4 gap-11">
              
     <BreadCrum title="Plan Management" subTitle="Manage your pricing plans" />
 
     <Button
         variant="success"
         onClick={handleCreateNew}
-        className="btn-sm border border-2 border-dark"
+        className="border border-2 border-dark border-radius-0 create-plan-btn" aria-label="Create new plan"
     >
-        <Icon icon="tabler:plus" width={18} height={18} className="me-2" />
-        Create New Plan
+        <Icon icon="tabler:plus" width={18} height={18}  />
+       <span className='d-none d-sm-inline ms-2'> Create New Plan </span>
     </Button>
 </div>
              
             
 
-            <div className="card mb-4">
-                <div className="card-body p-3">
+            <div className="card mb-4 ">
+                <div className="card-body p-3 ">
                     <div className="row align-items-center">
                         <div className="col-md-12 mb-3 mb-md-0 d-flex gap-2">
                             <div className="input-group">

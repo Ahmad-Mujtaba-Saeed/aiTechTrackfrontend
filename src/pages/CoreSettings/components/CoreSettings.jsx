@@ -193,10 +193,10 @@ const CoreSettings = () => {
     }
 
     return (
-        <div className="container-fluid px-4">
+        <div className="container-fluid p-0">
             {/* Header */}
             <div className="d-flex justify-content-between align-items-center">
-                <BreadCrum title='Core Settings' subTitle='' />
+                <BreadCrum title='Core Settings' subTitle='Manage your core settings' />
                 <div className="d-flex gap-2">
                     <button
                         className="btn btn-primary"

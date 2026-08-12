@@ -131,7 +131,7 @@ const UpgradeSubscribePlan = () => {
 
     return (
         <MasterLayout>
-            <div className="container py-5">
+            <div className="container py-0">
                 <div className="header">
                     <h1>Choose Your Plan</h1>
                     <p className="subtitle">Select the perfect tier for your needs and budget</p>
