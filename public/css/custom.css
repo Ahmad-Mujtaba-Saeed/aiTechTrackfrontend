@@ -714,6 +714,8 @@ h4 {
     min-height: calc(100vh - 95px);
     gap: 16px;
     width: 100%;
+  
+   
     /* background-color: antiquewhite; */
 }
 
@@ -1317,4 +1319,6 @@ div:where(.swal2-container) {
     align-items: center !important;
     justify-content: center !important;
   }
+  
+  
 }
