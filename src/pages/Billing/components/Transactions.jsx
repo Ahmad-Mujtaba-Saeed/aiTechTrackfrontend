@@ -52,7 +52,7 @@ const Transactions = () => {
         };
         const variant = variants[status] || 'secondary';
         return (
-            <span className={`badge bg-${variant}-subtle text-muted`}>
+            <span className={`badge bg-${variant}-subtle text-${variant}`}>
                 {status?.charAt(0).toUpperCase() + status?.slice(1) || 'Unknown'}
             </span>
         );
@@ -81,23 +81,22 @@ const Transactions = () => {
     }
 
     return (
-        <div className="container-fluid px-4">
+        <div className="container-fluid p-0">
             {/* Existing header - NO CHANGES */}
             <div className="d-flex justify-content-between align-items-center mb-4">
-                {/* <div>
-                    <h2 className="h4 mb-1">Transactions</h2>
-                    <p className="text-muted mb-0">Manage payment transactions</p>
-                </div> */}
+                
             </div>
 
             <div className="card mb-4">
                 <div className="card-body p-3">
-                    <div className="row align-items-center">
-                        <div className="col-md-12 mb-3 mb-md-0 d-flex gap-2">
-                            <div className="input-group">
-                                <span className="input-group-text bg-light border-end-0">
+                    <div className="row align-items-center ">
+                        <div className="col-md-12 mb-3 mb-md-0 d-md-flex gap-2 ">
+                            <div className="input-group ">
+                               
+                                <span className="input-group-text bg-light border-end-0 ">
                                     <Icon icon="tabler:search" width={18} height={18} />
                                 </span>
+                                
                                 <input
                                     type="text"
                                     className="form-control border-start-0"
@@ -114,7 +113,11 @@ const Transactions = () => {
                                         <Icon icon="tabler:x" width={18} height={18} />
                                     </button>
                                 )}
+                                
                             </div>
+                            
+                           <div className="d-flex gap-1 my-1 w-100">
+                          
                             <select
                                 className="form-select"
                                 style={{ maxWidth: '200px' }}
@@ -128,6 +131,7 @@ const Transactions = () => {
                                     </option>
                                 ))}
                             </select>
+                          
                             <button
                                 className="btn btn-primary"
                                 onClick={() => fetchTransactions(1, searchTerm, paymentStatusFilter)}
@@ -137,6 +141,7 @@ const Transactions = () => {
                                 <Icon icon="tabler:refresh" width={18} height={18} className={loading ? 'spin' : ''} />
                                 Refresh
                             </button>
+                        </div>
                         </div>
                     </div>
                 </div>

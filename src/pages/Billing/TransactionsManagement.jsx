@@ -7,7 +7,7 @@ import Transactions from "./components/Transactions";
 const TransactionsManagement = () => {
     return (
         <MasterLayout>
-            <BreadCrum title='Transactions' subTitle='' />
+            <BreadCrum title='Transactions' subTitle='Manage payment transactions' />
             <Transactions />
         </MasterLayout>
     );
