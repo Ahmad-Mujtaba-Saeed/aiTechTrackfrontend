@@ -38,6 +38,7 @@ import UserManagement from "./pages/UserManagement/UserManagement";
 import TransactionsManagement from "./pages/Billing/TransactionsManagement";
 import SubscriptionManagement from "./pages/Subscriptions/SubscriptionManagement";
 import CoreSettingsManagement from "./pages/CoreSettings/CoreSettingsManagement";
+import AtsManagement from "./pages/Ats/AtsManagement";
 import PlanManagement from "./pages/PlanSettings/PlanManagement"
 
 import Career from "./pages/CareerAdvice";
@@ -88,6 +89,7 @@ const protectedRoutes = [
   { path: '/billing/subscriptions', element: <SubscriptionManagement /> },
   { path:'/billing/plan-management', element: <PlanManagement /> },
   { path: '/core-settings', element: <CoreSettingsManagement /> },
+  { path: '/ats-checker', element: <AtsManagement /> },
 ];
 
 
