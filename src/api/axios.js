@@ -1,12 +1,10 @@
 import axios from 'axios';
+import config from '../config/config';
 
-const baseURL = 'https://cv-api.wasimdev.com';
-const baseURLAPI = 'https://cv-api.wasimdev.com/api';
+const baseURL = config.appUrl;
+const baseURLAPI = config.apiUrl;
+const stripe_pub_key = config.stripePublicKey;
 
-// const baseURL = 'http://localhost:8000';
-// const baseURLAPI = 'http://localhost:8000/api';
-
-const stripe_pub_key = "pk_live_51SGKUzRsDMWvnk1JRPvPMqDUenPSYHKNAoCRKPiuGmcEnTLVgBicJ22OaAMtiJXlrSJA3mE9CNJOjEzWixyPvlZ000YhO6ZDRD"
 const instance = axios.create({
     baseURL: baseURLAPI,
     headers: {

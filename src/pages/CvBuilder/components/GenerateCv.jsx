@@ -35,6 +35,7 @@ import { ClassicCoverLetterTemplate } from "../../../components/cover-letter-tem
 import CoverLetter from "../../../components/CvBuilder/components/coverLetter";
 import html2pdf from "html2pdf.js";
 import axios, { baseUrl } from "../../../api/axios";
+import AtsCheckModal from "./AtsCheckModal";
 import { round } from 'lodash';
 
 
@@ -1392,6 +1393,7 @@ export default function CVBuilder() {
 
     const [modalShow, setModalShow] = useState(false);
     const [modalFor, setModalFor] = useState('')
+    const [showAtsModal, setShowAtsModal] = useState(false);
 
     const handleClose = () => {
         setModalShow(false);
@@ -3234,6 +3236,14 @@ export default function CVBuilder() {
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
+
+                        <Button
+                            className="editor-custom-btn"
+                            onClick={() => setShowAtsModal(true)}
+                            title="ATS Check"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-shield-check"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3" /><path d="M9 12l2 2l4 -4" /></svg>
+                        </Button>
                     </div>
                     <div className="editor-inner-wrapper">
                         <div className="cv-wrapper">
@@ -3407,6 +3417,12 @@ export default function CVBuilder() {
         `}</style>
                 </div>
             )}
+
+            <AtsCheckModal
+                show={showAtsModal}
+                onHide={() => setShowAtsModal(false)}
+                resumeId={id}
+            />
         </div>
     );
 }
