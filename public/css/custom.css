@@ -53,7 +53,7 @@ h4 {
 [data-bs-theme=dark] .navbar-vertical .navbar-vertical-footer,
 [data-bs-theme=dark] .dropdown-profile .card,
 [data-bs-theme=dark] .navbar .dropdown-menu.navbar-dropdown-caret:after {
-    background: #FF6B47 !important;
+    background:#131922 !important;
     background-size: 300% 300%;
     animation: gradientShift 8s ease infinite;
     content: unset;

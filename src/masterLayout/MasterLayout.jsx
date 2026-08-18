@@ -6,6 +6,8 @@ import { Button, Dropdown } from 'react-bootstrap';
 
 import logo from '../assets/images/logo.png';
 import logoLight from '../assets/images/logo.png';
+
+const WHITE_LOGO = '/images/logo.png';
 import avatar from '../assets/demo_profile.avif'
 import favicon from '../assets/demo_profile.avif';
 import { useDispatch, useSelector } from "react-redux";
@@ -93,7 +95,7 @@ const slug = data?.roles?.[0]?.slug || "user";
           <div className="navbar-vertical-content">
             <Link className="d-block d-lg-none navbar-brand me-1 me-sm-3" to="/">
             <div className="d-flex align-items-center mx-3">
-              <img src={logo} alt="phoenix-light" width="120" />
+              <img src={WHITE_LOGO} alt="PathForge" width="120" />
             </div>
           </Link>
             <ul className="navbar-nav flex-column" id="navbarVerticalNav">
@@ -189,7 +191,7 @@ const slug = data?.roles?.[0]?.slug || "user";
           <button className="btn navbar-toggler navbar-toggler-humburger-icon hover-bg-transparent" type="button" onClick={mobileToggle}><span className="navbar-toggle-icon"><span className="toggle-line"></span></span></button>
           <Link className="d-none d-lg-block navbar-brand me-1 me-sm-3" to="/">
             <div className="d-flex align-items-center">
-              <img src={logo} alt="phoenix-light" width="120" />
+              <img src={WHITE_LOGO} alt="PathForge" width="120" />
             </div>
           </Link>
         </div>
