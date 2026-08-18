@@ -53,7 +53,7 @@ h4 {
 [data-bs-theme=dark] .navbar-vertical .navbar-vertical-footer,
 [data-bs-theme=dark] .dropdown-profile .card,
 [data-bs-theme=dark] .navbar .dropdown-menu.navbar-dropdown-caret:after {
-    background: #2c2c2c !important;
+    background: #FF6B47 !important;
     background-size: 300% 300%;
     animation: gradientShift 8s ease infinite;
     content: unset;
@@ -89,6 +89,41 @@ h4 {
 
 [data-bs-theme=dark] .navbar-top {
     border-bottom: 1px solid #4d4d4d !important;
+}
+
+/* ── Sidebar & Navbar: orange accent colour ── */
+:root [data-navbar-appearance=darker],
+[data-bs-theme=light] [data-navbar-appearance=darker] {
+    --phoenix-navbar-vertical-bg-color: #FF6B47 !important;
+    --phoenix-navbar-top-bg-color: #FF6B47 !important;
+    --phoenix-navbar-vertical-link-color: #fff !important;
+    --phoenix-navbar-vertical-link-hover-color: #fff !important;
+    --phoenix-navbar-vertical-link-active-color: #fff !important;
+    --phoenix-navbar-vertical-label-color: rgba(255,255,255,0.6) !important;
+    --phoenix-navbar-vertical-link-hover-bg: rgba(255,255,255,0.12) !important;
+}
+
+[data-bs-theme=dark] [data-navbar-appearance=darker] {
+    --phoenix-navbar-vertical-bg-color: #FF6B47 !important;
+    --phoenix-navbar-top-bg-color: #FF6B47 !important;
+    --phoenix-navbar-vertical-link-color: #fff !important;
+    --phoenix-navbar-vertical-link-hover-color: #fff !important;
+    --phoenix-navbar-vertical-link-active-color: #fff !important;
+    --phoenix-navbar-vertical-label-color: rgba(255,255,255,0.6) !important;
+    --phoenix-navbar-vertical-link-hover-bg: rgba(255,255,255,0.12) !important;
+}
+
+/* Force all text/icons inside the sidebar to white */
+.navbar-vertical .navbar-nav .nav-link,
+.navbar-vertical .navbar-nav .nav-link .nav-link-text,
+.navbar-vertical .navbar-nav .nav-link .nav-link-icon,
+.navbar-vertical .navbar-nav .nav-link span,
+.navbar-vertical .navbar-nav .dropdown-indicator .nav-link-text,
+.navbar-vertical .navbar-nav .dropdown-indicator .nav-link-icon,
+.navbar-vertical .navbar-vertical-content .navbar-vertical-label,
+.navbar-vertical .navbar-vertical-footer a,
+.navbar-vertical .navbar-vertical-footer span {
+    color: #fff !important;
 }
 
 .navbar-vertical .navbar-vertical-content .navbar-nav .nav-link:hover {
@@ -134,8 +169,7 @@ h4 {
 }
 
 .navbar-vertical .navbar-vertical-content .navbar-vertical-label {
-    color: #757575 !important;
-
+    color: rgba(255, 255, 255, 0.55) !important;
 }
 
 .feature-cards .card {

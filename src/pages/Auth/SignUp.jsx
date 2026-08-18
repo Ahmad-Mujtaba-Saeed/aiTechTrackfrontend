@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import axios from '../../api/axios';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { FaExclamationCircle } from 'react-icons/fa';
-import logo from '../../assets/images/MPF-logo.svg';
+import logo from '../../assets/images/logo.png';
 import { Button, Form as BootstrapForm, Alert, Spinner } from 'react-bootstrap';
 import PhoneInput, { isValidPhoneNumber } from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';

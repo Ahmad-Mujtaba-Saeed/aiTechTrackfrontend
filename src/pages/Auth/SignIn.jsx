@@ -4,7 +4,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import logo from "../../assets/images/MPF-logo.svg";
+import logo from "../../assets/images/logo.png";
 // Redux imports
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/user/userSlice";

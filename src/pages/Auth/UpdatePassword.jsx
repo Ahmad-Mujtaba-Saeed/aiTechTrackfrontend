@@ -5,7 +5,7 @@ import { resetPassword } from '../../features/user/userSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import logo from '../../assets/images/MPF-logo.svg';
+import logo from '../../assets/images/logo.png';
 
 export default function UpdatePassword() {
   const dispatch = useDispatch();

@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom";
 
 
-import logo from '../../assets/images/MPF-logo.svg'
+import logo from '../../assets/images/logo.png'
 
 export default function F2Verification() {
     return (

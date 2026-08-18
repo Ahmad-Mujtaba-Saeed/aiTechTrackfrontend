@@ -4,8 +4,8 @@ import { Link, NavLink, } from "react-router-dom";
 import { Button, Dropdown } from 'react-bootstrap';
 
 
-import logo from '../assets/images/MPF-Logo-Light.svg';
-import logoLight from '../assets/images/MPF-Logo-Light.svg';
+import logo from '../assets/images/logo.png';
+import logoLight from '../assets/images/logo.png';
 import avatar from '../assets/demo_profile.avif'
 import favicon from '../assets/demo_profile.avif';
 import { useDispatch, useSelector } from "react-redux";
@@ -250,7 +250,7 @@ const slug = data?.roles?.[0]?.slug || "user";
         <footer className={`footer position-absolute ${isNavToggled('/cv-generate', 'd-none')}`} style={{ translate: 'none', rotate: 'none', scale: 'none', transform: 'translate(0px, 0px)', opacity: 1 }}>
           <div className="row g-0 justify-content-between align-items-center h-100">
             <div className="col-12 col-sm-auto text-center">
-              <p className="mb-0 mt-2 mt-sm-0 fs-9">2025 © Cv Builder<span className="d-none d-sm-inline-block"></span></p>
+              <p className="mb-0 mt-2 mt-sm-0 fs-9">2025 © PathForge<span className="d-none d-sm-inline-block"></span></p>
             </div>
             <div className="col-12 col-sm-auto text-center">
               <p className="mb-0 text-body-tertiary text-opacity-85 fs-9">v1.23.0</p>
@@ -297,7 +297,7 @@ const slug = data?.roles?.[0]?.slug || "user";
                             <div className="d-flex align-items-center">
                               <div className="fw-normal text-body-highlight title">
                                 <span className="fa-solid fa-link" data-fa-transform="shrink-2"></span>
-                                CV Builder
+                                PathForge
                               </div>
                             </div>
                           </a>

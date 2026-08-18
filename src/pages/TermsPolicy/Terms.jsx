@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Card, Accordion, Alert } from 'react-bootstrap';
-import logo from '../../assets/images/MPF-logo.svg';
+import logo from '../../assets/images/logo.png';
 
 const TermsAndConditions = () => {
     return (

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import logo from '../../assets/images/MPF-logo.svg';
+import logo from '../../assets/images/logo.png';
 import { ForgotPassword } from "../../features/user/userSlice";
 
 export default function ForgetPassword() {

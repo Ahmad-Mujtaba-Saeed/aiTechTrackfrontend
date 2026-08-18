@@ -3,7 +3,7 @@ import axios from "../../api/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { Container, Row, Col, Button, Card, Spinner, Alert, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import logo from "../../assets/images/MPF-logo.svg";
+import logo from "../../assets/images/logo.png";
 import Swal from "sweetalert2";
 
 const SubscribePlan = () => {
