@@ -202,9 +202,13 @@ const slug = data?.roles?.[0]?.slug || "user";
 
           <li className="nav-item">
             <span style={{ whiteSpace: 'nowrap', color: 'white' }}>
-              {new Date(data.plan_expire_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-              {' '}
-              {new Date(data.plan_expire_date).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
+              {data?.plan_expire_date ? (
+                <>
+                  {new Date(data.plan_expire_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                  {' '}
+                  {new Date(data.plan_expire_date).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
+                </>
+              ) : null}
             </span>
           </li>
 

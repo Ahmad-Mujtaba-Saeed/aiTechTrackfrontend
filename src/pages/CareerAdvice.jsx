@@ -108,7 +108,7 @@ const CareerAdviceSection = ({ sectionId, count }) => {
           <div className="border-translucent">
             <div className="d-flex align-items-start mb-1">
               <div className="d-sm-flex align-items-center">
-                <h2 className="text-primary">{`${count}. ${section.title}`}</h2>
+                <h2 className="text-primary text-center career-advice-heading">{`${count}. ${section.title}`}</h2>
               </div>
             </div>
             <ul className="mb-0">
