@@ -97,7 +97,7 @@ const showNoData =
         <>
           {recentCVs?.data?.length > 0 ? (
             < div className="col-12">
-              <Card className="h-100 w-100 position-relative z-index-99">
+              <Card className="h-100 w-100 position-relative z-index-99 recent-cvs-card">
                 <Card.Body className="position-relative p-0 pb-3">
                   <div className="d-flex justify-content-between align-items-center p-4">
                     <h5 className="mb-0">Recent CVs</h5>

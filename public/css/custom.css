@@ -177,6 +177,11 @@ h4 {
     background: linear-gradient(200deg, rgba(252, 255, 217, 1) 0%, rgba(255, 255, 255, 1) 47%, rgba(255, 255, 255, 1) 70%, rgba(255, 217, 242, 0.7) 100%);
 }
 
+/* Dashboard Recent CVs card — orange tint */
+.recent-cvs-card {
+    background: linear-gradient(200deg, rgba(255, 220, 190, 0.6) 0%, rgba(255, 255, 255, 1) 47%, rgba(255, 255, 255, 1) 70%, rgba(255, 210, 180, 0.5) 100%) !important;
+}
+
 .feature-cards .card:hover {
     transform: translateY(0px);
     box-shadow: 0 0 30px 6px rgb(0 0 0 / 10%) !important;
@@ -1942,4 +1947,9 @@ div:where(.swal2-container) {
     display: flex;
     justify-content: flex-end;
     margin-top: 8px;
+}
+
+.career-advice-heading {
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
 }
