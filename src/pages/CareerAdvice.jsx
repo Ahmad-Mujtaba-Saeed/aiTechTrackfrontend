@@ -108,7 +108,7 @@ const CareerAdviceSection = ({ sectionId, count }) => {
           <div className="border-translucent">
             <div className="d-flex align-items-start mb-1">
               <div className="d-sm-flex align-items-center">
-                <h2 className="text-primary text-center career-advice-heading">{`${count}. ${section.title}`}</h2>
+                <h2 className="text-primary text-center career-advice-heading">{section.title}</h2>
               </div>
             </div>
             <ul className="mb-0">
@@ -139,7 +139,7 @@ export default function CareerAdvice() {
 
           <div className="d-none">
             <div className="section" id="s1">
-              <h2 className="mb-2">1. Navigating Job Descriptions Like a Pro</h2>
+              <h2 className="mb-2"> Navigating Job Descriptions Like a Pro</h2>
               <ul className="mb-0">
                 <li>Ignore buzzwords, spot the real needs – highlight recurring verbs (e.g.
                   <em>own</em>, <em>deliver</em>,

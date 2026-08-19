@@ -25,7 +25,7 @@ export default function Welcome() {
 
                 <div className="row mb-3 g-3 feature-cards justify-content-center">
 
-                    <div className="col-12 col-xl-3">
+                    <div className="col-12 col-xl-4">
                         <div className="card h-100 w-100 overflow-hidden position-relative card">
                             <div className="card-body px-4 position-relative card-body">
                                 <div className="icon-item icon-item-md rounded-1 shadow-none">
@@ -40,7 +40,7 @@ export default function Welcome() {
                         </div>
                     </div>
 
-                    <div className="col-12 col-xl-3">
+                    <div className="col-12 col-xl-4">
                         <div className="card h-100 w-100 overflow-hidden position-relative card">
                             <div className="card-body px-4 position-relative card-body">
                                 <div className="icon-item icon-item-md rounded-1 shadow-none">
