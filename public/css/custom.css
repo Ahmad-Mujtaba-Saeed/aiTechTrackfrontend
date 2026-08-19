@@ -1953,3 +1953,13 @@ div:where(.swal2-container) {
     font-size: 1.2rem !important;
     font-weight: 600 !important;
 }
+
+/* Hide sidebar scrollbar but keep scroll functionality */
+.navbar-vertical .navbar-vertical-content {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+}
+
+.navbar-vertical .navbar-vertical-content::-webkit-scrollbar {
+    display: none !important;
+}
