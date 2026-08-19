@@ -133,13 +133,13 @@ const showNoData =
           </div>
           {/* Recent Activities Dropdown */}
           <div className="col-12 d-flex justify-content-center align-items-center">
-            <div className="position-relative">
+            <div className="position-relative w-100">
               <Dropdown drop="up" className="col-12 col-md-6 col-lg-12">
                 <Dropdown.Toggle variant="primary" className="w-100">
                   <Icon icon="mdi:history" className="me-2" />
                   Recent Activities
                    </Dropdown.Toggle>
-                <Dropdown.Menu className="w-100 p-0" style={{ overflow: 'auto' }}>
+                <Dropdown.Menu className="w-100 p-0" style={{ overflow: 'auto', maxHeight: '350px' }}>
                   <div className="p-0">
                     <RecentActivitiesPlatform />
                   </div>
