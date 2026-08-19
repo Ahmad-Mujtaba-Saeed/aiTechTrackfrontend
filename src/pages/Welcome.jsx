@@ -27,7 +27,7 @@ export default function Welcome() {
 
                     <div className="col-12 col-xl-4">
                         <div className="card h-100 w-100 overflow-hidden position-relative card">
-                            <div className="card-body px-4 position-relative card-body">
+                            <div className="card-body px-3 position-relative card-body">
                                 <div className="icon-item icon-item-md rounded-1 shadow-none">
                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-notes"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 5a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2l0 -14" /><path d="M9 7l6 0" /><path d="M9 11l6 0" /><path d="M9 15l4 0" /></svg>
                                 </div>
@@ -42,7 +42,7 @@ export default function Welcome() {
 
                     <div className="col-12 col-xl-4">
                         <div className="card h-100 w-100 overflow-hidden position-relative card">
-                            <div className="card-body px-4 position-relative card-body">
+                            <div className="card-body px-3 position-relative card-body">
                                 <div className="icon-item icon-item-md rounded-1 shadow-none">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brand-tabler"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 9l3 3l-3 3" /><path d="M13 15h3" /><path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4l0 -10" /></svg>
                                 </div>
