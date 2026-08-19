@@ -13,7 +13,7 @@ export default function Welcome() {
                         <div className="d-flex flex-center text-decoration-none mb-4">
                             <img src={logo} alt="CV Builder" width="200" />
                         </div>
-                        <div className="card-body position-relative">
+                        <div className="card-body position-relative  ">
                             <h1 className="mb-2 fw-semibold text-center">Where do you want to start?</h1>
                             <h3 className="fs-7 fw-normal lh-lg text-center">
                                 CV Builder curates job opportunities that match your profile, allowing you to apply
