@@ -23,3 +23,4 @@ dist-ssr
 *.sln
 *.sw?
 .pdf-test-output/
+.docx-test-output/

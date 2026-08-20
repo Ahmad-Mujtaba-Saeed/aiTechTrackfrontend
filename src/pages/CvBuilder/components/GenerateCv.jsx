@@ -21,8 +21,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ClassicCoverLetterTemplate } from "../../../components/cover-letter-templates";
 import CoverLetter from "../../../components/CvBuilder/components/coverLetter";
 import ResumePdfPreview from "../../../pdf/ResumePdfPreview";
-import { buildPdfBlob, savePdfBlob, resumeFilename } from "../../../pdf/usePdfBlob";
-import axios, { baseUrl } from "../../../api/axios";
+import { buildPdfBlob, saveBlob, resumeFilename } from "../../../pdf/usePdfBlob";
+import { buildDocxBlob, docxFilename } from "../../../docx/ResumeDocx";
 import AtsCheckModal from "./AtsCheckModal";
 import { round } from 'lodash';
 
@@ -504,35 +504,26 @@ export default function CVBuilder() {
     const handleDownloadDocx = async () => {
         setDownloadPDFLoader(true);
         try {
-
+            // Persist first so the saved record matches the downloaded file.
             if (parsedResume !== prevParsedResume) {
-                await new Promise((resolve, reject) => {
-                    dispatch(updateResumeById({ id, parsedResume }))
-                        .unwrap()
-                        .then(() => {
-                            setHasUnsavedChanges(false);
-                            toast.success('Changes saved successfully!');
-                            resolve();
-                        })
-                        .catch((error) => {
-                            toast.error('Failed to save changes');
-                            reject(error);
-                        });
-                });
+                try {
+                    await dispatch(updateResumeById({ id, parsedResume })).unwrap();
+                    setHasUnsavedChanges(false);
+                    toast.success('Changes saved successfully!');
+                } catch {
+                    // A failed save should not cost the user their download.
+                    toast.error('Could not save changes; downloading current version');
+                }
             }
-        } catch {
-        }
 
-
-        try {
-            window.open(`${baseUrl}/api/resume/${id}/download-doc`, '_blank');
+            const blob = await buildDocxBlob(parsedResume, selectedTemplate);
+            saveBlob(blob, docxFilename(parsedResume));
         } catch (error) {
-            console.error('Error loading PDF:', error);
-            toast.error('Failed to generate PDF');
+            console.error('Error generating DOCX:', error);
+            toast.error('Failed to generate DOCX');
         } finally {
             setDownloadPDFLoader(false);
         }
-        return;
     }
 
 
@@ -563,7 +554,7 @@ export default function CVBuilder() {
             // Built fresh rather than reusing the preview blob, so a download
             // fired before the debounced preview catches up is still current.
             const blob = await buildPdfBlob(parsedResume, selectedTemplate);
-            savePdfBlob(blob, resumeFilename(parsedResume));
+            saveBlob(blob, resumeFilename(parsedResume));
         } catch (error) {
             console.error('Error generating PDF:', error);
             toast.error('Failed to generate PDF');

@@ -96,8 +96,8 @@ export async function buildPdfBlob(resume, template) {
   return pdf(React.createElement(ResumeDocument, { resume: model, template })).toBlob();
 }
 
-/** Trigger a browser download for a generated blob. */
-export function savePdfBlob(blob, filename) {
+/** Trigger a browser download for a generated blob (PDF or DOCX). */
+export function saveBlob(blob, filename) {
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;

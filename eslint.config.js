@@ -27,8 +27,8 @@ export default defineConfig([
     },
   },
   {
-    // The PDF render checks run under Node, not in the browser.
-    files: ['src/pdf/__tests__/**/*.{js,jsx}'],
+    // The PDF and DOCX export checks run under Node, not in the browser.
+    files: ['src/pdf/__tests__/**/*.{js,jsx}', 'src/docx/__tests__/**/*.{js,jsx}'],
     languageOptions: {
       globals: globals.node,
     },
