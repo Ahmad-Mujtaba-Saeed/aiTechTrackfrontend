@@ -55,7 +55,7 @@ export default function ForgetPassword() {
                       <div className="text-center">
                         <div className="d-flex flex-center text-decoration-none my-4">
                           <div className="d-flex align-items-center fw-bolder fs-3 d-inline-block">
-                            <img src={logo} alt="CV Builder logo" width="200" />
+                            <img src={logo} alt="Pathforge logo" width="200" />
                           </div>
                         </div>
 

@@ -6,7 +6,7 @@ const TermsAndConditions = () => {
     return (
         <Container className="my-5" style={{ maxWidth: '960px' }}>
             <div className="text-center mb-5">
-                <img src={logo} alt="CV Builder logo" style={{maxWidth: 540, marginBottom: 28}}/>
+                <img src={logo} alt="Pathforge logo" style={{maxWidth: 540, marginBottom: 28}}/>
                 <h1 className="display-4 text-primary mb-3" style={{fontWeight: 700}}>Terms & Conditions</h1>
                 <p className="lead text-muted">
                     Effective Date: 09/09/2025
@@ -23,7 +23,7 @@ const TermsAndConditions = () => {
                         <dl className="row">
                             <dt className="col-sm-3">"Services"</dt>
                             <dd className="col-sm-9">
-                                means the CV Builder online platform including CV tailoring,
+                                means the Pathforge online platform including CV tailoring,
                                 job-matching, interview preparation, and related features.
                             </dd>
 
@@ -82,7 +82,7 @@ const TermsAndConditions = () => {
                     <Accordion.Body>
                         <ul>
                             <li className="mb-2">
-                               CV Builder provides career support tools powered by artificial intelligence.
+                               Pathforge provides career support tools powered by artificial intelligence.
                             </li>
                             <li className="mb-2">
                                 While our Services are designed to enhance job applications and
@@ -102,7 +102,7 @@ const TermsAndConditions = () => {
                         <h5 className="mb-0">5. User Obligations</h5>
                     </Accordion.Header>
                     <Accordion.Body>
-                        <p>When using CV Builder, you must not:</p>
+                        <p>When using Pathforge, you must not:</p>
                         <ul>
                             <li>Upload unlawful, offensive, discriminatory, or misleading content.</li>
                             <li>Attempt to interfere with the security or operation of the platform.</li>
@@ -154,7 +154,7 @@ const TermsAndConditions = () => {
                                     <Card.Body>
                                         <p className="mb-0">
                                             All platform content, software, branding, and materials are owned by
-                                            CV Builder or licensed to us.
+                                            Pathforge or licensed to us.
                                         </p>
                                     </Card.Body>
                                 </Card>
@@ -167,7 +167,7 @@ const TermsAndConditions = () => {
                                     <Card.Body>
                                         <p className="mb-0">
                                             You retain ownership of your personal data and CV content, but grant
-                                            CV Builder a limited licence to process and display it solely for
+                                            Pathforge a limited licence to process and display it solely for
                                             delivering our Services.
                                         </p>
                                     </Card.Body>
@@ -210,7 +210,7 @@ const TermsAndConditions = () => {
                         <p>To the fullest extent permitted by law:</p>
                         <ul>
                             <li className="mb-2">
-                                CV Builder shall not be liable for indirect, incidental, or
+                                Pathforge shall not be liable for indirect, incidental, or
                                 consequential losses arising from your use of the Services.
                             </li>
                             <li className="mb-2">
@@ -284,9 +284,9 @@ const TermsAndConditions = () => {
                             <Card.Body>
                                 <h6 className="card-title">For any queries relating to these Terms, please contact:</h6>
                                 <address className="mb-0">
-                                    <strong>CV Builder Ltd</strong><br />
-                                    Email: <a href="mailto:hello@cvbuilder.uk" className="text-decoration-none">
-                                        hello@CV Builder.uk
+                                    <strong>Pathforge Ltd</strong><br />
+                                    Email: <a href="mailto:hello@pathforge.uk" className="text-decoration-none">
+                                        hello@Pathforge.uk
                                     </a>
                                 </address>
                             </Card.Body>
@@ -298,7 +298,7 @@ const TermsAndConditions = () => {
             <Card className="border-0 bg-light mt-4">
                 <Card.Body className="text-center py-4">
                     <p className="text-muted mb-0">
-                        &copy; {new Date().getFullYear()} CV Builder Ltd. All rights reserved.
+                        &copy; {new Date().getFullYear()} Pathforge Ltd. All rights reserved.
                     </p>
                 </Card.Body>
             </Card>

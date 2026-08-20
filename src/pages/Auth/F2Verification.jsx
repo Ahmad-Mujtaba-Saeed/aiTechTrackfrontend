@@ -17,7 +17,7 @@ export default function F2Verification() {
                                     <div className="text-center">
                                         <form id="otpForm" className="verification-form" noValidate>
                                             <div className="d-flex flex-center text-decoration-none mb-4">
-                                                <img src={logo} alt="CV Builder logo" width="200" />
+                                                <img src={logo} alt="Pathforge logo" width="200" />
                                             </div>
 
                                             <h4 className="text-body-highlight">Enter the verification code</h4>

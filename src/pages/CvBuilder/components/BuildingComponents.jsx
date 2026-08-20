@@ -450,7 +450,7 @@ export default function BuildingComponents() {
                 >
                   {emptyResumeLoader ? (
                     <><FiLoader size={14} className="me-2 animate-spin" />Launching...</>
-                  ) : 'Launch CV Builder'}
+                  ) : 'Launch Pathforge'}
                 </Button>
               </div>
             </Card.Body>

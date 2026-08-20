@@ -9,7 +9,7 @@ const CvBuilder = () => {
   return (
     <>
       <MasterLayout>
-        <BreadCrum title='Upload existing CV or build a new one with Cv Builder' subTitle='Every role deserves a tailored application. We make it effortless.' icon={icon} />
+        <BreadCrum title='Upload existing CV or build a new one with Pathforge' subTitle='Every role deserves a tailored application. We make it effortless.' icon={icon} />
         <BuildingComponents />
       </MasterLayout>
     </>

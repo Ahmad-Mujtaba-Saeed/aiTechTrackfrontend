@@ -62,7 +62,7 @@ export default function Activity({ recentActivities }) {
                                                     (item?.resume?.cv_resumejson?.candidateName?.[0]?.familyName ? ' ' + item.resume.cv_resumejson.candidateName[0].familyName : '')
                                                 }’
                                             </h5>
-                                                <p className="fs-9"><Link className="fw-semibold" onClick={() => { window.location.href = `/cv-generate/${item?.resume?.id}` }}>View in CV Builder</Link></p>
+                                                <p className="fs-9"><Link className="fw-semibold" onClick={() => { window.location.href = `/cv-generate/${item?.resume?.id}` }}>View in Pathforge</Link></p>
                                                 <p className="fs-9 text-body-secondary mb-5">
                                                     {item?.resume?.cv_resumejson?.headline
                                                         ? item.resume.cv_resumejson.headline.split(' ').length > 10
