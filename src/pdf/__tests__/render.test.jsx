@@ -19,7 +19,13 @@ import { renderToBuffer } from '@react-pdf/renderer';
 
 import ResumeDocument from '../ResumeDocument';
 import { PDF_TEMPLATES } from '../templates';
-import { LONG_RESUME, EMPTY_RESUME, REQUIRED_TOKENS, FORBIDDEN_TOKENS } from './fixture';
+import {
+  LONG_RESUME,
+  EMPTY_RESUME,
+  OVERSIZED_BULLET_RESUME,
+  REQUIRED_TOKENS,
+  FORBIDDEN_TOKENS,
+} from './fixture';
 
 const OUT_DIR = process.env.PDF_OUT_DIR || path.join(process.cwd(), '.pdf-test-output');
 
@@ -137,6 +143,23 @@ async function checkTemplate(name) {
   report.push(line);
 }
 
+/**
+ * A bullet too tall for one page must still render end to end. If the atomic
+ * bullet rule were applied unconditionally, the tail would be silently clipped.
+ */
+async function checkOversized(name) {
+  try {
+    const buffer = await renderToBuffer(
+      <ResumeDocument resume={OVERSIZED_BULLET_RESUME} template={name} />,
+    );
+    const text = extractText(buffer).replace(/\s+/g, '');
+    const missing = ['GIANTSTART', 'GIANTEND'].filter((token) => !text.includes(token));
+    return missing.length ? `missing ${missing.join(', ')}` : null;
+  } catch (error) {
+    return error.message;
+  }
+}
+
 async function checkEmpty(name) {
   try {
     const buffer = await renderToBuffer(<ResumeDocument resume={EMPTY_RESUME} template={name} />);
@@ -171,6 +194,17 @@ async function main() {
         : `all ${REQUIRED_TOKENS.length} present`;
     const size = `${Math.round(line.bytes / 1024)}kb`;
     console.log(`  ${line.name.padEnd(14)} ${String(line.pages).padEnd(7)} ${size.padEnd(8)} ${status}`);
+  }
+
+  console.log('\n  Bullet taller than a page (must split, not clip)\n');
+  for (const name of names) {
+    const error = await checkOversized(name);
+    if (error) {
+      failures += 1;
+      console.log(`  ${name.padEnd(14)} FAIL   ${error}`);
+    } else {
+      console.log(`  ${name.padEnd(14)} ok     both ends present`);
+    }
   }
 
   console.log('\n  Empty CV (crash guard)\n');

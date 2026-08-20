@@ -107,6 +107,41 @@ export const LONG_RESUME = {
   ],
 };
 
+/**
+ * A CV whose single bullet is taller than a whole page.
+ *
+ * Bullets are normally kept atomic so the marker never separates from its text.
+ * That would clip a bullet too tall to fit any page, so oversized ones are
+ * allowed to split — this fixture proves both ends still make it into the file.
+ */
+export const OVERSIZED_BULLET_RESUME = {
+  candidateName: [{ firstName: 'Overflow', familyName: 'Case' }],
+  summary: [{ paragraph: '' }],
+  education: [],
+  skill: [],
+  languages: [],
+  hobbies: [],
+  customSections: [],
+  workExperience: [
+    {
+      workExperienceJobTitle: 'Single Enormous Bullet',
+      workExperienceOrganization: 'Edge Case Ltd',
+      workExperienceDates: { start: { date: 'Jan 2020' }, end: {} },
+      workExperienceDescription: '',
+      highlights: {
+        items: [
+          {
+            bullet:
+              'GIANTSTART ' +
+              `${LOREM} `.repeat(30) +
+              'GIANTEND',
+          },
+        ],
+      },
+    },
+  ],
+};
+
 /** Distinctive tokens that must survive into the rendered PDF. */
 export const REQUIRED_TOKENS = [
   'SUMMARYMARK',

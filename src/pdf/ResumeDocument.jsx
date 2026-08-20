@@ -3,6 +3,10 @@ import { Document } from '@react-pdf/renderer';
 import { getTemplate } from './templates';
 import { getTheme } from './theme';
 import { normalizeResume } from './normalize';
+import { setupPdfFonts } from './fonts';
+
+// Applied once, before any document is built.
+setupPdfFonts();
 
 /**
  * The single source of truth for both the on-screen preview and the download.

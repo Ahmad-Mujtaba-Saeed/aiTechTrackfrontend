@@ -192,9 +192,17 @@ export function Entry({ theme, title, subtitle, meta, children, last = false }) 
 
 /* ----------------------------------------------------------------- lists -- */
 
-export function Bullet({ theme, children, marker = '•', color, style }) {
+export function Bullet({ theme, children, marker = '•', color, style, atomic = true }) {
+  // A bullet is a flex row: a one-line marker beside a multi-line body. Letting
+  // it split leaves the marker stranded at the foot of one page with its text
+  // at the head of the next, so the row is kept whole and moved down instead.
+  //
+  // `minPresenceAhead` alone was not enough here — it only guarantees space
+  // exists, so the row could still start and then break immediately after the
+  // marker. `atomic` is escapable for the rare bullet taller than a full page,
+  // which must be allowed to split or it would be clipped entirely.
   return (
-    <View style={[styles.bulletRow, { marginTop: 2.5 }, style]}>
+    <View style={[styles.bulletRow, { marginTop: 2.5 }, style]} wrap={!atomic}>
       <Text
         style={[
           styles.bulletMarker,
@@ -216,12 +224,22 @@ export function Bullet({ theme, children, marker = '•', color, style }) {
   );
 }
 
+/**
+ * Above this many characters a single bullet may be taller than one page, at
+ * which point keeping it atomic would clip it rather than move it. Roughly half
+ * a page of body text, so well clear of any normal achievement line.
+ */
+export const SPLITTABLE_LENGTH = 2200;
+
+export const isOversized = (value) =>
+  typeof value === 'string' && value.length > SPLITTABLE_LENGTH;
+
 export function BulletList({ theme, items, color, style }) {
   if (!items?.length) return null;
   return (
     <View style={[{ marginTop: 3 }, style]}>
       {items.map((item, index) => (
-        <Bullet key={index} theme={theme} color={color}>
+        <Bullet key={index} theme={theme} color={color} atomic={!isOversized(item)}>
           {item}
         </Bullet>
       ))}
