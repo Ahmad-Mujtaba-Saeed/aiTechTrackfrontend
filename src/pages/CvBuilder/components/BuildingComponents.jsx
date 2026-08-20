@@ -392,7 +392,7 @@ export default function BuildingComponents() {
     <>
       <div className="row mb-3 g-3 feature-cards">
         {/* Upload Existing CV Card */}
-        <div className="col-12 col-md-6 col-xl-4">
+        <div className="col-12 col-md-6 col-4">
           <Card className="card h-100 w-100 overflow-hidden position-relative">
             <Card.Body className="card-body px-4 position-relative">
               <div
@@ -432,7 +432,7 @@ export default function BuildingComponents() {
         </div>
 
         {/* Build from Scratch Card */}
-        <div className="col-12 col-md-6 col-xl-4">
+        <div className="col-12 col-md-6 col-4">
           <Card className="card h-100 w-100 overflow-hidden position-relative">
             <Card.Body className="card-body px-4 position-relative">
               <div className="icon-item icon-item-md rounded-1 shadow-none">
@@ -457,7 +457,7 @@ export default function BuildingComponents() {
           </Card>
         </div>
 
-        <div className="col-12 col-md-6 col-xl-4">
+        <div className="col-12 col-md-6 col-4">
           <Card className="card h-100 w-100 overflow-hidden position-relative">
             <Card.Body className="card-body px-4 position-relative">
               <div className="icon-item icon-item-md rounded-1 shadow-none">
