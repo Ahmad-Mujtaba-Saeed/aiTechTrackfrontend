@@ -7,11 +7,13 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:pdf": "esbuild src/pdf/__tests__/render.test.jsx --bundle --platform=node --format=cjs --target=node20 --jsx=automatic --outfile=node_modules/.cache/pdftest.cjs --external:canvas --log-level=error && node node_modules/.cache/pdftest.cjs"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^41.4.2",
     "@ckeditor/ckeditor5-react": "^11.0.0",
+    "@react-pdf/renderer": "^4.6.1",
     "@reduxjs/toolkit": "^2.9.0",
     "@stripe/react-stripe-js": "^5.2.0",
     "@stripe/stripe-js": "^8.0.0",
