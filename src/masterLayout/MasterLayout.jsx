@@ -113,7 +113,7 @@ const slug = data?.roles?.[0]?.slug || "user";
                   </div>
                 
                 <div className="nav-item-wrapper"><Link className={`nav-link label-1 ${isActive('/cv-builder')}`} to="/cv-builder" role="button" data-bs-toggle="" aria-expanded="false">
-                  <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:notes' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">CV Builder</span></span>
+                  <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:notes' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Pathforge</span></span>
                   </div>
                 </Link>
                 </div>
@@ -284,7 +284,7 @@ const slug = data?.roles?.[0]?.slug || "user";
                             <div className="d-flex align-items-center">
                               <div className="fw-normal text-body-highlight title">
                                 <span className="fa-solid fa-clock-rotate-left" data-fa-transform="shrink-2"></span>
-                                CV Builder
+                                Pathforge
                               </div>
                             </div>
                           </a>

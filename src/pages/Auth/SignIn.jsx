@@ -92,8 +92,8 @@ export default function SignIn() {
 				<div className="bg-holder bg-auth-card-overlay auth-bg-image"></div>
 
 				<div className="row flex-center position-relative min-vh-100 g-0">
-					<div className="col-11 col-sm-10 col-xl-8">
-						<div className="row g-3">
+					<div className="col-11 col-sm-10 col-xl-8 my-5">
+						<div className="row g-3 justify-content-center">
 							{/* Left: Login Form */}
 							<div className="col-xl-6">
 								<div className="card auth-card">
@@ -103,20 +103,20 @@ export default function SignIn() {
 												<div className="auth-form-box">
 													<div className="text-center mb-5">
 														<Link
-															className="d-flex flex-center text-decoration-none my-4"
+															className="d-flex flex-center text-decoration-none my-2"
 															to="/"
 															aria-label="Go to homepage"
 														>
 															<div className="d-flex align-items-center fw-bolder fs-3 d-inline-block">
 																<img
 																	src={logo}
-																	alt="CV Builder logo"
+																	alt="Pathforge logo"
 																	width="200"
 																/>
 															</div>
 														</Link>
-														<h3 className="fw-bold">Sign In</h3>
-														<p>Get access to your account</p>
+														<h3 className="fw-bold">Welcome back</h3>
+														<p>Sign in to pick up your resume where you left off.</p>
 													</div>
 
 													<GoogleSignIn />
@@ -279,115 +279,111 @@ export default function SignIn() {
 									</div>
 								</div>
 							</div>
+							
 
 							{/* Right: Demo Credentials Card */}
+							
+						</div>
+						<div className="row g-3 justify-content-center">
 							<div className="col-xl-6">
-								<div
-									className="card auth-card shadow-lg rounded-4 border-0 p-4"
-									style={{ backgroundColor: "#f8f9fa" }}
-								>
-									{/* Admin Section */}
-									<div className="mb-5">
-										<div className="d-flex align-items-center mb-3">
-											<span className="badge bg-dark me-2 py-2 px-3 rounded-pill">
-												Admin
-											</span>
-											<h5 className="fw-bold mb-0">Demo Credentials</h5>
-										</div>
-										<div className="mb-3">
-											<div className="input-group">
-												<span className="input-group-text bg-primary text-white">
-													<i className="bi bi-envelope-fill"></i>
-												</span>
-												<input
-													type="text"
-													className="form-control"
-													value="admin@admin.com"
-													readOnly
-												/>
-											</div>
-										</div>
-										<div className="mb-3">
-											<div className="input-group">
-												<span className="input-group-text bg-primary text-white">
-													<i className="bi bi-lock-fill"></i>
-												</span>
-												<input
-													type="password"
-													className="form-control"
-													value="AIProj@techtrack"
-													readOnly
-												/>
-											</div>
-										</div>
-										<button
-											className="btn btn-primary w-100 fw-bold"
-											type="button"
-											onClick={() => {
-												if (formikRef.current) {
-													formikRef.current.setFieldValue("email", "admin@admin.com");
-													formikRef.current.setFieldValue("password", "AIProj@techtrack");
-													toast.info("Admin credentials copied to form");
-												}
-											}}
-										>
-											Use Admin Credentials
-										</button>
-									</div>
+  <div
+    className="d-flex align-items-stretch gap-0 p-2 rounded-4 mt-3"
+    style={{ backgroundColor: "#15140F" }}
+  >
+    {/* Admin chip */}
+    <button
+      type="button"
+      title="admin@admin.com"
+      className="btn d-flex align-items-center gap-2 rounded-3 px-2 py-2 flex-fill text-start border-0"
+      style={{ backgroundColor: "transparent" }}
+      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(250,247,241,0.06)")}
+      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+      onClick={() => {
+        if (formikRef.current) {
+          formikRef.current.setFieldValue("email", "admin@admin.com");
+          formikRef.current.setFieldValue("password", "AIProj@techtrack");
+          toast.info("Admin credentials copied to form");
+        }
+      }}
+    >
+      <span
+        className="rounded-circle flex-shrink-0"
+        style={{ width: "8px", height: "8px", backgroundColor: "#C9BFAD" }}
+      ></span>
+      <span className="d-flex flex-column" style={{ minWidth: 0 }}>
+        <span
+          className="text-uppercase"
+          style={{ fontSize: "9.5px", letterSpacing: "0.08em", color: "#8A7F6E" }}
+        >
+          Admin
+        </span>
+        <span
+          className="fw-medium text-truncate"
+          style={{ fontSize: "12px", color: "#EDE7D9" }}
+        >
+          admin@admin.com
+        </span>
+      </span>
+      <span
+        className="ms-auto flex-shrink-0 ps-2"
+        style={{ fontSize: "10.5px", color: "#6E6455" }}
+      >
+        fill →
+      </span>
+    </button>
 
-									<hr className="my-4" />
+    <div
+      className="mx-2 my-1"
+      style={{ width: "1px", backgroundColor: "rgba(250,247,241,0.12)" }}
+    ></div>
 
-									{/* User Section */}
-									<div>
-										<div className="d-flex align-items-center mb-3">
-											<span className="badge me-2 py-2 px-3 rounded-pill" style={{ backgroundColor: 'green' }}>
-												User
-											</span>
-											<h5 className="fw-bold mb-0">Demo Credentials</h5>
-										</div>
-										<div className="mb-3">
-											<div className="input-group">
-												<span className="input-group-text bg-success text-white">
-													<i className="bi bi-envelope-fill"></i>
-												</span>
-												<input
-													type="text"
-													className="form-control"
-													value="user123@gmail.com"
-													readOnly
-												/>
-											</div>
-										</div>
-										<div className="mb-3">
-											<div className="input-group">
-												<span className="input-group-text bg-success text-white">
-													<i className="bi bi-lock-fill"></i>
-												</span>
-												<input
-													type="password"
-													className="form-control"
-													value="AIProj@techtrack"
-													readOnly
-												/>
-											</div>
-										</div>
-										<button
-											className="btn w-100 fw-bold"
-											style={{ backgroundColor: 'green', color: 'white' }}
-											type="button"
-											onClick={() => {
-												if (formikRef.current) {
-													formikRef.current.setFieldValue("email", "user123@gmail.com");
-													formikRef.current.setFieldValue("password", "AIProj@techtrack");
-													toast.info("User credentials copied to form");
-												}
-											}}
-										>
-											Use User Credentials
-										</button>
-									</div>
-								</div>
-							</div>
+    {/* User chip */}
+    <button
+      type="button"
+      title="user123@gmail.com"
+      className="btn d-flex align-items-center gap-2 rounded-3 px-2 py-2 flex-fill text-start border-0"
+      style={{ backgroundColor: "transparent" }}
+      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(250,247,241,0.06)")}
+      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+      onClick={() => {
+        if (formikRef.current) {
+          formikRef.current.setFieldValue("email", "user123@gmail.com");
+          formikRef.current.setFieldValue("password", "AIProj@techtrack");
+          toast.info("User credentials copied to form");
+        }
+      }}
+    >
+      <span
+        className="rounded-circle flex-shrink-0"
+        style={{ width: "8px", height: "8px", backgroundColor: "#A8672B" }}
+      ></span>
+      <span className="d-flex flex-column" style={{ minWidth: 0 }}>
+        <span
+          className="text-uppercase"
+          style={{ fontSize: "9.5px", letterSpacing: "0.08em", color: "#8A7F6E" }}
+        >
+          User
+        </span>
+        <span
+          className="fw-medium text-truncate"
+          style={{ fontSize: "12px", color: "#EDE7D9" }}
+        >
+          user123@gmail.com
+        </span>
+      </span>
+      <span
+        className="ms-auto flex-shrink-0 ps-2"
+        style={{ fontSize: "10.5px", color: "#6E6455" }}
+      >
+        fill →
+      </span>
+    </button>
+  </div>
+
+  <p className="text-center small mt-2 mb-0" style={{ color: "#83786A" }}>
+    Tap a role above to autofill demo credentials
+  </p>
+</div>
 						</div>
 					</div>
 				</div>

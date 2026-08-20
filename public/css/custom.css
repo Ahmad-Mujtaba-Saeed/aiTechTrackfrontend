@@ -583,7 +583,9 @@ h4 {
 
 
 .auth-bg-image {
-    background-image: url('../../src/assets/images/auth-image.png');
+    /* background-image: url('../../src/assets/images/auth-image.png'); */
+    background:
+      radial-gradient(1100px 500px at 50% -10%, #F7F1E6 0%, #F1ECE2 55%);
 }
 
 .welcome-page {
@@ -1963,3 +1965,19 @@ div:where(.swal2-container) {
 .navbar-vertical .navbar-vertical-content::-webkit-scrollbar {
     display: none !important;
 }
+.swal2-confirm {
+    background-color:rgb(255 107 71 ) !important;
+}
+
+.divider-content-center::before, .divider-content-center::after{ content:''; flex:1; height:1px; background:#E2DBCB !important; }
+.divider-content-center{
+    font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em;
+    text-transform:uppercase; color:#83786A; white-space:nowrap;
+  }
+  .auth-card {
+    background: #FAF7F1 !important;
+  }
+  .auth-card .card-body{
+    padding-right: 2rem !important;
+    padding-left: 2rem !important;
+  }
