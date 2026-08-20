@@ -497,20 +497,9 @@ export default function CVBuilder() {
 
         if (shouldAutoDownload && !downloadPDFLoader && parsedResume && !hasAutoDownloaded.current && !fetchingResumeLoader) {
             hasAutoDownloaded.current = true; // Mark as downloaded
-            const downloadAndClose = async () => {
-                setIsGeneratingPDF(true);
-                try {
-                    const loadingPromise = new Promise(resolve => setTimeout(resolve, 1000));
-
-                    // Start the download process
-                    const downloadPromise = handleDownloadPDF();
-
-                    await Promise.all([loadingPromise, downloadPromise]);
-                } finally {
-                    setIsGeneratingPDF(false);
-                }
-            };
-            downloadAndClose();
+            // handleDownloadPDF drives the progress overlay via
+            // downloadPDFLoader, so no separate generating flag is needed.
+            handleDownloadPDF();
         }
     }, [parsedResume, downloadPDFLoader, fetchingResumeLoader, selectedTemplate]);
 
