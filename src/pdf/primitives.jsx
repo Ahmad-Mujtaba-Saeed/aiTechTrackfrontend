@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Image, Link, StyleSheet } from '@react-pdf/renderer';
 import { KEEP_WITH_NEXT } from './theme';
 import { parseHtml } from './html';
+import Icon from './icons';
 
 /**
  * Shared building blocks for the PDF templates.
@@ -39,17 +40,46 @@ export function Heading({ theme, children, style, ...rest }) {
     ? children.toUpperCase()
     : children;
 
+  // Some designs set headings in the body weight rather than bold.
   const common = {
-    fontFamily: theme.fontFamilyBold,
+    fontFamily: theme.sectionWeight === 'regular' ? theme.fontFamily : theme.fontFamilyBold,
     fontSize: theme.sectionSize,
-    color: theme.sectionStyle === 'bar' ? theme.onAccent : theme.accent,
+    color: theme.accent,
     letterSpacing: theme.letterSpacing,
   };
 
-  if (theme.sectionStyle === 'bar') {
+  const variant = theme.sectionStyle;
+
+  // Full-width filled bar with reversed text.
+  if (variant === 'bar') {
     return (
       <View
-        style={[{ backgroundColor: theme.accent, paddingVertical: 3, paddingHorizontal: 7, marginBottom: 7 }, style]}
+        style={[
+          { backgroundColor: theme.barBackground || theme.accent, paddingVertical: 3, paddingHorizontal: 7, marginBottom: 7 },
+          style,
+        ]}
+        {...rest}
+      >
+        <Text style={[common, { color: theme.onAccent }]}>{label}</Text>
+      </View>
+    );
+  }
+
+  // Outlined box that hugs the label.
+  if (variant === 'boxed') {
+    return (
+      <View
+        style={[
+          {
+            borderWidth: 1,
+            borderColor: theme.rule,
+            paddingVertical: 3,
+            paddingHorizontal: 7,
+            marginBottom: 8,
+            alignSelf: 'flex-start',
+          },
+          style,
+        ]}
         {...rest}
       >
         <Text style={common}>{label}</Text>
@@ -57,18 +87,7 @@ export function Heading({ theme, children, style, ...rest }) {
     );
   }
 
-  if (theme.sectionStyle === 'boxed') {
-    return (
-      <View
-        style={[{ borderWidth: 1, borderColor: theme.rule, paddingVertical: 3, paddingHorizontal: 7, marginBottom: 8, alignSelf: 'flex-start' }, style]}
-        {...rest}
-      >
-        <Text style={common}>{label}</Text>
-      </View>
-    );
-  }
-
-  if (theme.sectionStyle === 'plain') {
+  if (variant === 'plain') {
     return (
       <Text style={[common, { marginBottom: 6 }, style]} {...rest}>
         {label}
@@ -311,6 +330,119 @@ export function DetailRows({ theme, entries, labelWidth = 92, color, labelColor 
             {value}
           </Text>
         </View>
+      ))}
+    </View>
+  );
+}
+
+/**
+ * Role/date row: title on the left, dates flush right on the same baseline.
+ * Used by the designs that put dates in the right margin rather than above.
+ */
+export function TitleDateRow({ theme, title, date, titleColor, dateColor, bold = true }) {
+  return (
+    <View style={[styles.row, { justifyContent: 'space-between', alignItems: 'flex-start' }]}>
+      <Text
+        style={{
+          flex: 1,
+          paddingRight: 10,
+          fontFamily: bold ? theme.fontFamilyBold : theme.fontFamily,
+          fontSize: theme.bodySize + 0.5,
+          color: titleColor || theme.ink,
+          lineHeight: 1.3,
+        }}
+      >
+        {title}
+      </Text>
+      {Boolean(date) && (
+        <Text
+          style={{
+            flexShrink: 0,
+            fontFamily: theme.fontFamily,
+            fontSize: theme.metaSize,
+            color: dateColor || theme.muted,
+            lineHeight: 1.45,
+          }}
+        >
+          {date}
+        </Text>
+      )}
+    </View>
+  );
+}
+
+/** Contact line with a leading icon, as used in the banner/sidebar designs. */
+export function IconRow({ theme, icon, children, color, size, gap = 6, style }) {
+  return (
+    <View style={[styles.row, { alignItems: 'center', marginBottom: 3.5 }, style]} wrap={false}>
+      <View style={{ width: (size || theme.bodySize) + gap, flexShrink: 0 }}>
+        <Icon name={icon} size={size || theme.bodySize} color={color || theme.ink} />
+      </View>
+      <Text
+        style={{
+          flex: 1,
+          fontFamily: theme.fontFamily,
+          fontSize: theme.bodySize,
+          color: color || theme.body,
+          lineHeight: 1.35,
+        }}
+      >
+        {children}
+      </Text>
+    </View>
+  );
+}
+
+/** Filled-square list marker, used for Qualities and Hobbies. */
+export function SquareList({ theme, items, color, markerColor, size = 4.5 }) {
+  if (!items?.length) return null;
+  return (
+    <View>
+      {items.map((item, index) => (
+        <View key={index} style={[styles.row, { alignItems: 'center', marginBottom: 5 }]} wrap={false}>
+          <View
+            style={{
+              width: size,
+              height: size,
+              backgroundColor: markerColor || color || theme.accent,
+              marginRight: 7,
+              flexShrink: 0,
+            }}
+          />
+          <Text
+            style={{
+              flex: 1,
+              fontFamily: theme.fontFamily,
+              fontSize: theme.bodySize,
+              color: color || theme.body,
+              lineHeight: 1.35,
+            }}
+          >
+            {item}
+          </Text>
+        </View>
+      ))}
+    </View>
+  );
+}
+
+/** Five-dot proficiency rating, as used by the Modern sidebar. */
+export function DotRating({ level, filled, empty, count = 5, size = 4 }) {
+  const LEVELS = { beginner: 1, elementary: 2, intermediate: 3, advanced: 4, expert: 5, fluent: 4, native: 5 };
+  const score = LEVELS[String(level || '').toLowerCase()] ?? 4;
+  return (
+    <View style={[styles.row, { alignItems: 'center' }]}>
+      {Array.from({ length: count }).map((_, index) => (
+        <View
+          key={index}
+          style={{
+            width: size * 2,
+            height: size * 2,
+            borderRadius: size,
+            backgroundColor: index < score ? filled : empty,
+            marginLeft: index === 0 ? 0 : 3,
+          }}
+        />
       ))}
     </View>
   );
