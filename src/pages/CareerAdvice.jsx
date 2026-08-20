@@ -102,7 +102,7 @@ const CareerAdviceSection = ({ sectionId, count }) => {
   if (!section) return null;
 
   return (
-    <div className="col-12 col-md-6 col-lg-4">
+    <div className="col-12 col-md-6 col-lg-12">
       <div className="section card h-100" id={sectionId}>
         <div className="card-body p-0">
           <div className="border-translucent">

@@ -25,12 +25,23 @@
     position: relative;
     overflow: hidden;
     border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tier:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.13);
 }
 
 /* ── Featured (professional) card — dark ── */
 .tier.professional {
     background: #1A1A2E;
     transform: none;
+}
+
+.tier.professional:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 32px rgba(26,26,46,0.25);
 }
 
 .tier.professional .tier-name {
