@@ -51,7 +51,7 @@ const AtsCheckModal = ({ show, onHide, resumeId, savedJobDescription }) => {
     // ── Choose step ──────────────────────────────────────────
     const chooseSkills = () => {
         setMode("skills");
-        setStep("skills-input");
+        runAnalysis("skills");
     };
 
     const chooseJobDescription = () => {
@@ -131,7 +131,7 @@ const AtsCheckModal = ({ show, onHide, resumeId, savedJobDescription }) => {
             const payload =
                 activeMode === "job-description"
                     ? { job_description: jobDescription.trim() }
-                    : { skills: skillsList };
+                    : {};
 
             const response = await axios.post(endpoint, payload);
 
@@ -151,7 +151,7 @@ const AtsCheckModal = ({ show, onHide, resumeId, savedJobDescription }) => {
                 setError(apiMessage || "Please provide a job description first.");
             } else {
                 setError(apiMessage || "Something went wrong while analyzing your CV. Please try again.");
-                setStep(activeMode === "job-description" ? "job-input" : "skills-input");
+                setStep(activeMode === "job-description" ? "job-input" : "choose");
                 toast.error(apiMessage || "ATS analysis failed.");
             }
         } finally {
