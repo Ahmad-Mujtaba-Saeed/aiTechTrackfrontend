@@ -229,9 +229,9 @@ export function Bullet({ theme, children, marker = '•', color, style, atomic =
  * which point keeping it atomic would clip it rather than move it. Roughly half
  * a page of body text, so well clear of any normal achievement line.
  */
-export const SPLITTABLE_LENGTH = 2200;
+const SPLITTABLE_LENGTH = 2200;
 
-export const isOversized = (value) =>
+const isOversized = (value) =>
   typeof value === 'string' && value.length > SPLITTABLE_LENGTH;
 
 export function BulletList({ theme, items, color, style }) {

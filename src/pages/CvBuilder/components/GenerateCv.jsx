@@ -6,21 +6,10 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import Swal from 'sweetalert2';
 import BulletPointsEditor from '../../../components/CvBuilder/BulletPointsEditor';
 import avatar from '../../../assets/demo_profile.avif'
-import {
-    ModernTemplate,
-    ClassicTemplate,
-    ProfessionalTemplate2,
-    ProfessionalTemplate,
-    Template5,
-    Template6,
-    Template7,
-    Template8,
-    Template9,
-    Template10,
-    Template11,
-    Template12,
-    Template13
-} from "../../../components/templates";
+
+// The HTML templates in components/templates are no longer used here: every
+// design is now rendered by src/pdf, which drives both the preview and the
+// downloaded file from one definition.
 
 import { Row, Col, Button, Card, Dropdown, Modal } from "react-bootstrap";
 import Draggable from 'react-draggable';
@@ -39,15 +28,23 @@ import { round } from 'lodash';
 
 
 
+/**
+ * The designs offered in the Design tab.
+ *
+ * `name` is what gets persisted as `selectedTemplate` and is the key the PDF
+ * template registry looks up, so these strings must not change. Thumbnails are
+ * rendered from the templates themselves by `npm run pdf:thumbnails`, so the
+ * picture always matches what the design actually produces.
+ */
 const cardTemplate = [
-    { name: 'Default', template: Template9, image: 'default1.png', recommended: true },
-    { name: 'Basic', template: Template12, image: 'classic.png' },
-    { name: 'Professional', template: Template5, image: 'professional.png' },
-    { name: 'Unique', template: Template11, image: 'unique.png' },
-    { name: 'Modern', template: Template8, image: 'modern.png' },
-    { name: 'Classic', template: Template6, image: 'chrono.png', recommended: true },
-    { name: 'Luxe', template: Template13, image: 'Luxe.png' },
-    { name: 'Elegant', template: Template7, image: 'elegant.png' },
+    { name: 'Default', image: 'templates/Default.png', recommended: true },
+    { name: 'Basic', image: 'templates/Basic.png' },
+    { name: 'Professional', image: 'templates/Professional.png' },
+    { name: 'Unique', image: 'templates/Unique.png' },
+    { name: 'Modern', image: 'templates/Modern.png' },
+    { name: 'Classic', image: 'templates/Classic.png', recommended: true },
+    { name: 'Luxe', image: 'templates/Luxe.png' },
+    { name: 'Elegant', image: 'templates/Elegant.png' },
 ];
 
 const coverLetterjson = {

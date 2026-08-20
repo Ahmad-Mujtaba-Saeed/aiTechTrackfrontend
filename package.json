@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test:pdf": "esbuild src/pdf/__tests__/render.test.jsx --bundle --platform=node --format=cjs --target=node20 --jsx=automatic --outfile=node_modules/.cache/pdftest.cjs --external:canvas --log-level=error && node node_modules/.cache/pdftest.cjs"
+    "test:pdf": "esbuild src/pdf/__tests__/render.test.jsx --bundle --platform=node --format=cjs --target=node20 --jsx=automatic --outfile=node_modules/.cache/pdftest.cjs --external:canvas --log-level=error && node node_modules/.cache/pdftest.cjs",
+    "pdf:thumbnails": "esbuild src/pdf/__tests__/thumbnails.jsx --bundle --platform=node --format=cjs --target=node20 --jsx=automatic --outfile=node_modules/.cache/thumbs.cjs --external:canvas --log-level=error && node node_modules/.cache/thumbs.cjs && node -e \"const{execSync}=require('child_process'),fs=require('fs'),d='public/assets/images/templates';for(const f of fs.readdirSync(d).filter(f=>f.endsWith('.pdf'))){const n=f.slice(0,-4);execSync(`pdftoppm -png -r 100 -f 1 -l 1 -singlefile ${d}/${f} ${d}/${n}`);fs.unlinkSync(`${d}/${f}`)}\""
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^41.4.2",
