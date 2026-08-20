@@ -3,9 +3,6 @@ const config = {
     appUrl: 'https://cv-api.wasimdev.com',
     apiUrl: 'https://cv-api.wasimdev.com/api',
 
-    // appUrl: 'http://localhost:8585',
-    // apiUrl: 'http://localhost:8585/api',
-
     // appUrl: 'http://127.0.0.1:8000',
     // apiUrl: 'http://127.0.0.1:8000/api',
 

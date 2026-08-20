@@ -287,14 +287,14 @@ export default function SignIn() {
 						<div className="row g-3 justify-content-center">
 							<div className="col-xl-6">
   <div
-    className="d-flex align-items-stretch gap-0 p-2 rounded-4 mt-3"
+    className="d-block d-md-flex align-items-stretch gap-0 p-2 rounded-4 mt-3"
     style={{ backgroundColor: "#15140F" }}
   >
     {/* Admin chip */}
     <button
       type="button"
       title="admin@admin.com"
-      className="btn d-flex align-items-center gap-2 rounded-3 px-2 py-2 flex-fill text-start border-0"
+      className="w-100 btn d-flex align-items-center gap-2 rounded-3 px-2 py-2 flex-fill text-start border-0"
       style={{ backgroundColor: "transparent" }}
       onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(250,247,241,0.06)")}
       onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
@@ -341,7 +341,7 @@ export default function SignIn() {
     <button
       type="button"
       title="user123@gmail.com"
-      className="btn d-flex align-items-center gap-2 rounded-3 px-2 py-2 flex-fill text-start border-0"
+      className="w-100 btn d-flex align-items-center gap-2 rounded-3 px-2 py-2 flex-fill text-start border-0"
       style={{ backgroundColor: "transparent" }}
       onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "rgba(250,247,241,0.06)")}
       onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
