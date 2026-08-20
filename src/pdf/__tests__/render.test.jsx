@@ -153,7 +153,6 @@ async function main() {
   for (const name of names) {
     // Sequential: react-pdf shares a font store, and parallel renders make the
     // failure output impossible to attribute.
-    // eslint-disable-next-line no-await-in-loop
     await checkTemplate(name);
   }
 
@@ -176,7 +175,6 @@ async function main() {
 
   console.log('\n  Empty CV (crash guard)\n');
   for (const name of names) {
-    // eslint-disable-next-line no-await-in-loop
     const error = await checkEmpty(name);
     if (error) {
       failures += 1;

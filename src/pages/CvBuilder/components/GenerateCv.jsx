@@ -27,13 +27,12 @@ import Draggable from 'react-draggable';
 
 import { useDispatch, useSelector } from "react-redux";
 import { setParsedResume, updateField, analyzeResumeAi, setSelectedTemplate, fetchResumeById, updateResumeById } from "../../../features/resume/resumeSlice";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from "react-router-dom";
 import { ClassicCoverLetterTemplate } from "../../../components/cover-letter-templates";
 import CoverLetter from "../../../components/CvBuilder/components/coverLetter";
-import html2pdf from "html2pdf.js";
+import ResumePdfPreview from "../../../pdf/ResumePdfPreview";
+import { buildPdfBlob, savePdfBlob, resumeFilename } from "../../../pdf/usePdfBlob";
 import axios, { baseUrl } from "../../../api/axios";
 import AtsCheckModal from "./AtsCheckModal";
 import { round } from 'lodash';
@@ -80,7 +79,6 @@ const coverLetterjson = {
 
 export default function CVBuilder() {
     const { id } = useParams();
-    const resumeRef = useRef();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { parsedResume, AnalyseResumeData, AiResumeLoader, prevParsedResume, saveChangesLoader, selectedTemplate, fetchingResumeLoader } = useSelector((state) => state.resume);
@@ -98,7 +96,6 @@ export default function CVBuilder() {
     const [currentLanguage, setCurrentLanguage] = useState('');
     const [languageLevel, setLanguageLevel] = useState('Intermediate');
     const [currentHobby, setCurrentHobby] = useState('');
-    const cvRef = useRef();
 
     const [customSections, setCustomSections] = useState([]);
 
@@ -480,38 +477,17 @@ export default function CVBuilder() {
     };
 
 
-    const calculatePages = () => {
-        if (!cvRef.current) return 1;
-
-        const a4HeightPx = 1123; // A4 height in pixels at 96 DPI
-        const contentHeight = cvRef.current.scrollHeight;
-        const calculatedPages = Math.ceil(contentHeight / a4HeightPx);
-
-        // Check if the last page has meaningful content (at least 20% filled)
-        const lastPageContent = contentHeight % a4HeightPx;
-        if (calculatedPages > 1 && lastPageContent < (a4HeightPx * 0.2)) {
-            return calculatedPages - 1;
-        }
-        return calculatedPages;
-    };
-
+    // Page count now comes from the generated PDF itself (via
+    // ResumePdfPreview's onPagesChange) instead of dividing the preview div's
+    // scrollHeight by a hard-coded A4 pixel height. The old estimate assumed
+    // 96 DPI and no page-break logic, so it disagreed with the actual file.
     useEffect(() => {
-        if (parsedResume && cvRef.current) {
-            setTimeout(() => {
-                const pages = calculatePages();
-                setTotalPages(pages);
-                if (currentPage > pages) {
-                    setCurrentPage(pages);
-                }
-            }, 100);
-        }
-    }, [parsedResume, currentPage]);
+        if (currentPage > totalPages) setCurrentPage(totalPages);
+    }, [totalPages, currentPage]);
 
     const [downloadPDFLoader, setDownloadPDFLoader] = useState(false);
 
     const hasAutoDownloaded = useRef(false);
-
-    const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
 
 
@@ -574,235 +550,41 @@ export default function CVBuilder() {
     }
 
 
+    /**
+     * Build the PDF in the browser and hand it straight to the user.
+     *
+     * Every design now renders through the same react-pdf document, so this is
+     * one code path for all eight — no per-template branch to the backend, and
+     * no html2canvas raster step. The result is a real text PDF: selectable,
+     * searchable, ATS-parseable, and a few tens of KB rather than megabytes.
+     */
     const handleDownloadPDF = async () => {
         setDownloadPDFLoader(true);
         try {
-            // Save changes first and wait for it to complete
+            // Persist first so the saved record matches the downloaded file.
             if (parsedResume !== prevParsedResume) {
-                await new Promise((resolve, reject) => {
-                    dispatch(updateResumeById({ id, parsedResume }))
-                        .unwrap()
-                        .then(() => {
-                            setHasUnsavedChanges(false);
-                            toast.success('Changes saved successfully!');
-                            resolve();
-                        })
-                        .catch((error) => {
-                            toast.error('Failed to save changes');
-                            reject(error);
-                        });
-                });
+                try {
+                    await dispatch(updateResumeById({ id, parsedResume })).unwrap();
+                    setHasUnsavedChanges(false);
+                    toast.success('Changes saved successfully!');
+                } catch {
+                    // A failed save must not block the download the user asked
+                    // for — they still get a PDF of what is on screen.
+                    toast.error('Could not save changes; downloading current version');
+                }
             }
-        } catch {
-        }
 
-        if (["Classic", "Default", "Luxe"].includes(selectedTemplate)) {
-            try {
-                const response = await axios.get(`/resume/${id}/download?template=${selectedTemplate}`, {
-                    responseType: 'blob'
-                });
-
-                const blob = new Blob([response.data], { type: 'application/pdf' });
-
-                // Create object URL
-                const fileURL = URL.createObjectURL(blob);
-
-                createPDFViewer(fileURL, blob, `${parsedResume?.candidateName?.[0]?.firstName || "CV"}.pdf`);
-
-            } catch (error) {
-                console.error('Error loading PDF:', error);
-                toast.error('Failed to generate PDF');
-            } finally {
-                setDownloadPDFLoader(false);
-            }
-            return;
-        }
-
-
-        if (!cvRef.current) {
-            setDownloadPDFLoader(false);
-            return;
-        }
-
-        const element = cvRef.current;
-        const opt = {
-            margin: 5,
-            filename: `${parsedResume?.candidateName?.[0]?.firstName || "CV"}.pdf`,
-            image: { type: "jpeg", quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
-            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-            pagebreak: { mode: ["css", "legacy"] }
-        };
-
-        try {
-            const pdfBlob = await html2pdf().from(element).set(opt).output('blob');
-            const pdfUrl = URL.createObjectURL(pdfBlob);
-
-            createPDFViewer(pdfUrl, pdfBlob, `${parsedResume?.candidateName?.[0]?.firstName || "CV"}.pdf`);
-
+            // Built fresh rather than reusing the preview blob, so a download
+            // fired before the debounced preview catches up is still current.
+            const blob = await buildPdfBlob(parsedResume, selectedTemplate);
+            savePdfBlob(blob, resumeFilename(parsedResume));
         } catch (error) {
-            console.error('Error generating PDF with html2pdf:', error);
+            console.error('Error generating PDF:', error);
             toast.error('Failed to generate PDF');
         } finally {
             setDownloadPDFLoader(false);
         }
     };
-
-    const createPDFViewer = (pdfUrl, pdfBlob, filename) => {
-        // Create overlay container
-        const overlay = document.createElement('div');
-        overlay.style.position = 'fixed';
-        overlay.style.top = '0';
-        overlay.style.left = '0';
-        overlay.style.width = '100%';
-        overlay.style.height = '100%';
-        overlay.style.backgroundColor = 'white';
-        overlay.style.zIndex = '9998';
-        overlay.id = 'pdf-overlay';
-
-        const iframe = document.createElement('iframe');
-        iframe.style.width = '100%';
-        iframe.style.height = 'calc(100vh - 60px)'; // Leave space for header
-        iframe.style.border = 'none';
-        iframe.style.position = 'fixed';
-        iframe.style.top = '60px'; // Space for header
-        iframe.style.left = '0';
-        iframe.style.zIndex = '9999';
-        iframe.style.background = 'white';
-        iframe.src = pdfUrl;
-
-        // Create header container for buttons
-        const header = document.createElement('div');
-        header.style.position = 'fixed';
-        header.style.top = '0';
-        header.style.left = '0';
-        header.style.width = '100%';
-        header.style.height = '60px';
-        header.style.backgroundColor = '#f8f9fa';
-        header.style.borderBottom = '1px solid #dee2e6';
-        header.style.zIndex = '10000';
-        header.style.display = 'flex';
-        header.style.alignItems = 'center';
-        header.style.justifyContent = 'space-between';
-        header.style.padding = '0 20px';
-
-        // Create title
-        const title = document.createElement('div');
-        title.textContent = 'PDF Preview';
-        title.style.fontSize = '18px';
-        title.style.fontWeight = 'bold';
-        title.style.color = '#7a1e37';
-
-        // Create buttons container
-        const buttonsContainer = document.createElement('div');
-        buttonsContainer.style.display = 'flex';
-        buttonsContainer.style.gap = '10px';
-
-        // Create download button
-        const downloadButton = document.createElement('button');
-        downloadButton.textContent = '⬇ Download PDF';
-        downloadButton.style.padding = '10px 15px';
-        downloadButton.style.backgroundColor = '#28a745';
-        downloadButton.style.color = 'white';
-        downloadButton.style.border = 'none';
-        downloadButton.style.borderRadius = '5px';
-        downloadButton.style.cursor = 'pointer';
-        downloadButton.style.fontSize = '14px';
-        downloadButton.style.fontWeight = 'bold';
-        downloadButton.onclick = () => {
-            // Create download link
-            const downloadLink = document.createElement('a');
-            downloadLink.href = pdfUrl;
-            downloadLink.download = filename;
-            downloadLink.style.display = 'none';
-            document.body.appendChild(downloadLink);
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-        };
-
-        // Create close button
-        const closeButton = document.createElement('button');
-        closeButton.textContent = '✕ Close PDF';
-        closeButton.style.padding = '10px 15px';
-        closeButton.style.backgroundColor = '#7a1e37';
-        closeButton.style.color = 'white';
-        closeButton.style.border = 'none';
-        closeButton.style.borderRadius = '5px';
-        closeButton.style.cursor = 'pointer';
-        closeButton.style.fontSize = '14px';
-        closeButton.style.fontWeight = 'bold';
-        closeButton.onclick = () => {
-            // Remove all elements
-            document.body.removeChild(overlay);
-            document.body.removeChild(iframe);
-            document.body.removeChild(header);
-            // Restore body scroll
-            document.body.style.overflow = '';
-            // Clean up URL
-            URL.revokeObjectURL(pdfUrl);
-        };
-
-        // Add buttons to container
-        buttonsContainer.appendChild(downloadButton);
-        buttonsContainer.appendChild(closeButton);
-
-        // Add title and buttons to header
-        header.appendChild(title);
-        header.appendChild(buttonsContainer);
-
-        // Add elements to page
-        document.body.appendChild(overlay);
-        document.body.appendChild(iframe);
-        document.body.appendChild(header);
-
-        // Prevent body scroll
-        document.body.style.overflow = 'hidden';
-
-        // Clean up URL when viewer is closed
-        const cleanup = () => {
-            if (document.body.contains(header)) {
-                document.body.removeChild(overlay);
-                document.body.removeChild(iframe);
-                document.body.removeChild(header);
-                document.body.style.overflow = '';
-                URL.revokeObjectURL(pdfUrl);
-            }
-        };
-
-        // Also allow closing with Escape key
-        const handleEscape = (event) => {
-            if (event.key === 'Escape') {
-                cleanup();
-                document.removeEventListener('keydown', handleEscape);
-            }
-        };
-
-        document.addEventListener('keydown', handleEscape);
-
-        overlay.cleanup = cleanup;
-        header.cleanup = cleanup;
-    };
-
-    const previewContainerRef = useRef(null);
-
-    const scrollToPage = useCallback((pageNumber) => {
-        if (!cvRef.current || !previewContainerRef.current || pageNumber < 1 || pageNumber > totalPages) return;
-
-        const pageHeight = cvRef.current.scrollHeight / totalPages;
-        const scrollPosition = (pageNumber - 1) * pageHeight;
-
-        previewContainerRef.current.scrollTo({
-            top: scrollPosition,
-            behavior: 'smooth'
-        });
-
-        setCurrentPage(pageNumber);
-    }, [totalPages]);
-
-    // Handle page navigation
-    const goToPage = useCallback((page) => {
-        scrollToPage(page);
-    }, [scrollToPage]);
 
     const [activeTab, setActiveTab] = useState('tabPreview');
 
@@ -3247,86 +3029,25 @@ export default function CVBuilder() {
                     </div>
                     <div className="editor-inner-wrapper">
                         <div className="cv-wrapper">
-                            <div
-                                ref={previewContainerRef}
-                                className={`cv-template-div mx-auto ${zoom < 1 && 'zoom-out'}`}
-                                style={{ background: '#fff', overflow: 'auto', height: 'calc(100vh - 190px)', position: 'relative', width: 'fit-content',  }}
-                            >
-                                <div
-                                    ref={cvRef}
-                                    style={{
-                                        background: 'white',
-                                        padding: '16px',
-                                        transformOrigin: 'top center',
-                                        transition: 'transform 0.2s ease-in-out',
-                                        width: 921, zoom: zoom,
-                                    }}
-                                >
-                                    {(() => {
-                                        const selectedTemplateData = cardTemplate.find(t => t.name === selectedTemplate);
-                                        if (!selectedTemplateData) {
-                                            return <div className="alert alert-warning">Please select a template</div>;
-                                        }
-
-                                        const TemplateComponent = selectedTemplateData.template;
-
-                                        // Transform skills to ensure names are strings
-                                        const transformedResumeData = {
-                                            ...(parsedResume || {
-                                                candidateName: [{ firstName: '', familyName: '' }],
-                                                headline: '',
-                                                summary: [{ paragraph: '' }],
-                                                phoneNumber: [{ formattedNumber: '' }],
-                                                email: [''],
-                                                location: { formatted: '' },
-                                                workExperience: [],
-                                                education: [],
-                                                skill: [],
-                                                profilePic: null,
-                                                website: [''],
-                                                certifications: [],
-                                                languages: [],
-                                                hobbies: [],
-                                                customSections: [],
-                                            }),
-                                            // Transform skills to have string names
-                                            skill: (parsedResume?.skill || []).map(skill => ({
-                                                ...skill,
-                                                name: typeof skill.name === 'string' ? skill.name : skill.name?.name || skill.name || 'Unknown Skill'
-                                            })),
-                                            // Transform languages to have string names
-                                            languages: (parsedResume?.languages || []).map(lang => ({
-                                                ...lang,
-                                                name: typeof (lang.name || lang.language) === 'string' ? (lang.name || lang.language) : (lang.name?.name || lang.language?.name || lang.name || lang.language || 'Unknown Language')
-                                            }))
-                                        };
-
-                                        return (
-                                            <div ref={resumeRef}>
-                                                <TemplateComponent
-                                                    resumeData={transformedResumeData}
-                                                />
-                                            </div>
-                                        );
-                                    })()}
-                                </div>
-
-                                {/* Only show page dividers if we have multiple pages with content */}
-                                {totalPages > 1 && Array.from({ length: totalPages - 1 }).map((_, index) => (
-                                    <div
-                                        key={index}
-                                        style={{
-                                            position: 'absolute',
-                                            left: `50%`,
-                                            transform: 'translateX(-50%)',
-                                            width: `${zoom * (921 - 32)}px`,
-                                            top: `${(index + 1) * 1123 * zoom}px`,
-                                            borderTop: '2px dashed #ccc',
-                                            pointerEvents: 'none'
-                                        }}
-                                    />
-                                ))}
-                            </div>
+                            {/*
+                              The preview is the real PDF, not an HTML rendering
+                              of it, so what is on screen is exactly what gets
+                              downloaded. Page breaks shown here are the ones the
+                              file actually has, which the old DOM-height estimate
+                              could only guess at.
+                            */}
+                            <ResumePdfPreview
+                                resume={parsedResume}
+                                template={selectedTemplate}
+                                zoom={zoom}
+                                onPagesChange={setTotalPages}
+                                className="cv-template-div mx-auto"
+                                style={{
+                                    background: '#fff',
+                                    height: 'calc(100vh - 190px)',
+                                    width: '100%',
+                                }}
+                            />
                         </div>
                     </div>
                 </div>
@@ -3346,7 +3067,10 @@ export default function CVBuilder() {
                 </Modal>
 
             </div>
-            {isGeneratingPDF && (
+            {/* Shown while the PDF is being built and saved. Generation is
+                client-side and usually well under a second, but saving to the
+                API first can take longer. */}
+            {downloadPDFLoader && (
                 <div style={{
                     position: 'fixed',
                     top: 0,

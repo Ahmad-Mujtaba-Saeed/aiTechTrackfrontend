@@ -428,5 +428,3 @@ export function PageNumber({ theme, style }) {
     />
   );
 }
-
-export { styles as primitiveStyles };
