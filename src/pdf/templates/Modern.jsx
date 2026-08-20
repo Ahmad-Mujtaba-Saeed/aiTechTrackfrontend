@@ -181,17 +181,7 @@ export default function Modern({ resume, theme }) {
           </View>
         )}
 
-        <Text
-          style={{
-            fontFamily: theme.fontFamily,
-            fontSize: theme.sectionSize,
-            color: theme.sidebarInk,
-            textAlign: 'center',
-            marginBottom: 14,
-          }}
-        >
-          Resume
-        </Text>
+
 
         {contacts.length > 0 && (
           <Section theme={side} title={resume.labels.personal.title} first>
