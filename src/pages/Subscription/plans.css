@@ -1,151 +1,198 @@
+/* ── Page background ── */
+.subscription-page {
+    background: #F0EDE8;
+    min-height: 100vh;
+}
+
+/* ── Grid ── */
 .plans-tiers {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
     gap: 1.5rem;
     flex-wrap: wrap;
 }
 
+/* ── Base card ── */
 .tier {
-    background: white;
-    border-radius: 12px;
-    padding: 16px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px 24px;
     flex-basis: 265px;
     flex-grow: 1;
-    max-width: 350px;
-    box-shadow: 0 0 12px 8px #e0e0e0;
+    max-width: 340px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
     position: relative;
     overflow: hidden;
-    border: 1px solid #e0e0e0;
-    border-top: 6px solid #2c2c2c;
+    border: none;
 }
 
+/* ── Featured (professional) card — dark ── */
 .tier.professional {
-    transform: scale(1.05);
+    background: #1A1A2E;
+    transform: none;
 }
 
+.tier.professional .tier-name {
+    color: #fff;
+}
+
+.tier.professional .tier-price {
+    color: #fff;
+}
+
+.tier.professional .tier-period {
+    color: rgba(255,255,255,0.6);
+}
+
+.tier.professional .tier-features li {
+    color: rgba(255,255,255,0.85);
+}
+
+.tier.professional .tier-features li:before {
+    color: #FF6B47;
+}
+
+.tier.professional .feature-label {
+    color: rgba(255,255,255,0.85);
+}
+
+/* ── Badge wrapper ── */
 .badge-wrapper {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     gap: 6px;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
+    min-height: 28px;
 }
 
+/* ── RECOMMENDED / ACTIVE badge ── */
 .tier-badge {
-    background: #222222;
-    color: white;
+    background: #FF6B47;
+    color: #fff;
     text-align: center;
-    padding: 5px 10px 3px;
-    font-weight: 300;
-    font-size: 10px;
-    letter-spacing: 0px;
-    display: inline-block;
-    border-radius: 5px;
-}
-
-.tier-name {
-    font-size: 20px;
-    font-weight: 500;
-    margin-bottom: 0px;
-    color: #000000;
-}
-
-.tier-price {
-    font-size: 36px;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: #000;
-    display: flex;
-    justify-content: center;
-}
-
-.tier-period {
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 1.3rem;
+    padding: 5px 14px 4px;
     font-weight: 600;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    display: inline-block;
+    border-radius: 999px;
 }
 
+/* ── Plan name ── */
+.tier-name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #111;
+}
+
+/* ── Price ── */
+.tier-price {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 2px;
+    color: #111;
+    display: flex;
+    justify-content: flex-start;
+    align-items: baseline;
+    gap: 2px;
+}
+
+/* ── Period ── */
+.tier-period {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 1.4rem;
+    font-weight: 400;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ── Features list ── */
 .tier-features {
     list-style: none;
-    /* margin-bottom: 2.5rem; */
-    padding: 8px;
+    padding: 0;
+    margin-bottom: 1.8rem;
 }
 
 .tier-features li {
-    padding: 0.25rem 0;
-    color: #444444;
+    padding: 0.3rem 0;
+    color: #444;
     display: flex;
     align-items: center;
 }
 
 .tier-features li:before {
-    content: "✓";
-    color: #333333;
-    font-weight: 500;
-    margin-right: 7px;
-    font-size: 15px;
+    content: "⊘";
+    color: #FF6B47;
+    font-weight: 400;
+    margin-right: 8px;
+    font-size: 14px;
 }
 
+/* ── Button — default dark ── */
 .tier-btn {
-    background: #222222;
-    color: white;
+    background: #1A1A2E;
+    color: #fff;
     border: none;
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border-radius: 10px;
-    font-size: 16px;
-    font-weight: 400;
+    font-size: 15px;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .tier-btn:hover {
-    background: #000000;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    background: #111;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
+/* ── Button — featured card orange ── */
+.tier.professional .tier-btn {
+    background: #FF6B47;
+    color: #fff;
+}
+
+.tier.professional .tier-btn:hover {
+    background: #D9591A;
+    box-shadow: 0 4px 12px rgba(255,107,71,0.35);
+}
+
+/* ── Disabled button ── */
 .tier-btn:disabled,
 .tier-btn:disabled:hover {
-    background: #8f8f8f;
-    color: white;
+    background: #c0c0c0;
+    color: #fff;
     cursor: no-drop;
-    transition: none;
     transform: none;
     box-shadow: none;
 }
 
+/* ── Savings badge ── */
 .savings-badge {
     display: inline-block;
-    background: #333333;
-    color: white;
-    padding: 4px 10px;
-    border-radius: 22px;
-    font-size: 12px;
-    font-weight: 200;
+    background: #FF6B47;
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 500;
     margin-left: 6px;
 }
 
+/* ── Feature label ── */
 .feature-label {
-    color: #000000;
-    font-weight: 300;
-    font-size: 13px;
-    line-height: 1;
-}
-
-.header {
-    text-align: center;
-    margin-bottom: 60px !important;
-}
-
-.header h1 {
-    font-size: 36px;
-    font-weight: 700;
+    color: #333;
+    font-weight: 400;
+    font-size: 13.5px;
+    line-height: 1.3;
 }
 
 @media (max-width: 992px) {
@@ -158,9 +205,5 @@
         width: 100%;
         max-width: 400px;
         flex-basis: auto;
-    }
-
-    .tier.professional {
-        transform: none;
     }
 }

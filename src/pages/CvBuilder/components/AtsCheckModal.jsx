@@ -1,15 +1,20 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Modal } from "react-bootstrap";
+import React, { useState } from "react";
+import { Modal, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import axios from "../../../api/axios";
 
 /**
  * Step machine:
  *   choose        -> pick "skills" or "job-description"
- *   skills-input  -> tag/chip input for skills (new step before analysis)
- *   job-input     -> paste job description
+ *   job-input     -> only for job-description mode: paste/edit the JD
  *   loading       -> API call in flight
- *   result        -> render results
+ *   result        -> render whichever result came back
+ *
+ * Both /ats-check and /job-match return the same top-level envelope
+ * ({ success, message, data }) and the same category shape
+ * ({ label, score, max_score, assessment, strengths, issues }),
+ * so one result renderer covers both — job-match just has two extra
+ * fields (recommendation, keyword_analysis) that render conditionally.
  */
 const AtsCheckModal = ({ show, onHide, resumeId, savedJobDescription }) => {
     const [step, setStep] = useState("choose");
@@ -19,20 +24,12 @@ const AtsCheckModal = ({ show, onHide, resumeId, savedJobDescription }) => {
     const [error, setError] = useState("");
     const [result, setResult] = useState(null);
 
-    // Skills tag input state
-    const [skills, setSkills] = useState([]);
-    const [skillEntry, setSkillEntry] = useState("");
-    const [skillInputFocused, setSkillInputFocused] = useState(false);
-    const skillInputRef = useRef(null);
-
     const reset = () => {
         setStep("choose");
         setMode(null);
         setError("");
         setResult(null);
         setLoading(false);
-        setSkills([]);
-        setSkillEntry("");
     };
 
     const handleClose = () => {
@@ -40,15 +37,6 @@ const AtsCheckModal = ({ show, onHide, resumeId, savedJobDescription }) => {
         onHide();
     };
 
-    // Modal title based on current step
-    const modalTitle = () => {
-        if (step === "skills-input") return "Score my CV";
-        if (step === "job-input") return "Match against a job description";
-        if (step === "result") return mode === "job-description" ? "Job Match Results" : "ATS Scan Results";
-        return "ATS Check";
-    };
-
-    // ── Choose step ──────────────────────────────────────────
     const chooseSkills = () => {
         setMode("skills");
         runAnalysis("skills");
@@ -59,65 +47,16 @@ const AtsCheckModal = ({ show, onHide, resumeId, savedJobDescription }) => {
         setStep("job-input");
     };
 
-    // ── Skills tag input ──────────────────────────────────────
-    const addSkill = (raw) => {
-        const val = raw.trim().replace(/,+$/, "").trim();
-        if (val && !skills.includes(val)) {
-            setSkills((prev) => [...prev, val]);
-        }
-        setSkillEntry("");
-    };
-
-    const removeSkill = (idx) => {
-        setSkills((prev) => prev.filter((_, i) => i !== idx));
-    };
-
-    const handleSkillKeyDown = (e) => {
-        if (e.key === "Enter" || e.key === ",") {
-            e.preventDefault();
-            addSkill(skillEntry);
-        } else if (e.key === "Backspace" && skillEntry === "" && skills.length > 0) {
-            setSkills((prev) => prev.slice(0, -1));
-        }
-    };
-
-    const handleSkillBlur = () => {
-        if (skillEntry.trim()) addSkill(skillEntry);
-        setSkillInputFocused(false);
-    };
-
-    const submitSkills = () => {
-        // flush any pending entry
-        const pending = skillEntry.trim().replace(/,+$/, "").trim();
-        const finalSkills = pending && !skills.includes(pending)
-            ? [...skills, pending]
-            : skills;
-
-        if (finalSkills.length === 0) {
-            if (skillInputRef.current) {
-                skillInputRef.current.placeholder = "Please add at least one skill first...";
-                skillInputRef.current.focus();
-            }
-            return;
-        }
-
-        if (pending) setSkills(finalSkills);
-        setSkillEntry("");
-        runAnalysis("skills", finalSkills);
-    };
-
-    // ── Job description ───────────────────────────────────────
     const submitJobDescription = () => {
         if (jobDescription.trim().length < 40) {
-            setError("Paste the full job description — a title alone isn't enough (minimum 40 characters).");
+            setError("Paste the full job description — a title alone isn't enough to score against (minimum 40 characters).");
             return;
         }
         setError("");
         runAnalysis("job-description");
     };
 
-    // ── API call ──────────────────────────────────────────────
-    const runAnalysis = async (activeMode, skillsList = skills) => {
+    const runAnalysis = async (activeMode) => {
         setStep("loading");
         setLoading(true);
         setError("");
@@ -146,6 +85,8 @@ const AtsCheckModal = ({ show, onHide, resumeId, savedJobDescription }) => {
             const requiresJobDescription = err?.response?.data?.requires_job_description;
 
             if (requiresJobDescription) {
+                // Backend has no saved JD and none was sent — bounce back
+                // to the input step instead of a dead-end error screen.
                 setMode("job-description");
                 setStep("job-input");
                 setError(apiMessage || "Please provide a job description first.");
@@ -159,26 +100,22 @@ const AtsCheckModal = ({ show, onHide, resumeId, savedJobDescription }) => {
         }
     };
 
-    // ── Helpers ───────────────────────────────────────────────
-    const barColor = (pct) => (pct >= 70 ? "#221C16" : "#F4762A");
-
-    const priorityClass = (p) => {
-        if (p === "high") return "ats-badge-high";
-        if (p === "medium") return "ats-badge-medium";
-        return "ats-badge-low";
-    };
+    const scoreTone = (pct) => (pct >= 75 ? "#0F6E5C" : pct >= 50 ? "#B8791A" : "#A8342A");
 
     return (
         <Modal show={show} onHide={handleClose} centered size="lg" backdrop="static" className="ats-check-modal">
             <Modal.Header closeButton className="ats-modal-header">
                 <Modal.Title className="ats-modal-title">
-                    {modalTitle()}
+                    {step === "result"
+                        ? mode === "job-description"
+                            ? "Job Match Results"
+                            : "ATS Scan Results"
+                        : "ATS Check"}
                 </Modal.Title>
             </Modal.Header>
 
             <Modal.Body className="ats-modal-body">
-
-                {/* ── CHOOSE ── */}
+                {/* STEP: choose mode */}
                 {step === "choose" && (
                     <div>
                         <p className="ats-choose-subtitle">
@@ -212,69 +149,12 @@ const AtsCheckModal = ({ show, onHide, resumeId, savedJobDescription }) => {
                     </div>
                 )}
 
-                {/* ── SKILLS INPUT ── */}
-                {step === "skills-input" && (
-                    <div>
-                        <p className="ats-step-lead">
-                            Add the skills you'd like highlighted in your CV (e.g. React, Figma, Excel, Communication). Press Enter or comma to add each one.
-                        </p>
-
-                        <div className="ats-field">
-                            <label className="ats-field-label">Skills</label>
-                            <div
-                                className={`ats-tag-input${skillInputFocused ? " focused" : ""}`}
-                                onClick={() => skillInputRef.current?.focus()}
-                            >
-                                {skills.map((s, i) => (
-                                    <span key={i} className="ats-chip">
-                                        {s}
-                                        <button
-                                            type="button"
-                                            className="ats-chip-remove"
-                                            onClick={(e) => { e.stopPropagation(); removeSkill(i); }}
-                                            aria-label={`Remove ${s}`}
-                                        >
-                                            &times;
-                                        </button>
-                                    </span>
-                                ))}
-                                <input
-                                    ref={skillInputRef}
-                                    type="text"
-                                    className="ats-tag-input-field"
-                                    value={skillEntry}
-                                    placeholder={skills.length === 0 ? "Please add at least one skill first..." : "Add another skill..."}
-                                    onChange={(e) => setSkillEntry(e.target.value)}
-                                    onKeyDown={handleSkillKeyDown}
-                                    onFocus={() => setSkillInputFocused(true)}
-                                    onBlur={handleSkillBlur}
-                                />
-                            </div>
-                            <div className="ats-hint">Adding at least 3–4 skills gives a more accurate analysis.</div>
-                        </div>
-
-                        {error && <div className="ats-error mb-3">{error}</div>}
-
-                        <div className="ats-row-actions">
-                            <button
-                                type="button"
-                                className="ats-btn-primary"
-                                onClick={submitSkills}
-                                disabled={loading}
-                            >
-                                Run Analysis
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {/* ── JOB DESCRIPTION INPUT ── */}
+                {/* STEP: job description input */}
                 {step === "job-input" && (
                     <div>
                         <p className="ats-step-lead">
                             Paste the full description of the job you're applying for. We'll compare it against your CV to show the ATS match.
                         </p>
-
                         <div className="ats-field">
                             <label className="ats-field-label" htmlFor="ats-jd-textarea">Job Description</label>
                             <textarea
@@ -283,38 +163,32 @@ const AtsCheckModal = ({ show, onHide, resumeId, savedJobDescription }) => {
                                 rows={8}
                                 value={jobDescription}
                                 onChange={(e) => setJobDescription(e.target.value)}
-                                placeholder="Paste the full job posting description here..."
+                                placeholder="Paste the full job posting here…"
                             />
                         </div>
-
                         {error && <div className="ats-error mb-3">{error}</div>}
-
                         <div className="ats-row-actions">
-                            <button
-                                type="button"
-                                className="ats-btn-primary"
-                                onClick={submitJobDescription}
-                                disabled={loading}
-                            >
+                            <button type="button" className="ats-btn-ghost" onClick={() => setStep("choose")}>
+                                ← Back
+                            </button>
+                            <button type="button" className="ats-btn-primary" onClick={submitJobDescription} disabled={loading}>
                                 Run Analysis
                             </button>
                         </div>
                     </div>
                 )}
 
-                {/* ── LOADING ── */}
+                {/* STEP: loading */}
                 {step === "loading" && (
                     <div className="text-center py-5">
                         <div className="spinner-border" role="status" style={{ color: "#F4762A" }} />
                         <p className="ats-choose-subtitle mt-3 mb-0">
-                            {mode === "job-description"
-                                ? "Comparing your CV against the job description…"
-                                : "Scanning your CV…"}
+                            {mode === "job-description" ? "Comparing your CV against the job description…" : "Scanning your CV…"}
                         </p>
                     </div>
                 )}
 
-                {/* ── RESULT ── */}
+                {/* STEP: result */}
                 {step === "result" && result && (
                     <div>
                         {/* Score row */}
@@ -322,38 +196,72 @@ const AtsCheckModal = ({ show, onHide, resumeId, savedJobDescription }) => {
                             <span className="ats-score-num">{result.score}</span>
                             <span className="ats-score-max">/100</span>
                             <span className="ats-score-badge">{result.grade}</span>
+                            {result.recommendation && (
+                                <span className="badge bg-secondary text-uppercase ms-2">
+                                    {result.recommendation.replace("_", " ")}
+                                </span>
+                            )}
                         </div>
 
                         {result.summary && (
                             <p className="ats-summary-text">{result.summary}</p>
                         )}
 
-                        {/* Breakdown */}
-                        {result.categories && Object.keys(result.categories).length > 0 && (
+                        {/* Job-match only: keyword analysis */}
+                        {result.keyword_analysis && (
                             <div className="ats-block">
-                                <div className="ats-block-title">Breakdown</div>
-                                {Object.entries(result.categories).map(([key, cat]) => {
-                                    const pct = Math.round((cat.score / cat.max_score) * 100);
-                                    return (
-                                        <div key={key} className="ats-breakdown-row">
-                                            <div className="ats-breakdown-top">
-                                                <span className="ats-breakdown-name">{cat.label}</span>
-                                                <span className="ats-breakdown-score">{cat.score}/{cat.max_score}</span>
-                                            </div>
-                                            <div className="ats-bar-track">
-                                                <div
-                                                    className="ats-bar-fill"
-                                                    style={{
-                                                        width: `${pct}%`,
-                                                        background: barColor(pct),
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                    );
-                                })}
+                                <div className="ats-block-title">Keyword match</div>
+                                {result.keyword_analysis.matched?.length > 0 && (
+                                    <div className="mb-2">
+                                        <span className="text-muted small d-block mb-1">Matched</span>
+                                        {result.keyword_analysis.matched.map((kw, i) => (
+                                            <span key={i} className="badge bg-success-subtle text-success me-1 mb-1">{kw}</span>
+                                        ))}
+                                    </div>
+                                )}
+                                {result.keyword_analysis.missing_critical?.length > 0 && (
+                                    <div className="mb-2">
+                                        <span className="text-muted small d-block mb-1">Missing (critical)</span>
+                                        {result.keyword_analysis.missing_critical.map((kw, i) => (
+                                            <span key={i} className="badge bg-danger-subtle text-danger me-1 mb-1">{kw}</span>
+                                        ))}
+                                    </div>
+                                )}
+                                {result.keyword_analysis.missing_nice_to_have?.length > 0 && (
+                                    <div>
+                                        <span className="text-muted small d-block mb-1">Missing (nice to have)</span>
+                                        {result.keyword_analysis.missing_nice_to_have.map((kw, i) => (
+                                            <span key={i} className="badge bg-warning-subtle text-warning-emphasis me-1 mb-1">{kw}</span>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         )}
+
+                        {/* Category breakdown */}
+                        <div className="ats-block">
+                            <div className="ats-block-title">Breakdown</div>
+                            {Object.entries(result.categories || {}).map(([key, cat]) => {
+                                const pct = Math.round((cat.score / cat.max_score) * 100);
+                                return (
+                                    <div key={key} className="ats-breakdown-row">
+                                        <div className="ats-breakdown-top">
+                                            <span className="ats-breakdown-name">{cat.label}</span>
+                                            <span className="ats-breakdown-score">{cat.score}/{cat.max_score}</span>
+                                        </div>
+                                        <div className="ats-bar-track">
+                                            <div
+                                                className="ats-bar-fill"
+                                                style={{
+                                                    width: `${pct}%`,
+                                                    background: pct >= 70 ? "#221C16" : "#F4762A",
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
 
                         {/* Suggestions */}
                         {result.suggestions?.length > 0 && (
@@ -364,21 +272,15 @@ const AtsCheckModal = ({ show, onHide, resumeId, savedJobDescription }) => {
                                         <div key={i} className="ats-suggestion-card">
                                             <div className="ats-suggestion-head">
                                                 <strong className="ats-suggestion-title">{s.title}</strong>
-                                                <span className={`ats-priority-badge ${priorityClass(s.priority)}`}>
+                                                <span className={`ats-priority-badge ${
+                                                    s.priority === "high" ? "ats-badge-high"
+                                                    : s.priority === "medium" ? "ats-badge-medium"
+                                                    : "ats-badge-low"
+                                                }`}>
                                                     {s.priority}
                                                 </span>
                                             </div>
                                             <p className="ats-suggestion-desc">{s.description}</p>
-                                            {s.priority !== "high" && (
-                                                <div className="ats-suggestion-foot">
-                                                    <button type="button" className="ats-edit-btn">
-                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                            <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-                                                        </svg>
-                                                        Edit
-                                                    </button>
-                                                </div>
-                                            )}
                                         </div>
                                     ))}
                                 </div>
@@ -392,7 +294,6 @@ const AtsCheckModal = ({ show, onHide, resumeId, savedJobDescription }) => {
                         </div>
                     </div>
                 )}
-
             </Modal.Body>
         </Modal>
     );
