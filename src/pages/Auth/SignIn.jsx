@@ -326,7 +326,7 @@ export default function SignIn() {
       </span>
       <span
         className="ms-auto flex-shrink-0 ps-2"
-        style={{ fontSize: "10.5px", color: "#6E6455" }}
+        style={{ fontSize: "10.5px", color: "#fff" }}
       >
         fill →
       </span>
@@ -373,7 +373,7 @@ export default function SignIn() {
       </span>
       <span
         className="ms-auto flex-shrink-0 ps-2"
-        style={{ fontSize: "10.5px", color: "#6E6455" }}
+        style={{ fontSize: "10.5px", color: "#fff" }}
       >
         fill →
       </span>
