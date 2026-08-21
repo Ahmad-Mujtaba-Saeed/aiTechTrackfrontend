@@ -750,7 +750,7 @@ const SubscriptionTab = ({
                   <button
                     className="btn btn-danger btn-sm"
                     onClick={() => onRemovePaymentMethod(method.id)}
-                    disabled={paymentMethods.length <= 1}
+                    dsabled={paymentMethods.length <= 1}
                   >
                     Remove
                   </button>

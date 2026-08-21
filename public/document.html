@@ -27,7 +27,7 @@
   <script>
     // Videos are hosted on the backend, not this frontend.
     // If the backend URL ever changes, this is the ONLY line you need to edit.
-    const BACKEND_VIDEO_BASE = "https://cv-api.wasimdev.com";
+    const BACKEND_VIDEO_BASE = "https://cv-api.wasimdev.com/videos";
   </script>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased">
@@ -216,7 +216,7 @@ sudo ufw status</code></pre>
           </div>
           <div class="mb-6 rounded-xl overflow-hidden border border-slate-200 doc-video-wrapper">
             <video controls preload="metadata">
-              <source class="doc-video-src" data-file="backend-docker.mp4" type="video/mp4">
+              <source class="doc-video-src" data-file="video1bvd.mp4" type="video/mp4">
               Your browser does not support the video tag.
             </video>
           </div>
@@ -328,7 +328,7 @@ curl -I http://localhost:8585</code></pre>
           </div>
           <div class="mb-6 rounded-xl overflow-hidden border border-slate-200 doc-video-wrapper">
             <video controls preload="metadata">
-              <source class="doc-video-src" data-file="frontend-docker.mp4" type="video/mp4">
+              <source class="doc-video-src" data-file="video2fvd.mp4" type="video/mp4">
               Your browser does not support the video tag.
             </video>
           </div>
@@ -469,7 +469,7 @@ sudo apt install -y git curl unzip nginx</code></pre>
           </div>
           <div class="mb-6 rounded-xl overflow-hidden border border-slate-200 doc-video-wrapper">
             <video controls preload="metadata">
-              <source class="doc-video-src" data-file="backend-manual.mp4" type="video/mp4">
+              <source class="doc-video-src" data-file="video3bvm.mp4" type="video/mp4">
               Your browser does not support the video tag.
             </video>
           </div>
@@ -586,7 +586,7 @@ sudo ufw allow 8585/tcp</code></pre>
           </div>
           <div class="mb-6 rounded-xl overflow-hidden border border-slate-200 doc-video-wrapper">
             <video controls preload="metadata">
-              <source class="doc-video-src" data-file="frontend-manual.mp4" type="video/mp4">
+              <source class="doc-video-src" data-file="video4fvm.mp4" type="video/mp4">
               Your browser does not support the video tag.
             </video>
           </div>
@@ -719,7 +719,7 @@ tail -f storage/logs/laravel.log</code></pre>
 
   <script>
     document.querySelectorAll('.doc-video-src').forEach(function (source) {
-      source.src = BACKEND_VIDEO_BASE + '/videos/' + source.dataset.file;
+      source.src = BACKEND_VIDEO_BASE + '/' + source.dataset.file;
     });
   </script>
 
