@@ -2008,3 +2008,21 @@ div:where(.swal2-container) {
     padding-right: 2rem !important;
     padding-left: 2rem !important;
   }
+
+  /* Toastify success overrides - Change green to PathForge orange */
+  :root {
+    --toastify-color-success: #ff6b47 !important;
+    --toastify-icon-color-success: #ff6b47 !important;
+  }
+
+  .Toastify__toast--success {
+    border-left-color: #ff6b47 !important;
+  }
+
+  .Toastify__toast--success .Toastify__toast-icon svg {
+    fill: #ff6b47 !important;
+  }
+
+  .Toastify__progress-bar--success {
+    background: #ff6b47 !important;
+  }
