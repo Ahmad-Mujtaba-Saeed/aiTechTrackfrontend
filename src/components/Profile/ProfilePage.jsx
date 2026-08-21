@@ -367,7 +367,7 @@ const fetchSubscriptionDetails = async () => {
       {/* Profile Header */}
       {/* <ProfileHeader userData={userData} /> */}
 
-      <div className="profile-content" style={{ width: 1200 }}>
+      <div className="profile-content" style={{ width: '100%' }}>
         <EditProfileTab
           initialUserData={userData}
           onSave={async (formData, type) => {

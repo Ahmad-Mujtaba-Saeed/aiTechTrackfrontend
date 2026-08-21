@@ -656,7 +656,8 @@ h4 {
 }
 
 .btn-danger {
-    background-color: rgb(189, 1, 1);
+    background-color: #FF6B47; 
+
     text-decoration: none;
     font-size: 14px;
     font-weight: 400;
@@ -665,7 +666,7 @@ h4 {
 }
 
 .btn-danger:hover {
-    background: rgb(189, 1, 1) !important;
+    background: #E8502D !important;
     text-decoration: none;
     font-size: 14px;
     font-weight: 400;
