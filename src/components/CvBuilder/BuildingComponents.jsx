@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Modal, Button, Card, Form, Dropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 import {
   createEmptyResume,
   uploadExistingResume,
@@ -324,7 +325,19 @@ export default function BuildingComponents() {
   };
 
   const handleRenameCv = async (resumeId, title) => {
-    const newName = prompt('Enter new name for CV:', title);
+    const { value: newName } = await Swal.fire({
+      title: 'Rename CV',
+      input: 'text',
+      inputLabel: 'Enter new name for CV',
+      inputValue: title,
+      showCancelButton: true,
+      confirmButtonText: 'Rename',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#FF6B47',
+      inputValidator: (value) => {
+        if (!value || !value.trim()) return 'Please enter a name';
+      }
+    });
     if (newName && newName.trim() && newName !== title) {
       try {
         const updateResult = await dispatch(updateResumeName({ id: resumeId, name: newName })).unwrap();

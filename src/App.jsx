@@ -43,6 +43,7 @@ import PlanManagement from "./pages/PlanSettings/PlanManagement"
 
 import Career from "./pages/CareerAdvice";
 import SignOut from "./pages/Auth/SignOut";
+import Documentation from "./pages/Documentation";
 
 
 const PageWrapper = ({ children }) => {
@@ -69,6 +70,7 @@ const publicRoutes = [
   { path: '/career-advice', element: <Career /> },
   { path: '*', element: <ErrorPage /> },
   { path: '/sign-out', element: <SignOut /> },
+  { path: '/document', element: <Documentation /> },
 ];
 
 const protectedRoutes = [

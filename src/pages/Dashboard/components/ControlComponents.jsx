@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import Swal from 'sweetalert2';
 import {
   getrecentCvsCreated,
   updateResumeName,
@@ -31,7 +32,19 @@ export default function ControlComponents() {
 
 
   const handleRenameCv = async (resumeId, title) => {
-    const newName = prompt('Enter new name for CV:', title);
+    const { value: newName } = await Swal.fire({
+      title: 'Rename CV',
+      input: 'text',
+      inputLabel: 'Enter new name for CV',
+      inputValue: title,
+      showCancelButton: true,
+      confirmButtonText: 'Rename',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#FF6B47',
+      inputValidator: (value) => {
+        if (!value || !value.trim()) return 'Please enter a name';
+      }
+    });
     if (newName && newName.trim() && newName !== title) {
       try {
         const updateResult = await dispatch(updateResumeName({ id: resumeId, name: newName })).unwrap();

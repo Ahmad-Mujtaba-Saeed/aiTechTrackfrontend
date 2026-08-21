@@ -155,12 +155,12 @@ const slug = data?.roles?.[0]?.slug || "user";
                       </div>
                     </Link>
                   </div>
-                  <div className="nav-item-wrapper">
+                  {/* <div className="nav-item-wrapper">
                     <Link className={`nav-link label-1 ${isActive('/ats-checker')}`} to="/ats-checker" role="button" data-bs-toggle="" aria-expanded="false">
                       <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:file-search' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">ATS Checker</span></span>
                       </div>
                     </Link>
-                  </div>
+                  </div> */}
                 </li>
               )}
               <li className="nav-item">
