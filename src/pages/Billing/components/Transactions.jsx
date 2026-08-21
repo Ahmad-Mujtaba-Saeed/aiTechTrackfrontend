@@ -44,6 +44,13 @@ const Transactions = () => {
     };
 
     const getStatusBadge = (status) => {
+        if (status === 'paid') {
+            return (
+                <span className="badge badge-paid">
+                    Paid
+                </span>
+            );
+        }
         const variants = {
             paid: 'success',
             pending: 'warning',
@@ -133,7 +140,7 @@ const Transactions = () => {
                             </select>
                           
                             <button
-                                className="btn btn-primary"
+                                className="btn btn-primary ms-auto"
                                 onClick={() => fetchTransactions(1, searchTerm, paymentStatusFilter)}
                                 disabled={loading}
                                 style={{ minWidth: 'fit-content' }}
@@ -152,7 +159,7 @@ const Transactions = () => {
                     <div className="table-responsive">
                         <table className="table table-hover align-middle mb-0">
                             <thead className="table-light">
-                                <tr>
+                                <tr className="text-nowrap">
                                     <th className="ps-4">ID</th>
                                     <th>Transaction ID</th>
                                     <th>Subscription ID</th>

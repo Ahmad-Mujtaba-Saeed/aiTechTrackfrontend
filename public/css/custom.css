@@ -2025,4 +2025,18 @@ div:where(.swal2-container) {
 
   .Toastify__progress-bar--success {
     background: #ff6b47 !important;
-  }
+  }
+
+  /* Custom Paid Badge Styling */
+  .badge-paid {
+    background-color: #ff6b47 !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    padding: 5px 10px !important;
+    border-radius: 6px !important;
+    font-size: 11px !important;
+    letter-spacing: 0.02em;
+    display: inline-block;
+    text-transform: capitalize;
+  }
+
