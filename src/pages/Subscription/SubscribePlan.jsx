@@ -137,7 +137,7 @@ const SubscribePlan = () => {
                 <Row className="text-center mb-5">
                     <Col>
                         <img src={logo} style={{ width: "120px", marginBottom: "10px" }} />
-                        <h1 className="display-4 fw-bold">{userData?.plan_id ? 'Upgrade Your Plan' : 'Choose Your Plan'}</h1>
+                        <h1 className="display-2 fw-bold">{userData?.plan_id ? 'Upgrade Your Plan' : 'Choose Your Plan'}</h1>
                         <p className="lead text-muted">Select the perfect plan for your needs</p>
                     </Col>
                 </Row>

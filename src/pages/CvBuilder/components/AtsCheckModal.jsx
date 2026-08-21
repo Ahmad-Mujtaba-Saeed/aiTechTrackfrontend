@@ -215,7 +215,7 @@ const AtsCheckModal = ({ show, onHide, resumeId, savedJobDescription }) => {
                                     <div className="mb-2">
                                         <span className="text-muted small d-block mb-1">Matched</span>
                                         {result.keyword_analysis.matched.map((kw, i) => (
-                                            <span key={i} className="badge bg-success-subtle text-success me-1 mb-1">{kw}</span>
+                                            <span key={i} className="ats-keyword-badge ats-keyword-badge-matched">{kw}</span>
                                         ))}
                                     </div>
                                 )}
@@ -223,7 +223,7 @@ const AtsCheckModal = ({ show, onHide, resumeId, savedJobDescription }) => {
                                     <div className="mb-2">
                                         <span className="text-muted small d-block mb-1">Missing (critical)</span>
                                         {result.keyword_analysis.missing_critical.map((kw, i) => (
-                                            <span key={i} className="badge bg-danger-subtle text-danger me-1 mb-1">{kw}</span>
+                                            <span key={i} className="ats-keyword-badge ats-keyword-badge-missing">{kw}</span>
                                         ))}
                                     </div>
                                 )}
@@ -231,7 +231,7 @@ const AtsCheckModal = ({ show, onHide, resumeId, savedJobDescription }) => {
                                     <div>
                                         <span className="text-muted small d-block mb-1">Missing (nice to have)</span>
                                         {result.keyword_analysis.missing_nice_to_have.map((kw, i) => (
-                                            <span key={i} className="badge bg-warning-subtle text-warning-emphasis me-1 mb-1">{kw}</span>
+                                            <span key={i} className="ats-keyword-badge ats-keyword-badge-nice">{kw}</span>
                                         ))}
                                     </div>
                                 )}

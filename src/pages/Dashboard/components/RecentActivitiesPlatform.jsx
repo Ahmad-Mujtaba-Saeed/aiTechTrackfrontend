@@ -80,7 +80,7 @@ const RecentActivitiesPlatform = () => {
                 </div>
 
                 {/* Activities List */}
-                <div className="p-3" style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                <div className="p-3" style={{ maxHeight: '420px', overflowY: 'auto' }}>
                     {loading ? (
                         <div className="text-center py-4">
                             <div className="spinner-border spinner-border-sm text-primary" role="status">

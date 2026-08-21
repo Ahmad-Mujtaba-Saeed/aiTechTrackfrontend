@@ -71,12 +71,27 @@ const PaymentAnalyticsGraph = () => {
     yearly: { xKey: 'year', xLabel: 'Years' }
   };
 
+  const formatXAxisLabel = (value) => {
+    if (value == null) return '';
+    const str = String(value);
+    if (timePeriod === 'weekly') {
+      const compact = str.match(/^(\d{4})(\d{2})$/);
+      if (compact) return `W${Number(compact[2])} '${compact[1].slice(2)}`;
+      const iso = str.match(/^(\d{4})[-W]+(\d{1,2})$/i);
+      if (iso) return `W${Number(iso[2])} '${iso[1].slice(2)}`;
+    }
+    return str;
+  };
+
+  const chartMargin = { top: 8, right: 16, left: 4, bottom: 8 };
+  const chartHeight = 320;
+
   // Custom tooltip
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
         <div className="custom-tooltip bg-white p-3 border rounded shadow">
-          <p className="label mb-2"><strong>{label}</strong></p>
+          <p className="label mb-2"><strong>{formatXAxisLabel(label)}</strong></p>
           {payload.map((entry, index) => (
             <p key={index} className="mb-1" style={{ color: entry.color }}>
               {entry.name}: {entry.name.includes('revenue') ? '$' : ''}{entry.value}
@@ -91,17 +106,30 @@ const PaymentAnalyticsGraph = () => {
 
   // Render chart based on type
   const renderChart = () => {
-    const { xKey, xLabel } = chartConfig[timePeriod];
+    const { xKey } = chartConfig[timePeriod];
+
+    const axisProps = {
+      x: {
+        dataKey: xKey,
+        tickFormatter: formatXAxisLabel,
+        interval: 'preserveStartEnd',
+        tick: { fontSize: 12 }
+      },
+      y: {
+        width: 48,
+        tick: { fontSize: 12 }
+      }
+    };
 
     switch (chartType) {
       case 'bar':
         return (
-          <BarChart data={paymentData}>
+          <BarChart data={paymentData} margin={chartMargin}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey={xKey} label={{ value: xLabel, position: 'insideBottom', offset: -5 }} />
-            <YAxis label={{ value: 'Amount ($)', angle: -90, position: 'insideLeft' }} />
+            <XAxis {...axisProps.x} />
+            <YAxis {...axisProps.y} />
             <Tooltip content={<CustomTooltip />} />
-            <Legend />
+            <Legend wrapperStyle={{ paddingTop: 8 }} />
             <Bar dataKey="revenue" name="Revenue" fill="#8884d8" />
             <Bar dataKey="transactions" name="Transactions" fill="#82ca9d" />
           </BarChart>
@@ -109,12 +137,12 @@ const PaymentAnalyticsGraph = () => {
 
       case 'area':
         return (
-          <AreaChart data={paymentData}>
+          <AreaChart data={paymentData} margin={chartMargin}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey={xKey} />
-            <YAxis />
+            <XAxis {...axisProps.x} />
+            <YAxis {...axisProps.y} />
             <Tooltip content={<CustomTooltip />} />
-            <Legend />
+            <Legend wrapperStyle={{ paddingTop: 8 }} />
             <Area type="monotone" dataKey="revenue" name="Revenue" stroke="#8884d8" fill="#8884d8" fillOpacity={0.3} />
             <Area type="monotone" dataKey="transactions" name="Transactions" stroke="#82ca9d" fill="#82ca9d" fillOpacity={0.3} />
           </AreaChart>
@@ -122,12 +150,12 @@ const PaymentAnalyticsGraph = () => {
 
       default: // line chart
         return (
-          <LineChart data={paymentData}>
+          <LineChart data={paymentData} margin={chartMargin}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey={xKey} label={{ value: xLabel, position: 'insideBottom', offset: -5 }} />
-            <YAxis label={{ value: 'Amount ($)', angle: -90, position: 'insideLeft' }} />
+            <XAxis {...axisProps.x} />
+            <YAxis {...axisProps.y} />
             <Tooltip content={<CustomTooltip />} />
-            <Legend />
+            <Legend wrapperStyle={{ paddingTop: 8 }} />
             <Line type="monotone" dataKey="revenue" name="Revenue" stroke="#8884d8" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
             <Line type="monotone" dataKey="transactions" name="Transactions" stroke="#82ca9d" strokeWidth={2} dot={{ r: 4 }} />
             <Line type="monotone" dataKey="avgRevenue" name="Avg. Transaction Size" stroke="#ffc658" strokeWidth={2} dot={{ r: 4 }} />
@@ -140,14 +168,14 @@ const PaymentAnalyticsGraph = () => {
   const statsSummary = useMemo(() => {
     const totalRevenue = paymentData.reduce((sum, item) => sum + item.revenue, 0);
     const totalTransactions = paymentData.reduce((sum, item) => sum + item.transactions, 0);
-    const avgRevenue = Math.round(totalRevenue / paymentData.length);
+    const avgRevenue = paymentData.length ? Math.round(totalRevenue / paymentData.length) : 0;
 
     return { totalRevenue, totalTransactions, avgRevenue };
   }, [paymentData]);
 
   return (
-    <Card className="h-100 w-100 position-relative">
-      <Card.Body className="position-relative">
+    <Card className="h-100 w-100 overflow-hidden">
+      <Card.Body>
         <div className="d-md-flex d-block justify-content-between align-items-center mb-4">
           <div>
             <h5 className="mb-1">Payment Analytics</h5>
@@ -251,7 +279,7 @@ const PaymentAnalyticsGraph = () => {
         </div>
 
         {/* Chart Container */}
-        <div style={{ width: '100%', maxHeight: 400, height: '100%' }}>
+        <div style={{ width: '100%', height: chartHeight }}>
           {loading ? (
             <div className="d-flex justify-content-center align-items-center h-100">
               <div className="spinner-border text-primary" role="status">
@@ -273,7 +301,7 @@ const PaymentAnalyticsGraph = () => {
               </div>
             </div>
           ) : (
-            <ResponsiveContainer>
+            <ResponsiveContainer width="100%" height="100%">
               {renderChart()}
             </ResponsiveContainer>
           )}
