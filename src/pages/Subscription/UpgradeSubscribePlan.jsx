@@ -74,6 +74,31 @@ const UpgradeSubscribePlan = () => {
         }
     };
 
+    // Only an existing subscriber changing plans needs the proration warning.
+    const confirmAndSubscribe = (planId) => {
+        if (!userData?.plan_id) {
+            handleSubscribe(planId);
+            return;
+        }
+
+        Swal.fire({
+            title: "Confirm Plan Change",
+            html: `
+                Changing your subscription may result in additional charges or credits.<br>
+                Stripe will automatically adjust your next billing cycle based on usage and time left in current plan.<br><br>
+                <strong>Do you want to continue?</strong>
+            `,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, proceed",
+            cancelButtonText: "Cancel",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                handleSubscribe(planId);
+            }
+        });
+    };
+
     const getIntervalText = (interval) => {
         switch (interval) {
             case 'monthly': return '/month';
@@ -205,24 +230,7 @@ const UpgradeSubscribePlan = () => {
 
                             <button
                                 className="tier-btn"
-                                onClick={() => {
-                                    Swal.fire({
-                                        title: "Confirm Plan Change",
-                                        html: `
-                                            Changing your subscription may result in additional charges or credits.<br>
-                                            Stripe will automatically adjust your next billing cycle based on usage and time left in current plan.<br><br>
-                                            <strong>Do you want to continue?</strong>
-                                        `,
-                                        icon: "warning",
-                                        showCancelButton: true,
-                                        confirmButtonText: "Yes, proceed",
-                                        cancelButtonText: "Cancel",
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                            handleSubscribe(plan.id);
-                                        }
-                                    });
-                                }}
+                                onClick={() => confirmAndSubscribe(plan.id)}
                                 disabled={userData?.plan_id === plan.id ||  subscribingPlan !== null  || !plan.is_active}
                             >
                                 {subscribingPlan === plan.id ? (
