@@ -101,12 +101,12 @@ export default function CVBuilder() {
     };
 
     useEffect(() => {
-        if (!parsedResume?.candidateName?.[0]?.firstName && data?.name) {
-            dispatch(updateField({
-                path: "candidateName[0].firstName",
-                value: data?.name
-            }));
-        }
+        // if (!parsedResume?.candidateName?.[0]?.firstName && data?.name) {
+        //     dispatch(updateField({
+        //         path: "candidateName[0].firstName",
+        //         value: data?.name
+        //     }));
+        // }
 
         if (!parsedResume?.email?.[0] && data?.email) {
             dispatch(updateField({
