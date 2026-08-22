@@ -53,12 +53,12 @@ const UpgradeSubscribePlan = () => {
                 title: 'Processing Your Request',
                 text: 'Your subscription update is being processed. This may take a minute or two to complete.',
                 icon: 'info',
-                timer: 100000,
+                timer: 2000,
                 showConfirmButton: false,
                 timerProgressBar: true,
-                // willClose: () => {
-                //     window.location.reload();
-                // }
+                willClose: () => {
+                    window.location.reload();
+                }
             });
 
         } catch (error) {
