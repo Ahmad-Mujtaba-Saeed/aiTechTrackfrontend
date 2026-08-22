@@ -681,6 +681,9 @@ h4 {
     fill: #ff6b47 !important;
 }
 
+.Toastify__progress-bar--info {
+    background: #ff6b47 !important;
+}
 .Toastify__progress-bar--error {
     background: #d91600 !important;
 }
@@ -2045,3 +2048,6 @@ div:where(.swal2-container) {
     text-transform: capitalize;
   }
 
+.footer {
+    bottom:-30px !important;
+}
