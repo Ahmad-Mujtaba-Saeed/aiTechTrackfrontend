@@ -674,25 +674,17 @@ h4 {
 }
 
 .Toastify__progress-bar--info {
-    background: #ff6b47 !important;
+    background: #0052ff !important;
 }
 
 .Toastify__toast-theme--light.Toastify__toast--info .Toastify__toast-icon svg {
-    fill: #ff6b47 !important;
+    fill: #006cff !important;
 }
 
-.Toastify__progress-bar--info {
-    background: #ff6b47 !important;
-}
 .Toastify__progress-bar--error {
     background: #d91600 !important;
 }
 
-
-div:where(.swal2-icon).swal2-info {
-    border-color: #ff6b47 !important;
-    color: #ff6b47 !important;
-}
 .Toastify__toast-theme--light.Toastify__toast--error .Toastify__toast-icon svg {
     fill: #dd1600 !important;
 }
