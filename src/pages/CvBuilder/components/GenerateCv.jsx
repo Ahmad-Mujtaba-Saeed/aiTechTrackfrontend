@@ -108,27 +108,27 @@ export default function CVBuilder() {
         //     }));
         // }
 
-        if (!parsedResume?.email?.[0] && data?.email) {
-            dispatch(updateField({
-                path: "email",
-                value: [data.email]
-            }));
-        }
+        // if (!parsedResume?.email?.[0] && data?.email) {
+        //     dispatch(updateField({
+        //         path: "email",
+        //         value: [data.email]
+        //     }));
+        // }
 
-        if (!parsedResume?.phoneNumber?.[0]?.formattedNumber && data?.phone) {
-            dispatch(updateField({
-                path: "phoneNumber[0].formattedNumber",
-                value: data.phone
-            }));
-        }
+        // if (!parsedResume?.phoneNumber?.[0]?.formattedNumber && data?.phone) {
+        //     dispatch(updateField({
+        //         path: "phoneNumber[0].formattedNumber",
+        //         value: data.phone
+        //     }));
+        // }
 
-        if (!parsedResume?.socialLinks?.linkedin && data?.linkedin_profile_url) {
-            dispatch(updateField({
+        // if (!parsedResume?.socialLinks?.linkedin && data?.linkedin_profile_url) {
+        //     dispatch(updateField({
 
-                path: "socialLinks.linkedin",
-                value: data.linkedin_profile_url
-            }));
-        }
+        //         path: "socialLinks.linkedin",
+        //         value: data.linkedin_profile_url
+        //     }));
+        // }
 
     }, [data, parsedResume, dispatch]);
 
