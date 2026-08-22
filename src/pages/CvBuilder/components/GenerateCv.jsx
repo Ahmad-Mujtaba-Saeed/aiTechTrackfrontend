@@ -1286,7 +1286,7 @@ export default function CVBuilder() {
         <div className="editor-modal-card v-wrap">
             <div className="d-flex justify-content-between align-items-center gap-2">
                 <small className="">
-                    {edit ? 'Edit' : 'New'} {parsedResume?.employmentTitle || "Experience"} Form
+                    {edit ? 'Edit' : 'New'} {parsedResume?.employmentTitle} Form
                 </small>
                 <div className="d-flex justify-content-end align-item-center gap-2">
                     {expCurrentForm && (
@@ -1415,7 +1415,7 @@ export default function CVBuilder() {
                                     <input
                                         type="text"
                                         className="form-control "
-                                        value={parsedResume?.personalTitle || "Personal details"}
+                                        value={parsedResume?.personalTitle}
                                         onChange={(e) =>
                                             dispatch(
                                                 updateField({
@@ -1463,7 +1463,7 @@ export default function CVBuilder() {
                             </div>
                         ) : (
                             <>
-                                {parsedResume?.personalTitle || "Personal details"}
+                                {parsedResume?.personalTitle}
                                 < span
                                     className='cursor-pointer'
                                     onClick={(e) => {
@@ -1770,7 +1770,7 @@ export default function CVBuilder() {
                                     <input
                                         type="text"
                                         className="form-control form-control-sm me-2"
-                                        value={parsedResume?.employmentTitle || "Experience"}
+                                        value={parsedResume?.employmentTitle}
                                         onChange={(e) =>
                                             dispatch(
                                                 updateField({
@@ -1818,7 +1818,7 @@ export default function CVBuilder() {
                             </div>
                         ) : (
                             <>
-                                {parsedResume?.employmentTitle || "Experience"}
+                                {parsedResume?.employmentTitle}
                                 <span
                                     className='cursor-pointer'
                                     onClick={(e) => {
@@ -1846,7 +1846,7 @@ export default function CVBuilder() {
                             {parsedResume.workExperience?.map((expItem, expIndex) => (
                                 <div key={expIndex} className="editor-modal-card v-wrap">
                                     <div className="d-flex justify-content-between align-items-center mb-2">
-                                        <small className="">{parsedResume?.employmentTitle || "Experience"} #{expIndex + 1}</small>
+                                        <small className="">{parsedResume?.employmentTitle} #{expIndex + 1}</small>
                                         <div className="d-flex justify-content-end align-items-center gap-2">
                                             <button
                                                 type="button"
@@ -1944,7 +1944,7 @@ export default function CVBuilder() {
                                         type="text"
                                         className="form-control form-control-sm me-2"
 
-                                        value={parsedResume?.educationTitle || "Education"}
+                                        value={parsedResume?.educationTitle}
                                         onChange={(e) =>
                                             dispatch(
                                                 updateField({
@@ -1992,7 +1992,7 @@ export default function CVBuilder() {
                             </div>
                         ) : (
                             <>
-                                {parsedResume?.educationTitle || "Education"}
+                                {parsedResume?.educationTitle}
                                 < span
                                     className='cursor-pointer'
                                     onClick={(e) => {
@@ -2020,7 +2020,7 @@ export default function CVBuilder() {
                             {parsedResume.education?.map((eduItem, eduIndex) => (
                                 <div key={eduIndex} className="editor-modal-card v-wrap">
                                     <div className="d-flex justify-content-between align-items-center mb-0">
-                                        <small className="">{parsedResume?.educationTitle || "Education"} #{eduIndex + 1}</small>
+                                        <small className="">{parsedResume?.educationTitle} #{eduIndex + 1}</small>
                                         <div className="d-flex justify-content-end align-items-center gap-2">
                                             <button
                                                 type="button"
@@ -2111,7 +2111,7 @@ export default function CVBuilder() {
                                         type="text"
                                         className="form-control form-control-sm me-2"
 
-                                        value={parsedResume?.skillsTitle || "Skills"}
+                                        value={parsedResume?.skillsTitle}
                                         onChange={(e) =>
                                             dispatch(
                                                 updateField({
@@ -2159,7 +2159,7 @@ export default function CVBuilder() {
                             </div>
                         ) : (
                             <>
-                                {parsedResume?.skillsTitle || "Skills"}
+                                {parsedResume?.skillsTitle}
                                 < span
                                     className='cursor-pointer'
                                     onClick={(e) => {
@@ -2186,7 +2186,7 @@ export default function CVBuilder() {
                         <div className="v-wrap">
                             <div className="h-wrap align-items-end">
                                 <div className="form-group">
-                                    <label className="form-label">Add {parsedResume?.skillsTitle || "Skills"} (one per line)</label>
+                                    <label className="form-label">Add {parsedResume?.skillsTitle} (one per line)</label>
                                     <input type="text" className="form-control" placeholder={(parsedResume?.skillsTitle ? parsedResume.skillsTitle + ' name' : "Type a skill and press Enter to add it")}
                                         value={currentSkill}
                                         onChange={(e) => setCurrentSkill(e.target.value)}
@@ -2294,7 +2294,7 @@ export default function CVBuilder() {
                                         type="text"
                                         className="form-control form-control-sm me-2"
 
-                                        value={parsedResume?.languagesTitle || "Languages"}
+                                        value={parsedResume?.languagesTitle}
                                         onChange={(e) =>
                                             dispatch(
                                                 updateField({
@@ -2342,7 +2342,7 @@ export default function CVBuilder() {
                             </div>
                         ) : (
                             <>
-                                {parsedResume?.languagesTitle || "Languages"}
+                                {parsedResume?.languagesTitle}
                                 < span
                                     className='cursor-pointer'
                                     onClick={(e) => {
@@ -2369,7 +2369,7 @@ export default function CVBuilder() {
                         <div className="v-wrap">
                             <div className="h-wrap align-items-end">
                                 <div className="form-group">
-                                    <label className="form-label">Add {parsedResume?.languagesTitle || "Language"}</label>
+                                    <label className="form-label">Add {parsedResume?.languagesTitle}</label>
                                     <input type="text" className="form-control" placeholder={(parsedResume?.languagesTitle ? parsedResume.languagesTitle + ' name' : "Language name")}
                                         value={currentLanguage}
                                         onChange={(e) => setCurrentLanguage(e.target.value)}
@@ -2472,7 +2472,7 @@ export default function CVBuilder() {
                                         type="text"
                                         className="form-control form-control-sm me-2"
 
-                                        value={parsedResume?.hobbiesTitle || "Hobbies"}
+                                        value={parsedResume?.hobbiesTitle}
                                         onChange={(e) =>
                                             dispatch(
                                                 updateField({
@@ -2520,7 +2520,7 @@ export default function CVBuilder() {
                             </div>
                         ) : (
                             <>
-                                {parsedResume?.hobbiesTitle || "Hobbies"}
+                                {parsedResume?.hobbiesTitle}
                                 < span
                                     className='cursor-pointer'
                                     onClick={(e) => {
@@ -2547,7 +2547,7 @@ export default function CVBuilder() {
                         <div className="v-wrap">
                             <div className="h-wrap align-items-end">
                                 <div className="form-group">
-                                    <label className="form-label">Add {parsedResume?.hobbiesTitle || "Hobby"}</label>
+                                    <label className="form-label">Add {parsedResume?.hobbiesTitle}</label>
                                     <input type="text" className="form-control" placeholder={(parsedResume?.hobbiesTitle ? parsedResume.hobbiesTitle + ' name' : "Hobby name")}
                                         value={currentHobby}
                                         onChange={(e) => setCurrentHobby(e.target.value)}
