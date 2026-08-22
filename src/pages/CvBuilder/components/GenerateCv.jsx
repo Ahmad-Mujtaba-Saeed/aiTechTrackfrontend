@@ -101,34 +101,34 @@ export default function CVBuilder() {
     };
 
     useEffect(() => {
-        if (!parsedResume?.candidateName?.[0]?.firstName && data?.name) {
-            dispatch(updateField({
-                path: "candidateName[0].firstName",
-                value: data?.name
-            }));
-        }
+        // if (!parsedResume?.candidateName?.[0]?.firstName && data?.name) {
+        //     dispatch(updateField({
+        //         path: "candidateName[0].firstName",
+        //         value: data?.name
+        //     }));
+        // }
 
-        if (!parsedResume?.email?.[0] && data?.email) {
-            dispatch(updateField({
-                path: "email",
-                value: [data.email]
-            }));
-        }
+        // if (!parsedResume?.email?.[0] && data?.email) {
+        //     dispatch(updateField({
+        //         path: "email",
+        //         value: [data.email]
+        //     }));
+        // }
 
-        if (!parsedResume?.phoneNumber?.[0]?.formattedNumber && data?.phone) {
-            dispatch(updateField({
-                path: "phoneNumber[0].formattedNumber",
-                value: data.phone
-            }));
-        }
+        // if (!parsedResume?.phoneNumber?.[0]?.formattedNumber && data?.phone) {
+        //     dispatch(updateField({
+        //         path: "phoneNumber[0].formattedNumber",
+        //         value: data.phone
+        //     }));
+        // }
 
-        if (!parsedResume?.socialLinks?.linkedin && data?.linkedin_profile_url) {
-            dispatch(updateField({
+        // if (!parsedResume?.socialLinks?.linkedin && data?.linkedin_profile_url) {
+        //     dispatch(updateField({
 
-                path: "socialLinks.linkedin",
-                value: data.linkedin_profile_url
-            }));
-        }
+        //         path: "socialLinks.linkedin",
+        //         value: data.linkedin_profile_url
+        //     }));
+        // }
 
     }, [data, parsedResume, dispatch]);
 
@@ -1286,7 +1286,7 @@ export default function CVBuilder() {
         <div className="editor-modal-card v-wrap">
             <div className="d-flex justify-content-between align-items-center gap-2">
                 <small className="">
-                    {edit ? 'Edit' : 'New'} {parsedResume?.employmentTitle || "Experience"} Form
+                    {edit ? 'Edit' : 'New'} {parsedResume?.employmentTitle} Form
                 </small>
                 <div className="d-flex justify-content-end align-item-center gap-2">
                     {expCurrentForm && (
@@ -1415,7 +1415,7 @@ export default function CVBuilder() {
                                     <input
                                         type="text"
                                         className="form-control "
-                                        value={parsedResume?.personalTitle || "Personal details"}
+                                        value={parsedResume?.personalTitle}
                                         onChange={(e) =>
                                             dispatch(
                                                 updateField({
@@ -1463,7 +1463,7 @@ export default function CVBuilder() {
                             </div>
                         ) : (
                             <>
-                                {parsedResume?.personalTitle || "Personal details"}
+                                {parsedResume?.personalTitle}
                                 < span
                                     className='cursor-pointer'
                                     onClick={(e) => {
@@ -1760,8 +1760,8 @@ export default function CVBuilder() {
                             }
                         >
                             {!parsedResume?.employmentDisabled ?
-                                (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
-                                : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
+                                (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye d-none "><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
+                                : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye d-none -off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
                             }
                         </button>
                         {parsedResume?.editingEmploymentTitle ? (
@@ -1770,7 +1770,7 @@ export default function CVBuilder() {
                                     <input
                                         type="text"
                                         className="form-control form-control-sm me-2"
-                                        value={parsedResume?.employmentTitle || "Experience"}
+                                        value={parsedResume?.employmentTitle}
                                         onChange={(e) =>
                                             dispatch(
                                                 updateField({
@@ -1818,7 +1818,7 @@ export default function CVBuilder() {
                             </div>
                         ) : (
                             <>
-                                {parsedResume?.employmentTitle || "Experience"}
+                                {parsedResume?.employmentTitle}
                                 <span
                                     className='cursor-pointer'
                                     onClick={(e) => {
@@ -1846,7 +1846,7 @@ export default function CVBuilder() {
                             {parsedResume.workExperience?.map((expItem, expIndex) => (
                                 <div key={expIndex} className="editor-modal-card v-wrap">
                                     <div className="d-flex justify-content-between align-items-center mb-2">
-                                        <small className="">{parsedResume?.employmentTitle || "Experience"} #{expIndex + 1}</small>
+                                        <small className="">{parsedResume?.employmentTitle} #{expIndex + 1}</small>
                                         <div className="d-flex justify-content-end align-items-center gap-2">
                                             <button
                                                 type="button"
@@ -1933,8 +1933,8 @@ export default function CVBuilder() {
                         >
 
                             {!parsedResume?.educationDisabled ?
-                                (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
-                                : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
+                                (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye d-none "><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
+                                : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye d-none -off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
                             }
                         </button>
                         {parsedResume?.educationDisabled ? (
@@ -1944,7 +1944,7 @@ export default function CVBuilder() {
                                         type="text"
                                         className="form-control form-control-sm me-2"
 
-                                        value={parsedResume?.educationTitle || "Education"}
+                                        value={parsedResume?.educationTitle}
                                         onChange={(e) =>
                                             dispatch(
                                                 updateField({
@@ -1992,7 +1992,7 @@ export default function CVBuilder() {
                             </div>
                         ) : (
                             <>
-                                {parsedResume?.educationTitle || "Education"}
+                                {parsedResume?.educationTitle}
                                 < span
                                     className='cursor-pointer'
                                     onClick={(e) => {
@@ -2020,7 +2020,7 @@ export default function CVBuilder() {
                             {parsedResume.education?.map((eduItem, eduIndex) => (
                                 <div key={eduIndex} className="editor-modal-card v-wrap">
                                     <div className="d-flex justify-content-between align-items-center mb-0">
-                                        <small className="">{parsedResume?.educationTitle || "Education"} #{eduIndex + 1}</small>
+                                        <small className="">{parsedResume?.educationTitle} #{eduIndex + 1}</small>
                                         <div className="d-flex justify-content-end align-items-center gap-2">
                                             <button
                                                 type="button"
@@ -2100,8 +2100,8 @@ export default function CVBuilder() {
                         >
 
                             {!parsedResume?.skillsDisabled ?
-                                (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
-                                : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
+                                (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye d-none "><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
+                                : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye d-none -off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
                             }
                         </button>
                         {parsedResume?.editingSkillsTitle ? (
@@ -2111,7 +2111,7 @@ export default function CVBuilder() {
                                         type="text"
                                         className="form-control form-control-sm me-2"
 
-                                        value={parsedResume?.skillsTitle || "Skills"}
+                                        value={parsedResume?.skillsTitle}
                                         onChange={(e) =>
                                             dispatch(
                                                 updateField({
@@ -2159,7 +2159,7 @@ export default function CVBuilder() {
                             </div>
                         ) : (
                             <>
-                                {parsedResume?.skillsTitle || "Skills"}
+                                {parsedResume?.skillsTitle}
                                 < span
                                     className='cursor-pointer'
                                     onClick={(e) => {
@@ -2186,7 +2186,7 @@ export default function CVBuilder() {
                         <div className="v-wrap">
                             <div className="h-wrap align-items-end">
                                 <div className="form-group">
-                                    <label className="form-label">Add {parsedResume?.skillsTitle || "Skills"} (one per line)</label>
+                                    <label className="form-label">Add {parsedResume?.skillsTitle} (one per line)</label>
                                     <input type="text" className="form-control" placeholder={(parsedResume?.skillsTitle ? parsedResume.skillsTitle + ' name' : "Type a skill and press Enter to add it")}
                                         value={currentSkill}
                                         onChange={(e) => setCurrentSkill(e.target.value)}
@@ -2283,8 +2283,8 @@ export default function CVBuilder() {
                         >
 
                             {!parsedResume?.languagesDisabled ?
-                                (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
-                                : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
+                                (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye d-none "><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
+                                : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye d-none -off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
                             }
                         </button>
                         {parsedResume?.editingLanguagesTitle ? (
@@ -2294,7 +2294,7 @@ export default function CVBuilder() {
                                         type="text"
                                         className="form-control form-control-sm me-2"
 
-                                        value={parsedResume?.languagesTitle || "Languages"}
+                                        value={parsedResume?.languagesTitle}
                                         onChange={(e) =>
                                             dispatch(
                                                 updateField({
@@ -2342,7 +2342,7 @@ export default function CVBuilder() {
                             </div>
                         ) : (
                             <>
-                                {parsedResume?.languagesTitle || "Languages"}
+                                {parsedResume?.languagesTitle}
                                 < span
                                     className='cursor-pointer'
                                     onClick={(e) => {
@@ -2369,7 +2369,7 @@ export default function CVBuilder() {
                         <div className="v-wrap">
                             <div className="h-wrap align-items-end">
                                 <div className="form-group">
-                                    <label className="form-label">Add {parsedResume?.languagesTitle || "Language"}</label>
+                                    <label className="form-label">Add {parsedResume?.languagesTitle}</label>
                                     <input type="text" className="form-control" placeholder={(parsedResume?.languagesTitle ? parsedResume.languagesTitle + ' name' : "Language name")}
                                         value={currentLanguage}
                                         onChange={(e) => setCurrentLanguage(e.target.value)}
@@ -2461,8 +2461,8 @@ export default function CVBuilder() {
                         >
 
                             {!parsedResume?.hobbiesDisabled ?
-                                (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
-                                : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
+                                (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye d-none "><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
+                                : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye d-none -off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
                             }
                         </button>
                         {parsedResume?.editingHobbiesTitle ? (
@@ -2472,7 +2472,7 @@ export default function CVBuilder() {
                                         type="text"
                                         className="form-control form-control-sm me-2"
 
-                                        value={parsedResume?.hobbiesTitle || "Hobbies"}
+                                        value={parsedResume?.hobbiesTitle}
                                         onChange={(e) =>
                                             dispatch(
                                                 updateField({
@@ -2520,7 +2520,7 @@ export default function CVBuilder() {
                             </div>
                         ) : (
                             <>
-                                {parsedResume?.hobbiesTitle || "Hobbies"}
+                                {parsedResume?.hobbiesTitle}
                                 < span
                                     className='cursor-pointer'
                                     onClick={(e) => {
@@ -2547,7 +2547,7 @@ export default function CVBuilder() {
                         <div className="v-wrap">
                             <div className="h-wrap align-items-end">
                                 <div className="form-group">
-                                    <label className="form-label">Add {parsedResume?.hobbiesTitle || "Hobby"}</label>
+                                    <label className="form-label">Add {parsedResume?.hobbiesTitle}</label>
                                     <input type="text" className="form-control" placeholder={(parsedResume?.hobbiesTitle ? parsedResume.hobbiesTitle + ' name' : "Hobby name")}
                                         value={currentHobby}
                                         onChange={(e) => setCurrentHobby(e.target.value)}
@@ -2622,8 +2622,8 @@ export default function CVBuilder() {
                                             }}
                                         >
                                             {!section?.disabled ?
-                                                (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
-                                                : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
+                                                (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye d-none "><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>)
+                                                : (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-eye d-none -off"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>)
                                             }
                                         </button>
 
@@ -2633,7 +2633,7 @@ export default function CVBuilder() {
                                                     <input
                                                         type="text"
                                                         className="form-control form-control-sm me-2"
-                                                        value={section?.title || "Custom Section"}
+                                                        value={section?.title}
                                                         onChange={(e) => {
                                                             handleUpdateCustomSection(section.id, {
                                                                 title: e.target.value
@@ -2675,7 +2675,7 @@ export default function CVBuilder() {
                                                 onClick={() => toggleSection(`custom-${section.id}`)}
                                                 style={{ background: 'none', border: 'none', textAlign: 'left' }}
                                             >
-                                                {section?.title || "Custom Section"}
+                                                {section?.title}
                                                 <span
                                                     type="button"
                                                     onClick={(e) => {
