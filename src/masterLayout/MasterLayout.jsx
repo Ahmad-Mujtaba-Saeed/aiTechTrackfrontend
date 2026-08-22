@@ -171,11 +171,13 @@ const slug = data?.roles?.[0]?.slug || "user";
                   </div>
                 </Link>
                 </div>
+                {slug != 'admin' && (
                 <div className="nav-item-wrapper"><Link className={`nav-link label-1 ${isActive('/upgrade-subscription')}`} to="/upgrade-subscription" role="button" data-bs-toggle="" aria-expanded="false">
                   <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:tag' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Payment Plans</span></span>
                   </div>
                 </Link>
                 </div>
+                )}
                 <div className="nav-item-wrapper"><Link className={`nav-link label-1`} to="" role="button" data-bs-toggle="" aria-expanded="false" onClick={() => dispatch(logout())}>
                   <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:logout' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Sign Out</span></span>
                   </div>
