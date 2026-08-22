@@ -138,11 +138,11 @@
 }
 
 .tier-features li:before {
-    content: "⊘";
+    /* content: "⊘";
     color: #FF6B47;
     font-weight: 400;
     margin-right: 8px;
-    font-size: 14px;
+    font-size: 14px; */
 }
 
 /* ── Button — default dark ── */

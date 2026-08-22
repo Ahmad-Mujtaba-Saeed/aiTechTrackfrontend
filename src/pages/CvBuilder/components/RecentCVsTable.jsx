@@ -28,7 +28,7 @@ const RecentCVsTable = ({
               </th>
               <th>Date Created</th>
               <th>Last Update</th>
-              <th className="text-end">Actions</th>
+              <th className="text-center">Actions</th>
             </tr>
           </thead>
 
