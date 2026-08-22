@@ -143,6 +143,7 @@ const fetchSubscriptionDetails = async () => {
         features: subscription.plan?.features || [],
         subId: subscription.sub_id,
         cus_id: subscription.cus_id,
+        cancelAtPeriodEnd: !!subscription.cancel_at_period_end,
       });
     } else {
         console.log("Subscription is null");
@@ -263,7 +264,7 @@ const fetchSubscriptionDetails = async () => {
       await axios.post('/billing/subscription/cancel');
       setShowCancelModal(false);
       await fetchSubscriptionDetails();
-      toast.success('Subscription has been cancelled successfully');
+      toast.success("Subscription cancelled. You'll keep access until the end of your current billing period.");
     } catch (error) {
       console.error('Error cancelling subscription:', error);
       toast.error('Failed to cancel subscription');
@@ -455,6 +456,8 @@ const fetchSubscriptionDetails = async () => {
         onHide={() => setShowCancelModal(false)}
         onConfirm={handleCancelSubscription}
         loading={loading}
+        endDate={subscription?.nextBillingDate}
+        formatDate={formatDate}
       />
 
       <AddPaymentModal
@@ -676,18 +679,25 @@ const SubscriptionTab = ({
 
             {subscription.nextBillingDate && (
               <p className="text-muted">
-                {subscription.cancel_at_period_end ? 'Cancel at period end date: ' : 'Next billing date: '} <strong>{formatDate(subscription.nextBillingDate)}</strong>
+                {subscription.cancelAtPeriodEnd ? 'Cancels on: ' : 'Next billing date: '} <strong>{formatDate(subscription.nextBillingDate)}</strong>
               </p>
             )}
 
+            {subscription.cancelAtPeriodEnd && subscription.status !== 'canceled' && (
+              <Alert variant="warning" className="mb-0 mt-3">
+                Your subscription is scheduled to cancel
+                {subscription.nextBillingDate ? ` on ${formatDate(subscription.nextBillingDate)}` : ' at the end of the current billing period'}.
+                It won't renew, and you'll keep access to your plan until then.
+              </Alert>
+            )}
 
             <div className="mt-4">
               <button
                 className="btn btn-danger me-2"
                 onClick={onCancelSubscription}
-                disabled={subscription.status === 'canceled'}
+                disabled={subscription.status === 'canceled' || subscription.cancelAtPeriodEnd}
               >
-                Cancel Subscription
+                {subscription.cancelAtPeriodEnd ? 'Cancellation Scheduled' : 'Cancel Subscription'}
               </button>
               <button
                 className="btn btn-primary"
@@ -1144,7 +1154,7 @@ const RemovePaymentModal = ({ show, onHide, onConfirm, loading }) => (
   </div>
 );
 
-const CancelSubscriptionModal = ({ show, onHide, onConfirm, loading }) => (
+const CancelSubscriptionModal = ({ show, onHide, onConfirm, loading, endDate, formatDate }) => (
   <div className={`modal fade ${show ? 'show' : ''}`} style={{ display: show ? 'block' : 'none' }}>
     <div className="modal-dialog">
       <div className="modal-content">
@@ -1153,9 +1163,13 @@ const CancelSubscriptionModal = ({ show, onHide, onConfirm, loading }) => (
           <button type="button" className="btn-close" onClick={onHide}></button>
         </div>
         <div className="modal-body">
-          <p>Are you sure you want to cancel your subscription? You'll lose access to premium features at the end of your billing period.</p>
+          <p>
+            Are you sure you want to cancel your subscription? It will stay active until
+            {endDate ? <> <strong>{formatDate(endDate)}</strong></> : ' the end of your current billing period'}
+            , and you'll lose access to premium features after that.
+          </p>
           <div className="alert alert-warning mt-3">
-            <strong>Note:</strong> You can reactivate your subscription anytime before the end of your billing period.
+            <strong>Note:</strong> You won't be charged again. You can reactivate your subscription anytime before the end of your billing period.
           </div>
         </div>
         <div className="modal-footer">
