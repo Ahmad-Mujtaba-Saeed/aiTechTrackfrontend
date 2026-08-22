@@ -2633,7 +2633,7 @@ export default function CVBuilder() {
                                                     <input
                                                         type="text"
                                                         className="form-control form-control-sm me-2"
-                                                        value={section?.title || "Custom Section"}
+                                                        value={section?.title}
                                                         onChange={(e) => {
                                                             handleUpdateCustomSection(section.id, {
                                                                 title: e.target.value
@@ -2675,7 +2675,7 @@ export default function CVBuilder() {
                                                 onClick={() => toggleSection(`custom-${section.id}`)}
                                                 style={{ background: 'none', border: 'none', textAlign: 'left' }}
                                             >
-                                                {section?.title || "Custom Section"}
+                                                {section?.title}
                                                 <span
                                                     type="button"
                                                     onClick={(e) => {
