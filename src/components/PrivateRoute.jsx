@@ -4,7 +4,10 @@ import { Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Spinner } from "react-bootstrap";
 import axios from "../api/axios";
-import { hasPermission } from "../utils/permissions";
+import { hasPermission, isInternalUser } from "../utils/permissions";
+
+// Billing surfaces that only make sense for paying customers.
+const BILLING_ROUTES = ["/subscription", "/upgrade-subscription", "/payment-plans"];
 
 const PrivateRoute = ({ children }) => {
   const location = useLocation();
@@ -21,9 +24,12 @@ const PrivateRoute = ({ children }) => {
   const token = accessToken || localStorage.getItem("access_token");
 
   const hasSystemInternalPermission = hasPermission(data, 'system-internal');
+  const isInternal = isInternalUser(data);
   // Always declare hooks at top — effect below will run consistently
   useEffect(() => {
     if (!token || !data || subscriptionInitiatedRef.current) return;
+    // Internal accounts are never subscribed, so never start a checkout for them.
+    if (isInternal) return;
 
     const path = location.pathname;
    if (
@@ -61,7 +67,7 @@ const PrivateRoute = ({ children }) => {
     else if(!data.plan_id && !hasSystemInternalPermission){
       window.location.href = "/subscription"
     }
-  }, [token, data, location.pathname]);
+  }, [token, data, location.pathname, isInternal]);
 
 
   if (bootstrapping || loading) {
@@ -81,7 +87,18 @@ const PrivateRoute = ({ children }) => {
     return null;
   }
 
+  // Internal accounts have no plan to buy, upgrade or pay for — keep them off
+  // every billing route, however they got there (link, deep link, back button).
+  if (isInternal && BILLING_ROUTES.includes(location.pathname)) {
+    return <Navigate to="/" replace />;
+  }
+
   if (shouldRedirectToSubscription) {
+    return <Navigate to="/subscription" state={{ from: location }} replace />;
+  }
+
+  // Nobody can "change" a plan they don't have yet — send them to sign-up flow.
+  if (location.pathname === "/upgrade-subscription" && !data.plan_id) {
     return <Navigate to="/subscription" state={{ from: location }} replace />;
   }
 

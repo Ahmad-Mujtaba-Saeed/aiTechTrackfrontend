@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { updateCurrentPassword } from '../../features/user/userSlice';
 import Swal from 'sweetalert2';
 import Alert from "react-bootstrap/Alert";
+import { isInternalUser } from '../../utils/permissions';
 
 const stripePromise = loadStripe(stripe_public_key);
 
@@ -20,6 +21,10 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const { data: userData } = useSelector((state) => state.user);
   const navigate = useNavigate();
+
+  // Internal/staff accounts are not customers — no plan, no Stripe customer,
+  // no payment methods. Every billing call and panel below is skipped for them.
+  const isInternal = isInternalUser(userData);
 
   const [activeTab, setActiveTab] = useState('subscription');
   const [imagePreview, setImagePreview] = useState(null);
@@ -34,10 +39,11 @@ const ProfilePage = () => {
   }, []);
 
   useEffect(() => {
-    axios.get('billing/customer/credit').then(res => {
-      setCredit(res.data.credit);
-    });
-  }, []);
+    if (isInternal) return;
+    axios.get('billing/customer/credit')
+      .then(res => setCredit(res.data.credit))
+      .catch(err => console.error('Error fetching credit:', err));
+  }, [isInternal]);
   const [editedUser, setEditedUser] = useState({
     firstName: 'Johnathan',
     lastName: 'Doe',
@@ -110,14 +116,13 @@ const ProfilePage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentMethodToRemove, setPaymentMethodToRemove] = useState(null);
 useEffect(() => {
-  console.log("activeTab changed:", activeTab);
+  if (isInternal) return;
 
   if (activeTab === "subscription") {
-    console.log("Fetching subscription...");
     fetchSubscriptionDetails();
     fetchPaymentMethods();
   }
-}, [activeTab]);
+}, [activeTab, isInternal]);
 
   // Subscription functions
 const fetchSubscriptionDetails = async () => {
@@ -178,6 +183,12 @@ const fetchSubscriptionDetails = async () => {
       }));
       setPaymentMethods(paymentMethods);
     } catch (error) {
+      // 404/403 simply means there is no Stripe customer for this account yet
+      // (no subscription, or an internal account). That is not an error worth
+      // shouting about — only real failures get a toast.
+      const status = error.response?.status;
+      setPaymentMethods([]);
+      if (status === 404 || status === 403) return;
       console.error('Error fetching payment methods:', error);
       toast.error('Failed to load payment methods');
     }
@@ -201,13 +212,16 @@ const fetchSubscriptionDetails = async () => {
   };
 
   const handleAddPaymentMethod = async () => {
+    const customerId = subscription?.cus_id;
+    // Without a Stripe customer there is nothing to attach a card to. Explain
+    // that instead of firing a generic failure toast.
+    if (!customerId) {
+      toast.info('Choose a plan first — your payment details are collected at checkout.');
+      return;
+    }
+
     try {
       setLoading(true);
-      const customerId = subscription?.cus_id;
-      if (!customerId) {
-        throw new Error('Customer ID not found');
-      }
-
       const response = await axios.get(`/billing/subscription/payment-method-intent/${customerId}`);
       setClientSecret(response.data.clientSecret);
       setShowAddPaymentModal(true);
@@ -287,6 +301,20 @@ const fetchSubscriptionDetails = async () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // "Change Subscription" and "Get Started" are two different journeys.
+  // /upgrade-subscription only knows how to move an *existing* subscription to
+  // another plan, so a user without one has to go through checkout instead.
+  const handleChoosePlan = () => {
+    if (isInternal) return;
+
+    if (subscription?.subId && userData?.plan_id) {
+      navigate('/upgrade-subscription');
+      return;
+    }
+
+    navigate('/subscription');
   };
 
   const formatDate = (dateString) => {
@@ -428,45 +456,51 @@ const fetchSubscriptionDetails = async () => {
           onSubmit={(e) => handleSubmit(e, 'settings')}
         />
 
-        <SubscriptionTab
-          loading={loading}
-          subscription={subscription}
-          paymentMethods={paymentMethods}
-          onCancelSubscription={() => setShowCancelModal(true)}
-          onUpgradeSubscription={() => navigate('/upgrade-subscription')}
-          onAddPaymentMethod={handleAddPaymentMethod}
-          onMakeDefault={handleMakeDefault}
-          onRemovePaymentMethod={setPaymentMethodToRemove}
-          formatDate={formatDate}
-          credit={credit}
-        />
+        {!isInternal && (
+          <SubscriptionTab
+            loading={loading}
+            subscription={subscription}
+            paymentMethods={paymentMethods}
+            onCancelSubscription={() => setShowCancelModal(true)}
+            onUpgradeSubscription={handleChoosePlan}
+            onAddPaymentMethod={handleAddPaymentMethod}
+            onMakeDefault={handleMakeDefault}
+            onRemovePaymentMethod={setPaymentMethodToRemove}
+            formatDate={formatDate}
+            credit={credit}
+          />
+        )}
 
       </div>
 
       {/* Modals */}
-      <RemovePaymentModal
-        show={!!paymentMethodToRemove}
-        onHide={() => setPaymentMethodToRemove(null)}
-        onConfirm={handleRemovePaymentMethod}
-        loading={loading}
-      />
+      {!isInternal && (
+        <>
+          <RemovePaymentModal
+            show={!!paymentMethodToRemove}
+            onHide={() => setPaymentMethodToRemove(null)}
+            onConfirm={handleRemovePaymentMethod}
+            loading={loading}
+          />
 
-      <CancelSubscriptionModal
-        show={showCancelModal}
-        onHide={() => setShowCancelModal(false)}
-        onConfirm={handleCancelSubscription}
-        loading={loading}
-        endDate={subscription?.nextBillingDate}
-        formatDate={formatDate}
-      />
+          <CancelSubscriptionModal
+            show={showCancelModal}
+            onHide={() => setShowCancelModal(false)}
+            onConfirm={handleCancelSubscription}
+            loading={loading}
+            endDate={subscription?.nextBillingDate}
+            formatDate={formatDate}
+          />
 
-      <AddPaymentModal
-        show={showAddPaymentModal}
-        onHide={() => setShowAddPaymentModal(false)}
-        onSubmit={handlePaymentSubmit}
-        isProcessing={isProcessing}
-        stripe={stripe}
-      />
+          <AddPaymentModal
+            show={showAddPaymentModal}
+            onHide={() => setShowAddPaymentModal(false)}
+            onSubmit={handlePaymentSubmit}
+            isProcessing={isProcessing}
+            stripe={stripe}
+          />
+        </>
+      )}
     </div>
   );
 };
@@ -639,7 +673,12 @@ const SubscriptionTab = ({
   onRemovePaymentMethod,
   formatDate,
   credit
-}) => (
+}) => {
+  // Cards can only be attached to an existing Stripe customer, which is created
+  // at checkout. Until then there is nothing to add, remove or default.
+  const canManagePayments = !!subscription?.cus_id;
+
+  return (
   <div className="v-wrap gap-4">
     <div className="profile-section">
       <div className="section-header">
@@ -721,13 +760,15 @@ const SubscriptionTab = ({
     <div className="profile-section">
       <div className="section-header">
         <h3 className="mb-0">Payment Methods</h3>
-        <button
-          className="btn btn-primary btn-sm"
-          onClick={onAddPaymentMethod}
-          disabled={loading}
-        >
-          Add Payment Method
-        </button>
+        {canManagePayments && (
+          <button
+            className="btn btn-primary btn-sm"
+            onClick={onAddPaymentMethod}
+            disabled={loading}
+          >
+            Add Payment Method
+          </button>
+        )}
       </div>
       <div className="card-body">
         {paymentMethods.length > 0 ? (
@@ -772,15 +813,22 @@ const SubscriptionTab = ({
           <div className="text-center py-4">
             <i className="fas fa-credit-card fa-3x text-muted mb-3"></i>
             <p>No payment methods found</p>
-            <button className="btn btn-primary" onClick={onAddPaymentMethod}>
-              Add Payment Method
-            </button>
+            {canManagePayments ? (
+              <button className="btn btn-primary" onClick={onAddPaymentMethod}>
+                Add Payment Method
+              </button>
+            ) : (
+              <p className="text-muted small mb-0">
+                Your card details are collected securely at checkout when you choose a plan.
+              </p>
+            )}
           </div>
         )}
       </div>
     </div>
   </div>
-);
+  );
+};
 
 const EditProfileTab = ({
   initialUserData,
