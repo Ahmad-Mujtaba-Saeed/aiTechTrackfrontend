@@ -166,7 +166,7 @@ const UpgradeSubscribePlan = () => {
     return (
         <MasterLayout>
             <div className="container py-0">
-                <div className="header">
+                <div className="plans-page-header">
                     <h1>Choose Your Plan</h1>
                     <p className="subtitle">Select the perfect tier for your needs and budget</p>
                 </div>
@@ -204,9 +204,6 @@ const UpgradeSubscribePlan = () => {
                             </div>
 
                             <div className="tier-price">${plan.price}</div>
-                            <div className="tier-period">
-                                {tierName}
-                            </div>
 
                             <ul className="tier-features">
                                 {tierFeatures.map((feature, index) => (

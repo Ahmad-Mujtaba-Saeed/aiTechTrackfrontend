@@ -243,9 +243,6 @@ const SubscribePlan = () => {
                                 {tierName}
                             </div>
                             <div className="tier-price">${plan.price}</div>
-                            <div className="tier-period">
-                                {tierName}
-                            </div>
 
                             <ul className="tier-features">
                                 {tierFeatures.map((feature, index) => (
