@@ -1,10 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../api/axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Container, Row, Col, Button, Card, Spinner, Alert, Badge } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import logo from "../../assets/images/logo.png";
 import Swal from "sweetalert2";
+import "./plans.css";
+
+const getTierName = (name) => {
+    if (name === 'Weekly Plan' || name === 'Basic') return 'Basic';
+    if (name === 'Monthly Plan' || name === 'Professional') return 'Professional';
+    if (name === 'Quarterly Plan' || name === 'Premium') return 'Premium';
+    return name || 'Basic';
+};
+
+const TIER_ORDER = { Basic: 1, Professional: 2, Premium: 3 };
 
 const SubscribePlan = () => {
     const [plans, setPlans] = useState([]);
@@ -23,7 +32,10 @@ const SubscribePlan = () => {
                 const response = await axios.get('/billing/plans');
                 console.log('Plans API response:', response);
                 if (response.data && Array.isArray(response.data)) {
-                    setPlans(response.data);
+                    const sorted = [...response.data].sort(
+                        (a, b) => (TIER_ORDER[getTierName(a.name)] || 99) - (TIER_ORDER[getTierName(b.name)] || 99)
+                    );
+                    setPlans(sorted);
                 } else {
                     console.error('Invalid plans data format:', response.data);
                     setError('Invalid data received from server');
@@ -100,13 +112,7 @@ const SubscribePlan = () => {
 
 
     const features = {
-        weekly: [
-            'Access to basic features',
-            'Email support',
-            '5GB storage',
-            'Up to 3 projects'
-        ],
-        monthly: [
+        Basic: [
             'All Basic features',
             'Priority email & chat support',
             '50GB storage',
@@ -114,7 +120,7 @@ const SubscribePlan = () => {
             'Advanced analytics',
             'Custom branding'
         ],
-        quaterly: [
+        Professional: [
             'All Professional features',
             '24/7 phone support',
             '500GB storage',
@@ -122,12 +128,15 @@ const SubscribePlan = () => {
             'Advanced analytics & reporting',
             'Custom branding & white-label',
             'Dedicated account manager'
+        ],
+        Premium: [
+            'All Professional features',
+            '24/7 phone support',
+            '500GB storage',
+            'Unlimited projects',
+            'Advanced analytics & reporting',
+            'Custom branding & white-label'
         ]
-    }
-
-    const badges = {
-        monthly: 'Save 25%',
-        quaterly: 'Save 67%'
     }
 
 
@@ -212,12 +221,16 @@ const SubscribePlan = () => {
                     ))}
                 </Row>
                 <div className="plans-tiers">
-                    {plans.map((plan) => (
-                        <div className={`tier ${plan.name === 'Monthly Plan' && 'professional'}`}>
+                    {plans.map((plan) => {
+                        const tierName = getTierName(plan.name);
+                        const tierFeatures = features[tierName] || [];
+
+                        return (
+                        <div key={plan.id} className="tier">
                             <div className="badge-wrapper">
-                                {plan.name === 'Monthly Plan' && (
+                                {tierName === 'Professional' && (
                                     <span className="tier-badge">
-                                        RECOMMENDED
+                                        BEST VALUE
                                     </span>
                                 )}
                                 {userData?.plan_id === plan.id && (
@@ -227,45 +240,20 @@ const SubscribePlan = () => {
                                 )}
                             </div>
                             <div className="tier-name">
-                                {plan.name === 'Weekly Plan' ? 'Basic' : plan.name === 'Monthly Plan' ? 'Professional' : plan.name === 'Quarterly Plan' ? 'Premium' : 'Basic'}
+                                {tierName}
                             </div>
-                            <div className="tier-price"> ${plan.price}</div>
+                            <div className="tier-price">${plan.price}</div>
                             <div className="tier-period">
-                                {plan.name}
-                                {plan.name === 'Weekly Plan' ? ('') : plan.name === 'Monthly Plan' ? (
-                                    badges.monthly && (
-                                        <span className="savings-badge">{badges.monthly}</span>
-                                    )
-                                ) : plan.name === 'Quarterly Plan' && (
-                                    badges.quaterly && (
-                                        <span className="savings-badge">{badges.quaterly}</span>
-                                    )
-                                )}
+                                {tierName}
                             </div>
 
                             <ul className="tier-features">
-                                {plan.name === 'Professional' ? (
-                                    features?.weekly.map((feature, index) => (
-                                        <li key={index}>
-                                            <i class="fas fa-check text-success me-2"></i>
-                                            <span className="feature-label">{feature}</span>
-                                        </li>
-                                    ))
-                                ) : plan.name === 'Basic' ? (
-                                    features?.monthly.map((feature, index) => (
-                                        <li key={index}>
-                                            <i class="fas fa-check text-success me-2"></i>
-                                            <span className="feature-label">{feature}</span>
-                                        </li>
-                                    ))
-                                ) : plan.name === 'Premium' && (
-                                    features?.quaterly.map((feature, index) => (
-                                        <li key={index}>
-                                            <i class="fas fa-check text-success me-2"></i>
-                                            <span className="feature-label">{feature}</span>
-                                        </li>
-                                    ))
-                                )}
+                                {tierFeatures.map((feature, index) => (
+                                    <li key={index}>
+                                        <i className="fas fa-check text-success me-2"></i>
+                                        <span className="feature-label">{feature}</span>
+                                    </li>
+                                ))}
                             </ul>
 
                             <button className="tier-btn"
@@ -285,11 +273,12 @@ const SubscribePlan = () => {
                                         Processing...
                                     </>
                                 ) : (
-                                    `Choose ${plan.name}`
+                                    `Choose ${tierName}`
                                 )}
                             </button>
                         </div>
-                    ))}
+                        );
+                    })}
 
                 </div>
             </Container>

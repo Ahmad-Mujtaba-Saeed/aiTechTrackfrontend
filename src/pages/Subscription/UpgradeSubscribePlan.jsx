@@ -8,6 +8,15 @@ import MasterLayout from "../../masterLayout/MasterLayout";
 
 import "./plans.css";
 
+const getTierName = (name) => {
+    if (name === 'Weekly Plan' || name === 'Basic') return 'Basic';
+    if (name === 'Monthly Plan' || name === 'Professional') return 'Professional';
+    if (name === 'Quarterly Plan' || name === 'Premium') return 'Premium';
+    return name || 'Basic';
+};
+
+const TIER_ORDER = { Basic: 1, Professional: 2, Premium: 3 };
+
 const UpgradeSubscribePlan = () => {
     const userData = useSelector(state => state.user?.data);
 
@@ -24,7 +33,10 @@ const UpgradeSubscribePlan = () => {
         try {
             setLoading(true);
             const response = await axios.get('/billing/plans');
-            setPlans(response.data);
+            const sorted = [...response.data].sort(
+                (a, b) => (TIER_ORDER[getTierName(a.name)] || 99) - (TIER_ORDER[getTierName(b.name)] || 99)
+            );
+            setPlans(sorted);
         } catch (err) {
             setError('Failed to load subscription plans. Please try again later.');
             console.error('Error fetching plans:', err);
@@ -111,13 +123,7 @@ const UpgradeSubscribePlan = () => {
     };
 
     const features = {
-        weekly: [
-            'Access to basic features',
-            'Email support',
-            '5GB storage',
-            'Up to 3 projects'
-        ],
-        monthly: [
+        Basic: [
             'All Basic features',
             'Priority email & chat support',
             '50GB storage',
@@ -125,7 +131,7 @@ const UpgradeSubscribePlan = () => {
             'Advanced analytics',
             'Custom branding'
         ],
-        quaterly: [
+        Professional: [
             'All Professional features',
             '24/7 phone support',
             '500GB storage',
@@ -133,12 +139,15 @@ const UpgradeSubscribePlan = () => {
             'Advanced analytics & reporting',
             'Custom branding & white-label',
             'Dedicated account manager'
+        ],
+        Premium: [
+            'All Professional features',
+            '24/7 phone support',
+            '500GB storage',
+            'Unlimited projects',
+            'Advanced analytics & reporting',
+            'Custom branding & white-label'
         ]
-    };
-
-    const badges = {
-        monthly: 'Save 25%',
-        quaterly: 'Save 67%'
     };
 
     if (loading) {
@@ -169,12 +178,18 @@ const UpgradeSubscribePlan = () => {
                 )}
 
                 <div className="plans-tiers">
-                    {plans.map((plan) => (
-                        <div key={plan.id} className={`tier ${plan.name === 'Monthly Plan' && 'professional'}`}>
+                    {plans.map((plan) => {
+                        const tierName = getTierName(plan.name);
+                        const tierFeatures = (plan.features && plan.features.length > 0)
+                            ? plan.features
+                            : (features[tierName] || []);
+
+                        return (
+                        <div key={plan.id} className="tier">
 
                             <div className="badge-wrapper">
-                                {plan.name === 'Monthly Plan' && (
-                                    <span className="tier-badge">RECOMMENDED</span>
+                                {tierName === 'Professional' && (
+                                    <span className="tier-badge">BEST VALUE</span>
                                 )}
                                 {userData?.plan_id === plan.id && (
                                     <span className="tier-badge">ACTIVE</span>
@@ -185,47 +200,21 @@ const UpgradeSubscribePlan = () => {
                             </div>
 
                             <div className="tier-name">
-                                {plan.name === 'Weekly Plan' ? 'Basic' :
-                                    plan.name === 'Monthly Plan' ? 'Professional' :
-                                        plan.name === 'Quarterly Plan' ? 'Premium' :
-                                            plan.name}
+                                {tierName}
                             </div>
 
                             <div className="tier-price">${plan.price}</div>
                             <div className="tier-period">
-                                {plan.name}
-                                {plan.name === 'Weekly Plan' ? ('') :
-                                    plan.name === 'Monthly Plan' ? (
-                                        badges.monthly && (
-                                            <span className="savings-badge">{badges.monthly}</span>
-                                        )
-                                    ) : plan.name === 'Quarterly Plan' && (
-                                        badges.quaterly && (
-                                            <span className="savings-badge">{badges.quaterly}</span>
-                                        )
-                                    )}
+                                {tierName}
                             </div>
 
-                            {/* Show actual plan features from API */}
                             <ul className="tier-features">
-                                {plan.features && plan.features.length > 0 ? (
-                                    plan.features.map((feature, index) => (
-                                        <li key={index}>
-                                            <i className="fas fa-check text-success me-2"></i>
-                                            <span className="feature-label">{feature}</span>
-                                        </li>
-                                    ))
-                                ) : (
-                                    // Fallback to hardcoded features if API doesn't provide
-                                    (plan.name === 'Weekly Plan' ? features.weekly :
-                                        plan.name === 'Monthly Plan' ? features.monthly :
-                                            plan.name === 'Quarterly Plan' ? features.quaterly : []).map((feature, index) => (
-                                                <li key={index}>
-                                                    <i className="fas fa-check text-success me-2"></i>
-                                                    <span className="feature-label">{feature}</span>
-                                                </li>
-                                            ))
-                                )}
+                                {tierFeatures.map((feature, index) => (
+                                    <li key={index}>
+                                        <i className="fas fa-check text-success me-2"></i>
+                                        <span className="feature-label">{feature}</span>
+                                    </li>
+                                ))}
                             </ul>
 
                             <button
@@ -246,11 +235,12 @@ const UpgradeSubscribePlan = () => {
                                         Processing...
                                     </>
                                 ) : (
-                                    userData?.plan_id === plan.id ? 'Current Plan' : `Choose ${plan.name}`
+                                    userData?.plan_id === plan.id ? 'Current Plan' : `Choose ${tierName}`
                                 )}
                             </button>
                         </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
 
