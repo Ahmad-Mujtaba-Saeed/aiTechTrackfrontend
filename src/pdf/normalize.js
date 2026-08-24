@@ -30,7 +30,14 @@ const flattenName = (value) => {
   return '';
 };
 
-const text = (value) => (value == null ? '' : String(value).trim());
+const text = (value) => {
+  if (value == null) return '';
+  // Never stringify a container. `String({})` is "[object Object]", and a field
+  // that arrives as an all-null object - `educationLevel: { label: null }` is the
+  // common one - used to render that literal string onto the CV.
+  if (typeof value === 'object') return '';
+  return String(value).trim();
+};
 
 /** Drop empty strings and de-duplicate while preserving order. */
 const compact = (list) => (Array.isArray(list) ? list.map(text).filter(Boolean) : []);
@@ -88,7 +95,9 @@ export function normalizeResume(raw) {
   });
 
   const education = (source.education || []).map((edu) => ({
-    degree: text(edu?.educationLevel?.label) || text(edu?.educationLevel),
+    // Usually `{ label }`, but older records store a bare string, and the parser
+    // sometimes fills `value` instead of `label`.
+    degree: flattenName(edu?.educationLevel) || text(edu?.educationLevel?.value),
     org: text(edu?.educationOrganization),
     ...dateRange(edu?.educationDates),
     majors: compact(edu?.educationMajor),
