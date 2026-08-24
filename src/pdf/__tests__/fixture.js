@@ -64,6 +64,16 @@ export const LONG_RESUME = {
       achievedGrade: 'First Class Honours',
       educationDescription: '',
     },
+    {
+      // Exactly what the parser emits when it finds no degree name: an object of
+      // nulls. Stringifying it wholesale used to print "[object Object]" as the
+      // entry's title, directly under the date range.
+      educationLevel: { id: null, label: null, value: null },
+      educationOrganization: 'Punjab Group Of Colleges',
+      educationDates: { start: { date: '2021' }, end: { date: '2024' } },
+      educationMajor: [],
+      educationAccreditation: null,
+    },
   ],
 
   // Mixed shapes on purpose: plain string, { name }, and nested { name: { name } }.
@@ -161,7 +171,9 @@ export const REQUIRED_TOKENS = [
 ];
 
 /** Tokens that must NOT appear (deselected skill). */
-export const FORBIDDEN_TOKENS = ['SKILLDROPPED'];
+// Whitespace-free by necessity: the renderer strips all spacing before matching,
+// so "[object Object]" has to be spelled without its space to be detectable.
+export const FORBIDDEN_TOKENS = ['SKILLDROPPED', '[objectObject]'];
 
 /** A minimal, mostly-empty resume — guards against crashes on a fresh CV. */
 export const EMPTY_RESUME = {
