@@ -81,3 +81,14 @@ export const hasRole = (userData, roleSlug) => {
 
   return userData.roles.some(role => role.slug === roleSlug);
 };
+
+/**
+ * Internal/staff users (admins) are not customers: they never get a plan,
+ * a Stripe customer, payment methods or an invoice. Use this to hide every
+ * billing surface and to block the billing routes for them.
+ * @param {Object} userData - User data object containing roles and permissions
+ * @returns {boolean} - True if the user is an internal (non-billable) account
+ */
+export const isInternalUser = (userData) => {
+  return hasPermission(userData, 'system-internal') || hasRole(userData, 'admin');
+};

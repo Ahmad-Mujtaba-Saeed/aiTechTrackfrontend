@@ -13,13 +13,16 @@ import favicon from '../assets/demo_profile.avif';
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/user/userSlice";
 import ChatBot from "../components/chat-bot-agent/ChatBot";
+import { hasRole, isInternalUser } from "../utils/permissions";
 
 const MasterLayout = ({ children }) => {
 
   const dispatch = useDispatch();
   const { data } = useSelector((state) => state.user);
 
-const slug = data?.roles?.[0]?.slug || "user";
+  // Check every role the user holds, not just the first one in the list.
+  const isAdmin = hasRole(data, 'admin');
+  const isInternal = isInternalUser(data);
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
 
@@ -118,7 +121,7 @@ const slug = data?.roles?.[0]?.slug || "user";
                 </Link>
                 </div>
               </li>
-              {slug === 'admin' && (
+              {isAdmin && (
                 <li className="nav-item">
                   <p className="navbar-vertical-label">
                     Admin
@@ -171,7 +174,7 @@ const slug = data?.roles?.[0]?.slug || "user";
                   </div>
                 </Link>
                 </div>
-                {slug != 'admin' && (
+                {!isInternal && (
                 <div className="nav-item-wrapper"><Link className={`nav-link label-1 ${isActive('/upgrade-subscription')}`} to="/upgrade-subscription" role="button" data-bs-toggle="" aria-expanded="false">
                   <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:tag' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Payment Plans</span></span>
                   </div>
