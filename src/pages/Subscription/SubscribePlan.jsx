@@ -244,21 +244,24 @@ const SubscribePlan = () => {
                             </div>
 
                             <ul className="tier-features">
-                                {plan.name === 'Weekly Plan' ? (
+                                {plan.name === 'Professional' ? (
                                     features?.weekly.map((feature, index) => (
                                         <li key={index}>
+                                            <i class="fas fa-check text-success me-2"></i>
                                             <span className="feature-label">{feature}</span>
                                         </li>
                                     ))
-                                ) : plan.name === 'Monthly Plan' ? (
+                                ) : plan.name === 'Basic' ? (
                                     features?.monthly.map((feature, index) => (
                                         <li key={index}>
+                                            <i class="fas fa-check text-success me-2"></i>
                                             <span className="feature-label">{feature}</span>
                                         </li>
                                     ))
-                                ) : plan.name === 'Quarterly Plan' && (
+                                ) : plan.name === 'Premium' && (
                                     features?.quaterly.map((feature, index) => (
                                         <li key={index}>
+                                            <i class="fas fa-check text-success me-2"></i>
                                             <span className="feature-label">{feature}</span>
                                         </li>
                                     ))
