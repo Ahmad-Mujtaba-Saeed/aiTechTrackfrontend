@@ -5,6 +5,7 @@ import {
   Entry,
   Body,
   Meta,
+  Bullet,
   BulletList,
   Chips,
   DetailRows,
@@ -133,44 +134,92 @@ export function EducationSection({ resume, theme, first, showDatesInline = false
 export function SkillsSection({ resume, theme, first, variant = 'chips', color, muted, track }) {
   if (!resume.labels.skills.enabled || !resume.skills.length) return null;
   const names = resume.skills.map((skill) => skill.name);
+  const title = resume.labels.skills.title;
+
+  if (variant === 'list') {
+    const [leadName, ...rest] = names;
+    return (
+      <Section
+        theme={theme}
+        title={title}
+        first={first}
+        lead={
+          <Bullet theme={theme} color={color} style={{ marginTop: 3 }}>
+            {leadName}
+          </Bullet>
+        }
+      >
+        {rest.length > 0 && (
+          <View>
+            {rest.map((item, index) => (
+              <Bullet key={index} theme={theme} color={color} atomic={!isOversizedSkill(item)}>
+                {item}
+              </Bullet>
+            ))}
+          </View>
+        )}
+      </Section>
+    );
+  }
+
+  if (variant === 'inline') {
+    return (
+      <Section
+        theme={theme}
+        title={title}
+        first={first}
+        lead={
+          <Body theme={theme} style={{ marginTop: 3, ...(color ? { color } : null) }}>
+            {names.join(' · ')}
+          </Body>
+        }
+      />
+    );
+  }
+
+  if (variant === 'bars') {
+    const [leadSkill, ...restSkills] = resume.skills;
+    return (
+      <Section
+        theme={theme}
+        title={title}
+        first={first}
+        lead={<SkillBar theme={theme} skill={leadSkill} color={color} muted={muted} track={track} />}
+      >
+        {restSkills.map((skill, index) => (
+          <SkillBar key={index} theme={theme} skill={skill} color={color} muted={muted} track={track} />
+        ))}
+      </Section>
+    );
+  }
 
   return (
-    <Section theme={theme} title={resume.labels.skills.title} first={first}>
-      {variant === 'chips' && (
-        <Chips theme={theme} items={names} background={hexWithAlpha(theme.accent)} color={theme.ink} />
-      )}
-
-      {variant === 'inline' && (
-        <Body theme={theme} style={color ? { color } : null}>
-          {names.join(' · ')}
-        </Body>
-      )}
-
-      {variant === 'list' && <BulletList theme={theme} items={names} color={color} />}
-
-      {variant === 'bars' && (
-        <View>
-          {resume.skills.map((skill, index) => (
-            <View key={index} style={{ marginBottom: 5 }} wrap={false}>
-              <Text
-                style={{
-                  fontFamily: theme.fontFamily,
-                  fontSize: theme.bodySize,
-                  color: color || theme.body,
-                }}
-              >
-                {skill.name}
-              </Text>
-              <LevelBar
-                level={skill.level}
-                track={track || 'rgba(255,255,255,0.25)'}
-                fill={muted || '#FFFFFF'}
-              />
-            </View>
-          ))}
-        </View>
-      )}
+    <Section theme={theme} title={title} first={first}>
+      <Chips theme={theme} items={names} background={hexWithAlpha(theme.accent)} color={theme.ink} />
     </Section>
+  );
+}
+
+const isOversizedSkill = (value) => typeof value === 'string' && value.length > 2200;
+
+function SkillBar({ theme, skill, color, muted, track }) {
+  return (
+    <View style={{ marginBottom: 5 }} wrap={false}>
+      <Text
+        style={{
+          fontFamily: theme.fontFamily,
+          fontSize: theme.bodySize,
+          color: color || theme.body,
+        }}
+      >
+        {skill.name}
+      </Text>
+      <LevelBar
+        level={skill.level}
+        track={track || 'rgba(255,255,255,0.25)'}
+        fill={muted || '#FFFFFF'}
+      />
+    </View>
   );
 }
 
@@ -181,15 +230,34 @@ export function LanguagesSection({ resume, theme, first, variant = 'list', color
     lang.level ? `${lang.name} (${lang.level})` : lang.name,
   );
 
+  if (variant === 'inline') {
+    return (
+      <Section
+        theme={theme}
+        title={resume.labels.languages.title}
+        first={first}
+        lead={
+          <Body theme={theme} style={{ marginTop: 3, ...(color ? { color } : null) }}>
+            {labels.join(' · ')}
+          </Body>
+        }
+      />
+    );
+  }
+
+  const [leadLabel, ...rest] = labels;
   return (
-    <Section theme={theme} title={resume.labels.languages.title} first={first}>
-      {variant === 'inline' ? (
-        <Body theme={theme} style={color ? { color } : null}>
-          {labels.join(' · ')}
-        </Body>
-      ) : (
-        <BulletList theme={theme} items={labels} color={color} />
-      )}
+    <Section
+      theme={theme}
+      title={resume.labels.languages.title}
+      first={first}
+      lead={
+        <Bullet theme={theme} color={color} style={{ marginTop: 3 }}>
+          {leadLabel}
+        </Bullet>
+      }
+    >
+      {rest.length > 0 && <BulletList theme={theme} items={rest} color={color} />}
     </Section>
   );
 }

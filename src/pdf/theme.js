@@ -25,7 +25,7 @@ export const A4 = { width: 595.28, height: 841.89 };
  * page. Without this, react-pdf happily leaves a heading stranded as the last
  * line of a page with its content on the next — the "orphaned heading" bug.
  */
-export const KEEP_WITH_NEXT = 56;
+export const KEEP_WITH_NEXT = 88;
 
 const base = {
   fontFamily: SANS,
