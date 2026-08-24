@@ -13442,7 +13442,7 @@ textarea.form-control.is-invalid {
 }
 
 .bg-success-subtle {
-  background-color: var(--phoenix-success-bg-subtle) !important;
+  background-color: #FF6B47 !important;
 }
 
 .bg-info-subtle {

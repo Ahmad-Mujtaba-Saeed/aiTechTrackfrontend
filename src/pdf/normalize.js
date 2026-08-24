@@ -23,7 +23,7 @@ const pick = (value, key) => {
 
 /** `name` fields arrive as a string, or `{ name }`, or `{ name: { name } }`. */
 const flattenName = (value) => {
-  if (typeof value === 'string') return value.trim();
+  if (typeof value === 'string') return value.replace(/\s+/g, ' ').trim();
   if (value && typeof value === 'object') {
     return flattenName(value.name ?? value.label ?? value.language ?? '');
   }

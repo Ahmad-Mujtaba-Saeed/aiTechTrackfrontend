@@ -136,19 +136,19 @@ const MasterLayout = ({ children }) => {
                   </div>
                   <div className="nav-item-wrapper">
                     <Link className={`nav-link label-1 ${isActive('/billing/subscriptions')}`} to="/billing/subscriptions" role="button" data-bs-toggle="" aria-expanded="true">
-                      <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:notes' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Subscriptions</span></span>
+                      <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:credit-card' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Subscriptions</span></span>
                       </div>
                     </Link>
                   </div>
                   <div className="nav-item-wrapper">
                     <Link className={`nav-link label-1 ${isActive('/billing/transactions')}`} to="/billing/transactions" role="button" data-bs-toggle="" aria-expanded="true">
-                      <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:notes' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Transactions</span></span>
+                      <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:arrows-exchange' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Transactions</span></span>
                       </div>
                     </Link>
                   </div>
                   <div className="nav-item-wrapper">
                     <Link className={`nav-link label-1 ${isActive('/billing/plan-management')}`} to="/billing/plan-management" role="button" data-bs-toggle="" aria-expanded="true">
-                      <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:notes' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Plan Management</span></span>
+                      <div className="d-flex align-items-center"><span className="nav-link-icon"><Icon icon='tabler:clipboard-list' width={'18px'} height={'18px'} /></span><span className="nav-link-text-wrapper"><span className="nav-link-text">Plan Management</span></span>
                       </div>
                     </Link>
                   </div>

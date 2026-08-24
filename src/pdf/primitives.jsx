@@ -151,11 +151,17 @@ export function Meta({ theme, children, style, ...rest }) {
  * long section flows onto the next page; only the heading is pinned to the
  * content that follows it.
  */
-export function Section({ theme, title, children, style, first = false }) {
+export function Section({ theme, title, children, style, first = false, lead = null }) {
+  // `minPresenceAhead` on a heading-only wrapper is not enough: react-pdf will
+  // still park the title (and its underline) in a sliver of leftover space and
+  // send the first item to the next page, so the rule and the skills look merged.
+  // Pinning the heading to `lead` (the first bullet / line) with wrap={false}
+  // moves both together. `lead` must stay shorter than a page.
   return (
     <View style={[{ marginTop: first ? 0 : theme.sectionGap }, style]}>
-      <View minPresenceAhead={KEEP_WITH_NEXT}>
+      <View wrap={false} minPresenceAhead={lead ? undefined : KEEP_WITH_NEXT}>
         <Heading theme={theme}>{title}</Heading>
+        {lead}
       </View>
       {children}
     </View>
