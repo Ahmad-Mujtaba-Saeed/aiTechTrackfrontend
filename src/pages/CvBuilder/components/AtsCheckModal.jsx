@@ -3,19 +3,6 @@ import { Modal, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import axios from "../../../api/axios";
 
-/**
- * Step machine:
- *   choose        -> pick "skills" or "job-description"
- *   job-input     -> only for job-description mode: paste/edit the JD
- *   loading       -> API call in flight
- *   result        -> render whichever result came back
- *
- * Both /ats-check and /job-match return the same top-level envelope
- * ({ success, message, data }) and the same category shape
- * ({ label, score, max_score, assessment, strengths, issues }),
- * so one result renderer covers both — job-match just has two extra
- * fields (recommendation, keyword_analysis) that render conditionally.
- */
 const AtsCheckModal = ({ show, onHide, resumeId, savedJobDescription }) => {
     const [step, setStep] = useState("choose");
     const [mode, setMode] = useState(null); // 'skills' | 'job-description'
