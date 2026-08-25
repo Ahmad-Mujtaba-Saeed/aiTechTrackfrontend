@@ -67,7 +67,7 @@ const publicRoutes = [
   { path: '/update-password', element: <UpdatePassword /> },
   { path: '/terms', element: <TermsCondition /> },
   { path: '/privacy-policy', element: <PrivacyPolicy /> },
-  { path: '/career-advice', element: <Career /> },
+  
   { path: '*', element: <ErrorPage /> },
   { path: '/sign-out', element: <SignOut /> },
   { path: '/document', element: <Documentation /> },
@@ -76,7 +76,7 @@ const publicRoutes = [
 const protectedRoutes = [
   { path: '/', element: <Dashboard /> },
   { path: '/welcome', element: <Welcome /> },
-  { path: '/career-advice', element: <CareerAdvice /> },
+  
   { path: '/upgrade-subscription', element:<UpgradeSubscribePlan/> },
   { path: '/subscription', element:<SubscribePlan/> },
   { path: '/cv-builder', element: <CvBuilder /> },
@@ -85,7 +85,7 @@ const protectedRoutes = [
   { path: '/support', element: <Support /> },
   { path: '/profile-settings', element: <ProfileSetting /> },
   { path: '/profile', element: <ProfilePage /> },
-
+{ path: '/career-advice', element: <Career /> },
   { path: '/manage-users', element: <UserManagement /> },
   { path: '/billing/transactions', element: <TransactionsManagement /> },
   { path: '/billing/subscriptions', element: <SubscriptionManagement /> },
