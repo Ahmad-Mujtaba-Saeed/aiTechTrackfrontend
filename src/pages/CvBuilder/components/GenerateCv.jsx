@@ -7,9 +7,6 @@ import Swal from 'sweetalert2';
 import BulletPointsEditor from '../../../components/CvBuilder/BulletPointsEditor';
 import avatar from '../../../assets/demo_profile.avif'
 
-// The HTML templates in components/templates are no longer used here: every
-// design is now rendered by src/pdf, which drives both the preview and the
-// downloaded file from one definition.
 
 import { Row, Col, Button, Card, Dropdown, Modal } from "react-bootstrap";
 import Draggable from 'react-draggable';
